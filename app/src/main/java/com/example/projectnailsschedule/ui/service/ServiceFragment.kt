@@ -1,4 +1,4 @@
-package com.example.projectnailsschedule.ui.slideshow
+package com.example.projectnailsschedule.ui.service
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.projectnailsschedule.databinding.FragmentSlideshowBinding
+import com.example.projectnailsschedule.databinding.FragmentServiceBinding
 
-class SlideshowFragment : Fragment() {
+class ServiceFragment : Fragment() {
 
-    private var _binding: FragmentSlideshowBinding? = null
+    private var _binding: FragmentServiceBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -22,14 +22,14 @@ class SlideshowFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val slideshowViewModel =
-            ViewModelProvider(this).get(SlideshowViewModel::class.java)
+        val serviceViewModel =
+            ViewModelProvider(this).get(ServiceViewModel::class.java)
 
-        _binding = FragmentSlideshowBinding.inflate(inflater, container, false)
+        _binding = FragmentServiceBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         val textView: TextView = binding.textSlideshow
-        slideshowViewModel.text.observe(viewLifecycleOwner) {
+        serviceViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
         return root

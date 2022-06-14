@@ -3,23 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_home">
+    app:startDestination="@+id/nav_calendar">
 
     <fragment
-        android:id="@+id/nav_home"
-        android:name="com.example.projectnailsschedule.ui.home.HomeFragment"
-        android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
+        android:id="@+id/nav_calendar"
+        android:name="com.example.projectnailsschedule.ui.calendar.CalendarFragment"
+        android:label="@string/menu_calendar"
+        tools:layout="@layout/fragment_calendar" />
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.example.projectnailsschedule.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        android:id="@+id/nav_clients"
+        android:name="com.example.projectnailsschedule.ui.clients.ClientsFragment"
+        android:label="@string/menu_clients"
+        tools:layout="@layout/fragment_clients" />
 
     <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.example.projectnailsschedule.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
+        android:id="@+id/nav_service"
+        android:name="com.example.projectnailsschedule.ui.service.ServiceFragment"
+        android:label="@string/menu_service"
+        tools:layout="@layout/fragment_service" />
 </navigation>

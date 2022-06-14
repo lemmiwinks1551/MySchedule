@@ -1,4 +1,4 @@
-package com.example.projectnailsschedule.ui.home
+package com.example.projectnailsschedule.ui.clients
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.projectnailsschedule.databinding.FragmentHomeBinding
+import com.example.projectnailsschedule.databinding.FragmentClientsBinding
 
-class HomeFragment : Fragment() {
+class ClientsFragment : Fragment() {
 
-    private var _binding: FragmentHomeBinding? = null
+    private var _binding: FragmentClientsBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -22,14 +22,14 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
+        val clientsViewModel =
+            ViewModelProvider(this).get(ClientsViewModel::class.java)
 
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        _binding = FragmentClientsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textHome
-        homeViewModel.text.observe(viewLifecycleOwner) {
+        val textView: TextView = binding.textGallery
+        clientsViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
         return root
