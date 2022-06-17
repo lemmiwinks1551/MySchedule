@@ -20,7 +20,8 @@ class CalendarFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         Log.e("LifeCycle", "CalendarFragment created")
         // Создаем переменную ViewModel
@@ -34,8 +35,12 @@ class CalendarFragment : Fragment() {
             textView.text = it
         }
 
-        val calendar: CalendarView = binding.calendar
-        calendar.date = 1
+        val calendarView: CalendarView = binding.calendar
+        calendarView.setOnDateChangeListener { calendarView, i, i2, i3 ->
+            calendarViewModel.calendarChanged(i, i2, i3)
+        }
+
+
         return root
     }
 
@@ -45,3 +50,6 @@ class CalendarFragment : Fragment() {
         _binding = null
     }
 }
+
+
+

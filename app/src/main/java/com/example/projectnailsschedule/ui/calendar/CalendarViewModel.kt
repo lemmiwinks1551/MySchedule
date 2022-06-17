@@ -9,6 +9,7 @@ class CalendarViewModel : ViewModel() {
     init {
         Log.e("LifeCycle", "CalendarViewModel created")
     }
+
     private val _text = MutableLiveData<String>().apply {
         value = "Здесь будет календарь"
     }
@@ -17,5 +18,10 @@ class CalendarViewModel : ViewModel() {
     override fun onCleared() {
         Log.e("LifeCycle", "CalendarViewModel cleared")
         super.onCleared()
+    }
+
+    fun calendarChanged(year: Int,month: Int, day: Int) {
+        var month1 = month + 1
+        Log.e("Calendar", String.format("$day.$month1.$year"))
     }
 }
