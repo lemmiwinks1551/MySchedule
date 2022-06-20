@@ -1,11 +1,7 @@
 package com.example.projectnailsschedule.ui.calendar
 
-import android.content.Intent
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.projectnailsschedule.DateActivity
 
 class CalendarViewModel : ViewModel() {
     init {
@@ -17,8 +13,7 @@ class CalendarViewModel : ViewModel() {
         super.onCleared()
     }
 
-    fun calendarChanged(year: Int,month: Int, day: Int) {
-        var month1 = month + 1
-        Log.e("Calendar", String.format("$day.$month1.$year"))
+    fun calendarChanged(day: String) {
+        Log.e("Calendar", day)
     }
 }

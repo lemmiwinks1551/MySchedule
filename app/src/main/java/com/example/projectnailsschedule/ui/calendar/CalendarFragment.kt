@@ -34,11 +34,18 @@ class CalendarFragment : Fragment() {
 
         val calendarView: CalendarView = binding.calendar
         calendarView.setOnDateChangeListener { calendarView, i, i2, i3 ->
-            calendarViewModel.calendarChanged(i, i2, i3)
+            val dd = i3
+            val mm = i2 + 1
+            val yy = i
 
-            // Because Fragment is NOT of Context type, you'll need to call the parent Activity:
-            // Запускаем активность с конкретной датой
+            // Сформировать дату в нормальном формате
+            val day = String.format("$dd.$mm.$yy")
+            calendarViewModel.calendarChanged(day)
+
+            // Because Fragment is NOT of Context type, you'll need to call the parent Activity
+            // Передаем дату и запускаем активность по Дате
             val intent = Intent (activity, DateActivity::class.java)
+            intent.putExtra("day", day)
             activity?.startActivity(intent)
         }
 

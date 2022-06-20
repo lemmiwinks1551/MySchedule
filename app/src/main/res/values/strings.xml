@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ProjectNailsSchedule</string>
+    <string name="app_name">Ю-Nails</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Главное меню</string>
@@ -7,6 +7,7 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Настройки</string>
+    <string name="action_day">День</string>
 
     <string name="menu_calendar">Календарь</string>
     <string name="menu_clients">Клиенты</string>
