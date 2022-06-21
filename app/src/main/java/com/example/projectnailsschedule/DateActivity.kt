@@ -8,13 +8,12 @@ import android.widget.ListView
 import android.widget.SimpleCursorAdapter
 import androidx.appcompat.app.AppCompatActivity
 
-
 class DateActivity : AppCompatActivity() {
     var scheduleList: ListView? = null
     var databaseHelper: DatabaseHelper? = null
     var db: SQLiteDatabase? = null
-    var userCursor: Cursor? = null
-    var userAdapter: SimpleCursorAdapter? = null
+    var cursor: Cursor? = null
+    var adapter: SimpleCursorAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,24 +40,30 @@ class DateActivity : AppCompatActivity() {
         db = databaseHelper?.readableDatabase
 
         // Получаем данные из бд в виде курсора
-        userCursor = db!!.rawQuery("select * from " + DatabaseHelper.TABLE, null)
+        cursor = db!!.rawQuery("SELECT * FROM " + DatabaseHelper.TABLE_NAME, null)
 
         // Определяем, какие столбцы из курсора будут выводиться в ListView
-        val headers = arrayOf(DatabaseHelper.COLUMN_NAME, DatabaseHelper.COLUMN_YEAR)
-
-        // Создаем адаптер, передаем в него курсор
-        userAdapter = SimpleCursorAdapter(
-            this, android.R.layout.two_line_list_item,
-            userCursor, headers, intArrayOf(android.R.id.text1, android.R.id.text2), 0
+        val headers = arrayOf(
+            DatabaseHelper.COLUMN_START, DatabaseHelper.COLUMN_END,
+            DatabaseHelper.COLUMN_NAME, DatabaseHelper.COLUMN_PHONE,
+            DatabaseHelper.COLUMN_MISC
         )
 
-        scheduleList!!.adapter = userAdapter
+        // Создаем адаптер, передаем в него курсор
+        adapter = SimpleCursorAdapter(
+            this, android.R.layout.two_line_list_item,
+            cursor, headers, intArrayOf(android.R.id.text1, android.R.id.text2), 0
+            // TODO: переделать отображение БД 
+        )
+
+        scheduleList!!.adapter = adapter
     }
 
     public override fun onDestroy() {
         super.onDestroy()
         // Закрываем подключение и курсор
+        Log.e("Database", "Подключение закрыто")
         db!!.close()
-        userCursor!!.close()
+        cursor!!.close()
     }
 }
