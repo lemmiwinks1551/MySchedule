@@ -8,7 +8,17 @@ import android.widget.ListView
 import android.widget.SimpleCursorAdapter
 import androidx.appcompat.app.AppCompatActivity
 
+
 class DateActivity : AppCompatActivity() {
+    companion object {
+        const val COLUMN_START = DatabaseHelper.COLUMN_START
+        const val COLUMN_PROCEDURE = DatabaseHelper.COLUMN_PROCEDURE
+        const val COLUMN_NAME = DatabaseHelper.COLUMN_NAME
+        const val COLUMN_PHONE = DatabaseHelper.COLUMN_PHONE
+        const val COLUMN_MISC = DatabaseHelper.COLUMN_MISC
+
+    }
+
     var scheduleList: ListView? = null
     var databaseHelper: DatabaseHelper? = null
     var db: SQLiteDatabase? = null
@@ -41,19 +51,24 @@ class DateActivity : AppCompatActivity() {
 
         // Получаем данные из бд в виде курсора
         cursor = db!!.rawQuery("SELECT * FROM " + DatabaseHelper.TABLE_NAME, null)
+        // TODO: Выбирать, только выбранную дату из БД
 
         // Определяем, какие столбцы из курсора будут выводиться в ListView
-        val headers = arrayOf(
-            DatabaseHelper.COLUMN_START, DatabaseHelper.COLUMN_END,
-            DatabaseHelper.COLUMN_NAME, DatabaseHelper.COLUMN_PHONE,
-            DatabaseHelper.COLUMN_MISC
+        val headers =
+            arrayOf(COLUMN_START, COLUMN_PROCEDURE, COLUMN_NAME, COLUMN_PHONE, COLUMN_MISC)
+
+        val receiver = intArrayOf(
+            R.id.COLUMN_START,
+            R.id.COLUMN_END,
+            R.id.COLUMN_NAME,
+            R.id.COLUMN_PHONE,
+            R.id.COLUMN_MISC
         )
 
         // Создаем адаптер, передаем в него курсор
         adapter = SimpleCursorAdapter(
-            this, android.R.layout.two_line_list_item,
-            cursor, headers, intArrayOf(android.R.id.text1, android.R.id.text2), 0
-            // TODO: переделать отображение БД 
+            this, R.layout.database,
+            cursor, headers, receiver, 0
         )
 
         scheduleList!!.adapter = adapter

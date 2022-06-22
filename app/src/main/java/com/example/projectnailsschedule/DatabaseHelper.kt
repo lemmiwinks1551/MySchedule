@@ -14,7 +14,7 @@ class DatabaseHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAM
             "CREATE TABLE " + TABLE_NAME + " (" +
                     COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     COLUMN_START + " TEXT NOT NULL, " +
-                    COLUMN_END + " TEXT NOT NULL, " +
+                    COLUMN_PROCEDURE + " TEXT NOT NULL, " +
                     COLUMN_NAME + " TEXT NOT NULL UNIQUE, " +
                     COLUMN_PHONE + " TEXT NOT NULL UNIQUE, " +
                     COLUMN_MISC + " TEXT);"
@@ -23,21 +23,21 @@ class DatabaseHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAM
         db.execSQL(
             "INSERT INTO " + TABLE_NAME + " (" +
                     COLUMN_START + ", " +
-                    COLUMN_END + ", " +
+                    COLUMN_PROCEDURE + ", " +
                     COLUMN_NAME + "," +
                     COLUMN_PHONE + "," +
-                    COLUMN_MISC + ") VALUES ('11:00', '13:00', 'Имя', '8 800 555 35 35', 'instagram');"
+                    COLUMN_MISC + ") VALUES ('11:00', 'Наращивание', 'Филип Киркоров', '8 800 555 35 35', '@fkirkorov');"
         )
     }
     companion object {
         private const val DATABASE_NAME = "schedule.db" // название бд
-        private const val VERSION = 2 // версия базы данных
+        private const val VERSION = 3 // версия базы данных
         const val TABLE_NAME = "schedule" // название таблицы в бд
 
         // Названия столбцов
         const val COLUMN_ID = "_id"
         const val COLUMN_START = "start"
-        const val COLUMN_END = "end"
+        const val COLUMN_PROCEDURE = "end"
         const val COLUMN_NAME = "name"
         const val COLUMN_PHONE = "phone"
         const val COLUMN_MISC = "misc"
