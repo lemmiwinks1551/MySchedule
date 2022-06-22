@@ -1,9 +1,11 @@
 package com.example.projectnailsschedule
 
+import android.app.Dialog
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.util.Log
+import android.view.Window
 import android.widget.AdapterView.OnItemLongClickListener
 import android.widget.ListView
 import android.widget.SimpleCursorAdapter
@@ -75,10 +77,22 @@ class DateActivity : AppCompatActivity() {
         scheduleList!!.adapter = adapter
 
         scheduleList!!.onItemLongClickListener = OnItemLongClickListener { arg0, arg1, pos, id ->
+
             Log.v("scheduleList", "Pressed: $pos")
             Toast.makeText(this, "нажатие", Toast.LENGTH_SHORT).show()
+            showDialog()
             true
+
         }
+    }
+
+    fun showDialog() {
+        // TODO: Вынести в отдельный класс 
+        val dialog = Dialog(this)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(true)
+        dialog.setContentView(R.layout.dialog_db)
+        dialog.show()
     }
 
     public override fun onDestroy() {
@@ -88,4 +102,7 @@ class DateActivity : AppCompatActivity() {
         db!!.close()
         cursor!!.close()
     }
+
+
 }
+
