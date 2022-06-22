@@ -4,8 +4,10 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.util.Log
+import android.widget.AdapterView.OnItemLongClickListener
 import android.widget.ListView
 import android.widget.SimpleCursorAdapter
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
 
@@ -16,7 +18,6 @@ class DateActivity : AppCompatActivity() {
         const val COLUMN_NAME = DatabaseHelper.COLUMN_NAME
         const val COLUMN_PHONE = DatabaseHelper.COLUMN_PHONE
         const val COLUMN_MISC = DatabaseHelper.COLUMN_MISC
-
     }
 
     var scheduleList: ListView? = null
@@ -72,6 +73,12 @@ class DateActivity : AppCompatActivity() {
         )
 
         scheduleList!!.adapter = adapter
+
+        scheduleList!!.onItemLongClickListener = OnItemLongClickListener { arg0, arg1, pos, id ->
+            Log.v("scheduleList", "Pressed: $pos")
+            Toast.makeText(this, "нажатие", Toast.LENGTH_SHORT).show()
+            true
+        }
     }
 
     public override fun onDestroy() {
