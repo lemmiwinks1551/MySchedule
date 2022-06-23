@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Window
 import android.widget.AdapterView.OnItemLongClickListener
+import android.widget.Button
 import android.widget.ListView
 import android.widget.SimpleCursorAdapter
 import android.widget.Toast
@@ -27,6 +28,8 @@ class DateActivity : AppCompatActivity() {
     var db: SQLiteDatabase? = null
     var cursor: Cursor? = null
     var adapter: SimpleCursorAdapter? = null
+    var deleteButton: Button? = null
+    var editButton: Button? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,22 +81,42 @@ class DateActivity : AppCompatActivity() {
 
         scheduleList!!.onItemLongClickListener = OnItemLongClickListener { arg0, arg1, pos, id ->
 
-            Log.v("scheduleList", "Pressed: $pos")
-            Toast.makeText(this, "нажатие", Toast.LENGTH_SHORT).show()
+            Log.e("scheduleList", "Pressed: $pos")
             showDialog()
             true
 
         }
     }
 
-    fun showDialog() {
-        // TODO: Вынести в отдельный класс 
+    private fun showDialog() {
         val dialog = Dialog(this)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setCancelable(true)
         dialog.setContentView(R.layout.dialog_db)
+        deleteButton = dialog.findViewById(R.id.delete)
+        editButton = dialog.findViewById(R.id.edit)
+
+        Log.e("DialogDB", "Created")
+
+        deleteButton?.setOnClickListener  {
+            Log.e("DialogDB", "Delete")
+            dialog.dismiss()
+        }
+
+        editButton?.setOnClickListener  {
+            Log.e("DialogDB", "Edit")
+            dialog.dismiss()
+        }
+
+        Log.e("DialogDB", "Shown")
+
         dialog.show()
+
+
+
     }
+
+
 
     public override fun onDestroy() {
         super.onDestroy()
