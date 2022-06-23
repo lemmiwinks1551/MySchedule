@@ -8,7 +8,7 @@ import android.util.Log
 class DatabaseHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAME, null, VERSION) {
     companion object {
         private const val DATABASE_NAME = "schedule.db" // название бд
-        private const val VERSION = 5 // версия базы данных
+        private const val VERSION = 6 // версия базы данных
         const val TABLE_NAME = "schedule" // название таблицы в бд
 
         // Названия столбцов
@@ -45,6 +45,7 @@ class DatabaseHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAM
                     COLUMN_PHONE + ", " +
                     COLUMN_MISC + ") VALUES ('01.07.2022', '11:00', 'Наращивание', 'Филип Киркоров', '8 800 555 35 35', '@fkirkorov');"
         )
+
         Log.e("Database", "Тестовая строка добавлена")
 
     }

@@ -37,7 +37,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/COLUMN_END"
+        android:id="@+id/COLUMN_PROCEDURE"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
@@ -64,7 +64,7 @@
         android:text="Филип Киркоров"
         android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@id/COLUMN_NAME_TEXT"
-        app:layout_constraintTop_toBottomOf="@+id/COLUMN_END" />
+        app:layout_constraintTop_toBottomOf="@+id/COLUMN_PROCEDURE" />
 
     <TextView
         android:id="@+id/COLUMN_PHONE_NAME"
