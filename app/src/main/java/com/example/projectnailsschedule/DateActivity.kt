@@ -112,11 +112,7 @@ class DateActivity : AppCompatActivity() {
 
         dialog.show()
 
-
-
     }
-
-
 
     public override fun onDestroy() {
         super.onDestroy()
@@ -125,7 +121,5 @@ class DateActivity : AppCompatActivity() {
         db!!.close()
         cursor!!.close()
     }
-
-
 }
 
