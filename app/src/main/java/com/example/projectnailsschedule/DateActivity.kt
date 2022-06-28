@@ -17,12 +17,14 @@ import java.text.SimpleDateFormat
 
 class DateActivity : AppCompatActivity() {
     companion object {
+        const val COLUMN_ID = DatabaseHelper.COLUMN_ID
         const val COLUMN_START = DatabaseHelper.COLUMN_START
         const val COLUMN_PROCEDURE = DatabaseHelper.COLUMN_PROCEDURE
         const val COLUMN_NAME = DatabaseHelper.COLUMN_NAME
         const val COLUMN_PHONE = DatabaseHelper.COLUMN_PHONE
         const val COLUMN_MISC = DatabaseHelper.COLUMN_MISC
         const val COLUMN_DATE = DatabaseHelper.COLUMN_DATE
+        const val LOG_NAME = "DateActivity"
     }
 
     private var scheduleList: ListView? = null
@@ -37,6 +39,7 @@ class DateActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_date)
+        Log.e(LOG_NAME, "onCreate")
 
         // Получаем интент с датой
         day = intent.getStringExtra("day").toString()
@@ -56,22 +59,21 @@ class DateActivity : AppCompatActivity() {
     public override fun onResume() {
         super.onResume()
         // Получаем строку из БД
-        getDbQuery()
+        currentDayQuery()
         // Устанавливаем полученную строку в ListView
-        scheduleList!!.adapter = adapter
-
+        setDayQuery()
         // Добавляем ClickListener к ListView расписания
-        scheduleList!!.onItemLongClickListener = OnItemLongClickListener { arg0, arg1, pos, id ->
-
-            Log.e("scheduleList", "Pressed: $pos")
-            // Выводим диалоговое окно на экран
-            showDialog()
-            true
-
-        }
+        scheduleList!!.onItemLongClickListener =
+            OnItemLongClickListener { _, _, position, _ ->
+                // Выводим диалоговое окно на экран
+                // Создаем курсор для управления выбранным пунктом ListView
+                val currentCur: Cursor = scheduleList!!.getItemAtPosition(position) as Cursor
+                showDialog(currentCur)
+                true
+            }
     }
 
-    private fun showDialog() {
+    private fun showDialog(currentCur: Cursor) {
         val dialog = Dialog(this)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setCancelable(true)
@@ -79,32 +81,34 @@ class DateActivity : AppCompatActivity() {
         deleteButton = dialog.findViewById(R.id.delete)
         editButton = dialog.findViewById(R.id.edit)
 
-        Log.e("DialogDB", "Created")
+        // Получаем id строки для дальнейшего изменения/удаления
+        val currentId = currentCur.getInt(0)
+        Log.e(LOG_NAME, "id selected: $currentCur")
 
         deleteButton?.setOnClickListener {
-            Log.e("DialogDB", "Delete")
+            deleteId(currentId)
+            currentDayQuery()
+            setDayQuery()
             dialog.dismiss()
         }
 
         editButton?.setOnClickListener {
-            Log.e("DialogDB", "Edit")
+            editId(currentId)
+            currentDayQuery()
+            setDayQuery()
             dialog.dismiss()
         }
-
-        Log.e("DialogDB", "Shown")
-
         dialog.show()
     }
 
-    private fun getDbQuery() {
+    private fun currentDayQuery() {
         // Функция получает из БД строчку в зависимости от дня записи.
-        Log.e("Database", "Открываем подключение")
+        Log.e(LOG_NAME, "Открываем подключение")
 
         // Окрываем подключение
         db = databaseHelper?.readableDatabase
 
         // Формируем запрос к БД
-        //val query = "SELECT * FROM " + DatabaseHelper.TABLE_NAME + " WHERE " + COLUMN_DATE + " = '$day';"
         val query = "SELECT * FROM ${DatabaseHelper.TABLE_NAME} WHERE $COLUMN_DATE = '$day';"
 
         // Получаем данные из бд в виде курсора
@@ -129,12 +133,27 @@ class DateActivity : AppCompatActivity() {
         )
     }
 
+    private fun setDayQuery() {
+        // Устанавливаем полученную строку в ListView
+        scheduleList!!.adapter = adapter
+    }
+
     public override fun onDestroy() {
         super.onDestroy()
+        Log.e(LOG_NAME, "onDestroy")
         // Закрываем подключение и курсор
-        Log.e("Database", "Подключение закрыто")
+        Log.e(LOG_NAME, "Подключение закрыто")
         db!!.close()
         cursor!!.close()
+    }
+
+    private fun deleteId(currentId: Int) {
+        db!!.execSQL("DELETE FROM ${DatabaseHelper.TABLE_NAME} WHERE $COLUMN_ID = $currentId;")
+        Log.e(LOG_NAME, String.format("Row № $currentId deleted"))
+    }
+
+    private fun editId(currentId: Int) {
+        Log.e(LOG_NAME, String.format("Row № $currentId edited"))
     }
 
     @SuppressLint("SimpleDateFormat")
