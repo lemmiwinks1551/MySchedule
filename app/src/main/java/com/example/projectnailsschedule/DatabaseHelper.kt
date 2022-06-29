@@ -8,7 +8,7 @@ import android.util.Log
 class DatabaseHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAME, null, VERSION) {
     companion object {
         private const val DATABASE_NAME = "schedule.db" // название бд
-        private const val VERSION = 17 // версия базы данных
+        private const val VERSION = 18 // версия базы данных
         const val TABLE_NAME = "schedule" // название таблицы в бд
 
         // Названия столбцов
