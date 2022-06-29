@@ -2,6 +2,7 @@ package com.example.projectnailsschedule
 
 import android.annotation.SuppressLint
 import android.app.Dialog
+import android.content.Intent
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
@@ -160,6 +161,8 @@ class DateActivity : AppCompatActivity() {
 
     fun buttonAdd(view: View) {
         Toast.makeText(this, "add", Toast.LENGTH_SHORT).show()
+        val addAppointmentIntent = Intent(this, AddAppointment::class.java)
+        startActivity(addAppointmentIntent)
     }
 
     @SuppressLint("SimpleDateFormat")
