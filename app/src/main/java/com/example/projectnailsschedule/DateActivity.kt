@@ -6,11 +6,13 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.view.Window
 import android.widget.AdapterView.OnItemLongClickListener
 import android.widget.Button
 import android.widget.ListView
 import android.widget.SimpleCursorAdapter
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import java.text.SimpleDateFormat
 
@@ -154,6 +156,10 @@ class DateActivity : AppCompatActivity() {
 
     private fun editId(currentId: Int) {
         Log.e(LOG_NAME, String.format("Row № $currentId edited"))
+    }
+
+    fun buttonAdd(view: View) {
+        Toast.makeText(this, "add", Toast.LENGTH_SHORT).show()
     }
 
     @SuppressLint("SimpleDateFormat")
