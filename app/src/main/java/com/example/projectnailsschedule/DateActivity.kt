@@ -122,11 +122,11 @@ class DateActivity : AppCompatActivity() {
             arrayOf(COLUMN_START, COLUMN_PROCEDURE, COLUMN_NAME, COLUMN_PHONE, COLUMN_MISC)
         // Определяем список элементов, которые будут заполнять
         val receiver = intArrayOf(
-            R.id.COLUMN_START,
-            R.id.COLUMN_PROCEDURE,
-            R.id.COLUMN_NAME,
-            R.id.COLUMN_PHONE,
-            R.id.COLUMN_MISC
+            R.id.appointment_start,
+            R.id.appointment_procedure,
+            R.id.appointment_name,
+            R.id.appointment_phone,
+            R.id.appointment_misc
         )
 
         // Создаем адаптер, передаем в него курсор
@@ -160,8 +160,8 @@ class DateActivity : AppCompatActivity() {
     }
 
     fun buttonAdd(view: View) {
-        Toast.makeText(this, "add", Toast.LENGTH_SHORT).show()
         val addAppointmentIntent = Intent(this, AddAppointment::class.java)
+        addAppointmentIntent.putExtra("date", day)
         startActivity(addAppointmentIntent)
     }
 

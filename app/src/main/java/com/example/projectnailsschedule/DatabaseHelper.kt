@@ -77,4 +77,17 @@ class DatabaseHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAM
         db.execSQL("DROP TABLE IF EXISTS $TABLE_NAME")
         onCreate(db)
     }
+
+    fun addRow(
+        date: String, time: String, procedure: String,
+        name: String, phone: String, misc: String, db: SQLiteDatabase
+    ) {
+        db.execSQL(
+            "INSERT INTO $TABLE_NAME ($COLUMN_DATE, $COLUMN_START, " +
+                    "$COLUMN_PROCEDURE, $COLUMN_NAME, " +
+                    "$COLUMN_PHONE, $COLUMN_MISC) " +
+                    "VALUES " +
+                    "('$date', '$time', '$procedure', '$name', '$phone', '$misc');"
+        )
+    }
 }

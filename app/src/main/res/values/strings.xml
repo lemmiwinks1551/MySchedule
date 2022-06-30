@@ -20,4 +20,5 @@
     <string name="button_edit">Редактировать</string>
     <string name="button_delete">Удалить</string>
     <string name="add_appointment_title">Добавить запись</string>
+    <string name="day">День</string>
 </resources>
