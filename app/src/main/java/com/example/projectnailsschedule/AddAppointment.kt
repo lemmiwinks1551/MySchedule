@@ -44,7 +44,7 @@ class AddAppointment : AppCompatActivity() {
     }
 
     private fun cancelButton() {
-        // TODO: Добавить логику для кнопки "Редактировать"
+        finish()
     }
 
 }
