@@ -139,6 +139,7 @@ class DateActivity : AppCompatActivity() {
 
     private fun setDayQuery() {
         // Устанавливаем полученную строку в ListView
+        scheduleList!!.adapter = adapter
     }
 
 
