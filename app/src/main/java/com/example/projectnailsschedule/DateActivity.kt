@@ -95,10 +95,18 @@ class DateActivity : AppCompatActivity() {
         }
 
         editButton?.setOnClickListener {
-            editId(currentId)
-            currentDayQuery()
-            setDayQuery()
-            dialog.dismiss()
+            val extraList = arrayListOf(
+                currentCur.getString(0).toString(),
+                currentCur.getString(1).toString(),
+                currentCur.getString(2).toString(),
+                currentCur.getString(3).toString(),
+                currentCur.getString(4).toString(),
+                currentCur.getString(5).toString(),
+                currentCur.getString(6).toString(),
+            )
+            val appointmentIntent = Intent(this, Appointment::class.java)
+            appointmentIntent.putExtra("appointmentExtra", extraList)
+            startActivity(appointmentIntent)
         }
         dialog.show()
     }
@@ -142,15 +150,12 @@ class DateActivity : AppCompatActivity() {
         scheduleList!!.adapter = adapter
     }
 
-
-    private fun editId(currentId: Int) {
-        Log.e(LOG_NAME, String.format("Row № $currentId edited"))
-    }
-
     fun buttonAdd(view: View) {
-        val addAppointmentIntent = Intent(this, AddAppointment::class.java)
-        addAppointmentIntent.putExtra("date", day)
-        startActivity(addAppointmentIntent)
+        // Запустить активность по добавлению строки в БД
+        val appointmentIntent = Intent(this, Appointment::class.java)
+        appointmentIntent.putExtra("appointmentExtra", day)
+        startActivity(appointmentIntent)
+        // TODO: переписать через кликлистенер
     }
 
     @SuppressLint("SimpleDateFormat")

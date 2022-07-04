@@ -14,7 +14,7 @@
         android:theme="@style/Theme.ProjectNailsSchedule"
         tools:targetApi="31">
         <activity
-            android:name=".AddAppointment"
+            android:name=".Appointment"
             android:exported="false" />
         <activity
             android:name=".DateActivity"

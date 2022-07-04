@@ -66,6 +66,11 @@ class DatabaseHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAM
         return db.rawQuery(query, null)
     }
 
+    fun editId(currentId: Int, db: SQLiteDatabase) {
+        // Метод редактирует выбранную строку
+        Log.e(DateActivity.LOG_NAME, String.format("Row № $currentId edited"))
+    }
+
     override fun onCreate(db: SQLiteDatabase) {
         Log.e(LOG_DATABASE, "Создаем БД")
         db.execSQL(
