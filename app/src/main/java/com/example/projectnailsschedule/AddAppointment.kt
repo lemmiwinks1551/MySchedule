@@ -40,7 +40,7 @@ class AddAppointment : AppCompatActivity() {
         val misc = binding.miscEditText.text.toString()
 
         databaseHelper.addRow(date, time, procedure, name, phone, misc, db!!)
-
+        finish()
     }
 
     private fun cancelButton() {
