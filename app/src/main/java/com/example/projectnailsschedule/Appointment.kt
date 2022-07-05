@@ -7,7 +7,7 @@ import com.example.projectnailsschedule.databinding.ActivityAppointmentBinding
 
 /**
  * Методы для взаимодействия с записью:
- * Редактировать запись (static), добавить запись
+ * Редактировать запись, добавить запись
  * */
 
 class Appointment : AppCompatActivity() {
@@ -19,6 +19,7 @@ class Appointment : AppCompatActivity() {
     private val editTitle = "Редактировать"
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         binding = ActivityAppointmentBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -47,22 +48,26 @@ class Appointment : AppCompatActivity() {
     }
 
     private fun addRow() {
-        val date = binding.dayEditText.text.toString()
-        val time = binding.timeEditText.text.toString()
-        val procedure = binding.procedureEditText.text.toString()
-        val name = binding.nameEditText.text.toString()
-        val phone = binding.phoneEditText.text.toString()
-        val misc = binding.miscEditText.text.toString()
-
-        databaseHelper.addRow(date, time, procedure, name, phone, misc, db)
+        /** Внести значения полей активности в БД */
+        // Собрать данные из полей в переменные и
+        val fields = arrayListOf(
+            binding.dayEditText.text.toString(),
+            binding.timeEditText.text.toString(),
+            binding.procedureEditText.text.toString(),
+            binding.nameEditText.text.toString(),
+            binding.phoneEditText.text.toString(),
+            binding.miscEditText.text.toString()
+        )
+        databaseHelper.addRow(fields, db)
         finish()
     }
 
     private fun editIdFields() {
+        /** Заполнить поля актуальными значениями */
         // Получаем список для заполнения полей из интента
         val extraArray = intent.getStringArrayListExtra("appointmentExtra")
 
-        // Устанавливаем значения в поля для редактирования
+        // Устанавливаем актуальные значения в поля для редактирования
         with(binding) {
             dayEditText.setText(extraArray!![1])
             timeEditText.setText(extraArray[2])
@@ -75,6 +80,8 @@ class Appointment : AppCompatActivity() {
     }
 
     private fun editIdQuery() {
+        /** Передать в метод БД информацию для обновления */
+        // Получаем id строки из интента и передаем
         val id = intent.getStringArrayListExtra("appointmentExtra")?.get(0)?.toString()
         val extraArrayQuery = arrayListOf(
             id!!,
@@ -89,8 +96,8 @@ class Appointment : AppCompatActivity() {
         finish()
     }
 
-
     private fun cancelButton() {
+        /** Кнопка Отмены */
         finish()
     }
 }

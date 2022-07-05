@@ -8,7 +8,7 @@ import android.util.Log
 
 /**
  * Методы для взаимодействия с БД:
- * создать БД, обновить БД, добавить строку, удалить строку, выполнить запрос
+ * создать БД, обновить БД, добавить строку, удалить строку, обновить строкуб выполнить запрос
  * */
 
 class DatabaseHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAME, null, VERSION) {
@@ -28,39 +28,33 @@ class DatabaseHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAM
         const val LOG_DATABASE = "Database"
     }
 
-    fun addRow(
-        date: String,
-        time: String,
-        procedure: String,
-        name: String,
-        phone: String,
-        misc: String,
-        db: SQLiteDatabase
-    ) {
-        // Метод добавляет строку в БД
-        db.execSQL(
-            "INSERT INTO $TABLE_NAME " +
-                    "($COLUMN_DATE, $COLUMN_START, " +
-                    "$COLUMN_PROCEDURE, $COLUMN_NAME, " +
-                    "$COLUMN_PHONE, $COLUMN_MISC) " +
-                    "VALUES " +
-                    "('$date', '$time', '$procedure', '$name', '$phone', '$misc');"
-        )
-        Log.e(LOG_DATABASE, String.format("Row added"))
+    fun addRow(fields: ArrayList<String>, db: SQLiteDatabase) {
+        /**
+         * Метод добавляет строку в БД
+         * */
+        val query = "INSERT INTO $TABLE_NAME " +
+                "($COLUMN_DATE, $COLUMN_START, " +
+                "$COLUMN_PROCEDURE, $COLUMN_NAME, " +
+                "$COLUMN_PHONE, $COLUMN_MISC) " +
+                "VALUES " +
+                "('${fields[0]}', '${fields[1]}', '${fields[2]}', '${fields[3]}', '${fields[4]}', '${fields[5]}');"
+        Log.e(LOG_DATABASE, String.format("Add row query: $query"))
+        db.execSQL(query)
+        Log.e(LOG_DATABASE, String.format("Add row - success"))
     }
 
-    fun deleteRow(
-        currentId: Int,
-        db: SQLiteDatabase
-    ) {
-        // Метод удаляет строку из БЖ
-        db.execSQL("DELETE FROM $TABLE_NAME WHERE $COLUMN_ID = $currentId;")
-        Log.e(LOG_DATABASE, String.format("Row № $currentId deleted"))
+    fun deleteRow(currentId: Int, db: SQLiteDatabase) {
+        /** Метод удаляет строку из БЖ */
+        val query = "DELETE FROM $TABLE_NAME WHERE $COLUMN_ID = $currentId;"
+        Log.e(LOG_DATABASE, String.format("Delete row query: $query"))
+        db.execSQL(query)
+        Log.e(LOG_DATABASE, String.format("Delete row - success"))
     }
 
     fun fetchRow(day: String, db: SQLiteDatabase): Cursor {
         // Метод получает строку из БД в завимости от дня
-        val query = "SELECT * FROM $TABLE_NAME WHERE $COLUMN_DATE = '$day' ORDER BY $COLUMN_START ASC;"
+        val query =
+            "SELECT * FROM $TABLE_NAME WHERE $COLUMN_DATE = '$day' ORDER BY $COLUMN_START ASC;"
         Log.e(LOG_DATABASE, String.format("Row № $day fetched"))
         // Получаем данные из бд в виде курсора
         return db.rawQuery(query, null)
@@ -76,9 +70,9 @@ class DatabaseHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAM
                 "$COLUMN_PHONE = '${extraArray[5]}', " +
                 "$COLUMN_MISC = '${extraArray[6]}' " +
                 "WHERE $COLUMN_ID = ${extraArray[0]};"
-        Log.e(LOG_DATABASE, String.format("Edit row executing query: $query"))
+        Log.e(LOG_DATABASE, String.format("Edit row query: $query"))
         db.execSQL(query)
-        Log.e(LOG_DATABASE, String.format("Row № $${extraArray[0]} edited"))
+        Log.e(LOG_DATABASE, String.format("Edit row success"))
 
     }
 
@@ -93,7 +87,7 @@ class DatabaseHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAM
                     "$COLUMN_PHONE TEXT NOT NULL, " +
                     "$COLUMN_MISC TEXT);"
         )
-        Log.e(LOG_DATABASE, "БД создана")
+        Log.e(LOG_DATABASE, "DB created")
 
         // Тестовая строка создается при обновлении БД
         db.execSQL(
@@ -106,12 +100,11 @@ class DatabaseHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAM
                     "$COLUMN_MISC) VALUES " +
                     "('01.07.2022', '00:00', 'Наращивание', 'Имя Фамилия', '8 800 123 45 67', '@test');"
         )
-        Log.e(LOG_DATABASE, "Тестовая строка добавлена")
-
+        Log.e(LOG_DATABASE, "Test row added")
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        Log.e(LOG_DATABASE, "Обновлена")
+        Log.e(LOG_DATABASE, "DB updated")
         // TODO: Добавить логику, чтобы старая БД переписывалась в новую, а не убивалась
         db.execSQL("DROP TABLE IF EXISTS $TABLE_NAME")
         onCreate(db)
