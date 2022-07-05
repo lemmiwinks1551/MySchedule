@@ -107,6 +107,7 @@ class DateActivity : AppCompatActivity() {
             val appointmentIntent = Intent(this, Appointment::class.java)
             appointmentIntent.putExtra("appointmentExtra", extraList)
             startActivity(appointmentIntent)
+            dialog.dismiss()
         }
         dialog.show()
     }

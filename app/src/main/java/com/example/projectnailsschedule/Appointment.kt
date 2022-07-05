@@ -14,31 +14,39 @@ class Appointment : AppCompatActivity() {
 
     private lateinit var binding: ActivityAppointmentBinding
     private lateinit var databaseHelper: DatabaseHelper
+    private lateinit var db: SQLiteDatabase
+    private val addTitle = "Добавить"
+    private val editTitle = "Редактировать"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAppointmentBinding.inflate(layoutInflater)
         setContentView(binding.root)
         databaseHelper = DatabaseHelper(applicationContext)
+        db = databaseHelper.writableDatabase
 
-        // Добавляем ClickListener на кнопки "Добавить" и "Удалить"
-        binding.addButton.setOnClickListener {
-            addRow()
+        // Добавляем ClickListener на кнопки
+        binding.addEditButton.setOnClickListener {
+            when (binding.addEditButton.text.toString()) {
+                // Если на кнопке написано Добавить - вызвать метод по добавлению строки
+                addTitle -> addRow()
+                // Если на кнопке написано Редактировать - вызвать метод по редактированию строки
+                editTitle -> editIdQuery()
+            }
         }
         binding.cancelButton.setOnClickListener {
             cancelButton()
         }
 
-        // Устанавливаем в редактируемое поле Дата выбранную дату
+        // В зависимости от содержания интента выполняем метод "Редактировать"/установить дату
         if (intent.getStringExtra("appointmentExtra") != null) {
             binding.dayEditText.setText(intent.getStringExtra("appointmentExtra"))
         } else {
-            editId()
+            editIdFields()
         }
     }
 
     private fun addRow() {
-        val db: SQLiteDatabase? = databaseHelper.writableDatabase
         val date = binding.dayEditText.text.toString()
         val time = binding.timeEditText.text.toString()
         val procedure = binding.procedureEditText.text.toString()
@@ -46,16 +54,15 @@ class Appointment : AppCompatActivity() {
         val phone = binding.phoneEditText.text.toString()
         val misc = binding.miscEditText.text.toString()
 
-        databaseHelper.addRow(date, time, procedure, name, phone, misc, db!!)
+        databaseHelper.addRow(date, time, procedure, name, phone, misc, db)
         finish()
     }
 
-    private fun editId() {
-        val db: SQLiteDatabase? = databaseHelper.writableDatabase
+    private fun editIdFields() {
         // Получаем список для заполнения полей из интента
         val extraArray = intent.getStringArrayListExtra("appointmentExtra")
 
-        // Заполняем поля
+        // Устанавливаем значения в поля для редактирования
         with(binding) {
             dayEditText.setText(extraArray!![1])
             timeEditText.setText(extraArray[2])
@@ -63,8 +70,25 @@ class Appointment : AppCompatActivity() {
             nameEditText.setText(extraArray[4])
             phoneEditText.setText(extraArray[5])
             miscEditText.setText(extraArray[6])
+            addEditButton.text = "Редактировать"
         }
     }
+
+    private fun editIdQuery() {
+        val id = intent.getStringArrayListExtra("appointmentExtra")?.get(0)?.toString()
+        val extraArrayQuery = arrayListOf(
+            id!!,
+            binding.dayEditText.text.toString(),
+            binding.timeEditText.text.toString(),
+            binding.procedureEditText.text.toString(),
+            binding.nameEditText.text.toString(),
+            binding.phoneEditText.text.toString(),
+            binding.miscEditText.text.toString(),
+        )
+        databaseHelper.editId(extraArrayQuery, db)
+        finish()
+    }
+
 
     private fun cancelButton() {
         finish()

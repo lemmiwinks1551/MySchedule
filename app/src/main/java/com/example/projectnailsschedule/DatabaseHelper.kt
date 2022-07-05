@@ -54,21 +54,32 @@ class DatabaseHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAM
         db: SQLiteDatabase
     ) {
         // Метод удаляет строку из БЖ
-        Log.e(LOG_DATABASE, String.format("Row № $currentId deleted"))
         db.execSQL("DELETE FROM $TABLE_NAME WHERE $COLUMN_ID = $currentId;")
+        Log.e(LOG_DATABASE, String.format("Row № $currentId deleted"))
     }
 
     fun fetchRow(day: String, db: SQLiteDatabase): Cursor {
         // Метод получает строку из БД в завимости от дня
         val query = "SELECT * FROM $TABLE_NAME WHERE $COLUMN_DATE = '$day' ORDER BY $COLUMN_START ASC;"
-
+        Log.e(LOG_DATABASE, String.format("Row № $day fetched"))
         // Получаем данные из бд в виде курсора
         return db.rawQuery(query, null)
     }
 
-    fun editId(currentId: Int, db: SQLiteDatabase) {
+    fun editId(extraArray: ArrayList<String>, db: SQLiteDatabase) {
         // Метод редактирует выбранную строку
-        Log.e(DateActivity.LOG_NAME, String.format("Row № $currentId edited"))
+        val query = "UPDATE $TABLE_NAME SET " +
+                "$COLUMN_DATE = '${extraArray[1]}', " +
+                "$COLUMN_START = '${extraArray[2]}', " +
+                "$COLUMN_PROCEDURE = '${extraArray[3]}', " +
+                "$COLUMN_NAME = '${extraArray[4]}', " +
+                "$COLUMN_PHONE = '${extraArray[5]}', " +
+                "$COLUMN_MISC = '${extraArray[6]}' " +
+                "WHERE $COLUMN_ID = ${extraArray[0]};"
+        Log.e(LOG_DATABASE, String.format("Edit row executing query: $query"))
+        db.execSQL(query)
+        Log.e(LOG_DATABASE, String.format("Row № $${extraArray[0]} edited"))
+
     }
 
     override fun onCreate(db: SQLiteDatabase) {
@@ -100,7 +111,7 @@ class DatabaseHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAM
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        Log.e("Database", "Обновлена")
+        Log.e(LOG_DATABASE, "Обновлена")
         // TODO: Добавить логику, чтобы старая БД переписывалась в новую, а не убивалась
         db.execSQL("DROP TABLE IF EXISTS $TABLE_NAME")
         onCreate(db)

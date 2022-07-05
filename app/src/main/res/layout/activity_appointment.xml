@@ -95,7 +95,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:hint="01.01.2022"
+        android:hint="@string/example_date"
         android:maxLength="10"
         android:padding="8dp"
         android:textSize="20sp"
@@ -107,7 +107,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:hint="09:00"
+        android:hint="@string/example_time"
         android:maxLength="5"
         android:padding="8dp"
         android:textSize="20sp"
@@ -119,7 +119,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:hint="Наращивание"
+        android:hint="@string/example_procedure"
         android:maxLength="15"
         android:padding="8dp"
         android:textSize="20sp"
@@ -131,7 +131,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:hint="Имя клиента"
+        android:hint="@string/example_name"
         android:maxLength="15"
         android:padding="8dp"
         android:textSize="20sp"
@@ -143,7 +143,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:hint="8 800 123 45 67"
+        android:hint="@string/example_phone"
         android:maxLength="15"
         android:padding="8dp"
         android:textSize="20sp"
@@ -156,7 +156,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:autofillHints="password"
-        android:hint="..."
+        android:hint="@string/example_misc"
         android:maxLength="15"
         android:padding="8dp"
         android:textSize="20sp"
@@ -164,7 +164,7 @@
         app:layout_constraintTop_toBottomOf="@id/appointment_phone" />
 
     <Button
-        android:id="@+id/add_button"
+        android:id="@+id/add_edit_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="32dp"
@@ -183,7 +183,7 @@
         android:padding="8dp"
         android:text="Отмена"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/add_button"
+        app:layout_constraintStart_toEndOf="@id/add_edit_button"
         app:layout_constraintTop_toBottomOf="@+id/appointment_misc" />
 
 
