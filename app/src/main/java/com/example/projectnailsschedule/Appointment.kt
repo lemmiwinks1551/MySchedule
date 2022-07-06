@@ -1,9 +1,13 @@
 package com.example.projectnailsschedule
 
+import android.app.DatePickerDialog
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.example.projectnailsschedule.databinding.ActivityAppointmentBinding
+import java.util.*
+
 
 /**
  * Методы для взаимодействия с записью:
@@ -38,7 +42,9 @@ class Appointment : AppCompatActivity() {
         binding.cancelButton.setOnClickListener {
             cancelButton()
         }
-
+        binding.dayEditText.setOnClickListener {
+            selectDate()
+        }
         // В зависимости от содержания интента выполняем метод "Редактировать"/установить дату
         if (intent.getStringExtra("appointmentExtra") != null) {
             binding.dayEditText.setText(intent.getStringExtra("appointmentExtra"))
@@ -99,5 +105,25 @@ class Appointment : AppCompatActivity() {
     private fun cancelButton() {
         /** Кнопка Отмены */
         finish()
+    }
+
+    private fun selectDate() {
+        this.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        // TODO: не выводить клавиатуру при нажатии на EditText 
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH) + 1
+
+        val datePickerDialog = DatePickerDialog(
+            this, { _, year, monthOfYear, dayOfMonth ->
+                val dateActivity = DateActivity()
+                val date = dateActivity.dateConverter("$dayOfMonth.${monthOfYear + 1}.$year")
+                binding.dayEditText.setText(date)
+            },
+            year, month, day
+        )
+        
+        datePickerDialog.show()
     }
 }

@@ -160,7 +160,7 @@ class DateActivity : AppCompatActivity() {
     }
 
     @SuppressLint("SimpleDateFormat")
-    private fun dateConverter(day: String): String {
+    fun dateConverter(day: String): String {
         // Получаем день из интента в формате d.M.yyyy и конвертируем в формат dd.MM.yyyy
         val parser = SimpleDateFormat("d.M.yyyy")
         val formatter = SimpleDateFormat("dd.MM.yyyy")
