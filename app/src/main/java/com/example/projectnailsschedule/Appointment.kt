@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
+import android.telephony.PhoneNumberFormattingTextWatcher
 import androidx.appcompat.app.AppCompatActivity
 import com.example.projectnailsschedule.databinding.ActivityAppointmentBinding
 import java.util.*
@@ -23,7 +24,7 @@ class Appointment : AppCompatActivity() {
     private val editTitle = "Редактировать"
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
+        // TODO: доделать, чтобы поля при повороте не очищались 
         super.onCreate(savedInstanceState)
         binding = ActivityAppointmentBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -48,7 +49,10 @@ class Appointment : AppCompatActivity() {
         binding.timeEditText.setOnClickListener {
             selectTime()
         }
-
+        
+        // Добавляем формат ввода на поле "Телефон"
+        binding.phoneEditText.addTextChangedListener(PhoneNumberFormattingTextWatcher())
+        
         // В зависимости от содержания интента выполняем метод "Редактировать"/установить дату
         if (intent.getStringExtra("appointmentExtra") != null) {
             binding.dayEditText.text = intent.getStringExtra("appointmentExtra")

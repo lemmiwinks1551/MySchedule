@@ -142,6 +142,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:hint="@string/example_phone"
+        android:inputType="phone"
         android:maxLength="15"
         android:padding="8dp"
         android:textSize="20sp"
