@@ -1,9 +1,9 @@
 package com.example.projectnailsschedule
 
 import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
-import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.example.projectnailsschedule.databinding.ActivityAppointmentBinding
 import java.util.*
@@ -45,9 +45,13 @@ class Appointment : AppCompatActivity() {
         binding.dayEditText.setOnClickListener {
             selectDate()
         }
+        binding.timeEditText.setOnClickListener {
+            selectTime()
+        }
+
         // В зависимости от содержания интента выполняем метод "Редактировать"/установить дату
         if (intent.getStringExtra("appointmentExtra") != null) {
-            binding.dayEditText.setText(intent.getStringExtra("appointmentExtra"))
+            binding.dayEditText.text = intent.getStringExtra("appointmentExtra")
         } else {
             editIdFields()
         }
@@ -75,8 +79,8 @@ class Appointment : AppCompatActivity() {
 
         // Устанавливаем актуальные значения в поля для редактирования
         with(binding) {
-            dayEditText.setText(extraArray!![1])
-            timeEditText.setText(extraArray[2])
+            dayEditText.text = extraArray!![1]
+            timeEditText.text = extraArray[2]
             procedureEditText.setText(extraArray[3])
             nameEditText.setText(extraArray[4])
             phoneEditText.setText(extraArray[5])
@@ -108,8 +112,7 @@ class Appointment : AppCompatActivity() {
     }
 
     private fun selectDate() {
-        this.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        // TODO: не выводить клавиатуру при нажатии на EditText 
+        /** Устанавливает выбор даты на поле Дата */
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
         val month = calendar.get(Calendar.MONTH)
@@ -119,9 +122,25 @@ class Appointment : AppCompatActivity() {
         val datePickerDialog = DatePickerDialog(
             this, { _, pickedYear, pickedMonth, pickedDay ->
                 val date = dateActivity.dateConverter("$pickedDay.${pickedMonth + 1}.$pickedYear")
-                binding.dayEditText.setText(date)
+                binding.dayEditText.text = date
             }, year, month, day
         )
         datePickerDialog.show()
+    }
+
+    private fun selectTime() {
+        /** Устанавливает выбор времени на поле Время */
+        val calendar = Calendar.getInstance()
+        val mTimePicker: TimePickerDialog
+        val hour = calendar.get(Calendar.HOUR_OF_DAY)
+        val minute = calendar.get(Calendar.MINUTE)
+
+        mTimePicker = TimePickerDialog(
+            this, { _, pickedHour, pickedMinute ->
+                val time = "$pickedHour:$pickedMinute"
+                binding.timeEditText.text = time
+            }, hour, minute, true
+        )
+        mTimePicker.show()
     }
 }
