@@ -22,10 +22,29 @@ class Appointment : AppCompatActivity() {
     private lateinit var db: SQLiteDatabase
     private val addTitle = "Добавить"
     private val editTitle = "Редактировать"
+    private val date = "date"
+    private val time = "time"
+    private val procedure = "procedure"
+    private val name = "name"
+    private val phone = "phone"
+    private val misc = "misc"
+
+    override fun onSaveInstanceState(savedInstanceState: Bundle) {
+        /** Сохранить состояние экрана */
+        super.onSaveInstanceState(savedInstanceState)
+        with(savedInstanceState) {
+            putString(date, binding.dayEditText.text.toString())
+            putString(time, binding.timeEditText.text.toString())
+            putString(procedure, binding.procedureEditText.text.toString())
+            putString(name, binding.nameEditText.text.toString())
+            putString(phone, binding.phoneEditText.text.toString())
+            putString(misc, binding.miscEditText.text.toString())
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        // TODO: доделать, чтобы поля при повороте не очищались 
         super.onCreate(savedInstanceState)
+
         binding = ActivityAppointmentBinding.inflate(layoutInflater)
         setContentView(binding.root)
         databaseHelper = DatabaseHelper(applicationContext)
@@ -49,15 +68,27 @@ class Appointment : AppCompatActivity() {
         binding.timeEditText.setOnClickListener {
             selectTime()
         }
-        
+
         // Добавляем формат ввода на поле "Телефон"
         binding.phoneEditText.addTextChangedListener(PhoneNumberFormattingTextWatcher())
-        
+
         // В зависимости от содержания интента выполняем метод "Редактировать"/установить дату
         if (intent.getStringExtra("appointmentExtra") != null) {
             binding.dayEditText.text = intent.getStringExtra("appointmentExtra")
         } else {
             editIdFields()
+        }
+
+        // Загружаем значения полей после поворота экрана
+        if (savedInstanceState != null) {
+            with(binding) {
+                dayEditText.text = savedInstanceState.getString(date)
+                timeEditText.text = savedInstanceState.getString(time)
+                procedureEditText.setText(savedInstanceState.getString(procedure))
+                nameEditText.setText(savedInstanceState.getString(name))
+                phoneEditText.setText(savedInstanceState.getString(phone))
+                miscEditText.setText(savedInstanceState.getString(misc))
+            }
         }
     }
 
@@ -141,7 +172,8 @@ class Appointment : AppCompatActivity() {
 
         mTimePicker = TimePickerDialog(
             this, { _, pickedHour, pickedMinute ->
-                val time = "$pickedHour:$pickedMinute"
+                //val time = "$pickedHour:$pickedMinute"
+                val time = String.format("%02d:%02d", pickedHour, pickedMinute)
                 binding.timeEditText.text = time
             }, hour, minute, true
         )
