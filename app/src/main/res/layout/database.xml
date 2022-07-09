@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -12,6 +11,7 @@
         android:layout_height="21dp"
         android:layout_margin="16dp"
         android:text="Время"
+        android:textColor="@color/black"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -22,6 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:text="Процедура"
+        android:textColor="@color/black"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/COLUMN_START_TEXT" />
@@ -32,6 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:text="11:00"
+        android:textColor="@color/purple_500"
         android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@id/COLUMN_START_TEXT"
         app:layout_constraintTop_toTopOf="parent" />
@@ -42,6 +44,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:text="Наращивание"
+        android:textColor="@color/purple_500"
         android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@+id/COLUMN_END_TEXT"
         app:layout_constraintTop_toBottomOf="@id/appointment_start" />
@@ -52,6 +55,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:text="Клиент"
+        android:textColor="@color/black"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/COLUMN_END_TEXT" />
@@ -62,6 +66,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:text="Филип Киркоров"
+        android:textColor="@color/purple_500"
         android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@id/COLUMN_NAME_TEXT"
         app:layout_constraintTop_toBottomOf="@+id/appointment_procedure" />
@@ -72,6 +77,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:text="Телефон"
+        android:textColor="@color/black"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/COLUMN_NAME_TEXT" />
@@ -82,6 +88,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:text="8 800 555 35 35"
+        android:textColor="@color/purple_500"
         android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@id/COLUMN_PHONE_NAME"
         app:layout_constraintTop_toBottomOf="@id/appointment_name" />
@@ -92,6 +99,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:text="Комментарии"
+        android:textColor="@color/black"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/COLUMN_PHONE_NAME" />
@@ -102,6 +110,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:text="..."
+        android:textColor="@color/purple_500"
         android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@id/COLUMN_MISC_NAME"
         app:layout_constraintTop_toBottomOf="@id/appointment_phone" />

@@ -37,6 +37,7 @@
             android:layout_marginTop="104dp"
             android:padding="8dp"
             android:text="@string/day"
+            android:textColor="@color/black"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/title" />
@@ -50,6 +51,7 @@
             android:layout_marginTop="104dp"
             android:padding="8dp"
             android:text="@string/time"
+            android:textColor="@color/black"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/appointment_date" />
@@ -61,6 +63,7 @@
             android:layout_margin="16dp"
             android:padding="8dp"
             android:text="@string/procedure"
+            android:textColor="@color/black"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/appointment_start" />
@@ -72,6 +75,7 @@
             android:layout_margin="16dp"
             android:padding="8dp"
             android:text="@string/client"
+            android:textColor="@color/black"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/appointment_procedure" />
@@ -83,6 +87,7 @@
             android:layout_margin="16dp"
             android:padding="8dp"
             android:text="@string/phone"
+            android:textColor="@color/black"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/appointment_name" />
@@ -94,6 +99,7 @@
             android:layout_margin="16dp"
             android:padding="8dp"
             android:text="@string/misc"
+            android:textColor="@color/black"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/appointment_phone" />
@@ -105,6 +111,7 @@
             android:layout_margin="16dp"
             android:hint="@string/example_date"
             android:padding="8dp"
+            android:textColor="@color/purple_500"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/title" />
@@ -116,6 +123,7 @@
             android:layout_margin="16dp"
             android:hint="@string/example_time"
             android:padding="8dp"
+            android:textColor="@color/purple_500"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/appointment_date" />
@@ -130,6 +138,7 @@
             android:maxLength="15"
             android:maxLines="1"
             android:padding="8dp"
+            android:textColor="@color/purple_500"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/appointment_start" />
@@ -144,6 +153,7 @@
             android:maxLength="15"
             android:maxLines="1"
             android:padding="8dp"
+            android:textColor="@color/purple_500"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/appointment_procedure" />
@@ -157,6 +167,7 @@
             android:inputType="phone"
             android:maxLength="15"
             android:padding="8dp"
+            android:textColor="@color/purple_500"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/appointment_name" />
@@ -172,6 +183,7 @@
             android:maxLength="15"
             android:maxLines="1"
             android:padding="8dp"
+            android:textColor="@color/purple_500"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/appointment_phone" />
