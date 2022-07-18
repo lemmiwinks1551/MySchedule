@@ -90,7 +90,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         return "$month $year"
     }
 
-    fun previousMonthAction(view: View?) {
+    private fun previousMonthAction() {
         // Обработка нажатия на кнопку Предыдущий месяц
         // Вычитаем один месяц из текущего
         selectedDate = selectedDate?.minusMonths(1)
@@ -98,7 +98,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         setMonthView()
     }
 
-    fun nextMonthAction(view: View?) {
+    private fun nextMonthAction() {
         // Обработка нажатия на кнопку Следующий месяц
         // Добавляем один месяц к текущему
         selectedDate = selectedDate?.plusMonths(1)
@@ -124,6 +124,14 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
 
         // Вызываем метод, который устанавливает название месяца, создает и устанавливает адаптер и менеджер
         setMonthView()
+
+        binding.nextMonth.setOnClickListener {
+            previousMonthAction()
+        }
+
+        binding.prevMonth.setOnClickListener {
+            nextMonthAction()
+        }
 
         return root
     }
