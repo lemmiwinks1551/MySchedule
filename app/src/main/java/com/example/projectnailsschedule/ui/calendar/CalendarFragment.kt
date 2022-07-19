@@ -1,16 +1,17 @@
 package com.example.projectnailsschedule.ui.calendar
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.projectnailsschedule.DateActivity
 import com.example.projectnailsschedule.databinding.FragmentCalendarBinding
 import java.text.SimpleDateFormat
 import java.time.LocalDate
@@ -126,11 +127,11 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         setMonthView()
 
         binding.nextMonth.setOnClickListener {
-            previousMonthAction()
+            nextMonthAction()
         }
 
         binding.prevMonth.setOnClickListener {
-            nextMonthAction()
+            previousMonthAction()
         }
 
         return root
@@ -143,10 +144,16 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
     }
 
     override fun onItemClick(position: Int, dayText: String?) {
-        if (dayText != "") {
-            // TODO: 12.07.2022 Реализовать логику перехода на экран выбранной даты
-            val message = "Selected Date $dayText"
-            Toast.makeText(activity, message, Toast.LENGTH_LONG).show()
+        if (dayText != "" && dayText != null) {
+
+            val date = Date.from(selectedDate?.atStartOfDay(ZoneId.systemDefault())!!.toInstant())
+            val day = if (dayText.length == 1) String.format("0$dayText") else dayText
+            val month = SimpleDateFormat("MM", Locale.getDefault()).format(date)
+            val year: String = selectedDate?.year.toString()
+
+            val intent = Intent(activity, DateActivity::class.java)
+            intent.putExtra("day", String.format("$day.$month.$year"))
+            activity?.startActivity(intent)
         }
     }
 }
