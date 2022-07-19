@@ -27,4 +27,14 @@
     <string name="example_name">Имя клиента</string>
     <string name="example_phone">8 800 123-45-67</string>
     <string name="example_misc">...</string>
+    <string name="choose_previous_month">Choose previous month</string>
+    <string name="choose_next_month">Choose next month</string>
+    <string name="monthYearTV_hint">Январь 2022</string>
+    <string name="mon">Пн.</string>
+    <string name="tue">Вт.</string>
+    <string name="wed">Ср.</string>
+    <string name="thu">Чт.</string>
+    <string name="fri">Пт.</string>
+    <string name="sat">Сб.</string>
+    <string name="sun">Вс.</string>
 </resources>

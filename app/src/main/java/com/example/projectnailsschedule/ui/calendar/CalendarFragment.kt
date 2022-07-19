@@ -157,6 +157,3 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         }
     }
 }
-
-
-

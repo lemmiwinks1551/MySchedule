@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import java.time.LocalDate
 
-
 internal class CalendarAdapter(
     private val daysOfMonth: ArrayList<String>,
     private val onItemListener: CalendarFragment
@@ -22,7 +21,6 @@ internal class CalendarAdapter(
         // Выравнивает элементы по высоте
         val layoutParams = view.layoutParams
         layoutParams.height = (parent.height * 0.11).toInt()
-        //layoutParams.height = (int) (parent.getHeight() * 0.166666666);
         return CalendarViewHolder(view, onItemListener)
     }
 
@@ -31,12 +29,10 @@ internal class CalendarAdapter(
         // Если день имесяц для отправки в холдер текущие - покрасить ячейку
         val nowDate = LocalDate.now()
         val dayInHolder = daysOfMonth[position]
-        if (dayInHolder == nowDate.dayOfMonth.toString() &&
-            month == 0
-        ) {
+        if (dayInHolder == nowDate.dayOfMonth.toString() && month == 0) {
             holder.dayOfMonth.setBackgroundColor(Color.RED)
         }
-        holder.dayOfMonth.setText(daysOfMonth[position])
+        holder.dayOfMonth.text = daysOfMonth[position]
         // TODO: 13.07.2022 Добавить логику выбора из БД и раскраску дней
     }
 
