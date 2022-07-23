@@ -37,4 +37,11 @@
     <string name="fri">Пт.</string>
     <string name="sat">Сб.</string>
     <string name="sun">Вс.</string>
+
+    <string-array name="day_status">
+        <item>Свободен</item>
+        <item>Занят</item>
+        <item>Выходной</item>
+    </string-array>
+
 </resources>

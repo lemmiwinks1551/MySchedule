@@ -7,8 +7,8 @@ import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
 
 /**
- * Методы для взаимодействия с БД:
- * создать БД, обновить БД, добавить строку, удалить строку, обновить строкуб выполнить запрос
+ * Методы для взаимодействия с БД по записям:
+ * создать БД, обновить БД, добавить строку, удалить строку, обновить строку выполнить запрос
  * */
 
 class DatabaseHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAME, null, VERSION) {

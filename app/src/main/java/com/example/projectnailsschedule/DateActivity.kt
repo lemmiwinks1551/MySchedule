@@ -59,7 +59,7 @@ class DateActivity : AppCompatActivity() {
     public override fun onResume() {
         super.onResume()
 
-        // Получаем строку из БД
+        // Получаем строку из БД распасания
         currentDayQuery()
         // Устанавливаем полученную строку в ListView
         setDayQuery()
