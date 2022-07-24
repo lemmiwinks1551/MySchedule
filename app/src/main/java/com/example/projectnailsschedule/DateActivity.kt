@@ -9,11 +9,11 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.Window
+import android.widget.*
 import android.widget.AdapterView.OnItemLongClickListener
-import android.widget.Button
-import android.widget.ListView
-import android.widget.SimpleCursorAdapter
 import androidx.appcompat.app.AppCompatActivity
+import com.example.projectnailsschedule.databinding.ActivityDateBinding
+import com.example.projectnailsschedule.dateStatusDB.DateStatusDbHelper
 import java.text.SimpleDateFormat
 
 
@@ -27,30 +27,42 @@ class DateActivity : AppCompatActivity() {
         const val LOG_NAME = "DateActivity"
     }
 
+    private lateinit var binding: ActivityDateBinding
     private var scheduleList: ListView? = null
-    private var databaseHelper: DatabaseHelper? = null
-    private var db: SQLiteDatabase? = null
-    private var cursor: Cursor? = null
-    private var adapter: SimpleCursorAdapter? = null
     private var deleteButton: Button? = null
     private var editButton: Button? = null
+    private var spinner: Spinner? = null
+
+    private var databaseHelper: DatabaseHelper? = null
+    private var db: SQLiteDatabase? = null
+    private var dateStatusDbHelper: DateStatusDbHelper? = null
+    private var dbStatus: SQLiteDatabase? = null
+
+    private var cursor: Cursor? = null
+    private var adapter: SimpleCursorAdapter? = null
+
     private var day: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_date)
         Log.e(LOG_NAME, "onCreate")
+        binding = ActivityDateBinding.inflate(layoutInflater)
 
         // Получаем интент с датой
         day = intent.getStringExtra("day").toString()
 
-        // Конверитуем дату в удобный формат
+        // Конверитуем дату в формат dd.MM.yyyy
         day = dateConverter(day!!)
 
         // Устанавливаем в Toolbar дату
         val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
         toolbar.title = day
         setSupportActionBar(toolbar)
+
+        // Получаем статус дня и устанавливаем в спиннер
+        spinner = findViewById(R.id.spinner_status)
+        setDayStatus()
 
         scheduleList = findViewById(R.id.scheduleListView)
         databaseHelper = DatabaseHelper(applicationContext)
@@ -63,6 +75,8 @@ class DateActivity : AppCompatActivity() {
         currentDayQuery()
         // Устанавливаем полученную строку в ListView
         setDayQuery()
+
+
         // Добавляем ClickListener к ListView расписания
         scheduleList!!.onItemLongClickListener =
             OnItemLongClickListener { _, _, position, _ ->
@@ -165,6 +179,37 @@ class DateActivity : AppCompatActivity() {
         val parser = SimpleDateFormat("d.M.yyyy")
         val formatter = SimpleDateFormat("dd.MM.yyyy")
         return formatter.format(parser.parse(day)).toString()
+    }
+
+    private fun setDayStatus() {
+        // Получаем из БД статус выбранного дня и устанавливаем его в Spinner
+        var status = "no status"
+        dateStatusDbHelper = DateStatusDbHelper(this)
+        dbStatus = dateStatusDbHelper?.readableDatabase
+        cursor = dateStatusDbHelper?.fetchDate(day!!, dbStatus!!)
+        if (cursor!!.moveToFirst()) {
+            val columnIndex = cursor!!.getColumnIndex("status")
+            status = cursor!!.getString(columnIndex)
+        }
+        cursor?.close()
+
+        Log.e(LOG_NAME, "Status fetched $status")
+
+        var compareValue = ""
+        val adapterStatus = ArrayAdapter.createFromResource(
+            this,
+            R.array.day_status,
+            androidx.appcompat.R.layout.support_simple_spinner_dropdown_item
+        )
+        adapterStatus.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item)
+
+        if (status == "busy") {
+            compareValue = "Занят"
+            val spinnerPosition = adapterStatus.getPosition(compareValue)
+            spinner!!.adapter = adapterStatus
+            spinner!!.setSelection(spinnerPosition, true)
+            Log.e(LOG_NAME, "Status $compareValue, position $spinnerPosition")
+        }
     }
 
     public override fun onDestroy() {

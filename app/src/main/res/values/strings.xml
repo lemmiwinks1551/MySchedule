@@ -40,6 +40,7 @@
 
     <string-array name="day_status">
         <item>Свободен</item>
+        <item>Есть записи</item>
         <item>Занят</item>
         <item>Выходной</item>
     </string-array>

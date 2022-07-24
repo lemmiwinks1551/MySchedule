@@ -77,7 +77,7 @@ internal class CalendarAdapter(
     }
 
     private fun getDateStatus(dayInHolder: String): String {
-        // Получаем из БД статус и возвращаем его значение
+        // Получаем из БД статус дня
         val dd = if (dayInHolder.length == 1) "0$dayInHolder" else dayInHolder
         var mm = LocalDate.now().plusMonths(month.toLong()).month.value.toString()
         val yy = LocalDate.now().plusMonths(month.toLong()).year.toString()
@@ -94,7 +94,7 @@ internal class CalendarAdapter(
             val columnIndex = cursor!!.getColumnIndex("status")
             status = cursor!!.getString(columnIndex)
         }
-        cursor?.close();
+        cursor?.close()
         return status
     }
 }
