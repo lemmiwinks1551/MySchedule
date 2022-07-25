@@ -32,7 +32,7 @@ class DateActivity : AppCompatActivity() {
     private var scheduleList: ListView? = null
     private var deleteButton: Button? = null
     private var editButton: Button? = null
-    private var spinner: Spinner? = null
+    private var dayStatusSpinner: Spinner? = null
 
     private var databaseHelper: DatabaseHelper? = null
     private var db: SQLiteDatabase? = null
@@ -43,6 +43,7 @@ class DateActivity : AppCompatActivity() {
     private var adapter: SimpleCursorAdapter? = null
 
     private var day: String? = null
+    private var statusMap: Map<String, String> = createStatusMap()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,8 +63,8 @@ class DateActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         // Получаем статус дня и устанавливаем в спиннер
-        spinner = findViewById(R.id.spinner_status)
-        setDayStatus()
+        dayStatusSpinner = findViewById(R.id.spinner_status)
+        getDayStatus()
 
         scheduleList = findViewById(R.id.scheduleListView)
         databaseHelper = DatabaseHelper(applicationContext)
@@ -74,9 +75,9 @@ class DateActivity : AppCompatActivity() {
 
         // Получаем строку из БД распасания
         currentDayQuery()
+
         // Устанавливаем полученную строку в ListView
         setDayQuery()
-
 
         // Добавляем ClickListener к ListView расписания
         scheduleList!!.onItemLongClickListener =
@@ -87,6 +88,27 @@ class DateActivity : AppCompatActivity() {
                 showDialog(currentCur)
                 true
             }
+
+        // Добавляем ClickListener на Spinner со статусами дня
+        dayStatusSpinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+
+            override fun onItemSelected(
+                parent: AdapterView<*>?, view: View?, position: Int, id: Long
+            ) {
+                for ((i, value) in statusMap.values.withIndex()) {
+                    if (i == position) {
+                        Toast.makeText(
+                            applicationContext,
+                            "Установлен статус $value",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        // TODO: добавить логику по обновлению строки в БД
+                    }
+                }
+            }
+        }
     }
 
     private fun showDialog(currentCur: Cursor) {
@@ -182,7 +204,7 @@ class DateActivity : AppCompatActivity() {
         return formatter.format(parser.parse(day)).toString()
     }
 
-    private fun setDayStatus() {
+    private fun getDayStatus() {
         // Получаем из БД статус выбранного дня и устанавливаем его в Spinner
         var dayStatus = "no status"
         var compareValue = ""
@@ -212,18 +234,34 @@ class DateActivity : AppCompatActivity() {
         // В зависимости от статуса устанавливаем значение переменную
         with(DateStatusDbHelper) {
             when (dayStatus) {
-                STATUS_FREE -> compareValue = "Свободен"
-                STATUS_MEDIUM -> compareValue = "Есть записи"
-                STATUS_BUSY -> compareValue = "Занят"
-                STATUS_DAY_OFF -> compareValue = "Выходной"
+                STATUS_FREE -> compareValue = statusMap[STATUS_FREE].toString()
+                STATUS_MEDIUM -> compareValue = statusMap[STATUS_MEDIUM].toString()
+                STATUS_BUSY -> compareValue = statusMap[STATUS_BUSY].toString()
+                STATUS_DAY_OFF -> compareValue = statusMap[STATUS_DAY_OFF].toString()
             }
         }
 
         // Найти в адаптере позицию выбранного статуса и установить статус в Spinner
         val spinnerPosition = adapterStatus.getPosition(compareValue)
-        spinner!!.adapter = adapterStatus
-        spinner!!.setSelection(spinnerPosition, true)
+        dayStatusSpinner!!.adapter = adapterStatus
+        dayStatusSpinner!!.setSelection(spinnerPosition, true)
         Log.e(LOG_NAME, "Status $compareValue ($dayStatus) set")
+    }
+
+    private fun setDayStatus() {
+
+    }
+
+    private fun createStatusMap(): Map<String, String> {
+        // Метод наполняяет словарь для соотношения статуса в БД и статуса в UI
+        with(DateStatusDbHelper) {
+            return mapOf(
+                STATUS_FREE to "Свободен",
+                STATUS_MEDIUM to "Есть записи",
+                STATUS_BUSY to "Занят",
+                STATUS_DAY_OFF to "Выходной",
+            )
+        }
     }
 
     public override fun onDestroy() {
