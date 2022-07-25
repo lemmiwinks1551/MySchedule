@@ -25,6 +25,7 @@ class DateActivity : AppCompatActivity() {
         const val COLUMN_PHONE = DatabaseHelper.COLUMN_PHONE
         const val COLUMN_MISC = DatabaseHelper.COLUMN_MISC
         const val LOG_NAME = "DateActivity"
+
     }
 
     private lateinit var binding: ActivityDateBinding
@@ -183,19 +184,24 @@ class DateActivity : AppCompatActivity() {
 
     private fun setDayStatus() {
         // Получаем из БД статус выбранного дня и устанавливаем его в Spinner
-        var status = "no status"
+        var dayStatus = "no status"
+        var compareValue = ""
         dateStatusDbHelper = DateStatusDbHelper(this)
         dbStatus = dateStatusDbHelper?.readableDatabase
         cursor = dateStatusDbHelper?.fetchDate(day!!, dbStatus!!)
+
+        // Получаем статус дня из курсора
         if (cursor!!.moveToFirst()) {
             val columnIndex = cursor!!.getColumnIndex("status")
-            status = cursor!!.getString(columnIndex)
+            dayStatus = cursor!!.getString(columnIndex)
+            Log.e(LOG_NAME, "Day $day status fetched: ${DateStatusDbHelper.COLUMN_STATUS}")
+        } else {
+            Log.e(LOG_NAME, "Cannot fetch status, no data")
+            compareValue = "Свободен"
         }
         cursor?.close()
 
-        Log.e(LOG_NAME, "Status fetched $status")
-
-        var compareValue = ""
+        // Создаем адаптер из массива статусов
         val adapterStatus = ArrayAdapter.createFromResource(
             this,
             R.array.day_status,
@@ -203,13 +209,21 @@ class DateActivity : AppCompatActivity() {
         )
         adapterStatus.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item)
 
-        if (status == "busy") {
-            compareValue = "Занят"
-            val spinnerPosition = adapterStatus.getPosition(compareValue)
-            spinner!!.adapter = adapterStatus
-            spinner!!.setSelection(spinnerPosition, true)
-            Log.e(LOG_NAME, "Status $compareValue, position $spinnerPosition")
+        // В зависимости от статуса устанавливаем значение переменную
+        with(DateStatusDbHelper) {
+            when (dayStatus) {
+                STATUS_FREE -> compareValue = "Свободен"
+                STATUS_MEDIUM -> compareValue = "Есть записи"
+                STATUS_BUSY -> compareValue = "Занят"
+                STATUS_DAY_OFF -> compareValue = "Выходной"
+            }
         }
+
+        // Найти в адаптере позицию выбранного статуса и установить статус в Spinner
+        val spinnerPosition = adapterStatus.getPosition(compareValue)
+        spinner!!.adapter = adapterStatus
+        spinner!!.setSelection(spinnerPosition, true)
+        Log.e(LOG_NAME, "Status $compareValue ($dayStatus) set")
     }
 
     public override fun onDestroy() {

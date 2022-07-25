@@ -25,6 +25,12 @@ class DateStatusDbHelper(context: Context?) :
         const val COLUMN_STATUS = "status"
 
         const val LOG_DATABASE = "StatusDB"
+
+        // Статусы:
+        const val STATUS_FREE = "free"
+        const val STATUS_MEDIUM = "medium"
+        const val STATUS_BUSY = "busy"
+        const val STATUS_DAY_OFF = "dayOff"
     }
 
     fun addDate(fields: ArrayList<String>, db: SQLiteDatabase) {
