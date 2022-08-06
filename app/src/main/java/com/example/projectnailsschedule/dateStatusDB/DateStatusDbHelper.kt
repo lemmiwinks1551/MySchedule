@@ -33,17 +33,15 @@ class DateStatusDbHelper(context: Context?) :
         const val STATUS_DAY_OFF = "dayOff"
     }
 
-    fun addDate(fields: ArrayList<String>, db: SQLiteDatabase) {
+    fun addDate(date: String, status: String, db: SQLiteDatabase) {
         /** Метод добавляет строку в БД **/
         val query = "INSERT INTO $TABLE_NAME " +
                 "($COLUMN_DATE, $COLUMN_STATUS) " +
-                "VALUES " +
-                "('${fields[0]}', '${fields[1]}');"
+                "VALUES ('$date', '$status');"
         Log.e(LOG_DATABASE, String.format("Add row query: $query"))
         db.execSQL(query)
         Log.e(LOG_DATABASE, String.format("Add row - success"))
     }
-
 
     fun fetchDate(date: String, db: SQLiteDatabase): Cursor {
         // Метод получает строку из БД в завимости от дня
@@ -53,11 +51,11 @@ class DateStatusDbHelper(context: Context?) :
         return db.rawQuery(query, null)
     }
 
-    fun updateDate(extraArray: ArrayList<String>, db: SQLiteDatabase) {
+    fun updateDate(date: String, status: String, db: SQLiteDatabase) {
         // Метод редактирует выбранную строку
         val query = "UPDATE $TABLE_NAME SET " +
-                "$COLUMN_STATUS = '${extraArray[1]}', " +
-                "WHERE $COLUMN_ID = ${extraArray[0]};"
+                "$COLUMN_STATUS = '$status' " +
+                "WHERE $COLUMN_DATE = '$date';"
         Log.e(LOG_DATABASE, String.format("Edit row query: $query"))
         db.execSQL(query)
         Log.e(LOG_DATABASE, String.format("Edit row success"))

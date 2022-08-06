@@ -18,6 +18,8 @@ import java.text.SimpleDateFormat
 
 
 class DateActivity : AppCompatActivity() {
+    // TODO: Добавть автоперерисовку дней в календаре после изменения статуса
+    //  название месяца сбрасывается на текущий поправить
     companion object {
         const val COLUMN_START = DatabaseHelper.COLUMN_START
         const val COLUMN_PROCEDURE = DatabaseHelper.COLUMN_PROCEDURE
@@ -25,7 +27,8 @@ class DateActivity : AppCompatActivity() {
         const val COLUMN_PHONE = DatabaseHelper.COLUMN_PHONE
         const val COLUMN_MISC = DatabaseHelper.COLUMN_MISC
         const val LOG_NAME = "DateActivity"
-
+        var statusForSpinner = ""
+        var dayStatus = "no status"
     }
 
     private lateinit var binding: ActivityDateBinding
@@ -44,6 +47,7 @@ class DateActivity : AppCompatActivity() {
 
     private var day: String? = null
     private var statusMap: Map<String, String> = createStatusMap()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,6 +69,7 @@ class DateActivity : AppCompatActivity() {
         // Получаем статус дня и устанавливаем в спиннер
         dayStatusSpinner = findViewById(R.id.spinner_status)
         getDayStatus()
+        setStatusInSpinner()
 
         scheduleList = findViewById(R.id.scheduleListView)
         databaseHelper = DatabaseHelper(applicationContext)
@@ -76,7 +81,7 @@ class DateActivity : AppCompatActivity() {
         // Получаем строку из БД распасания
         currentDayQuery()
 
-        // Устанавливаем полученную строку в ListView
+        // Устанавливаем полученные строки в ListView
         setDayQuery()
 
         // Добавляем ClickListener к ListView расписания
@@ -104,7 +109,15 @@ class DateActivity : AppCompatActivity() {
                             "Установлен статус $value",
                             Toast.LENGTH_SHORT
                         ).show()
-                        // TODO: добавить логику по обновлению строки в БД
+                        if (value != statusForSpinner) {
+                            // Если статус изменился относительно актуального
+                            Toast.makeText(
+                                applicationContext,
+                                "Статус изменился",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            setDayStatus(value)
+                        }
                     }
                 }
             }
@@ -112,7 +125,7 @@ class DateActivity : AppCompatActivity() {
     }
 
     private fun showDialog(currentCur: Cursor) {
-        // Метод регулирует работу диалогового окна
+        // Метод регулирует работу диалогового окна Удалить/Редактировать
         val dialog = Dialog(this)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setCancelable(true)
@@ -205,24 +218,27 @@ class DateActivity : AppCompatActivity() {
     }
 
     private fun getDayStatus() {
-        // Получаем из БД статус выбранного дня и устанавливаем его в Spinner
-        var dayStatus = "no status"
-        var compareValue = ""
+        // Получаем из БД статус выбранного дня
         dateStatusDbHelper = DateStatusDbHelper(this)
         dbStatus = dateStatusDbHelper?.readableDatabase
         cursor = dateStatusDbHelper?.fetchDate(day!!, dbStatus!!)
 
         // Получаем статус дня из курсора
+        // Если не удалось подтянуть статус - установить "no status"
         if (cursor!!.moveToFirst()) {
             val columnIndex = cursor!!.getColumnIndex("status")
             dayStatus = cursor!!.getString(columnIndex)
             Log.e(LOG_NAME, "Day $day status fetched: ${DateStatusDbHelper.COLUMN_STATUS}")
         } else {
             Log.e(LOG_NAME, "Cannot fetch status, no data")
-            compareValue = "Свободен"
+            dayStatus = "no status"
+            statusForSpinner = "Свободен"
         }
         cursor?.close()
+    }
 
+    private fun setStatusInSpinner() {
+        // Устанавливаем статус дня в Spinner
         // Создаем адаптер из массива статусов
         val adapterStatus = ArrayAdapter.createFromResource(
             this,
@@ -231,25 +247,40 @@ class DateActivity : AppCompatActivity() {
         )
         adapterStatus.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item)
 
-        // В зависимости от статуса устанавливаем значение переменную
+        // В зависимости от статуса устанавливаем значение переменной
         with(DateStatusDbHelper) {
             when (dayStatus) {
-                STATUS_FREE -> compareValue = statusMap[STATUS_FREE].toString()
-                STATUS_MEDIUM -> compareValue = statusMap[STATUS_MEDIUM].toString()
-                STATUS_BUSY -> compareValue = statusMap[STATUS_BUSY].toString()
-                STATUS_DAY_OFF -> compareValue = statusMap[STATUS_DAY_OFF].toString()
+                STATUS_FREE -> statusForSpinner = statusMap[STATUS_FREE].toString()
+                STATUS_MEDIUM -> statusForSpinner = statusMap[STATUS_MEDIUM].toString()
+                STATUS_BUSY -> statusForSpinner = statusMap[STATUS_BUSY].toString()
+                STATUS_DAY_OFF -> statusForSpinner = statusMap[STATUS_DAY_OFF].toString()
             }
         }
 
         // Найти в адаптере позицию выбранного статуса и установить статус в Spinner
-        val spinnerPosition = adapterStatus.getPosition(compareValue)
+        val spinnerPosition = adapterStatus.getPosition(statusForSpinner)
         dayStatusSpinner!!.adapter = adapterStatus
         dayStatusSpinner!!.setSelection(spinnerPosition, true)
-        Log.e(LOG_NAME, "Status $compareValue ($dayStatus) set")
+        Log.e(LOG_NAME, "Status $statusForSpinner ($dayStatus) set")
     }
 
-    private fun setDayStatus() {
+    private fun setDayStatus(status: String) {
+        // Метод устанавливает новый статус в БД
+        // Если запись уже существует в БД - обновляет в ней статус
+        // Если записи еще нет - создает запись с выбранным статусом
 
+        // Если данного дня нет в БД - создаем запись
+        // Если запись уже была - обновляем существующую
+        db = dateStatusDbHelper?.writableDatabase
+        val dbStatus = statusMap.entries.find { it.value == status }!!.key
+        if (dayStatus != "no status") {
+            Toast.makeText(applicationContext, "День есть в БД", Toast.LENGTH_SHORT).show()
+            dateStatusDbHelper?.updateDate(day!!, dbStatus, db!!)
+        } else {
+            Toast.makeText(applicationContext, "Дня нет в БД", Toast.LENGTH_SHORT).show()
+            dateStatusDbHelper?.addDate(day!!, dbStatus, db!!)
+        }
+        dateStatusDbHelper?.close()
     }
 
     private fun createStatusMap(): Map<String, String> {
