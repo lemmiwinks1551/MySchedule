@@ -58,7 +58,7 @@ class DateActivity : AppCompatActivity() {
         // Получаем интент с датой
         day = intent.getStringExtra("day").toString()
 
-        // Конверитуем дату в формат dd.MM.yyyy
+        // Конвертируем дату в формат dd.MM.yyyy
         day = dateConverter(day!!)
 
         // Устанавливаем в Toolbar дату

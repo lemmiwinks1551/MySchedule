@@ -29,11 +29,17 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
     private var monthYearText: TextView? = null
     private var calendarRecyclerView: RecyclerView? = null
     private var selectedDate: LocalDate? = null
+    private var additionMonth: Long = 0
 
     private fun initWidgets() {
         // Инициировать view
         calendarRecyclerView = binding.calendarRecyclerView
         monthYearText = binding.monthYearTV
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putLong("additionMonth", additionMonth)
     }
 
     private fun setMonthView() {
@@ -96,6 +102,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         // Вычитаем один месяц из текущего
         selectedDate = selectedDate?.minusMonths(1)
         CalendarAdapter.month--
+        additionMonth--
         setMonthView()
     }
 
@@ -104,6 +111,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         // Добавляем один месяц к текущему
         selectedDate = selectedDate?.plusMonths(1)
         CalendarAdapter.month++
+        additionMonth++
         setMonthView()
     }
 
@@ -111,6 +119,9 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         Log.e("LifeCycle", "CalendarFragment created")
+        if (savedInstanceState != null) {
+            additionMonth = savedInstanceState.getLong("additionMonth")
+        }
         // Создаем переменную ViewModel
         val calendarViewModel = ViewModelProvider(this)[CalendarViewModel::class.java]
 
@@ -121,7 +132,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         initWidgets()
 
         // Получить сегодняшню дату yyyy-MM-dd
-        selectedDate = LocalDate.now()
+        selectedDate = LocalDate.now().plusMonths(additionMonth)
 
         // Вызываем метод, который устанавливает название месяца, создает и устанавливает адаптер и менеджер
         setMonthView()
