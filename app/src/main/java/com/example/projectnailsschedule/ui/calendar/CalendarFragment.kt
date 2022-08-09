@@ -167,4 +167,10 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
             activity?.startActivity(intent)
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+        Log.e("LifeCycle", "CalendarFragment created")
+        setMonthView()
+    }
 }
