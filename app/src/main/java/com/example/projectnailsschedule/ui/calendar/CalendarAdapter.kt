@@ -1,14 +1,13 @@
 package com.example.projectnailsschedule.ui.calendar
 
+import android.animation.ObjectAnimator
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
-import android.graphics.Color
-import android.graphics.drawable.ShapeDrawable
+import android.graphics.Typeface
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RelativeLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.dateStatusDB.DateStatusDbHelper
@@ -43,23 +42,21 @@ internal class CalendarAdapter(
         // Если день имесяц для отправки в холдер текущие - покрасить ячейку
         val nowDate = LocalDate.now()
         val dayInHolder = daysOfMonth[position]
-        
+
         //Устанавливаем фон для сегодняшнего дня
         if (dayInHolder == nowDate.dayOfMonth.toString() && month == 0) {
-            holder.dayOfMonth.setBackgroundResource(R.drawable.layout_border)
-            // TODO: Создать ресурс фона на все случаи жизни 
+            holder.dayOfMonth.setTypeface(null, Typeface.BOLD)
+            holder.dayOfMonth.textSize = 23f
         }
         holder.dayOfMonth.text = dayInHolder
 
         // Получаем из БД каждый день месяца и в зависимости от его статуса раскрашиваем
         // Если дня нет в БД - цвет фона оставляем по умолчанию
         if (dayInHolder != "") {
-            with(holder.dayOfMonth) {
-                when (getDateStatus(dayInHolder)) {
-                    "medium" -> setBackgroundColor(Color.GREEN)
-                    "busy" -> setBackgroundColor(Color.RED)
-                    "dayOff" -> setBackgroundColor(Color.GRAY)
-                }
+            when (getDateStatus(dayInHolder)) {
+                "medium" -> holder.dayOfMonth.setBackgroundResource(R.drawable.border_medium)
+                "busy" -> holder.dayOfMonth.setBackgroundResource(R.drawable.border_busy)
+                "dayOff" -> holder.dayOfMonth.setBackgroundResource(R.drawable.border_day_off)
             }
         }
     }
@@ -98,7 +95,7 @@ internal class CalendarAdapter(
         if (cursor!!.moveToFirst()) {
             val columnIndex = cursor!!.getColumnIndex("status")
             status = cursor!!.getString(columnIndex)
-            Log.e(LOG,"Day $date, set status $status")
+            Log.e(LOG, "Day $date, set status $status")
         }
         cursor?.close()
         return status

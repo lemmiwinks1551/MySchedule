@@ -1,5 +1,7 @@
 package com.example.projectnailsschedule.ui.calendar
 
+import android.animation.ObjectAnimator
+import android.animation.PropertyValuesHolder
 import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -19,12 +21,19 @@ class CalendarViewHolder internal constructor(itemView: View, onItemListener: Ca
         dayOfMonth = itemView.findViewById(R.id.cellDayText)
         this.onItemListener = onItemListener
         itemView.setOnClickListener(this)
+
     }
 
     override fun onClick(view: View) {
         // Вызывает onItemClick класса MainActivity
+        // Анимация увеличения
+        val scaleUp = ObjectAnimator.ofPropertyValuesHolder(
+            view,
+            PropertyValuesHolder.ofFloat("scaleX", 15f),
+            PropertyValuesHolder.ofFloat("scaleY", 15f)
+        )
+        scaleUp.duration = 1500
+        scaleUp.start()
         onItemListener.onItemClick(adapterPosition, dayOfMonth.text as String)
     }
-
-
 }
