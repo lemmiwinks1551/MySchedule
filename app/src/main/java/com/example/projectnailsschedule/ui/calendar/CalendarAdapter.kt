@@ -3,14 +3,17 @@ package com.example.projectnailsschedule.ui.calendar
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.Color
+import android.graphics.drawable.ShapeDrawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RelativeLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.dateStatusDB.DateStatusDbHelper
 import java.time.LocalDate
+
 
 internal class CalendarAdapter(
     private val daysOfMonth: ArrayList<String>,
@@ -40,10 +43,11 @@ internal class CalendarAdapter(
         // Если день имесяц для отправки в холдер текущие - покрасить ячейку
         val nowDate = LocalDate.now()
         val dayInHolder = daysOfMonth[position]
-
-        // Устанавливаем фон для сегодняшнего дня
+        
+        //Устанавливаем фон для сегодняшнего дня
         if (dayInHolder == nowDate.dayOfMonth.toString() && month == 0) {
-            holder.dayOfMonth.setBackgroundColor(Color.GRAY)
+            holder.dayOfMonth.setBackgroundResource(R.drawable.layout_border)
+            // TODO: Создать ресурс фона на все случаи жизни 
         }
         holder.dayOfMonth.text = dayInHolder
 
@@ -52,10 +56,9 @@ internal class CalendarAdapter(
         if (dayInHolder != "") {
             with(holder.dayOfMonth) {
                 when (getDateStatus(dayInHolder)) {
-                    "free" -> setBackgroundColor(Color.GREEN)
-                    "medium" -> setBackgroundColor(Color.YELLOW)
+                    "medium" -> setBackgroundColor(Color.GREEN)
                     "busy" -> setBackgroundColor(Color.RED)
-                    "dayOff" -> setBackgroundColor(Color.CYAN)
+                    "dayOff" -> setBackgroundColor(Color.GRAY)
                 }
             }
         }

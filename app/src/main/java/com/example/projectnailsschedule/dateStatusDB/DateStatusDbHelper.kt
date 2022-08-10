@@ -16,7 +16,7 @@ class DateStatusDbHelper(context: Context?) :
     SQLiteOpenHelper(context, DATABASE_NAME, null, VERSION) {
     companion object {
         private const val DATABASE_NAME = "status.db" // название бд
-        private const val VERSION = 1 // версия базы данных
+        private const val VERSION = 2 // версия базы данных
         const val TABLE_NAME = "status" // название таблицы в бд
 
         // Названия столбцов
@@ -69,36 +69,6 @@ class DateStatusDbHelper(context: Context?) :
                     "$COLUMN_STATUS TEXT NOT NULL);"
         )
         Log.e(LOG_DATABASE, "Status DB created")
-
-        db.execSQL(
-            "INSERT INTO $TABLE_NAME (" +
-                    "$COLUMN_DATE, " +
-                    "$COLUMN_STATUS) VALUES " +
-                    "('01.07.2022', 'free');"
-        )
-
-        db.execSQL(
-            "INSERT INTO $TABLE_NAME (" +
-                    "$COLUMN_DATE, " +
-                    "$COLUMN_STATUS) VALUES " +
-                    "('02.07.2022', 'busy');"
-        )
-
-        db.execSQL(
-            "INSERT INTO $TABLE_NAME (" +
-                    "$COLUMN_DATE, " +
-                    "$COLUMN_STATUS) VALUES " +
-                    "('03.07.2022', 'medium');"
-        )
-
-        db.execSQL(
-            "INSERT INTO $TABLE_NAME (" +
-                    "$COLUMN_DATE, " +
-                    "$COLUMN_STATUS) VALUES " +
-                    "('04.07.2022', 'dayOff');"
-        )
-
-        Log.e(DatabaseHelper.LOG_DATABASE, "Test row added")
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {

@@ -111,11 +111,6 @@ class DateActivity : AppCompatActivity() {
                         ).show()
                         if (value != statusForSpinner) {
                             // Если статус изменился относительно актуального
-                            Toast.makeText(
-                                applicationContext,
-                                "Статус изменился",
-                                Toast.LENGTH_SHORT
-                            ).show()
                             setDayStatus(value)
                         }
                     }
@@ -274,10 +269,8 @@ class DateActivity : AppCompatActivity() {
         db = dateStatusDbHelper?.writableDatabase
         val dbStatus = statusMap.entries.find { it.value == status }!!.key
         if (dayStatus != "no status") {
-            Toast.makeText(applicationContext, "День есть в БД", Toast.LENGTH_SHORT).show()
             dateStatusDbHelper?.updateDate(day!!, dbStatus, db!!)
         } else {
-            Toast.makeText(applicationContext, "Дня нет в БД", Toast.LENGTH_SHORT).show()
             dateStatusDbHelper?.addDate(day!!, dbStatus, db!!)
         }
         dateStatusDbHelper?.close()
