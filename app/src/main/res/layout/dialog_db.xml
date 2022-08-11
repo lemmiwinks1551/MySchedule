@@ -2,7 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@drawable/border_dialog">
 
     <Button
         android:id="@+id/edit"
@@ -11,15 +12,21 @@
         android:text="@string/button_edit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:padding="16dp"
+        />
 
     <Button
         android:id="@+id/delete"
         android:layout_width="170dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:padding="16dp"
         android:text="@string/button_delete"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/edit" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+

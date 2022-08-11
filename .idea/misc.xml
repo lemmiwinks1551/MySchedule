@@ -3,13 +3,20 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.251" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/drawable/border_busy.xml" value="0.1215" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/drawable/border_day_off.xml" value="0.1215" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/drawable/border_dialog.xml" value="0.251" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/drawable/border_medium.xml" value="0.1215" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/drawable/border_today.xml" value="0.1215" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/drawable/ic_baseline_attach_money_24.xml" value="0.251" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/drawable/ic_baseline_calendar_month_24.xml" value="0.251" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/drawable/ic_baseline_people_alt_24.xml" value="0.251" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/drawable/ic_launcher_background.xml" value="0.251" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/drawable/layout_border.xml" value="0.14666666666666667" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/drawable/side_nav_bar.xml" value="0.251" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/layout/activity_add_appointment.xml" value="0.33" />
-        <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/layout/activity_appointment.xml" value="0.22" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/layout/activity_appointment.xml" value="0.33" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/layout/activity_date.xml" value="0.33" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/layout/activity_main.xml" value="0.29829545454545453" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/layout/app_bar_main.xml" value="0.36666666666666664" />
@@ -24,11 +31,11 @@
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/layout/fragment_calendar.xml" value="0.33" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/layout/fragment_clients.xml" value="0.33" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/layout/fragment_home.xml" value="0.18802083333333333" />
-        <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/layout/fragment_service.xml" value="0.18802083333333333" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/layout/fragment_service.xml" value="0.33" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/layout/layout_border.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/layout/nav_header_main.xml" value="0.25" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/layout/simple_spinner_item.xml" value="0.178125" />
-        <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/menu/activity_main_drawer.xml" value="0.67" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/menu/activity_main_drawer.xml" value="0.5" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/menu/main.xml" value="0.33" />
         <entry key="..\:/Users/Admin/AppData/Local/Android/Sdk/platforms/android-32/data/res/layout/simple_list_item_1.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Admin/AppData/Local/Android/Sdk/platforms/android-32/data/res/layout/two_line_list_item.xml" value="0.36666666666666664" />
