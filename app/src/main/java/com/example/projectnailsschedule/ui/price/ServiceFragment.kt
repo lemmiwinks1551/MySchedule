@@ -1,4 +1,4 @@
-package com.example.projectnailsschedule.ui.service
+package com.example.projectnailsschedule.ui.price
 
 import android.os.Bundle
 import android.view.LayoutInflater

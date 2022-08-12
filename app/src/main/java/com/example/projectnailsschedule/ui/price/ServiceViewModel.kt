@@ -1,13 +1,13 @@
-package com.example.projectnailsschedule.ui.about
+package com.example.projectnailsschedule.ui.price
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class AboutViewModel : ViewModel() {
+class ServiceViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
-        value = "О приложении"
+        value = "Здесь будет прайс"
     }
     val text: LiveData<String> = _text
 }
