@@ -6,6 +6,7 @@
     android:orientation="vertical">
 
     <TextView
+        android:textStyle="bold"
         android:id="@+id/COLUMN_START_TEXT"
         android:layout_width="120dp"
         android:layout_height="21dp"
@@ -28,12 +29,13 @@
         app:layout_constraintTop_toBottomOf="@id/COLUMN_START_TEXT" />
 
     <TextView
+        android:textStyle="bold"
         android:id="@+id/appointment_start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:text="11:00"
-        android:textColor="@color/purple_500"
+        android:textColor="@color/blue_main"
         android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@id/COLUMN_START_TEXT"
         app:layout_constraintTop_toTopOf="parent" />
@@ -43,8 +45,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:text="Наращивание"
-        android:textColor="@color/purple_500"
+        android:text="Наименование"
+        android:textColor="@color/blue_main"
         android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@+id/COLUMN_END_TEXT"
         app:layout_constraintTop_toBottomOf="@id/appointment_start" />
@@ -65,8 +67,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:text="Филип Киркоров"
-        android:textColor="@color/purple_500"
+        android:text="Имя"
+        android:textColor="@color/blue_main"
         android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@id/COLUMN_NAME_TEXT"
         app:layout_constraintTop_toBottomOf="@+id/appointment_procedure" />
@@ -87,8 +89,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:text="8 800 555 35 35"
-        android:textColor="@color/purple_500"
+        android:text="8 800 123 45 67"
+        android:textColor="@color/blue_main"
         android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@id/COLUMN_PHONE_NAME"
         app:layout_constraintTop_toBottomOf="@id/appointment_name" />
@@ -110,7 +112,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:text="..."
-        android:textColor="@color/purple_500"
+        android:textColor="@color/blue_main"
         android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@id/COLUMN_MISC_NAME"
         app:layout_constraintTop_toBottomOf="@id/appointment_phone" />

@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:text="@string/add_appointment_title"
-            android:textColor="@color/purple_500"
+            android:textColor="@color/blue_main"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

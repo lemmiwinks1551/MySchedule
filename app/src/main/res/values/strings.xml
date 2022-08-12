@@ -39,7 +39,7 @@
     <string name="fri">Пт.</string>
     <string name="sat">Сб.</string>
     <string name="sun">Вс.</string>
-    <string name="status_description">Установить статус дня:</string>
+    <string name="status_description">Статус дня:</string>
 
     <string-array name="day_status">
         <item>Свободен</item>
