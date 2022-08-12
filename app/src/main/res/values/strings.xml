@@ -2,12 +2,11 @@
     <string name="app_name">Ю-Nails</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Главное меню</string>
+    <string name="nav_header_title">Меню</string>
     <string name="nav_secondary_title">Добрый день, username</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Настройки</string>
-
 
     <string name="menu_calendar">Календарь</string>
     <string name="menu_clients">Клиенты</string>
@@ -40,6 +39,7 @@
     <string name="fri">Пт.</string>
     <string name="sat">Сб.</string>
     <string name="sun">Вс.</string>
+    <string name="status_description">Установить статус дня:</string>
 
     <string-array name="day_status">
         <item>Свободен</item>

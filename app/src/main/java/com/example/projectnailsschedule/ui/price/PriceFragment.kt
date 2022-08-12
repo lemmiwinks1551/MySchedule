@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.projectnailsschedule.databinding.FragmentServiceBinding
 
-class ServiceFragment : Fragment() {
+class PriceFragment : Fragment() {
 
     private var _binding: FragmentServiceBinding? = null
 
@@ -23,7 +23,7 @@ class ServiceFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val serviceViewModel =
-            ViewModelProvider(this).get(ServiceViewModel::class.java)
+            ViewModelProvider(this)[PriceViewModel::class.java]
 
         _binding = FragmentServiceBinding.inflate(inflater, container, false)
         val root: View = binding.root

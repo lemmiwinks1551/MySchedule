@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.projectnailsschedule.databinding.FragmentClientsBinding
 
-class ClientsFragment : Fragment() {
+class SettingsFragment : Fragment() {
 
     private var _binding: FragmentClientsBinding? = null
 
