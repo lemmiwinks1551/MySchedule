@@ -18,8 +18,6 @@ import java.text.SimpleDateFormat
 
 
 class DateActivity : AppCompatActivity() {
-    // TODO: Добавть автоперерисовку дней в календаре после изменения статуса
-    //  название месяца сбрасывается на текущий поправить
     companion object {
         const val COLUMN_START = DatabaseHelper.COLUMN_START
         const val COLUMN_PROCEDURE = DatabaseHelper.COLUMN_PROCEDURE
