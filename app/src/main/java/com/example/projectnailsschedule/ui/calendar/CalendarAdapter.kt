@@ -1,6 +1,7 @@
 package com.example.projectnailsschedule.ui.calendar
 
 import android.animation.ObjectAnimator
+import android.app.PendingIntent.getActivity
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.Typeface
@@ -33,7 +34,16 @@ internal class CalendarAdapter(
 
         // Выравнивает элементы по высоте
         val layoutParams = view.layoutParams
-        layoutParams.height = (parent.height * 0.11).toInt()
+
+        // В зависимости от ориентации экрана установить разную высоту для элементов
+        // 1 - портретная, 2-горизонтальная
+        val orientation = parent.resources.configuration.orientation
+        if (orientation == 1) {
+            layoutParams.height = (parent.height * 0.10).toInt()
+        } else {
+            layoutParams.height = (parent.height * 0.15).toInt()
+        }
+
         return CalendarViewHolder(view, onItemListener)
     }
 
