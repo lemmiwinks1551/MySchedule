@@ -46,7 +46,6 @@ class DateActivity : AppCompatActivity() {
     private var day: String? = null
     private var statusMap: Map<String, String> = createStatusMap()
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_date)

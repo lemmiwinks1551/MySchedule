@@ -30,6 +30,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
     private var calendarRecyclerView: RecyclerView? = null
     private var selectedDate: LocalDate? = null
     private var additionMonth: Long = 0
+    private val LOG = "CalendarFragment"
 
     private fun initWidgets() {
         // Инициировать view
@@ -38,6 +39,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
+        Log.e(LOG, "onSaveInstanceState")
         super.onSaveInstanceState(outState)
         outState.putLong("additionMonth", additionMonth)
     }
@@ -118,7 +120,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        Log.e("LifeCycle", "CalendarFragment created")
+        Log.e(LOG, "onCreateView")
         if (savedInstanceState != null) {
             additionMonth = savedInstanceState.getLong("additionMonth")
         }
@@ -149,7 +151,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
     }
 
     override fun onDestroyView() {
-        Log.e("LifeCycle", "CalendarFragment onDestroy")
+        Log.e(LOG, "onDestroyView")
         super.onDestroyView()
         _binding = null
     }
@@ -169,8 +171,28 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
     }
 
     override fun onResume() {
+        Log.e(LOG, "onResume")
         super.onResume()
-        Log.e("LifeCycle", "CalendarFragment created")
         setMonthView()
+    }
+
+    override fun onDestroy() {
+        Log.e(LOG, "onDestroy")
+        super.onDestroy()
+    }
+
+    override fun onDetach() {
+        Log.e(LOG, "onDetach")
+        super.onDetach()
+    }
+
+    override fun onPause() {
+        Log.e(LOG, "onPause")
+        super.onPause()
+    }
+
+    override fun onStop() {
+        Log.e(LOG, "onStop")
+        super.onStop()
     }
 }
