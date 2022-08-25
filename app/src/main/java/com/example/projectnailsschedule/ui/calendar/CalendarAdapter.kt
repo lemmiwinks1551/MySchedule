@@ -1,7 +1,5 @@
 package com.example.projectnailsschedule.ui.calendar
 
-import android.animation.ObjectAnimator
-import android.app.PendingIntent.getActivity
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.Typeface

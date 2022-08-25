@@ -178,6 +178,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
 
     override fun onDestroy() {
         Log.e(LOG, "onDestroy")
+        CalendarAdapter.month = 0
         super.onDestroy()
     }
 
