@@ -106,6 +106,7 @@ internal class CalendarAdapter(
             Log.e(LOG, "Day $date, set status $status")
         }
         cursor?.close()
+        dbStatus?.close()
         return status
     }
 }
