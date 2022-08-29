@@ -88,6 +88,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
                 daysInMonthArray.add((i - dayOfWeek).toString())
             }
         }
+        // TODO: Добавить в параллельном потоке выгрузку словаря по каждому дню, а потом из словаря рисовать интерфейс
         return daysInMonthArray
     }
 
