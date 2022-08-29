@@ -137,7 +137,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         selectedDate = LocalDate.now().plusMonths(additionMonth)
 
         // Вызываем метод, который устанавливает название месяца, создает и устанавливает адаптер и менеджер
-        setMonthView()
+        // setMonthView()
 
         binding.nextMonth.setOnClickListener {
             nextMonthAction()
