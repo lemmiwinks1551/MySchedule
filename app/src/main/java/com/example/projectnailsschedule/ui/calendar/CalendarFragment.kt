@@ -136,9 +136,6 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         // Получить сегодняшню дату yyyy-MM-dd
         selectedDate = LocalDate.now().plusMonths(additionMonth)
 
-        // Вызываем метод, который устанавливает название месяца, создает и устанавливает адаптер и менеджер
-        // setMonthView()
-
         binding.nextMonth.setOnClickListener {
             nextMonthAction()
         }
@@ -173,6 +170,8 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
     override fun onResume() {
         Log.e(LOG, "onResume")
         super.onResume()
+
+        // Вызываем метод, который устанавливает название месяца, создает и устанавливает адаптер и менеджер
         setMonthView()
     }
 
