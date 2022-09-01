@@ -80,10 +80,4 @@ class StatusesMap : Thread() {
         Log.e(LOG, "Context received")
         context = _context
     }
-
-    override fun interrupt() {
-        Log.e(LOG, "Interrupted")
-        super.interrupt()
-    }
-
 }

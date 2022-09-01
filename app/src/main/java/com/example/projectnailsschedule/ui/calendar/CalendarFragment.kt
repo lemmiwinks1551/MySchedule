@@ -99,6 +99,8 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         if (statusesMap.state == Thread.State.NEW)
         {
             statusesMap.start();
+        } else {
+            statusesMap.run()
         }
         return daysInMonthArray
     }
@@ -209,7 +211,4 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         super.onStop()
     }
 
-    fun getStatusMapObj() :StatusesMap {
-        return this.statusesMap
-    }
 }
