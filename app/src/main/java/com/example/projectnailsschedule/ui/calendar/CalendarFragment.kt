@@ -25,6 +25,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
 
     // This property is only valid between onCreateView and
     // onDestroyView.
+    private val statusesMap = StatusesMap()
     private val binding get() = _binding!!
     private var monthYearText: TextView? = null
     private var calendarRecyclerView: RecyclerView? = null
@@ -50,10 +51,10 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         val daysInMonth = selectedDate?.let { daysInMonthArray(it) }
 
         // Создаем CalendarAdapter, передаем количество дней в месяце и listener
-        val calendarAdapter = daysInMonth?.let { CalendarAdapter(it, this) }
+        val calendarAdapter = daysInMonth?.let { CalendarAdapter(it, this, statusesMap.dayStatuses) }
 
         // Создаем layoutManager и устанавливает способ отображения элементов в нем
-        // GridLayoutManager упорядочивает элементы в виде грида со столлбцами и строками (7 элементов в ряд)
+        // GridLayoutManager упорядочивает элементы в виде таблицы со столлбцами и строками (7 элементов в ряд)
         val layoutManager: RecyclerView.LayoutManager =
             GridLayoutManager(activity, 7)
 
@@ -89,10 +90,20 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
             }
         }
         // TODO: Добавить в параллельном потоке выгрузку словаря по каждому дню, а потом из словаря рисовать интерфейс
+        //  Вызвать поток, формирующий словарь
+
+        // Создаем объект
+        statusesMap.setDaysOfMonth(daysInMonthArray)
+        statusesMap.setYearMonth(yearMonth)
+        statusesMap.setContext(this.requireContext())
+        if (statusesMap.state == Thread.State.NEW)
+        {
+            statusesMap.start();
+        }
         return daysInMonthArray
     }
 
-    private fun monthYearFromDate(): String? {
+    private fun monthYearFromDate(): String {
         // Метод форматирует название месяца и год для отображения во View
         val date = Date.from(selectedDate?.atStartOfDay(ZoneId.systemDefault())!!.toInstant())
         val month = SimpleDateFormat("LLLL", Locale.getDefault()).format(date)
@@ -196,5 +207,9 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
     override fun onStop() {
         Log.e(LOG, "onStop")
         super.onStop()
+    }
+
+    fun getStatusMapObj() :StatusesMap {
+        return this.statusesMap
     }
 }

@@ -15,7 +15,8 @@ import java.time.LocalDate
 
 internal class CalendarAdapter(
     private val daysOfMonth: ArrayList<String>,
-    private val onItemListener: CalendarFragment
+    private val onItemListener: CalendarFragment,
+    private val dayStatuses: MutableMap<String, String>
 ) :
     RecyclerView.Adapter<CalendarViewHolder>() {
 
@@ -58,10 +59,8 @@ internal class CalendarAdapter(
         }
         holder.dayOfMonth.text = dayInHolder
 
-        // Получаем из БД каждый день месяца и в зависимости от его статуса раскрашиваем
-        // Если дня нет в БД - цвет фона оставляем по умолчанию
         if (dayInHolder != "") {
-            when (getDateStatus(dayInHolder)) {
+            when (dayStatuses.getValue(dayInHolder).replace("0", "")) {
                 "medium" -> holder.dayOfMonth.setBackgroundResource(R.drawable.border_medium)
                 "busy" -> holder.dayOfMonth.setBackgroundResource(R.drawable.border_busy)
                 "dayOff" -> holder.dayOfMonth.setBackgroundResource(R.drawable.border_day_off)
