@@ -82,30 +82,4 @@ internal class CalendarAdapter(
         // Адаптер работает с ViewHolder`ом
         var month = 0
     }
-
-    private fun getDateStatus(dayInHolder: String): String {
-        // Получаем из БД статус дня
-        val dd = if (dayInHolder.length == 1) "0$dayInHolder" else dayInHolder
-        var mm = LocalDate.now().plusMonths(month.toLong()).month.value.toString()
-        val yy = LocalDate.now().plusMonths(month.toLong()).year.toString()
-        var status = "no status"
-
-        // Дописывает 0 к месяцам из одной цифры
-        if (mm.length == 1) {
-            mm = "0$mm"
-        }
-
-        val date = String.format("$dd.$mm.$yy")
-        Log.e(LOG, String.format("Date for queue: $date"))
-        dbStatus = dateStatusDbHelper?.readableDatabase
-        cursor = dateStatusDbHelper?.fetchDate(date, dbStatus!!)
-        if (cursor!!.moveToFirst()) {
-            val columnIndex = cursor!!.getColumnIndex("status")
-            status = cursor!!.getString(columnIndex)
-            Log.e(LOG, "Day $date, set status $status")
-        }
-        cursor?.close()
-        dbStatus?.close()
-        return status
-    }
 }

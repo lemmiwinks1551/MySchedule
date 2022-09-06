@@ -56,7 +56,7 @@ class DateActivity : AppCompatActivity() {
         day = intent.getStringExtra("day").toString()
 
         // Конвертируем дату в формат dd.MM.yyyy
-        day = dateConverter(day!!)
+        day = Converter().dateConverter(day!!)
 
         // Устанавливаем в Toolbar дату
         val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
@@ -199,14 +199,6 @@ class DateActivity : AppCompatActivity() {
         appointmentIntent.putExtra("appointmentExtra", day)
         startActivity(appointmentIntent)
         // TODO: переписать через кликлистенер
-    }
-
-    @SuppressLint("SimpleDateFormat")
-    fun dateConverter(day: String): String {
-        // Получаем день из интента в формате d.M.yyyy и конвертируем в формат dd.MM.yyyy
-        val parser = SimpleDateFormat("d.M.yyyy")
-        val formatter = SimpleDateFormat("dd.MM.yyyy")
-        return formatter.format(parser.parse(day)).toString()
     }
 
     private fun getDayStatus() {

@@ -152,11 +152,10 @@ class Appointment : AppCompatActivity() {
         val year = calendar.get(Calendar.YEAR)
         val month = calendar.get(Calendar.MONTH)
         val day = calendar.get(Calendar.DAY_OF_MONTH)
-        val dateActivity = DateActivity()
 
         val datePickerDialog = DatePickerDialog(
             this, { _, pickedYear, pickedMonth, pickedDay ->
-                val date = dateActivity.dateConverter("$pickedDay.${pickedMonth + 1}.$pickedYear")
+                val date = Converter().dateConverter("$pickedDay.${pickedMonth + 1}.$pickedYear")
                 binding.dayEditText.text = date
             }, year, month, day
         )

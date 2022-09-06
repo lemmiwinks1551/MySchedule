@@ -51,7 +51,8 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         val daysInMonth = selectedDate?.let { daysInMonthArray(it) }
 
         // Создаем CalendarAdapter, передаем количество дней в месяце и listener
-        val calendarAdapter = daysInMonth?.let { CalendarAdapter(it, this, statusesMap.dayStatuses) }
+        val calendarAdapter =
+            daysInMonth?.let { CalendarAdapter(it, this, statusesMap.dayStatuses) }
 
         // Создаем layoutManager и устанавливает способ отображения элементов в нем
         // GridLayoutManager упорядочивает элементы в виде таблицы со столлбцами и строками (7 элементов в ряд)
@@ -89,19 +90,9 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
                 daysInMonthArray.add((i - dayOfWeek).toString())
             }
         }
-        // TODO: Добавить в параллельном потоке выгрузку словаря по каждому дню, а потом из словаря рисовать интерфейс
-        //  Вызвать поток, формирующий словарь
 
-        // Создаем объект
-        statusesMap.setDaysOfMonth(daysInMonthArray)
-        statusesMap.setYearMonth(yearMonth)
-        statusesMap.setContext(this.requireContext())
-        if (statusesMap.state == Thread.State.NEW)
-        {
-            statusesMap.start();
-        } else {
-            statusesMap.run()
-        }
+        // Запускаем поток для выгрузки статусов
+        runStatusesMapThread(daysInMonthArray, yearMonth)
         return daysInMonthArray
     }
 
@@ -209,6 +200,21 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
     override fun onStop() {
         Log.e(LOG, "onStop")
         super.onStop()
+    }
+
+    private fun runStatusesMapThread(daysInMonthArray: ArrayList<String>, yearMonth: YearMonth) {
+        // Запускаем новый поток, который формирует словарь для отрисовки интерфейса
+        statusesMap.name = "StatusesMap Thread"
+        statusesMap.setDaysOfMonth(daysInMonthArray)
+        statusesMap.setYearMonth(yearMonth)
+        statusesMap.setContext(this.requireContext())
+
+        // Если поток уже создан - перезапустить
+        if (statusesMap.state == Thread.State.NEW) {
+            statusesMap.start();
+        } else {
+            statusesMap.run()
+        }
     }
 
 }

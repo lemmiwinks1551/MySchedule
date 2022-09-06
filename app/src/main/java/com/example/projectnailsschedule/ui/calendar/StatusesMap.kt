@@ -4,6 +4,7 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.util.Log
+import com.example.projectnailsschedule.Converter
 import com.example.projectnailsschedule.dateStatusDB.DateStatusDbHelper
 import java.time.YearMonth
 
@@ -16,12 +17,12 @@ class StatusesMap : Thread() {
 
 
     val dayStatuses = mutableMapOf<String, String>()
-    private val LOG = "Thread"
-    private var daysInMonthArray = ArrayList<String>()
-    private var context: Context? = null
-    private var yearMonth: YearMonth? = null
-    private var year = ""
-    private var month = ""
+    private val LOG = "StatusesMap Thread"
+    private lateinit var daysInMonthArray: ArrayList<String>
+    private lateinit var context: Context
+    private lateinit var yearMonth: YearMonth
+    private lateinit var year: String
+    private lateinit var month: String
 
     override fun run() {
         // Получаем по каждому дню статус из БД и устанавливаем в словарь
@@ -31,27 +32,25 @@ class StatusesMap : Thread() {
         var dbStatus: SQLiteDatabase? = null
         var cursor: Cursor? = null
 
-        // Дописывает 0 к месяцам из одной цифры
-        if (yearMonth?.monthValue.toString().length == 1) {
-            month = "0${yearMonth?.monthValue}"
-        } else {
-            month = yearMonth?.monthValue.toString()
-        }
+        month = yearMonth.monthValue.toString()
+        month = Converter().addZero(month)
 
-        year = yearMonth?.year.toString()
+        year = yearMonth.year.toString()
 
         for (day in daysInMonthArray) {
-            if (day == "") {
+            // Для каждого дня в массиве получить статус и добавить в словарь
+            if (day.isEmpty()) {
+                // Если день пустой - перейти к следующему элементу массива
                 continue
             }
 
-            var dd = if (day.length == 1) "0$day" else day
+            var dd = Converter().addZero(day)
             val date = String.format("$dd.$month.$year")
             Log.e(LOG, String.format("Date for queue: $date"))
 
             dbStatus = dateStatusDbHelper.readableDatabase
             cursor = dateStatusDbHelper.fetchDate(date, dbStatus!!)
-            dd = if (dd[0].toString() == "0") dd.replace("0", "") else dd
+            dd = Converter().removeZero(dd)
 
             if (cursor.moveToFirst()) {
                 val columnIndex = cursor.getColumnIndex("status")
@@ -65,18 +64,23 @@ class StatusesMap : Thread() {
         dbStatus?.close()
     }
 
+
+    // Сеттеры:
+
     fun setDaysOfMonth(_daysInMonthArray: ArrayList<String>) {
-        // Получаем массив дней
+        // Установить массив дней
         Log.e(LOG, "Array received")
         daysInMonthArray = _daysInMonthArray
     }
 
     fun setYearMonth(_yearMonth: YearMonth) {
+        // Установить объект YearMonth
         Log.e(LOG, "YearMonth received")
         yearMonth = _yearMonth
     }
 
     fun setContext(_context: Context) {
+        // Установить Context
         Log.e(LOG, "Context received")
         context = _context
     }
