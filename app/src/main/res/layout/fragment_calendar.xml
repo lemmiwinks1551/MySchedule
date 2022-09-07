@@ -60,7 +60,7 @@
             android:layout_weight="1"
             android:text="@string/mon"
             android:textAlignment="center"
-            android:textColor="@color/gray"
+            android:textColor="@color/black"
             android:textSize="16sp" />
 
         <TextView
@@ -69,7 +69,7 @@
             android:layout_weight="1"
             android:text="@string/tue"
             android:textAlignment="center"
-            android:textColor="@color/gray"
+            android:textColor="@color/black"
             android:textSize="16sp" />
 
         <TextView
@@ -78,7 +78,7 @@
             android:layout_weight="1"
             android:text="@string/wed"
             android:textAlignment="center"
-            android:textColor="@color/gray"
+            android:textColor="@color/black"
             android:textSize="16sp" />
 
         <TextView
@@ -87,7 +87,7 @@
             android:layout_weight="1"
             android:text="@string/thu"
             android:textAlignment="center"
-            android:textColor="@color/gray"
+            android:textColor="@color/black"
             android:textSize="16sp" />
 
         <TextView
@@ -96,7 +96,7 @@
             android:layout_weight="1"
             android:text="@string/fri"
             android:textAlignment="center"
-            android:textColor="@color/gray"
+            android:textColor="@color/black"
             android:textSize="16sp" />
 
         <TextView
@@ -106,7 +106,7 @@
             android:layout_weight="1"
             android:text="@string/sat"
             android:textAlignment="center"
-            android:textColor="@color/gray"
+            android:textColor="@color/black"
             android:textSize="16sp" />
 
         <TextView
@@ -115,7 +115,7 @@
             android:layout_weight="1"
             android:text="@string/sun"
             android:textAlignment="center"
-            android:textColor="@color/gray"
+            android:textColor="@color/black"
             android:textSize="16sp" />
 
 
@@ -126,6 +126,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="8dp" />
+
+
+
 
 </LinearLayout>
 
