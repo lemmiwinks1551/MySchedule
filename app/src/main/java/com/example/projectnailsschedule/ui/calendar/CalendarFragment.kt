@@ -166,6 +166,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
             val month = SimpleDateFormat("MM", Locale.getDefault()).format(date)
             val year: String = selectedDate?.year.toString()
 
+            // TODO: Переделать, по клику должен заполняться фрагмент под календарем,
             val intent = Intent(activity, DateActivity::class.java)
             intent.putExtra("day", String.format("$day.$month.$year"))
             activity?.startActivity(intent)

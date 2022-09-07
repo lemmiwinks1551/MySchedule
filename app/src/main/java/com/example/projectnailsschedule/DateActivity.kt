@@ -1,6 +1,5 @@
 package com.example.projectnailsschedule
 
-import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Intent
 import android.database.Cursor
@@ -14,7 +13,6 @@ import android.widget.AdapterView.OnItemLongClickListener
 import androidx.appcompat.app.AppCompatActivity
 import com.example.projectnailsschedule.databinding.ActivityDateBinding
 import com.example.projectnailsschedule.dateStatusDB.DateStatusDbHelper
-import java.text.SimpleDateFormat
 
 
 class DateActivity : AppCompatActivity() {
