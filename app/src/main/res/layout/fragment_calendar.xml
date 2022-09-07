@@ -126,13 +126,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="8dp"
-        android:layout_weight="0.5"/>
+        android:layout_weight="0.5" />
 
     <androidx.fragment.app.FragmentContainerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="0.5"
-        tools:layout="@layout/database_short_view" />
+        tools:layout="@layout/fragment_date_short" />
 
 
 </LinearLayout>
