@@ -1,6 +1,5 @@
 package com.example.projectnailsschedule.ui.calendar
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,10 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.projectnailsschedule.DateActivity
+import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentCalendarBinding
 import java.text.SimpleDateFormat
 import java.time.LocalDate
@@ -167,9 +167,11 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
             val year: String = selectedDate?.year.toString()
 
             // TODO: Переделать, по клику должен заполняться фрагмент под календарем,
-            val intent = Intent(activity, DateActivity::class.java)
+/*            val intent = Intent(activity, DateActivity::class.java)
             intent.putExtra("day", String.format("$day.$month.$year"))
-            activity?.startActivity(intent)
+            activity?.startActivity(intent)*/
+            requireActivity().supportFragmentManager.beginTransaction()
+                .add(R.id.fragment_container_short_date, FragmentDateShort::class.java, null).commit()
         }
     }
 

@@ -27,13 +27,13 @@ class CalendarViewHolder internal constructor(itemView: View, onItemListener: Ca
     override fun onClick(view: View) {
         // Вызывает onItemClick класса MainActivity
         // Анимация увеличения
-        val scaleUp = ObjectAnimator.ofPropertyValuesHolder(
+        /*val scaleUp = ObjectAnimator.ofPropertyValuesHolder(
             view,
             PropertyValuesHolder.ofFloat("scaleX", 15f),
             PropertyValuesHolder.ofFloat("scaleY", 15f)
         )
         scaleUp.duration = 1500
-        scaleUp.start()
+        scaleUp.start()*/
         onItemListener.onItemClick(adapterPosition, dayOfMonth.text as String)
     }
 }
