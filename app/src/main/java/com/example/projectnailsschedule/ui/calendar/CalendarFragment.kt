@@ -29,6 +29,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
     private val binding get() = _binding!!
     private var monthYearText: TextView? = null
     private var calendarRecyclerView: RecyclerView? = null
+    private var dataRecyclerView: RecyclerView? = null
     private var selectedDate: LocalDate? = null
     private var additionMonth: Long = 0
     private val LOG = "CalendarFragment"
@@ -36,6 +37,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
     private fun initWidgets() {
         // Инициировать view
         calendarRecyclerView = binding.calendarRecyclerView
+        dataRecyclerView = binding.calendarRecyclerView
         monthYearText = binding.monthYearTV
     }
 
@@ -152,12 +154,6 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         return root
     }
 
-    override fun onDestroyView() {
-        Log.e(LOG, "onDestroyView")
-        super.onDestroyView()
-        _binding = null
-    }
-
     override fun onItemClick(position: Int, dayText: String?) {
         if (dayText != "" && dayText != null) {
 
@@ -170,8 +166,6 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
 /*            val intent = Intent(activity, DateActivity::class.java)
             intent.putExtra("day", String.format("$day.$month.$year"))
             activity?.startActivity(intent)*/
-            requireActivity().supportFragmentManager.beginTransaction()
-                .add(R.id.fragment_container_short_date, FragmentDateShort::class.java, null).commit()
         }
     }
 
@@ -190,21 +184,6 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         super.onDestroy()
     }
 
-    override fun onDetach() {
-        Log.e(LOG, "onDetach")
-        super.onDetach()
-    }
-
-    override fun onPause() {
-        Log.e(LOG, "onPause")
-        super.onPause()
-    }
-
-    override fun onStop() {
-        Log.e(LOG, "onStop")
-        super.onStop()
-    }
-
     private fun runStatusesMapThread(daysInMonthArray: ArrayList<String>, yearMonth: YearMonth) {
         // Запускаем новый поток, который формирует словарь для отрисовки интерфейса
         statusesMap.name = "StatusesMap Thread"
@@ -218,6 +197,12 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         } else {
             statusesMap.run()
         }
+    }
+
+    override fun onDestroyView() {
+        Log.e(LOG, "onDestroyView")
+        super.onDestroyView()
+        _binding = null
     }
 
 }
