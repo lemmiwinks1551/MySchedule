@@ -12,7 +12,6 @@ import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.dateStatusDB.DateStatusDbHelper
 import java.time.LocalDate
 
-
 internal class CalendarAdapter(
     private val daysOfMonth: ArrayList<String>,
     private val onItemListener: CalendarFragment,
