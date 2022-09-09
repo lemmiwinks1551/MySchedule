@@ -29,6 +29,11 @@ internal class DateShortAdapter(
 
     }
 
+    interface OnItemListener {
+        // Подключаем интерфейс onItemListener
+        fun onItemClick(position: Int, dayText: String?)
+    }
+
     override fun getItemCount(): Int {
         return rowsCount.size
 

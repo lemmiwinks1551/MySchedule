@@ -72,11 +72,6 @@ internal class CalendarAdapter(
         return daysOfMonth.size
     }
 
-    interface OnItemListener {
-        // Подключаем интерфейс onItemListener
-        fun onItemClick(position: Int, dayText: String?)
-    }
-
     companion object {
         // Адаптер работает с ViewHolder`ом
         var month = 0
