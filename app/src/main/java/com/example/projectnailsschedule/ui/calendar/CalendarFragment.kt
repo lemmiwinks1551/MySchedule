@@ -1,5 +1,6 @@
 package com.example.projectnailsschedule.ui.calendar
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -7,12 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.projectnailsschedule.R
+import com.example.projectnailsschedule.DateActivity
 import com.example.projectnailsschedule.databinding.FragmentCalendarBinding
+import com.example.projectnailsschedule.ui.dataShort.DateShortAdapter
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.YearMonth
@@ -29,7 +30,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
     private val binding get() = _binding!!
     private var monthYearText: TextView? = null
     private var calendarRecyclerView: RecyclerView? = null
-    private var dataRecyclerView: RecyclerView? = null
+    private var shortDataRecyclerView: RecyclerView? = null
     private var selectedDate: LocalDate? = null
     private var additionMonth: Long = 0
     private val LOG = "CalendarFragment"
@@ -37,7 +38,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
     private fun initWidgets() {
         // Инициировать view
         calendarRecyclerView = binding.calendarRecyclerView
-        dataRecyclerView = binding.calendarRecyclerView
+        shortDataRecyclerView = binding.shortDataRecyclerView
         monthYearText = binding.monthYearTV
     }
 
@@ -163,10 +164,26 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
             val year: String = selectedDate?.year.toString()
 
             // TODO: Переделать, по клику должен заполняться фрагмент под календарем,
-/*            val intent = Intent(activity, DateActivity::class.java)
+            val intent = Intent(activity, DateActivity::class.java)
             intent.putExtra("day", String.format("$day.$month.$year"))
-            activity?.startActivity(intent)*/
+            activity?.startActivity(intent)
         }
+    }
+
+    fun shortDate() {
+        // TODO: метод будет получать данные из класса DateShortGetDb и устанавливать в RecyclerView
+        
+        // Создаем CalendarAdapter, передаем количество строк в курсоре
+        //val calendarAdapter = daysInMonth?.let { DateShortAdapter(it, this) }
+
+        // Создаем layoutManager и устанавливает способ отображения элементов в нем
+        // GridLayoutManager упорядочивает элементы в виде таблицы со столлбцами и строками (1 элемент в ряд)
+        val layoutManager: RecyclerView.LayoutManager =
+            GridLayoutManager(activity, 1)
+
+        // Устанавливаем в RecyclerView менеджера и адаптер
+        shortDataRecyclerView?.layoutManager = layoutManager
+        //shortDataRecyclerView?.adapter = calendarAdapter
     }
 
     override fun onResume() {

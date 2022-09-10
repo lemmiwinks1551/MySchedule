@@ -129,7 +129,7 @@
         android:layout_weight="0.5" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/dataRecyclerView"
+        android:id="@+id/shortDataRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="8dp"

@@ -19,16 +19,12 @@ internal class CalendarAdapter(
 ) :
     RecyclerView.Adapter<CalendarViewHolder>() {
 
-    private var dateStatusDbHelper: DateStatusDbHelper? = null
-    private var dbStatus: SQLiteDatabase? = null
-    private var cursor: Cursor? = null
     private var LOG = "CalendarAdapter"
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalendarViewHolder {
         // Возвращает объект ViewHolder, который будет хранить данные по одному объекту
         val inflater = LayoutInflater.from(parent.context)
         val view: View = inflater.inflate(R.layout.calendar_cell, parent, false)
-        dateStatusDbHelper = DateStatusDbHelper(parent.context)
 
         // Выравнивает элементы по высоте
         val layoutParams = view.layoutParams
