@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.DateActivity
 import com.example.projectnailsschedule.databinding.FragmentCalendarBinding
+import com.example.projectnailsschedule.ui.dataShort.DateShorGetDbData
 import com.example.projectnailsschedule.ui.dataShort.DateShortAdapter
 import java.text.SimpleDateFormat
 import java.time.LocalDate
@@ -172,9 +173,10 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
 
     fun shortDate() {
         // TODO: метод будет получать данные из класса DateShortGetDb и устанавливать в RecyclerView
-        
+        val dateShortDbData = DateShorGetDbData()
+
         // Создаем CalendarAdapter, передаем количество строк в курсоре
-        //val calendarAdapter = daysInMonth?.let { DateShortAdapter(it, this) }
+        val calendarAdapter = DateShortAdapter(dateShortDbData.getDataRows(), this)
 
         // Создаем layoutManager и устанавливает способ отображения элементов в нем
         // GridLayoutManager упорядочивает элементы в виде таблицы со столлбцами и строками (1 элемент в ряд)

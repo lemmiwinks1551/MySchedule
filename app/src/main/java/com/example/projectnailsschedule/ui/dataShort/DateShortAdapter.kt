@@ -8,7 +8,7 @@ import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.ui.calendar.CalendarFragment
 
 internal class DateShortAdapter(
-    private val rowsCount: ArrayList<String>,
+    private val rowsCount: Int,
     private val onItemListener: CalendarFragment
 ) :
     RecyclerView.Adapter<DateShortViewHolder>() {
@@ -23,7 +23,7 @@ internal class DateShortAdapter(
         // Выполняет привязку объекта ViewHolder к объекту по определенной позиции.
         // Если день имесяц для отправки в холдер текущие - покрасить ячейку
 
-        val dayInHolder = rowsCount[position]
+        // val dayInHolder = rowsCount[position]
 
         // holder.dayOfMonth.text = dayInHolder
 
@@ -35,7 +35,7 @@ internal class DateShortAdapter(
     }
 
     override fun getItemCount(): Int {
-        return rowsCount.size
+        return rowsCount
 
     }
 }

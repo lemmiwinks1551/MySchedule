@@ -10,11 +10,15 @@ import com.example.projectnailsschedule.dateStatusDB.DateStatusDbHelper
 
 class DateShorGetDbData {
 
+    var dateStatusDbHelper = DateStatusDbHelper(context)
     private lateinit var context: Context
-    val dateStatusDbHelper = DateStatusDbHelper(context)
-    var dbStatus: SQLiteDatabase? = null
-    var cursor: Cursor? = null
+    private lateinit var dbDate: SQLiteDatabase
+    private lateinit var cursor: Cursor
 
 
+fun getDataRows(): Int {
+    // Возвращает количество строк в курсоре
+    return cursor.count
+}
 
 }
