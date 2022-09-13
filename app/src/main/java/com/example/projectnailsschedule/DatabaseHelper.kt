@@ -5,6 +5,7 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
+import com.example.projectnailsschedule.dateStatusDB.DateStatusDbHelper
 
 /**
  * Методы для взаимодействия с БД по записям:
@@ -108,6 +109,11 @@ class DatabaseHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAM
         // TODO: Добавить логику, чтобы старая БД переписывалась в новую, а не убивалась
         db.execSQL("DROP TABLE IF EXISTS $TABLE_NAME")
         onCreate(db)
+    }
+
+    fun fetchNameDate(date: String, db: SQLiteDatabase): Cursor {
+        val query = "SELECT * FROM $TABLE_NAME WHERE $COLUMN_DATE = '$date';"
+        return db.rawQuery(query, null)
     }
 
 }

@@ -9,7 +9,8 @@ import com.example.projectnailsschedule.ui.calendar.CalendarFragment
 
 internal class DateShortAdapter(
     private val rowsCount: Int,
-    private val onItemListener: CalendarFragment
+    private val onItemListener: CalendarFragment,
+    private val dateShorGetDbData: DateShorGetDbData
 ) :
     RecyclerView.Adapter<DateShortViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DateShortViewHolder {

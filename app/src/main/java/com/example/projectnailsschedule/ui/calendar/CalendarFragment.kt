@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.projectnailsschedule.Converter
 import com.example.projectnailsschedule.DateActivity
 import com.example.projectnailsschedule.databinding.FragmentCalendarBinding
 import com.example.projectnailsschedule.ui.dataShort.DateShorGetDbData
@@ -20,6 +21,7 @@ import java.time.LocalDate
 import java.time.YearMonth
 import java.time.ZoneId
 import java.util.*
+import kotlin.ConcurrentModificationException
 
 class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
 
@@ -160,23 +162,25 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         if (dayText != "" && dayText != null) {
 
             val date = Date.from(selectedDate?.atStartOfDay(ZoneId.systemDefault())!!.toInstant())
-            val day = if (dayText.length == 1) String.format("0$dayText") else dayText
+            val day = Converter().addZero(dayText)
             val month = SimpleDateFormat("MM", Locale.getDefault()).format(date)
             val year: String = selectedDate?.year.toString()
 
             // TODO: Переделать, по клику должен заполняться фрагмент под календарем,
             val intent = Intent(activity, DateActivity::class.java)
             intent.putExtra("day", String.format("$day.$month.$year"))
-            activity?.startActivity(intent)
+            // activity?.startActivity(intent)
+            shortDate(day, month, year)
         }
     }
 
-    fun shortDate() {
+     private fun shortDate(date: String, month: String, year: String) {
         // TODO: метод будет получать данные из класса DateShortGetDb и устанавливать в RecyclerView
-        val dateShortDbData = DateShorGetDbData()
+        val dateShortDbData = DateShorGetDbData(date, month, year, this.requireContext())
 
+        dateShortDbData.fetchDate()
         // Создаем CalendarAdapter, передаем количество строк в курсоре
-        val calendarAdapter = DateShortAdapter(dateShortDbData.getDataRows(), this)
+        val calendarAdapter = DateShortAdapter(dateShortDbData.getDataRows(), this, dateShortDbData)
 
         // Создаем layoutManager и устанавливает способ отображения элементов в нем
         // GridLayoutManager упорядочивает элементы в виде таблицы со столлбцами и строками (1 элемент в ряд)
@@ -185,7 +189,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
 
         // Устанавливаем в RecyclerView менеджера и адаптер
         shortDataRecyclerView?.layoutManager = layoutManager
-        //shortDataRecyclerView?.adapter = calendarAdapter
+        shortDataRecyclerView?.adapter = calendarAdapter
     }
 
     override fun onResume() {
