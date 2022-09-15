@@ -18,7 +18,9 @@ class DateShorGetDbData(
 
     private val LOG = "DateShort Thread"
     private val timeNameMap = mutableMapOf<String, String>()
+
     private var cursor: Cursor? = null
+    private var rowsCount = 0
 
 
     fun fetchDate() {
@@ -39,14 +41,14 @@ class DateShorGetDbData(
         } else {
             Log.e(LOG, "No data in cursor")
         }
-
+        rowsCount = cursor.count
         cursor.close()
         db.close()
     }
 
     fun getDataRows(): Int {
         // Возвращает количество строк в курсоре
-        return cursor!!.count
+        return rowsCount
     }
 
     fun getTimeNameMap(): MutableMap<String, String> {

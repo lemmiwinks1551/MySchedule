@@ -179,6 +179,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         val dateShortDbData = DateShorGetDbData(date, month, year, this.requireContext())
 
         dateShortDbData.fetchDate()
+
         // Создаем CalendarAdapter, передаем количество строк в курсоре
         val calendarAdapter = DateShortAdapter(dateShortDbData.getDataRows(), this, dateShortDbData)
 

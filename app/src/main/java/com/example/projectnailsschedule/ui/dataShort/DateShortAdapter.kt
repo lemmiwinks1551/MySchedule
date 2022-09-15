@@ -16,17 +16,19 @@ internal class DateShortAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DateShortViewHolder {
         // Возвращает объект ViewHolder, который будет хранить данные по одному объекту
         val inflater = LayoutInflater.from(parent.context)
-        val view: View = inflater.inflate(R.layout.calendar_cell, parent, false)
+        val view: View = inflater.inflate(R.layout.database_short_view, parent, false)
         return DateShortViewHolder(view, onItemListener)
     }
 
     override fun onBindViewHolder(holder: DateShortViewHolder, position: Int) {
-        // Выполняет привязку объекта ViewHolder к объекту по определенной позиции.
-        // Если день имесяц для отправки в холдер текущие - покрасить ячейку
+        // Получаем соответствие Клиент-Имя
+        // Устанавливаем их в holder
+        val map = dateShorGetDbData.getTimeNameMap()
+        val name = map
+        val startTime = map
 
-        // val dayInHolder = rowsCount[position]
-
-        // holder.dayOfMonth.text = dayInHolder
+        holder.starTime.text = "startTime"
+        holder.clientName.text = "name"
 
     }
 
