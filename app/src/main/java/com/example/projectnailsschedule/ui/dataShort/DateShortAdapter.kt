@@ -13,6 +13,7 @@ internal class DateShortAdapter(
     private val dateShorGetDbData: DateShorGetDbData
 ) :
     RecyclerView.Adapter<DateShortViewHolder>() {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DateShortViewHolder {
         // Возвращает объект ViewHolder, который будет хранить данные по одному объекту
         val inflater = LayoutInflater.from(parent.context)
@@ -23,13 +24,17 @@ internal class DateShortAdapter(
     override fun onBindViewHolder(holder: DateShortViewHolder, position: Int) {
         // Получаем соответствие Клиент-Имя
         // Устанавливаем их в holder
-        val map = dateShorGetDbData.getTimeNameMap()
-        val name = map
-        val startTime = map
 
-        holder.starTime.text = "startTime"
-        holder.clientName.text = "name"
+        val map = dateShorGetDbData.getTimeNameMap() // получаем словарь
+        val namesArray:Array<String> = map.keys.toTypedArray() // создаем массив ключей
 
+        val name = namesArray[0]    // Получаем имя, ищем в словаре 0 элемент массива
+        val startTime = map[name]   // Получаем время, ищем по имени в Map
+
+        holder.clientName.text = name     // Устанавливаем в holder Имя
+        holder.starTime.text = startTime  // Устанавилваем в holder Время
+
+        map.remove(name)    // Удаляем из Map элемент с данным именем
     }
 
     interface OnItemListener {
