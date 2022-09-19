@@ -21,7 +21,6 @@ import java.time.LocalDate
 import java.time.YearMonth
 import java.time.ZoneId
 import java.util.*
-import kotlin.ConcurrentModificationException
 
 class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
 
@@ -174,14 +173,19 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         }
     }
 
-     private fun shortDate(date: String, month: String, year: String) {
+    private fun shortDate(date: String, month: String, year: String) {
         // TODO: метод будет получать данные из класса DateShortGetDb и устанавливать в RecyclerView
         val dateShortDbData = DateShorGetDbData(date, month, year, this.requireContext())
 
         dateShortDbData.fetchDate()
 
         // Создаем CalendarAdapter, передаем количество строк в курсоре
-        val calendarAdapter = DateShortAdapter(dateShortDbData.getDataRows(), this, dateShortDbData)
+        val calendarAdapter =
+            DateShortAdapter(
+                dateShortDbData.getDataRows(),
+                dateShortDbData,
+                String.format("${date}.${month}.${year}")
+            )
 
         // Создаем layoutManager и устанавливает способ отображения элементов в нем
         // GridLayoutManager упорядочивает элементы в виде таблицы со столлбцами и строками (1 элемент в ряд)

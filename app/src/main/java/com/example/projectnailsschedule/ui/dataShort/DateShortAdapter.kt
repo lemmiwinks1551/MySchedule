@@ -9,8 +9,8 @@ import com.example.projectnailsschedule.ui.calendar.CalendarFragment
 
 internal class DateShortAdapter(
     private val rowsCount: Int,
-    private val onItemListener: CalendarFragment,
-    private val dateShorGetDbData: DateShorGetDbData
+    private val dateShorGetDbData: DateShorGetDbData,
+    private val date: String
 ) :
     RecyclerView.Adapter<DateShortViewHolder>() {
 
@@ -18,7 +18,7 @@ internal class DateShortAdapter(
         // Возвращает объект ViewHolder, который будет хранить данные по одному объекту
         val inflater = LayoutInflater.from(parent.context)
         val view: View = inflater.inflate(R.layout.database_short_view, parent, false)
-        return DateShortViewHolder(view, onItemListener)
+        return DateShortViewHolder(view, date)
     }
 
     override fun onBindViewHolder(holder: DateShortViewHolder, position: Int) {
@@ -35,11 +35,6 @@ internal class DateShortAdapter(
         holder.starTime.text = startTime  // Устанавилваем в holder Время
 
         map.remove(name)    // Удаляем из Map элемент с данным именем
-    }
-
-    interface OnItemListener {
-        // Подключаем интерфейс onItemListener
-        fun onItemClick(position: Int, dayText: String?)
     }
 
     override fun getItemCount(): Int {
