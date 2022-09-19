@@ -1,6 +1,5 @@
 package com.example.projectnailsschedule.ui.calendar
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,7 +11,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.Converter
-import com.example.projectnailsschedule.DateActivity
 import com.example.projectnailsschedule.databinding.FragmentCalendarBinding
 import com.example.projectnailsschedule.ui.dataShort.DateShorGetDbData
 import com.example.projectnailsschedule.ui.dataShort.DateShortAdapter
@@ -35,6 +33,9 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
     private var shortDataRecyclerView: RecyclerView? = null
     private var selectedDate: LocalDate? = null
     private var additionMonth: Long = 0
+    var day = ""
+    private var month = ""
+    private var year = ""
     private val LOG = "CalendarFragment"
 
     private fun initWidgets() {
@@ -116,6 +117,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         CalendarAdapter.month--
         additionMonth--
         setMonthView()
+        shortDataRecyclerView?.adapter = null
     }
 
     private fun nextMonthAction() {
@@ -125,6 +127,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         CalendarAdapter.month++
         additionMonth++
         setMonthView()
+        shortDataRecyclerView?.adapter = null
     }
 
     override fun onCreateView(
@@ -158,17 +161,13 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
     }
 
     override fun onItemClick(position: Int, dayText: String?) {
-        if (dayText != "" && dayText != null) {
+        if (!dayText.isNullOrEmpty()) {
 
             val date = Date.from(selectedDate?.atStartOfDay(ZoneId.systemDefault())!!.toInstant())
-            val day = Converter().addZero(dayText)
-            val month = SimpleDateFormat("MM", Locale.getDefault()).format(date)
-            val year: String = selectedDate?.year.toString()
+            day = Converter().addZero(dayText)
+            month = SimpleDateFormat("MM", Locale.getDefault()).format(date)
+            year = selectedDate?.year.toString()
 
-            // TODO: Переделать, по клику должен заполняться фрагмент под календарем,
-            val intent = Intent(activity, DateActivity::class.java)
-            intent.putExtra("day", String.format("$day.$month.$year"))
-            // activity?.startActivity(intent)
             shortDate(day, month, year)
         }
     }
@@ -203,6 +202,9 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
 
         // Вызываем метод, который устанавливает название месяца, создает и устанавливает адаптер и менеджер
         setMonthView()
+
+        // Обновляет выбранную дату в предварительном просмотре
+        shortDate(day, month, year)
     }
 
     override fun onDestroy() {

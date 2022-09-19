@@ -33,9 +33,9 @@ internal class CalendarAdapter(
         // 1 - портретная, 2-горизонтальная
         val orientation = parent.resources.configuration.orientation
         if (orientation == 1) {
-            layoutParams.height = (parent.height * 0.10).toInt()
-        } else {
             layoutParams.height = (parent.height * 0.15).toInt()
+        } else {
+            layoutParams.height = (parent.height * 0.20).toInt()
         }
 
         return CalendarViewHolder(view, onItemListener)
