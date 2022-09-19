@@ -14,6 +14,7 @@ import com.example.projectnailsschedule.Converter
 import com.example.projectnailsschedule.databinding.FragmentCalendarBinding
 import com.example.projectnailsschedule.ui.dataShort.DateShorGetDbData
 import com.example.projectnailsschedule.ui.dataShort.DateShortAdapter
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.YearMonth
@@ -31,6 +32,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
     private var monthYearText: TextView? = null
     private var calendarRecyclerView: RecyclerView? = null
     private var shortDataRecyclerView: RecyclerView? = null
+    private var addButton: FloatingActionButton? = null
     private var selectedDate: LocalDate? = null
     private var additionMonth: Long = 0
     var day = ""
@@ -43,6 +45,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         calendarRecyclerView = binding.calendarRecyclerView
         shortDataRecyclerView = binding.shortDataRecyclerView
         monthYearText = binding.monthYearTV
+        addButton = binding.addData
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -162,13 +165,20 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
 
     override fun onItemClick(position: Int, dayText: String?) {
         if (!dayText.isNullOrEmpty()) {
+            shortDataRecyclerView?.visibility = View.VISIBLE
+            addButton?.visibility = View.GONE
 
             val date = Date.from(selectedDate?.atStartOfDay(ZoneId.systemDefault())!!.toInstant())
             day = Converter().addZero(dayText)
             month = SimpleDateFormat("MM", Locale.getDefault()).format(date)
             year = selectedDate?.year.toString()
 
-            shortDate(day, month, year)
+            shortDate(day, month, year) // Отрисовать предпросмотр выбранного дня
+        } else {
+            // TODO: Добавить кнопку, которая будет исчезать и появляться в зависимости от данных в дне
+            addButton?.visibility = View.VISIBLE
+            shortDataRecyclerView?.visibility = View.GONE
+
         }
     }
 

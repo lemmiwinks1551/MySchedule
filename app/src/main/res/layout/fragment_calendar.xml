@@ -136,6 +136,15 @@
         android:layout_weight="0.5"
         android:scrollbars="vertical" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/add_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|top"
+        android:layout_margin="16dp"
+        android:contentDescription="@string/add_data_in_day"
+        android:src="@android:drawable/ic_input_add" />
+
 
 </LinearLayout>
 
