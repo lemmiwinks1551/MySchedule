@@ -128,6 +128,14 @@
         android:layout_marginTop="8dp"
         android:layout_weight="0.5" />
 
+    <TextView
+        android:id="@+id/dayTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textColor="@color/blue_main"
+        android:text="01.01.2022"/> <!--Выбранный день-->
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/shortDataRecyclerView"
         android:layout_width="match_parent"
@@ -143,7 +151,9 @@
         android:layout_gravity="center|top"
         android:layout_margin="16dp"
         android:contentDescription="@string/add_data_in_day"
-        android:src="@android:drawable/ic_input_add" />
+        android:src="@android:drawable/ic_input_add"
+        android:visibility= "invisible"
+        android:onClick="goIntoDay"/>
 
 
 </LinearLayout>

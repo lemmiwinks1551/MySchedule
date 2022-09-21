@@ -22,6 +22,11 @@ import java.time.ZoneId
 import java.util.*
 
 class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
+    companion object {
+        var day = ""
+        var month = ""
+        var year = ""
+    }
 
     private var _binding: FragmentCalendarBinding? = null
 
@@ -32,12 +37,11 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
     private var monthYearText: TextView? = null
     private var calendarRecyclerView: RecyclerView? = null
     private var shortDataRecyclerView: RecyclerView? = null
+    private var dateTextView: TextView? = null
     private var addButton: FloatingActionButton? = null
     private var selectedDate: LocalDate? = null
     private var additionMonth: Long = 0
-    var day = ""
-    private var month = ""
-    private var year = ""
+
     private val LOG = "CalendarFragment"
 
     private fun initWidgets() {
@@ -46,6 +50,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         shortDataRecyclerView = binding.shortDataRecyclerView
         monthYearText = binding.monthYearTV
         addButton = binding.addData
+        dateTextView = binding.dayTextView
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -165,20 +170,24 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
 
     override fun onItemClick(position: Int, dayText: String?) {
         if (!dayText.isNullOrEmpty()) {
+            // Отобразить педварительный просмотр и кнопку
+            addButton?.visibility = View.VISIBLE
             shortDataRecyclerView?.visibility = View.VISIBLE
-            addButton?.visibility = View.GONE
+            dateTextView?.visibility = View.VISIBLE
 
             val date = Date.from(selectedDate?.atStartOfDay(ZoneId.systemDefault())!!.toInstant())
             day = Converter().addZero(dayText)
             month = SimpleDateFormat("MM", Locale.getDefault()).format(date)
             year = selectedDate?.year.toString()
 
+            dateTextView?.text = String.format("${day}.${month}.${year}")
+
             shortDate(day, month, year) // Отрисовать предпросмотр выбранного дня
         } else {
-            // TODO: Добавить кнопку, которая будет исчезать и появляться в зависимости от данных в дне
-            addButton?.visibility = View.VISIBLE
-            shortDataRecyclerView?.visibility = View.GONE
-
+            // Убрать предварительный просмотр и кнопку
+            addButton?.visibility = View.INVISIBLE
+            shortDataRecyclerView?.visibility = View.INVISIBLE
+            dateTextView?.text = "Выберите дату из календаря"
         }
     }
 
@@ -245,4 +254,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         _binding = null
     }
 
+    fun getFullDate(): String {
+        return String.format("${day}.${month}.${year}")
+    }
 }

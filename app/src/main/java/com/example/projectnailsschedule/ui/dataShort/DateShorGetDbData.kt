@@ -18,8 +18,6 @@ class DateShorGetDbData(
 
     private val LOG = "DateShort Thread"
     private val timeNameMap = mutableMapOf<String, String>()
-
-    private var cursor: Cursor? = null
     private var rowsCount = 0
 
 

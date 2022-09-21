@@ -22,8 +22,6 @@ class DateShortViewHolder internal constructor(itemView: View, _date: String) :
     }
 
     override fun onClick(p0: View?) {
-        val intent = Intent(itemView.context, DateActivity::class.java)
-        intent.putExtra("day", date)
-        itemView.context.startActivity(intent)
+
     }
 }

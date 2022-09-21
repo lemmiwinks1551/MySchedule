@@ -1,6 +1,8 @@
 package com.example.projectnailsschedule
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
@@ -9,12 +11,16 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.projectnailsschedule.databinding.ActivityMainBinding
+import com.example.projectnailsschedule.ui.calendar.CalendarFragment
+import com.example.projectnailsschedule.ui.dataShort.DateShortAdapter
+import com.example.projectnailsschedule.ui.dataShort.DateShortViewHolder
 import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
+    private var calendarFragment: CalendarFragment = CalendarFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,6 +29,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setSupportActionBar(binding.appBarMain.toolbar)
+
 
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
@@ -54,5 +61,11 @@ class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    fun goIntoDay(view: View) {
+        val intent = Intent(this, DateActivity::class.java)
+        intent.putExtra("day", "${CalendarFragment.day}.${CalendarFragment.month}.${CalendarFragment.year}")
+        this.startActivity(intent)
     }
 }
