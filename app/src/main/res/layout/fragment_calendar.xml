@@ -130,11 +130,11 @@
 
     <TextView
         android:id="@+id/dayTextView"
+        android:textSize="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
-        android:textColor="@color/blue_main"
-        android:text="01.01.2022"/> <!--Выбранный день-->
+        android:textColor="@color/blue_main" /> <!--Выбранный день-->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/shortDataRecyclerView"
@@ -150,7 +150,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center|top"
         android:layout_margin="16dp"
-        android:contentDescription="@string/add_data_in_day"
         android:src="@android:drawable/ic_input_add"
         android:visibility= "invisible"
         android:onClick="goIntoDay"/>

@@ -7,26 +7,26 @@
 
 
     <TextView
-        android:textStyle="bold"
         android:id="@+id/COLUMN_START_TEXT"
         android:layout_width="120dp"
         android:layout_height="21dp"
         android:layout_margin="16dp"
-        android:text="Время"
+        android:text="@string/time"
         android:textColor="@color/black"
         android:textSize="16sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:textStyle="bold"
         android:id="@+id/appointment_start_short"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:text="11:00"
+        android:text="@string/time"
         android:textColor="@color/blue_main"
         android:textSize="16sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@id/COLUMN_START_TEXT"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -35,7 +35,7 @@
         android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:text="Клиент"
+        android:text="@string/client"
         android:textColor="@color/black"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -46,10 +46,18 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:text="Имя"
+        android:text="@string/client"
         android:textColor="@color/blue_main"
         android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@id/COLUMN_NAME_TEXT"
         app:layout_constraintTop_toBottomOf="@+id/appointment_start_short" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_margin="8dp"
+        android:background="@color/blue_main"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/appointment_name_short" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

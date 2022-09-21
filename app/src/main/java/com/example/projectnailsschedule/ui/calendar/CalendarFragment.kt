@@ -126,6 +126,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         additionMonth--
         setMonthView()
         shortDataRecyclerView?.adapter = null
+        dateTextView?.text = null
     }
 
     private fun nextMonthAction() {
@@ -136,6 +137,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         additionMonth++
         setMonthView()
         shortDataRecyclerView?.adapter = null
+        dateTextView?.text = null
     }
 
     override fun onCreateView(
@@ -252,9 +254,5 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         Log.e(LOG, "onDestroyView")
         super.onDestroyView()
         _binding = null
-    }
-
-    fun getFullDate(): String {
-        return String.format("${day}.${month}.${year}")
     }
 }
