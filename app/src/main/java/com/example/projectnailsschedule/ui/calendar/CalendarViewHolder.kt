@@ -1,5 +1,7 @@
 package com.example.projectnailsschedule.ui.calendar
 
+import android.graphics.Point
+import android.view.Display
 import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -17,9 +19,9 @@ class CalendarViewHolder internal constructor(itemView: View, onItemListener: Ca
 
     init {
         dayOfMonth = itemView.findViewById(R.id.cellDayText)
+        // TODO: делить всю ширину экрана на 7, чтобы рассчитать ширину дней в календаре 
         this.onItemListener = onItemListener
         itemView.setOnClickListener(this)
-
     }
 
     override fun onClick(view: View) {

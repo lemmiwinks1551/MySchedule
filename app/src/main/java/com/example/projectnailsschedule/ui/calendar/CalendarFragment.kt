@@ -5,7 +5,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -26,6 +28,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         var day = ""
         var month = ""
         var year = ""
+        var width = 0
     }
 
     private var _binding: FragmentCalendarBinding? = null
@@ -41,7 +44,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
     private var addButton: FloatingActionButton? = null
     private var selectedDate: LocalDate? = null
     private var additionMonth: Long = 0
-
+    private var layout: LinearLayout? = null
     private val LOG = "CalendarFragment"
 
     private fun initWidgets() {
@@ -51,6 +54,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         monthYearText = binding.monthYearTV
         addButton = binding.addData
         dateTextView = binding.dayTextView
+        layout = binding.fragmentCalendar
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -144,6 +148,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         Log.e(LOG, "onCreateView")
+
         if (savedInstanceState != null) {
             additionMonth = savedInstanceState.getLong("additionMonth")
         }
