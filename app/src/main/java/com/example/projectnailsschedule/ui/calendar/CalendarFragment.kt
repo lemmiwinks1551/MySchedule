@@ -125,23 +125,29 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
     private fun previousMonthAction() {
         // Обработка нажатия на кнопку Предыдущий месяц
         // Вычитаем один месяц из текущего
+        addButton?.visibility = View.INVISIBLE
+
         selectedDate = selectedDate?.minusMonths(1)
         CalendarAdapter.month--
         additionMonth--
         setMonthView()
         shortDataRecyclerView?.adapter = null
         dateTextView?.text = null
+        calendarRecyclerView?.scheduleLayoutAnimation()
     }
 
     private fun nextMonthAction() {
         // Обработка нажатия на кнопку Следующий месяц
         // Добавляем один месяц к текущему
+        addButton?.visibility = View.INVISIBLE
+
         selectedDate = selectedDate?.plusMonths(1)
         CalendarAdapter.month++
         additionMonth++
         setMonthView()
         shortDataRecyclerView?.adapter = null
         dateTextView?.text = null
+        calendarRecyclerView?.scheduleLayoutAnimation()
     }
 
     override fun onCreateView(
