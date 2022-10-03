@@ -16,6 +16,7 @@
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/drawable/ic_baseline_keyboard_arrow_left_24.xml" value="0.3605" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/drawable/ic_baseline_keyboard_arrow_right_24.xml" value="0.3605" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/drawable/ic_baseline_people_alt_24.xml" value="0.251" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/drawable/ic_baseline_search_24.xml" value="0.189" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/drawable/ic_baseline_settings_24.xml" value="0.3605" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/drawable/ic_launcher_background.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.3605" />
@@ -25,6 +26,7 @@
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/layout/activity_appointment.xml" value="0.33" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/layout/activity_date.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/layout/activity_main.xml" value="0.29829545454545453" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/layout/activity_search.xml" value="0.365625" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/layout/app_bar_main.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/layout/calendar_cell.xml" value="0.5" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/layout/content_main.xml" value="0.33" />
@@ -50,6 +52,7 @@
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/menu/main.xml" value="0.33" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.22" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/mipmap-hdpi/ic_launcher.xml" value="0.355" />
+        <entry key="..\:/Users/Admin/AppData/Local/Android/Sdk/platforms/android-32/data/res/layout/auto_complete_list.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Admin/AppData/Local/Android/Sdk/platforms/android-32/data/res/layout/simple_list_item_1.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Admin/AppData/Local/Android/Sdk/platforms/android-32/data/res/layout/two_line_list_item.xml" value="0.36666666666666664" />
       </map>

@@ -21,17 +21,17 @@
         android:id="@+id/nav_price"
         android:name="com.example.projectnailsschedule.ui.price.PriceFragment"
         android:label="@string/menu_service"
-        tools:layout="@layout/fragment_service" />
+        tools:layout="@layout/fragment_price" />
 
     <fragment
         android:id="@+id/nav_settings"
         android:name="com.example.projectnailsschedule.ui.settings.SettingsFragment"
         android:label="@string/menu_settings"
-        tools:layout="@layout/fragment_service" />
-    <fragment
+        tools:layout="@layout/fragment_price" />
 
+    <fragment
         android:id="@+id/nav_about"
         android:name="com.example.projectnailsschedule.ui.about.AboutFragment"
         android:label="@string/menu_about"
-        tools:layout="@layout/fragment_service" />
+        tools:layout="@layout/fragment_price" />
 </navigation>
