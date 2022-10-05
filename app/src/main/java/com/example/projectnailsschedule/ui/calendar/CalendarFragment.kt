@@ -2,17 +2,15 @@ package com.example.projectnailsschedule.ui.calendar
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.Converter
+import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentCalendarBinding
 import com.example.projectnailsschedule.ui.dataShort.DateShorGetDbData
 import com.example.projectnailsschedule.ui.dataShort.DateShortAdapter
@@ -22,6 +20,7 @@ import java.time.LocalDate
 import java.time.YearMonth
 import java.time.ZoneId
 import java.util.*
+
 
 class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
     companion object {
@@ -177,7 +176,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         binding.prevMonth.setOnClickListener {
             previousMonthAction()
         }
-
+        setHasOptionsMenu(true)
         return root
     }
 
@@ -265,5 +264,12 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         Log.e(LOG, "onDestroyView")
         super.onDestroyView()
         _binding = null
+
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        // Устанавливаем иконку поиска видимой
+        menu.findItem(R.id.search).isVisible = true
+        super.onPrepareOptionsMenu(menu)
     }
 }
