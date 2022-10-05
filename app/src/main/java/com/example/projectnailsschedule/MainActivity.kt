@@ -77,8 +77,6 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.search -> navController.navigate(R.id.nav_search)
-            // TODO: Читать про навиг. граф.
-        //  убрать отображение кнопки поиска со всех фрагментов, кроме календаря
         }
         return super.onOptionsItemSelected(item)
     }

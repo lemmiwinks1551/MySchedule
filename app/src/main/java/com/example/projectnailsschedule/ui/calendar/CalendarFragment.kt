@@ -1,8 +1,10 @@
 package com.example.projectnailsschedule.ui.calendar
 
+import android.app.Activity
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.view.inputmethod.InputMethodManager
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
@@ -236,6 +238,9 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
 
         // Обновляет выбранную дату в предварительном просмотре
         shortDate(day, month, year)
+
+        // Убираем клавиатуру
+        hideKeyboard()
     }
 
     override fun onDestroy() {
@@ -271,5 +276,17 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         // Устанавливаем иконку поиска видимой (только для фрагмента CalendarFragment)
         menu.findItem(R.id.search).isVisible = true
         super.onPrepareOptionsMenu(menu)
+    }
+
+    private fun hideKeyboard() {
+        val imm: InputMethodManager =
+            requireActivity().getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        //Find the currently focused view, so we can grab the correct window token from it.
+        var view = requireActivity().currentFocus
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = View(activity)
+        }
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 }
