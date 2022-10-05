@@ -268,7 +268,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
-        // Устанавливаем иконку поиска видимой
+        // Устанавливаем иконку поиска видимой (только для фрагмента CalendarFragment)
         menu.findItem(R.id.search).isVisible = true
         super.onPrepareOptionsMenu(menu)
     }
