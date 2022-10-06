@@ -10,6 +10,7 @@ import com.example.projectnailsschedule.DatabaseHelper
 /**
  * Методы для взаимодействия с БД по статусам дней календаря:
  * создать БД, обновить БД, добавить строку, удалить строку, обновить строку выполнить запрос
+ * https://developer.android.com/training/data-storage
  * */
 
 class DateStatusDbHelper(context: Context?) :
