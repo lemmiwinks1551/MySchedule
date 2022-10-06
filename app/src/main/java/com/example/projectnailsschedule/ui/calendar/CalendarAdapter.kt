@@ -19,7 +19,7 @@ internal class CalendarAdapter(
 ) :
     RecyclerView.Adapter<CalendarViewHolder>() {
 
-    private var LOG = "CalendarAdapter"
+    private var LOG = this::class.simpleName
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalendarViewHolder {
         // Возвращает объект ViewHolder, который будет хранить данные по одному объекту

@@ -16,7 +16,7 @@ class DateShorGetDbData(
     private var context: Context
 ) {
 
-    private val LOG = "DateShort Thread"
+    private val LOG = this::class.simpleName
     private val timeNameMap = mutableMapOf<String, String>()
     private var rowsCount = 0
 

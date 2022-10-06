@@ -46,7 +46,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
     private var selectedDate: LocalDate? = null
     private var additionMonth: Long = 0
     private var layout: LinearLayout? = null
-    private val LOG = "CalendarFragment"
+    private val LOG = this::class.simpleName
 
     private fun initWidgets() {
         // Инициировать view

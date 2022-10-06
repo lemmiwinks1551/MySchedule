@@ -17,7 +17,7 @@ class StatusesMap : Thread() {
 
 
     val dayStatuses = mutableMapOf<String, String>()
-    private val LOG = "StatusesMap Thread"
+    private val LOG = this::class.simpleName
     private lateinit var daysInMonthArray: ArrayList<String>
     private lateinit var context: Context
     private lateinit var yearMonth: YearMonth

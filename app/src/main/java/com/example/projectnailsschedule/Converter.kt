@@ -8,7 +8,7 @@ class Converter {
 
     /** Вспомогательный класс, выполняющий различные конвертации */
 
-    val LOG = "Converter"
+    val LOG = this::class.simpleName
 
     fun addZero(digit: String): String {
         /** Дописывает 0 к однозначным числам */

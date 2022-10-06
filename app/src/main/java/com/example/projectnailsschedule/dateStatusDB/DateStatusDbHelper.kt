@@ -24,7 +24,7 @@ class DateStatusDbHelper(context: Context?) :
         const val COLUMN_DATE = "date"
         const val COLUMN_STATUS = "status"
 
-        const val LOG_DATABASE = "StatusDB"
+        val LOG = this::class.simpleName
 
         // Статусы:
         const val STATUS_FREE = "free"
@@ -38,15 +38,15 @@ class DateStatusDbHelper(context: Context?) :
         val query = "INSERT INTO $TABLE_NAME " +
                 "($COLUMN_DATE, $COLUMN_STATUS) " +
                 "VALUES ('$date', '$status');"
-        Log.e(LOG_DATABASE, String.format("Add row query: $query"))
+        Log.e(LOG, String.format("Add row query: $query"))
         db.execSQL(query)
-        Log.e(LOG_DATABASE, String.format("Add row - success"))
+        Log.e(LOG, String.format("Add row - success"))
     }
 
     fun fetchDate(date: String, db: SQLiteDatabase): Cursor {
         // Метод получает строку из БД в завимости от дня
         val query = "SELECT * FROM $TABLE_NAME WHERE $COLUMN_DATE = '$date';"
-        Log.e(LOG_DATABASE, String.format("Row № $date fetched"))
+        Log.e(LOG, String.format("Row № $date fetched"))
         // Получаем данные из бд в виде курсора
         return db.rawQuery(query, null)
     }
@@ -56,23 +56,23 @@ class DateStatusDbHelper(context: Context?) :
         val query = "UPDATE $TABLE_NAME SET " +
                 "$COLUMN_STATUS = '$status' " +
                 "WHERE $COLUMN_DATE = '$date';"
-        Log.e(LOG_DATABASE, String.format("Edit row query: $query"))
+        Log.e(LOG, String.format("Edit row query: $query"))
         db.execSQL(query)
-        Log.e(LOG_DATABASE, String.format("Edit row success"))
+        Log.e(LOG, String.format("Edit row success"))
     }
 
     override fun onCreate(db: SQLiteDatabase) {
-        Log.e(LOG_DATABASE, "Status DB creating")
+        Log.e(LOG, "Status DB creating")
         db.execSQL(
             "CREATE TABLE $TABLE_NAME ($COLUMN_ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     "$COLUMN_DATE TEXT NOT NULL," +
                     "$COLUMN_STATUS TEXT NOT NULL);"
         )
-        Log.e(LOG_DATABASE, "Status DB created")
+        Log.e(LOG, "Status DB created")
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        Log.e(LOG_DATABASE, "Status DB updated")
+        Log.e(LOG, "Status DB updated")
         // TODO: Добавить логику, чтобы старая БД переписывалась в новую, а не убивалась
         db.execSQL("DROP TABLE IF EXISTS $TABLE_NAME")
         onCreate(db)

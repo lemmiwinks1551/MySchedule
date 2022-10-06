@@ -22,7 +22,7 @@ class DateActivity : AppCompatActivity() {
         const val COLUMN_NAME = DatabaseHelper.COLUMN_NAME
         const val COLUMN_PHONE = DatabaseHelper.COLUMN_PHONE
         const val COLUMN_MISC = DatabaseHelper.COLUMN_MISC
-        const val LOG_NAME = "DateActivity"
+        val LOG = this::class.simpleName
         var statusForSpinner = ""
         var dayStatus = "no status"
     }
@@ -47,7 +47,7 @@ class DateActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_date)
-        Log.e(LOG_NAME, "onCreate")
+        Log.e(LOG, "onCreate")
         binding = ActivityDateBinding.inflate(layoutInflater)
 
         // Получаем интент с датой
@@ -125,7 +125,7 @@ class DateActivity : AppCompatActivity() {
 
         // Получаем id строки для дальнейшего изменения/удаления
         val currentId = currentCur.getInt(0)
-        Log.e(LOG_NAME, "id selected: $currentCur")
+        Log.e(LOG, "id selected: $currentCur")
 
         deleteButton?.setOnClickListener {
             databaseHelper?.deleteRow(currentId, db!!)
@@ -182,7 +182,7 @@ class DateActivity : AppCompatActivity() {
 
         scheduleList!!.adapter = adapter
 
-        Log.e(LOG_NAME, "Адаптер с курсором установлен")
+        Log.e(LOG, "Адаптер с курсором установлен")
 
     }
 
@@ -210,9 +210,9 @@ class DateActivity : AppCompatActivity() {
         if (cursor!!.moveToFirst()) {
             val columnIndex = cursor!!.getColumnIndex("status")
             dayStatus = cursor!!.getString(columnIndex)
-            Log.e(LOG_NAME, "Day $day status fetched: ${DateStatusDbHelper.COLUMN_STATUS}")
+            Log.e(LOG, "Day $day status fetched: ${DateStatusDbHelper.COLUMN_STATUS}")
         } else {
-            Log.e(LOG_NAME, "Cannot fetch status, no data")
+            Log.e(LOG, "Cannot fetch status, no data")
             dayStatus = "no status"
             statusForSpinner = "Свободен"
         }
@@ -243,7 +243,7 @@ class DateActivity : AppCompatActivity() {
         val spinnerPosition = adapterStatus.getPosition(statusForSpinner)
         dayStatusSpinner!!.adapter = adapterStatus
         dayStatusSpinner!!.setSelection(spinnerPosition, true)
-        Log.e(LOG_NAME, "Status $statusForSpinner ($dayStatus) set")
+        Log.e(LOG, "Status $statusForSpinner ($dayStatus) set")
     }
 
     private fun setDayStatus(status: String) {
@@ -277,9 +277,9 @@ class DateActivity : AppCompatActivity() {
 
     public override fun onDestroy() {
         super.onDestroy()
-        Log.e(LOG_NAME, "onDestroy")
+        Log.e(LOG, "onDestroy")
         // Закрываем подключение и курсор
-        Log.e(LOG_NAME, "Подключение закрыто")
+        Log.e(LOG, "Подключение закрыто")
         db!!.close()
         cursor!!.close()
     }
