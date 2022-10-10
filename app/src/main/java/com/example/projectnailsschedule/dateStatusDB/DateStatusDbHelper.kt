@@ -15,6 +15,7 @@ import com.example.projectnailsschedule.DatabaseHelper
 
 class DateStatusDbHelper(context: Context?) :
     SQLiteOpenHelper(context, DATABASE_NAME, null, VERSION) {
+
     companion object {
         private const val DATABASE_NAME = "status.db" // название бд
         private const val VERSION = 2 // версия базы данных
