@@ -4,8 +4,11 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.os.Environment
 import android.util.Log
-import com.example.projectnailsschedule.DatabaseHelper
+import java.io.File
+import java.io.FileWriter
+import java.io.IOException
 
 /**
  * Методы для взаимодействия с БД по статусам дней календаря:
@@ -33,6 +36,18 @@ class DateStatusDbHelper(context: Context?) :
         const val STATUS_MEDIUM = "medium"
         const val STATUS_BUSY = "busy"
         const val STATUS_DAY_OFF = "dayOff"
+    }
+
+    fun createDbDir() {
+        // TODO: Добавить создание папки, а в неё потом будем класть файл с БД 
+        val dir: File = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+        val file = File(dir, "example.txt")
+
+        try {
+            FileWriter(file).use { fileWriter -> fileWriter.append("Writing to file!") }
+        } catch (e: IOException) {
+            Log.e(LOG, e.toString())
+        }
     }
 
     fun addDate(date: String, status: String, db: SQLiteDatabase) {
