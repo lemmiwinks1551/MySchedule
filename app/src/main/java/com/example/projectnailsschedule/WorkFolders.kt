@@ -8,7 +8,7 @@ import java.io.File
  * Класс создает необходимые папки
  * */
 
-class Folders : Thread() {
+class WorkFolders : Thread() {
 
     private val LOG = this::class.simpleName
     private val mainFolderName: String = "MySchedule"
