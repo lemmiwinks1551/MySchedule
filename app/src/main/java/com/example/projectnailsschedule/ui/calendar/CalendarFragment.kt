@@ -259,7 +259,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
 
         // Если поток уже создан - перезапустить
         if (statusesMap.state == Thread.State.NEW) {
-            statusesMap.start();
+            statusesMap.start()
         } else {
             statusesMap.run()
         }

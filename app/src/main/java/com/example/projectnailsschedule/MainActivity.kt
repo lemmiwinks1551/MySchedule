@@ -1,5 +1,6 @@
 package com.example.projectnailsschedule
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -16,6 +17,7 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.projectnailsschedule.databinding.ActivityMainBinding
+import com.example.projectnailsschedule.dateStatusDB.DateStatusDbHelper
 import com.example.projectnailsschedule.ui.calendar.CalendarFragment
 import com.google.android.material.navigation.NavigationView
 
@@ -51,6 +53,11 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        // Создать при необходимость папки для работы приложения
+        if (Folders().state == Thread.State.NEW) {
+            Folders().start()
+        }
     }
 
 

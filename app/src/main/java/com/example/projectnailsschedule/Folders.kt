@@ -1,0 +1,49 @@
+package com.example.projectnailsschedule
+
+import android.os.Environment
+import android.util.Log
+import java.io.File
+
+/**
+ * Класс создает необходимые папки
+ * */
+
+class Folders : Thread() {
+
+    private val LOG = this::class.simpleName
+    private val mainFolderName: String = "MySchedule"
+    private val folder = File(
+        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS),
+        mainFolderName
+    )
+
+    override fun run() {
+        if (!directoryExists()) {
+            createDbDir()
+        }
+        super.run()
+    }
+
+    private fun createDbDir() {
+        // Создаем папку, для хранения файлов приложения
+        try {
+            if (folder.mkdirs()) {
+                Log.e(LOG, "Directory $mainFolderName created")
+            }
+        } catch (e: Exception) {
+            Log.e(LOG, "Directory creation error!")
+            Log.e(LOG, e.toString())
+        }
+    }
+
+    private fun directoryExists(): Boolean {
+        // Проверяем, создана ли папка для хранения файлов приложения
+        return if (folder.exists()) {
+            Log.e(LOG, "Folder $mainFolderName exists")
+            true
+        } else {
+            Log.e(LOG, "Folder $mainFolderName is not exists")
+            false
+        }
+    }
+}
