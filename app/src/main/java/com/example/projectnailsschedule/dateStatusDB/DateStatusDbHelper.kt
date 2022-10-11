@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.os.Environment
 import android.util.Log
+import com.example.projectnailsschedule.WorkFolders
 import java.io.File
 import java.io.FileWriter
 import java.io.IOException
@@ -20,9 +21,10 @@ class DateStatusDbHelper(context: Context?) :
     SQLiteOpenHelper(context, DATABASE_NAME, null, VERSION) {
 
     companion object {
-        private const val DATABASE_NAME = "status.db" // название бд
+        private var DATABASE_NAME = String.format("${WorkFolders().getFolderPath()}/status.db") // название бд
         private const val VERSION = 2 // версия базы данных
-        const val TABLE_NAME = "status" // название таблицы в бд
+        // const val TABLE_NAME = "status" // название таблицы в бд
+        var TABLE_NAME = "status" // название таблицы в бд
 
         // Названия столбцов
         const val COLUMN_ID = "_id"

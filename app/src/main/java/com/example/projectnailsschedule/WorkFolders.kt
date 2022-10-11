@@ -12,7 +12,7 @@ class WorkFolders : Thread() {
 
     private val LOG = this::class.simpleName
     private val mainFolderName: String = "MySchedule"
-    private val folder = File(
+    private val folderPath = File(
         Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS),
         mainFolderName
     )
@@ -27,7 +27,7 @@ class WorkFolders : Thread() {
     private fun createDbDir() {
         // Создаем папку, для хранения файлов приложения
         try {
-            if (folder.mkdirs()) {
+            if (folderPath.mkdirs()) {
                 Log.e(LOG, "Directory $mainFolderName created")
             }
         } catch (e: Exception) {
@@ -38,12 +38,16 @@ class WorkFolders : Thread() {
 
     private fun directoryExists(): Boolean {
         // Проверяем, создана ли папка для хранения файлов приложения
-        return if (folder.exists()) {
+        return if (folderPath.exists()) {
             Log.e(LOG, "Folder $mainFolderName exists")
             true
         } else {
             Log.e(LOG, "Folder $mainFolderName is not exists")
             false
         }
+    }
+
+    fun getFolderPath(): File {
+        return folderPath
     }
 }
