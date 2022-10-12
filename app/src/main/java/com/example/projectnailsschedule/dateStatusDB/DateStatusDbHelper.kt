@@ -21,10 +21,11 @@ class DateStatusDbHelper(context: Context?) :
     SQLiteOpenHelper(context, DATABASE_NAME, null, VERSION) {
 
     companion object {
+
+        // Получить название БД (если создана спец. папка. то в неё положить файл БД, если нет - внутри приложения
         private var DATABASE_NAME = String.format("${WorkFolders().getFolderPath()}/status.db") // название бд
-        private const val VERSION = 2 // версия базы данных
-        // const val TABLE_NAME = "status" // название таблицы в бд
-        var TABLE_NAME = "status" // название таблицы в бд
+        private const val VERSION = 2   // версия базы данных
+        var TABLE_NAME = "status"       // название таблицы в бд
 
         // Названия столбцов
         const val COLUMN_ID = "_id"
@@ -80,7 +81,6 @@ class DateStatusDbHelper(context: Context?) :
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         Log.e(LOG, "Status DB updated")
-        // TODO: Добавить логику, чтобы старая БД переписывалась в новую, а не убивалась
         db.execSQL("DROP TABLE IF EXISTS $TABLE_NAME")
         onCreate(db)
     }
