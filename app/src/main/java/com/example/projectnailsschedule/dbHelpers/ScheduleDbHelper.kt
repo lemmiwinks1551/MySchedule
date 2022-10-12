@@ -5,6 +5,7 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
+import com.example.projectnailsschedule.WorkFolders
 
 /**
  * Методы для взаимодействия с БД по записям:
@@ -13,7 +14,7 @@ import android.util.Log
 
 class ScheduleDbHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAME, null, VERSION) {
     companion object {
-        private const val DATABASE_NAME = "schedule.db" // название бд
+        private var DATABASE_NAME = String.format("${WorkFolders().getFolderPath()}/schedule.db") // название бд
         private const val VERSION = 23 // версия базы данных
         const val TABLE_NAME = "schedule" // название таблицы в бд
 
