@@ -1,4 +1,4 @@
-package com.example.projectnailsschedule
+package com.example.projectnailsschedule.dbHelpers
 
 import android.content.Context
 import android.database.Cursor
@@ -11,7 +11,7 @@ import android.util.Log
  * создать БД, обновить БД, добавить строку, удалить строку, обновить строку выполнить запрос
  * */
 
-class DatabaseHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAME, null, VERSION) {
+class ScheduleDbHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAME, null, VERSION) {
     companion object {
         private const val DATABASE_NAME = "schedule.db" // название бд
         private const val VERSION = 23 // версия базы данных

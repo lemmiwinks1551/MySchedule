@@ -1,15 +1,11 @@
-package com.example.projectnailsschedule.dateStatusDB
+package com.example.projectnailsschedule.dbHelpers
 
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import android.os.Environment
 import android.util.Log
 import com.example.projectnailsschedule.WorkFolders
-import java.io.File
-import java.io.FileWriter
-import java.io.IOException
 
 /**
  * Методы для взаимодействия с БД по статусам дней календаря:

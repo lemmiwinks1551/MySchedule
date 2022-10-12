@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
 import androidx.appcompat.app.AppCompatActivity
 import com.example.projectnailsschedule.databinding.ActivityAppointmentBinding
+import com.example.projectnailsschedule.dbHelpers.ScheduleDbHelper
 import java.util.*
 
 
@@ -18,7 +19,7 @@ import java.util.*
 class Appointment : AppCompatActivity() {
 
     private lateinit var binding: ActivityAppointmentBinding
-    private lateinit var databaseHelper: DatabaseHelper
+    private lateinit var databaseHelper: ScheduleDbHelper
     private lateinit var db: SQLiteDatabase
     private val addTitle = "Добавить"
     private val editTitle = "Редактировать"
@@ -47,7 +48,7 @@ class Appointment : AppCompatActivity() {
 
         binding = ActivityAppointmentBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        databaseHelper = DatabaseHelper(applicationContext)
+        databaseHelper = ScheduleDbHelper(applicationContext)
         db = databaseHelper.writableDatabase
 
         // Добавляем ClickListener на кнопки

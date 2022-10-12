@@ -1,10 +1,9 @@
 package com.example.projectnailsschedule.ui.dataShort
 
 import android.content.Context
-import android.database.Cursor
 import android.util.Log
 import com.example.projectnailsschedule.Converter
-import com.example.projectnailsschedule.DatabaseHelper
+import com.example.projectnailsschedule.dbHelpers.ScheduleDbHelper
 
 /** Получает данные из БД за выбранную дату
  * Хранит полученные данные в массиве */
@@ -25,15 +24,15 @@ class DateShorGetDbData(
 
         // Получаем записи по дню и добавляем в словарь Клиент-Время
         val date = "${Converter().addZero(day)}.${Converter().addZero(month)}.$year"
-        val databaseHelper = DatabaseHelper(context)
+        val databaseHelper = ScheduleDbHelper(context)
         val db = databaseHelper.readableDatabase
         val cursor = databaseHelper.fetchNameDate(date, db)
 
         if (cursor.moveToFirst()) {
             // Если данные были в БД - заполнить словарь
             do {
-                val nameColumnIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_NAME)
-                val timeColumnIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_START)
+                val nameColumnIndex = cursor.getColumnIndex(ScheduleDbHelper.COLUMN_NAME)
+                val timeColumnIndex = cursor.getColumnIndex(ScheduleDbHelper.COLUMN_START)
                 timeNameMap[cursor.getString(nameColumnIndex)] = cursor.getString(timeColumnIndex)
             } while (cursor.moveToNext())
         } else {

@@ -12,16 +12,17 @@ import android.widget.*
 import android.widget.AdapterView.OnItemLongClickListener
 import androidx.appcompat.app.AppCompatActivity
 import com.example.projectnailsschedule.databinding.ActivityDateBinding
-import com.example.projectnailsschedule.dateStatusDB.DateStatusDbHelper
+import com.example.projectnailsschedule.dbHelpers.DateStatusDbHelper
+import com.example.projectnailsschedule.dbHelpers.ScheduleDbHelper
 
 
 class DateActivity : AppCompatActivity() {
     companion object {
-        const val COLUMN_START = DatabaseHelper.COLUMN_START
-        const val COLUMN_PROCEDURE = DatabaseHelper.COLUMN_PROCEDURE
-        const val COLUMN_NAME = DatabaseHelper.COLUMN_NAME
-        const val COLUMN_PHONE = DatabaseHelper.COLUMN_PHONE
-        const val COLUMN_MISC = DatabaseHelper.COLUMN_MISC
+        const val COLUMN_START = ScheduleDbHelper.COLUMN_START
+        const val COLUMN_PROCEDURE = ScheduleDbHelper.COLUMN_PROCEDURE
+        const val COLUMN_NAME = ScheduleDbHelper.COLUMN_NAME
+        const val COLUMN_PHONE = ScheduleDbHelper.COLUMN_PHONE
+        const val COLUMN_MISC = ScheduleDbHelper.COLUMN_MISC
         val LOG = this::class.simpleName
         var statusForSpinner = ""
         var dayStatus = "no status"
@@ -33,7 +34,7 @@ class DateActivity : AppCompatActivity() {
     private var editButton: Button? = null
     private var dayStatusSpinner: Spinner? = null
 
-    private var databaseHelper: DatabaseHelper? = null
+    private var databaseHelper: ScheduleDbHelper? = null
     private var db: SQLiteDatabase? = null
     private var dateStatusDbHelper: DateStatusDbHelper? = null
     private var dbStatus: SQLiteDatabase? = null
@@ -67,7 +68,7 @@ class DateActivity : AppCompatActivity() {
         setStatusInSpinner()
 
         scheduleList = findViewById(R.id.scheduleListView)
-        databaseHelper = DatabaseHelper(applicationContext)
+        databaseHelper = ScheduleDbHelper(applicationContext)
     }
 
     public override fun onResume() {

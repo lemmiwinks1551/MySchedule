@@ -1,15 +1,11 @@
 package com.example.projectnailsschedule.ui.calendar
 
-import android.database.Cursor
-import android.database.sqlite.SQLiteDatabase
 import android.graphics.Typeface
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
-import com.example.projectnailsschedule.dateStatusDB.DateStatusDbHelper
 import java.time.LocalDate
 
 internal class CalendarAdapter(
