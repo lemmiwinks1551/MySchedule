@@ -5,11 +5,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
-import com.example.projectnailsschedule.ui.calendar.CalendarFragment
 
 internal class DateShortAdapter(
     private val rowsCount: Int,
-    private val dateShorGetDbData: DateShorGetDbData,
+    private val dateShorGetDbData: DateShortGetDbData,
     private val date: String
 ) :
     RecyclerView.Adapter<DateShortViewHolder>() {

@@ -19,7 +19,7 @@ class DateStatusDbHelper(context: Context?) :
     companion object {
 
         // Получить название БД (если создана спец. папка. то в неё положить файл БД, если нет - внутри приложения
-        private var DATABASE_NAME = String.format("${WorkFolders().getFolderPath()}/status.db") // название бд
+        var DATABASE_NAME = String.format("${WorkFolders().getFolderPath()}/status.db") // название бд
         private const val VERSION = 2   // версия базы данных
         var TABLE_NAME = "status"       // название таблицы в бд
 

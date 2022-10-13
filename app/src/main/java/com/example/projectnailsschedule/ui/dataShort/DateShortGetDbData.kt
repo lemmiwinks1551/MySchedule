@@ -8,7 +8,7 @@ import com.example.projectnailsschedule.dbHelpers.ScheduleDbHelper
 /** Получает данные из БД за выбранную дату
  * Хранит полученные данные в массиве */
 
-class DateShorGetDbData(
+class DateShortGetDbData(
     private var day: String,
     private var month: String,
     private var year: String,

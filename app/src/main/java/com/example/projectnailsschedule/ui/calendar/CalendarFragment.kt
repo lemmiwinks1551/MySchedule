@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.Converter
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentCalendarBinding
-import com.example.projectnailsschedule.ui.dataShort.DateShorGetDbData
+import com.example.projectnailsschedule.ui.dataShort.DateShortGetDbData
 import com.example.projectnailsschedule.ui.dataShort.DateShortAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.text.SimpleDateFormat
@@ -207,7 +207,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
 
     private fun shortDate(date: String, month: String, year: String) {
         // TODO: метод будет получать данные из класса DateShortGetDb и устанавливать в RecyclerView
-        val dateShortDbData = DateShorGetDbData(date, month, year, this.requireContext())
+        val dateShortDbData = DateShortGetDbData(date, month, year, this.requireContext())
 
         dateShortDbData.fetchDate()
 

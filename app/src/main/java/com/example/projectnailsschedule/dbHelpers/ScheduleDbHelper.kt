@@ -2,10 +2,14 @@ package com.example.projectnailsschedule.dbHelpers
 
 import android.content.Context
 import android.database.Cursor
+import android.database.SQLException
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
 import com.example.projectnailsschedule.WorkFolders
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 
 /**
  * Методы для взаимодействия с БД по записям:
@@ -14,8 +18,8 @@ import com.example.projectnailsschedule.WorkFolders
 
 class ScheduleDbHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAME, null, VERSION) {
     companion object {
-        private var DATABASE_NAME = String.format("${WorkFolders().getFolderPath()}/schedule.db") // название бд
-        private const val VERSION = 23 // версия базы данных
+        var DATABASE_NAME = String.format("${WorkFolders().getFolderPath()}/schedule.db") // название бд
+        private const val VERSION = 24 // версия базы данных
         const val TABLE_NAME = "schedule" // название таблицы в бд
 
         // Названия столбцов
@@ -28,6 +32,8 @@ class ScheduleDbHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_N
         const val COLUMN_MISC = "misc"
         val LOG = this::class.simpleName
     }
+
+    private val myContext = context
 
     fun addRow(fields: ArrayList<String>, db: SQLiteDatabase) {
         /**
@@ -89,19 +95,6 @@ class ScheduleDbHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_N
                     "$COLUMN_MISC TEXT);"
         )
         Log.e(LOG, "DB created")
-
-        // Тестовая строка создается при обновлении БД
-        db.execSQL(
-            "INSERT INTO $TABLE_NAME (" +
-                    "$COLUMN_DATE, " +
-                    "$COLUMN_START, " +
-                    "$COLUMN_PROCEDURE, " +
-                    "$COLUMN_NAME, " +
-                    "$COLUMN_PHONE," +
-                    "$COLUMN_MISC) VALUES " +
-                    "('01.07.2022', '00:00', 'Наращивание', 'Имя Фамилия', '8 800 123 45 67', '@test');"
-        )
-        Log.e(LOG, "Test row added")
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
@@ -114,6 +107,36 @@ class ScheduleDbHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_N
     fun fetchNameDate(date: String, db: SQLiteDatabase): Cursor {
         val query = "SELECT * FROM $TABLE_NAME WHERE $COLUMN_DATE = '$date';"
         return db.rawQuery(query, null)
+    }
+
+    fun createDb() {
+        val file = File(DateStatusDbHelper.DATABASE_NAME)
+        if (!file.exists()) {
+            //получаем локальную бд как поток
+            try {
+                myContext?.assets?.open(DateStatusDbHelper.DATABASE_NAME).use { myInput ->
+                    FileOutputStream(DateStatusDbHelper.DATABASE_NAME).use { myOutput ->
+
+                        // побайтово копируем данные
+                        val buffer = ByteArray(1024)
+                        var length: Int
+                        if (myInput != null) {
+                            while (myInput.read(buffer).also { length = it } > 0) {
+                                myOutput.write(buffer, 0, length)
+                            }
+                        }
+                        myOutput.flush()
+                    }
+                }
+            } catch (e: IOException) {
+                Log.d(LOG, e.toString())
+            }
+        }
+    }
+
+    @Throws(SQLException::class)
+    fun open(): SQLiteDatabase? {
+        return SQLiteDatabase.openDatabase(DATABASE_NAME, null, SQLiteDatabase.OPEN_READWRITE)
     }
 
 }
