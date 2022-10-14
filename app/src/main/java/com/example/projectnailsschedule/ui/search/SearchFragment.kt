@@ -46,9 +46,13 @@ class SearchFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+
         try {
             db = scheduleDbHelper?.open()
-            userCursor = db?.rawQuery("SELECT * FROM ${ScheduleDbHelper.TABLE_NAME}", null)
+            userCursor = db?.rawQuery(
+                "SELECT * FROM ${ScheduleDbHelper.TABLE_NAME} ORDER BY ${ScheduleDbHelper.COLUMN_DATE} DESC",
+                null
+            )
 
             // Инициируем список заголовков и плейсхолдеры для них
             val headers = arrayOf(ScheduleDbHelper.COLUMN_NAME, ScheduleDbHelper.COLUMN_DATE)
@@ -75,17 +79,18 @@ class SearchFragment : Fragment() {
             })
 
             // устанавливаем провайдер фильтрации
-            userAdapter!!.filterQueryProvider = object : FilterQueryProvider {
-                override fun runQuery(p0: CharSequence?): Cursor {
-                    if (p0 == null || p0.isEmpty()) {
-                        return db!!.rawQuery("SELECT * FROM ${ScheduleDbHelper.TABLE_NAME}", null)
-                    } else {
-                        val arr = arrayOf("%$p0%")
-                        return db!!.rawQuery(
-                            "SELECT * FROM ${ScheduleDbHelper.TABLE_NAME} WHERE ${ScheduleDbHelper.COLUMN_NAME} LIKE ?",
-                            arr
-                        )
-                    }
+            userAdapter!!.filterQueryProvider = FilterQueryProvider { p0 ->
+                if (p0 == null || p0.isEmpty()) {
+                    db!!.rawQuery(
+                        "SELECT * FROM ${ScheduleDbHelper.TABLE_NAME} ORDER BY ${ScheduleDbHelper.COLUMN_DATE} DESC",
+                        null
+                    )
+                } else {
+                    val arr = arrayOf("%$p0%")
+                    db!!.rawQuery(
+                        "SELECT * FROM ${ScheduleDbHelper.TABLE_NAME} WHERE ${ScheduleDbHelper.COLUMN_NAME} LIKE ? ORDER BY ${ScheduleDbHelper.COLUMN_DATE} DESC",
+                        arr
+                    )
                 }
             }
             userList.adapter = userAdapter;

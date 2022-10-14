@@ -42,6 +42,9 @@
     <string name="status_description">Статус дня:</string>
     <string name="search">Search</string>
     <string name="searchRus">Поиск</string>
+    <string name="name">Имя</string>
+    <string name="date">Дата</string>
+    <string name="time_text">Время</string>
 
     <string-array name="day_status">
         <item>Свободен</item>
