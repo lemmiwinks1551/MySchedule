@@ -32,7 +32,7 @@ class DateShortGetDbData(
             // Если данные были в БД - заполнить словарь
             do {
                 val nameColumnIndex = cursor.getColumnIndex(ScheduleDbHelper.COLUMN_NAME)
-                val timeColumnIndex = cursor.getColumnIndex(ScheduleDbHelper.COLUMN_START)
+                val timeColumnIndex = cursor.getColumnIndex(ScheduleDbHelper.COLUMN_START_TIME)
                 timeNameMap[cursor.getString(nameColumnIndex)] = cursor.getString(timeColumnIndex)
             } while (cursor.moveToNext())
         } else {

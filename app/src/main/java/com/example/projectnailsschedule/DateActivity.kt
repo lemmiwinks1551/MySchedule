@@ -18,7 +18,7 @@ import com.example.projectnailsschedule.dbHelpers.ScheduleDbHelper
 
 class DateActivity : AppCompatActivity() {
     companion object {
-        const val COLUMN_START = ScheduleDbHelper.COLUMN_START
+        const val COLUMN_START = ScheduleDbHelper.COLUMN_START_TIME
         const val COLUMN_PROCEDURE = ScheduleDbHelper.COLUMN_PROCEDURE
         const val COLUMN_NAME = ScheduleDbHelper.COLUMN_NAME
         const val COLUMN_PHONE = ScheduleDbHelper.COLUMN_PHONE

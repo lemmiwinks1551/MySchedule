@@ -25,7 +25,7 @@ class ScheduleDbHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_N
         // Названия столбцов
         const val COLUMN_ID = "_id"
         const val COLUMN_DATE = "date"
-        const val COLUMN_START = "start"
+        const val COLUMN_START_TIME = "start"
         const val COLUMN_PROCEDURE = "procedure"
         const val COLUMN_NAME = "name"
         const val COLUMN_PHONE = "phone"
@@ -40,7 +40,7 @@ class ScheduleDbHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_N
          * Метод добавляет строку в БД
          * */
         val query = "INSERT INTO $TABLE_NAME " +
-                "($COLUMN_DATE, $COLUMN_START, " +
+                "($COLUMN_DATE, $COLUMN_START_TIME, " +
                 "$COLUMN_PROCEDURE, $COLUMN_NAME, " +
                 "$COLUMN_PHONE, $COLUMN_MISC) " +
                 "VALUES " +
@@ -61,7 +61,7 @@ class ScheduleDbHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_N
     fun fetchRow(day: String, db: SQLiteDatabase): Cursor {
         // Метод получает строку из БД в завимости от дня
         val query =
-            "SELECT * FROM $TABLE_NAME WHERE $COLUMN_DATE = '$day' ORDER BY $COLUMN_START ASC;"
+            "SELECT * FROM $TABLE_NAME WHERE $COLUMN_DATE = '$day' ORDER BY $COLUMN_START_TIME ASC;"
         Log.e(LOG, String.format("Row № $day fetched"))
         // Получаем данные из бд в виде курсора
         return db.rawQuery(query, null)
@@ -71,7 +71,7 @@ class ScheduleDbHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_N
         // Метод редактирует выбранную строку
         val query = "UPDATE $TABLE_NAME SET " +
                 "$COLUMN_DATE = '${extraArray[1]}', " +
-                "$COLUMN_START = '${extraArray[2]}', " +
+                "$COLUMN_START_TIME = '${extraArray[2]}', " +
                 "$COLUMN_PROCEDURE = '${extraArray[3]}', " +
                 "$COLUMN_NAME = '${extraArray[4]}', " +
                 "$COLUMN_PHONE = '${extraArray[5]}', " +
@@ -88,7 +88,7 @@ class ScheduleDbHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_N
         db.execSQL(
             "CREATE TABLE $TABLE_NAME ($COLUMN_ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     "$COLUMN_DATE TEXT NOT NULL, " +
-                    "$COLUMN_START TEXT NOT NULL, " +
+                    "$COLUMN_START_TIME TEXT NOT NULL, " +
                     "$COLUMN_PROCEDURE TEXT NOT NULL, " +
                     "$COLUMN_NAME TEXT NOT NULL, " +
                     "$COLUMN_PHONE TEXT NOT NULL, " +

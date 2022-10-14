@@ -16,6 +16,8 @@ import android.widget.ListView
 import android.widget.SimpleCursorAdapter
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.projectnailsschedule.R
+
 import com.example.projectnailsschedule.databinding.FragmentSearchBinding
 import com.example.projectnailsschedule.dbHelpers.ScheduleDbHelper
 
@@ -55,11 +57,16 @@ class SearchFragment : Fragment() {
             )
 
             // Инициируем список заголовков и плейсхолдеры для них
-            val headers = arrayOf(ScheduleDbHelper.COLUMN_NAME, ScheduleDbHelper.COLUMN_DATE)
-            val headersInt = intArrayOf(android.R.id.text1, android.R.id.text2)
+            val headers = arrayOf(
+                ScheduleDbHelper.COLUMN_NAME,
+                ScheduleDbHelper.COLUMN_PHONE,
+                ScheduleDbHelper.COLUMN_DATE,
+                ScheduleDbHelper.COLUMN_START_TIME
+            )
+            val headersInt = intArrayOf(R.id.name, R.id.phone, R.id.date, R.id.time)
 
             userAdapter = SimpleCursorAdapter(
-                context, android.R.layout.two_line_list_item,
+                context, R.layout.search_list_item,
                 userCursor, headers, headersInt, 0
             )
 
