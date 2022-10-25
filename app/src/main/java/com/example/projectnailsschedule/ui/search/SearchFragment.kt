@@ -32,7 +32,6 @@ class SearchFragment : Fragment() {
     private lateinit var userSearch: EditText
     val LOG = this::class.simpleName
 
-
     private var scheduleDbHelper: ScheduleDbHelper? = null
     private var db: SQLiteDatabase? = null
     private var userCursor: Cursor? = null
