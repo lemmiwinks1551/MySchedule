@@ -6,15 +6,26 @@
     android:layout_height="match_parent"
     tools:context=".ui.search.SearchFragment">
 
-    <EditText
-        android:id="@+id/userFilter"
-        android:layout_width="0dp"
+    <ToggleButton
+        android:id="@+id/toggle_search_button"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:hint="@string/searchRus"
-        app:layout_constraintBottom_toTopOf="@+id/userList"
+        android:enabled="true"
+        android:textOff="@string/toggle_button_search_phone"
+        android:textOn="@string/toggle_button_search_name"
         app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/user_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:hint="@string/search_client"
+        android:padding="8dp"
         app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/toggle_search_button"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ListView
@@ -25,6 +36,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/userFilter" />
+        app:layout_constraintTop_toBottomOf="@+id/user_search" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

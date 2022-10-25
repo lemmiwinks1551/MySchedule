@@ -4,20 +4,18 @@ import android.database.Cursor
 import android.database.SQLException
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
+import android.telephony.PhoneNumberFormattingTextWatcher
 import android.text.Editable
+import android.text.InputType
 import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.FilterQueryProvider
-import android.widget.ListView
-import android.widget.SimpleCursorAdapter
+import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.projectnailsschedule.R
-
 import com.example.projectnailsschedule.databinding.FragmentSearchBinding
 import com.example.projectnailsschedule.dbHelpers.ScheduleDbHelper
 
@@ -30,8 +28,8 @@ class SearchFragment : Fragment() {
     // onDestroyView.
 
     private val binding get() = _binding!!
-    lateinit var userList: ListView
-    private lateinit var userFilter: EditText
+    private lateinit var userList: ListView
+    private lateinit var userSearch: EditText
     val LOG = this::class.simpleName
 
 
@@ -39,6 +37,7 @@ class SearchFragment : Fragment() {
     private var db: SQLiteDatabase? = null
     private var userCursor: Cursor? = null
     private var userAdapter: SimpleCursorAdapter? = null
+    private var toggleButton: ToggleButton? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +47,21 @@ class SearchFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+
+        userSearch.inputType = InputType.TYPE_CLASS_PHONE
+        userSearch.addTextChangedListener(PhoneNumberFormattingTextWatcher())
+        toggleButton?.setOnCheckedChangeListener { _, b ->
+            if (b) {
+                userSearch.inputType = InputType.TYPE_CLASS_TEXT
+                userSearch.text.clear()
+                Log.e(LOG, "Поиск по имени")
+            } else {
+                userSearch.inputType = InputType.TYPE_CLASS_PHONE
+                userSearch.addTextChangedListener(PhoneNumberFormattingTextWatcher())
+                userSearch.text.clear()
+                Log.e(LOG, "Поиск по телефону")
+            }
+        }
 
         try {
             db = scheduleDbHelper?.open()
@@ -71,10 +85,22 @@ class SearchFragment : Fragment() {
             )
 
             // если в текстовом поле есть текст, выполняем фильтрацию
-            userAdapter!!.filter.filter(userFilter.text.toString())
+            userAdapter!!.filter.filter(userSearch.text.toString())
 
             // установка слушателя изменения текста
-            userFilter.addTextChangedListener(object : TextWatcher {
+            userSearch.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+
+                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                    // при изменении текста выполняем фильтрацию
+                    userAdapter!!.filter.filter(p0.toString())
+                }
+
+                override fun afterTextChanged(p0: Editable?) {}
+            })
+
+            // установка слушателя измен ения текста
+            userSearch.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
                 override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -94,10 +120,19 @@ class SearchFragment : Fragment() {
                     )
                 } else {
                     val arr = arrayOf("%$p0%")
-                    db!!.rawQuery(
-                        "SELECT * FROM ${ScheduleDbHelper.TABLE_NAME} WHERE ${ScheduleDbHelper.COLUMN_NAME} LIKE ? ORDER BY ${ScheduleDbHelper.COLUMN_DATE} DESC",
-                        arr
-                    )
+                    if (toggleButton?.isChecked == true) {
+                        // Поиск по имени
+                        db!!.rawQuery(
+                            "SELECT * FROM ${ScheduleDbHelper.TABLE_NAME} WHERE ${ScheduleDbHelper.COLUMN_NAME} LIKE ? ORDER BY ${ScheduleDbHelper.COLUMN_DATE} DESC",
+                            arr
+                        )
+                    } else {
+                        // Поиск по номеру телефона
+                        db!!.rawQuery(
+                            "SELECT * FROM ${ScheduleDbHelper.TABLE_NAME} WHERE ${ScheduleDbHelper.COLUMN_PHONE} LIKE ? ORDER BY ${ScheduleDbHelper.COLUMN_DATE} DESC",
+                            arr
+                        )
+                    }
                 }
             }
             userList.adapter = userAdapter;
@@ -120,7 +155,8 @@ class SearchFragment : Fragment() {
 
         // Определить View
         userList = binding.userList
-        userFilter = binding.userFilter
+        toggleButton = binding.toggleSearchButton
+        userSearch = binding.userSearch
         return binding.root
     }
 

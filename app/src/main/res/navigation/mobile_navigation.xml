@@ -38,6 +38,6 @@
     <fragment
         android:id="@+id/nav_search"
         android:name="com.example.projectnailsschedule.ui.search.SearchFragment"
-        android:label="@string/searchRus"
+        android:label="@string/search_client"
         tools:layout="@layout/fragment_search" />
 </navigation>
