@@ -57,8 +57,6 @@ class SearchFragment : Fragment() {
             startActivity(intent)
         }
 
-
-        userSearch.addTextChangedListener(PhoneNumberFormattingTextWatcher())
         toggleButton?.setOnCheckedChangeListener { _, b ->
             if (b) {
                 userSearch.inputType = InputType.TYPE_CLASS_TEXT
@@ -166,6 +164,8 @@ class SearchFragment : Fragment() {
         userList = binding.userList
         toggleButton = binding.toggleSearchButton
         userSearch = binding.userSearch
+        userSearch.inputType = InputType.TYPE_CLASS_PHONE
+        userSearch.addTextChangedListener(PhoneNumberFormattingTextWatcher())
         return binding.root
     }
 
