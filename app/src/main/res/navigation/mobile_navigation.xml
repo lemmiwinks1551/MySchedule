@@ -9,7 +9,27 @@
         android:id="@+id/nav_calendar"
         android:name="com.example.projectnailsschedule.ui.calendar.CalendarFragment"
         android:label="@string/menu_calendar"
-        tools:layout="@layout/fragment_calendar" />
+        tools:layout="@layout/fragment_calendar" >
+        <action
+            android:id="@+id/action_nav_calendar_to_nav_clients"
+            app:destination="@id/nav_clients" />
+        <action
+            android:id="@+id/action_nav_calendar_to_nav_price"
+            app:destination="@id/nav_price" />
+        <action
+            android:id="@+id/action_nav_calendar_to_nav_settings"
+            app:destination="@id/nav_settings" />
+        <action
+            android:id="@+id/action_nav_calendar_to_nav_about2"
+            app:destination="@id/nav_about" />
+        <action
+            android:id="@+id/action_nav_calendar_to_nav_search2"
+            app:destination="@id/nav_search"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_clients"

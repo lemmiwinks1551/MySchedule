@@ -1,4 +1,4 @@
-package com.example.projectnailsschedule
+package com.example.projectnailsschedule.service
 
 import android.os.Environment
 import android.util.Log

@@ -15,11 +15,11 @@
         android:theme="@style/Theme.ProjectNailsSchedule"
         tools:targetApi="31">
         <activity
-            android:name=".Appointment"
+            android:name=".ui.appointment.AppointmentFragment"
             android:exported="false"
             />
         <activity
-            android:name=".DateActivity"
+            android:name=".ui.date.DateFragment"
             android:exported="false"
             android:theme="@style/Theme.ProjectNailsSchedule.NoActionBar" />
         <activity

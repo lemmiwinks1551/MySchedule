@@ -1,9 +1,9 @@
-package com.example.projectnailsschedule.ui.dataShort
+package com.example.projectnailsschedule.ui.calendar.dataShort
 
 import android.content.Context
 import android.util.Log
-import com.example.projectnailsschedule.Converter
-import com.example.projectnailsschedule.DataBase.ScheduleDbHelper
+import com.example.projectnailsschedule.service.Converter
+import com.example.projectnailsschedule.database.ScheduleDbHelper
 
 /** Получает данные из БД за выбранную дату
  * Хранит полученные данные в массиве */

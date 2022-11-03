@@ -1,12 +1,15 @@
-package com.example.projectnailsschedule
+package com.example.projectnailsschedule.service
 
 import android.annotation.SuppressLint
 import android.util.Log
 import java.text.SimpleDateFormat
 
+/**
+ * Вспомогательный класс, выполняющий коенвертации даты
+ * */
+
 class Converter {
 
-    /** Вспомогательный класс, выполняющий различные конвертации */
 
     val LOG = this::class.simpleName
 

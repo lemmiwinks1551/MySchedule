@@ -1,10 +1,8 @@
-package com.example.projectnailsschedule.ui.dataShort
+package com.example.projectnailsschedule.ui.calendar.dataShort
 
-import android.content.Intent
 import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.projectnailsschedule.DateActivity
 import com.example.projectnailsschedule.R
 
 class DateShortViewHolder internal constructor(itemView: View, _date: String) :

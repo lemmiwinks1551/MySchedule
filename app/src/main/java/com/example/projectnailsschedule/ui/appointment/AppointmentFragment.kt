@@ -1,4 +1,4 @@
-package com.example.projectnailsschedule
+package com.example.projectnailsschedule.ui.appointment
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
@@ -7,7 +7,8 @@ import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
 import androidx.appcompat.app.AppCompatActivity
 import com.example.projectnailsschedule.databinding.ActivityAppointmentBinding
-import com.example.projectnailsschedule.DataBase.ScheduleDbHelper
+import com.example.projectnailsschedule.database.ScheduleDbHelper
+import com.example.projectnailsschedule.service.Converter
 import java.util.*
 
 
@@ -16,7 +17,7 @@ import java.util.*
  * Редактировать запись, добавить запись
  * */
 
-class Appointment : AppCompatActivity() {
+class AppointmentFragment : AppCompatActivity() {
 
     private lateinit var binding: ActivityAppointmentBinding
     private lateinit var databaseHelper: ScheduleDbHelper

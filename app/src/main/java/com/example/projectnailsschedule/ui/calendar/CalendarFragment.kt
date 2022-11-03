@@ -11,11 +11,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.projectnailsschedule.Converter
+import com.example.projectnailsschedule.service.Converter
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentCalendarBinding
-import com.example.projectnailsschedule.ui.dataShort.DateShortGetDbData
-import com.example.projectnailsschedule.ui.dataShort.DateShortAdapter
+import com.example.projectnailsschedule.ui.calendar.dataShort.DateShortGetDbData
+import com.example.projectnailsschedule.ui.calendar.dataShort.DateShortAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.text.SimpleDateFormat
 import java.time.LocalDate

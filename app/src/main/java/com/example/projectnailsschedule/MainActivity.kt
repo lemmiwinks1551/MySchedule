@@ -14,7 +14,9 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.projectnailsschedule.databinding.ActivityMainBinding
+import com.example.projectnailsschedule.service.WorkFolders
 import com.example.projectnailsschedule.ui.calendar.CalendarFragment
+import com.example.projectnailsschedule.ui.date.DateFragment
 import com.google.android.material.navigation.NavigationView
 
 
@@ -69,7 +71,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun goIntoDay(view: View) {
-        val intent = Intent(this, DateActivity::class.java)
+        val intent = Intent(this, DateFragment::class.java)
         intent.putExtra(
             "day",
             "${CalendarFragment.day}.${CalendarFragment.month}.${CalendarFragment.year}"

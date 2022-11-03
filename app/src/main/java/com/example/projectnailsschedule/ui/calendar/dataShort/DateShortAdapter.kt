@@ -1,4 +1,4 @@
-package com.example.projectnailsschedule.ui.dataShort
+package com.example.projectnailsschedule.ui.calendar.dataShort
 
 import android.view.LayoutInflater
 import android.view.View

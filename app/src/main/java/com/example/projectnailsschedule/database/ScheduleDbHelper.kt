@@ -1,4 +1,4 @@
-package com.example.projectnailsschedule.DataBase
+package com.example.projectnailsschedule.database
 
 import android.content.Context
 import android.database.Cursor
@@ -6,7 +6,7 @@ import android.database.SQLException
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
-import com.example.projectnailsschedule.WorkFolders
+import com.example.projectnailsschedule.service.WorkFolders
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException

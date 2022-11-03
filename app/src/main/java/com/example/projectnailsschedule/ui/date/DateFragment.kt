@@ -1,4 +1,4 @@
-package com.example.projectnailsschedule
+package com.example.projectnailsschedule.ui.date
 
 import android.app.Dialog
 import android.content.Intent
@@ -11,12 +11,15 @@ import android.view.Window
 import android.widget.*
 import android.widget.AdapterView.OnItemLongClickListener
 import androidx.appcompat.app.AppCompatActivity
+import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.ActivityDateBinding
-import com.example.projectnailsschedule.DataBase.DateStatusDbHelper
-import com.example.projectnailsschedule.DataBase.ScheduleDbHelper
+import com.example.projectnailsschedule.database.DateStatusDbHelper
+import com.example.projectnailsschedule.database.ScheduleDbHelper
+import com.example.projectnailsschedule.service.Converter
+import com.example.projectnailsschedule.ui.appointment.AppointmentFragment
 
 
-class DateActivity : AppCompatActivity() {
+class DateFragment : AppCompatActivity() {
     companion object {
         const val COLUMN_START = ScheduleDbHelper.COLUMN_START_TIME
         const val COLUMN_PROCEDURE = ScheduleDbHelper.COLUMN_PROCEDURE
@@ -145,9 +148,9 @@ class DateActivity : AppCompatActivity() {
                 currentCur.getString(5).toString(),
                 currentCur.getString(6).toString(),
             )
-            val appointmentIntent = Intent(this, Appointment::class.java)
-            appointmentIntent.putExtra("appointmentExtra", extraList)
-            startActivity(appointmentIntent)
+            val appointmentFragmentIntent = Intent(this, AppointmentFragment::class.java)
+            appointmentFragmentIntent.putExtra("appointmentExtra", extraList)
+            startActivity(appointmentFragmentIntent)
             dialog.dismiss()
         }
         dialog.show()
@@ -194,9 +197,9 @@ class DateActivity : AppCompatActivity() {
 
     fun buttonAdd(view: View) {
         // Запустить активность по добавлению строки в БД
-        val appointmentIntent = Intent(this, Appointment::class.java)
-        appointmentIntent.putExtra("appointmentExtra", day)
-        startActivity(appointmentIntent)
+        val appointmentFragmentIntent = Intent(this, AppointmentFragment::class.java)
+        appointmentFragmentIntent.putExtra("appointmentExtra", day)
+        startActivity(appointmentFragmentIntent)
         // TODO: переписать через кликлистенер
     }
 
