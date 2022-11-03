@@ -20,7 +20,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.projectnailsschedule.DateActivity
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentSearchBinding
-import com.example.projectnailsschedule.dbHelpers.ScheduleDbHelper
+import com.example.projectnailsschedule.DataBase.ScheduleDbHelper
 
 
 class SearchFragment : Fragment() {

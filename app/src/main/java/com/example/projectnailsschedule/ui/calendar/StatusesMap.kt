@@ -5,7 +5,7 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.util.Log
 import com.example.projectnailsschedule.Converter
-import com.example.projectnailsschedule.dbHelpers.DateStatusDbHelper
+import com.example.projectnailsschedule.DataBase.DateStatusDbHelper
 import java.time.YearMonth
 
 class StatusesMap : Thread() {

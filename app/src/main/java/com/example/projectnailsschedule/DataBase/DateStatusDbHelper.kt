@@ -1,4 +1,4 @@
-package com.example.projectnailsschedule.dbHelpers
+package com.example.projectnailsschedule.DataBase
 
 import android.content.Context
 import android.database.Cursor

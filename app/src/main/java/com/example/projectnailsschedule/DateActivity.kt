@@ -12,8 +12,8 @@ import android.widget.*
 import android.widget.AdapterView.OnItemLongClickListener
 import androidx.appcompat.app.AppCompatActivity
 import com.example.projectnailsschedule.databinding.ActivityDateBinding
-import com.example.projectnailsschedule.dbHelpers.DateStatusDbHelper
-import com.example.projectnailsschedule.dbHelpers.ScheduleDbHelper
+import com.example.projectnailsschedule.DataBase.DateStatusDbHelper
+import com.example.projectnailsschedule.DataBase.ScheduleDbHelper
 
 
 class DateActivity : AppCompatActivity() {

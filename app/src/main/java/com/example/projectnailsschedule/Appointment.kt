@@ -7,7 +7,7 @@ import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
 import androidx.appcompat.app.AppCompatActivity
 import com.example.projectnailsschedule.databinding.ActivityAppointmentBinding
-import com.example.projectnailsschedule.dbHelpers.ScheduleDbHelper
+import com.example.projectnailsschedule.DataBase.ScheduleDbHelper
 import java.util.*
 
 
