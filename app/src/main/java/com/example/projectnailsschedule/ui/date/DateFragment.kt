@@ -1,25 +1,26 @@
 package com.example.projectnailsschedule.ui.date
 
 import android.app.Dialog
-import android.content.Intent
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.Window
 import android.widget.*
 import android.widget.AdapterView.OnItemLongClickListener
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.example.projectnailsschedule.R
-import com.example.projectnailsschedule.databinding.ActivityDateBinding
 import com.example.projectnailsschedule.database.DateStatusDbHelper
 import com.example.projectnailsschedule.database.ScheduleDbHelper
+import com.example.projectnailsschedule.databinding.FragmentDateBinding
 import com.example.projectnailsschedule.service.Converter
-import com.example.projectnailsschedule.ui.appointment.AppointmentFragment
 
 
-class DateFragment : AppCompatActivity() {
+class DateFragment : Fragment() {
     companion object {
         const val COLUMN_START = ScheduleDbHelper.COLUMN_START_TIME
         const val COLUMN_PROCEDURE = ScheduleDbHelper.COLUMN_PROCEDURE
@@ -31,7 +32,9 @@ class DateFragment : AppCompatActivity() {
         var dayStatus = "no status"
     }
 
-    private lateinit var binding: ActivityDateBinding
+    private var _binding: FragmentDateBinding? = null
+    private val binding get() = _binding!!
+
     private var scheduleList: ListView? = null
     private var deleteButton: Button? = null
     private var editButton: Button? = null
@@ -50,31 +53,44 @@ class DateFragment : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_date)
+        // setContentView(R.layout.fragment_date)
         Log.e(LOG, "onCreate")
-        binding = ActivityDateBinding.inflate(layoutInflater)
 
         // Получаем интент с датой
-        day = intent.getStringExtra("day").toString()
+        day = arguments?.getString("date")
 
         // Конвертируем дату в формат dd.MM.yyyy
         day = Converter().dateConverter(day!!)
 
         // Устанавливаем в Toolbar дату
-        val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
+        /*
+        val toolbar = binding.toolbar
         toolbar.title = day
-        setSupportActionBar(toolbar)
+        setSupportActionBar(toolbar)*/
 
         // Получаем статус дня и устанавливаем в спиннер
-        dayStatusSpinner = findViewById(R.id.spinner_status)
+        dayStatusSpinner = binding.spinnerStatus
         getDayStatus()
         setStatusInSpinner()
 
-        scheduleList = findViewById(R.id.scheduleListView)
-        databaseHelper = ScheduleDbHelper(applicationContext)
+        scheduleList = binding.scheduleListView
+        databaseHelper = ScheduleDbHelper(context)
     }
 
-    public override fun onResume() {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        val dateViewModel =
+            ViewModelProvider(this)[DateViewModel::class.java]
+
+        _binding = FragmentDateBinding.inflate(inflater, container, false)
+
+        return binding.root
+    }
+
+    override fun onResume() {
         super.onResume()
 
         // Получаем строку из БД распасания
@@ -104,7 +120,7 @@ class DateFragment : AppCompatActivity() {
                 for ((i, value) in statusMap.values.withIndex()) {
                     if (i == position) {
                         Toast.makeText(
-                            applicationContext,
+                            context,
                             "Установлен статус $value",
                             Toast.LENGTH_SHORT
                         ).show()
@@ -120,7 +136,7 @@ class DateFragment : AppCompatActivity() {
 
     private fun showDialog(currentCur: Cursor) {
         // Метод регулирует работу диалогового окна Удалить/Редактировать
-        val dialog = Dialog(this)
+        val dialog = Dialog(requireContext())
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setCancelable(true)
         dialog.setContentView(R.layout.dialog_db)
@@ -148,9 +164,10 @@ class DateFragment : AppCompatActivity() {
                 currentCur.getString(5).toString(),
                 currentCur.getString(6).toString(),
             )
-            val appointmentFragmentIntent = Intent(this, AppointmentFragment::class.java)
+
+            /*            val appointmentFragmentIntent = Intent(this, AppointmentFragment::class.java)
             appointmentFragmentIntent.putExtra("appointmentExtra", extraList)
-            startActivity(appointmentFragmentIntent)
+            startActivity(appointmentFragmentIntent)*/
             dialog.dismiss()
         }
         dialog.show()
@@ -180,7 +197,7 @@ class DateFragment : AppCompatActivity() {
 
         // Создаем адаптер для ListView, передаем в него курсор
         adapter = SimpleCursorAdapter(
-            this, R.layout.database,
+            context, R.layout.database,
             cursor, headers, receiver, 0
         )
 
@@ -197,15 +214,15 @@ class DateFragment : AppCompatActivity() {
 
     fun buttonAdd(view: View) {
         // Запустить активность по добавлению строки в БД
-        val appointmentFragmentIntent = Intent(this, AppointmentFragment::class.java)
+/*        val appointmentFragmentIntent = Intent(this, AppointmentFragment::class.java)
         appointmentFragmentIntent.putExtra("appointmentExtra", day)
-        startActivity(appointmentFragmentIntent)
+        startActivity(appointmentFragmentIntent)*/
         // TODO: переписать через кликлистенер
     }
 
     private fun getDayStatus() {
         // Получаем из БД статус выбранного дня
-        dateStatusDbHelper = DateStatusDbHelper(this)
+        dateStatusDbHelper = DateStatusDbHelper(context)
         dbStatus = dateStatusDbHelper?.readableDatabase
         cursor = dateStatusDbHelper?.fetchDate(day!!, dbStatus!!)
 
@@ -227,7 +244,7 @@ class DateFragment : AppCompatActivity() {
         // Устанавливаем статус дня в Spinner
         // Создаем адаптер из массива статусов
         val adapterStatus = ArrayAdapter.createFromResource(
-            this,
+            requireContext(),
             R.array.day_status,
             androidx.appcompat.R.layout.support_simple_spinner_dropdown_item
         )
@@ -279,7 +296,7 @@ class DateFragment : AppCompatActivity() {
         }
     }
 
-    public override fun onDestroy() {
+    override fun onDestroy() {
         super.onDestroy()
         Log.e(LOG, "onDestroy")
         // Закрываем подключение и курсор

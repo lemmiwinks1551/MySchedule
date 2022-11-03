@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.projectnailsschedule">
+
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
@@ -15,22 +16,13 @@
         android:theme="@style/Theme.ProjectNailsSchedule"
         tools:targetApi="31">
         <activity
-            android:name=".ui.appointment.AppointmentFragment"
-            android:exported="false"
-            />
-        <activity
-            android:name=".ui.date.DateFragment"
-            android:exported="false"
-            android:theme="@style/Theme.ProjectNailsSchedule.NoActionBar" />
-        <activity
             android:name=".MainActivity"
-            android:screenOrientation="portrait"
             android:exported="true"
             android:label="@string/app_name"
+            android:screenOrientation="fullSensor"
             android:theme="@style/Theme.ProjectNailsSchedule.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

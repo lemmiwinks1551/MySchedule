@@ -1,6 +1,5 @@
 package com.example.projectnailsschedule
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -16,7 +15,6 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.projectnailsschedule.databinding.ActivityMainBinding
 import com.example.projectnailsschedule.service.WorkFolders
 import com.example.projectnailsschedule.ui.calendar.CalendarFragment
-import com.example.projectnailsschedule.ui.date.DateFragment
 import com.google.android.material.navigation.NavigationView
 
 
@@ -34,9 +32,9 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.appBarMain.toolbar)
 
-
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
+
         navController = findNavController(R.id.nav_host_fragment_content_main)
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -71,12 +69,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun goIntoDay(view: View) {
-        val intent = Intent(this, DateFragment::class.java)
-        intent.putExtra(
-            "day",
+        /** Открываем фрагмент выбранного дня */
+
+        /** Bundle содержит дату, которую выбрал пользователь */
+        val bundle = Bundle()
+        bundle.putString(
+            "date",
             "${CalendarFragment.day}.${CalendarFragment.month}.${CalendarFragment.year}"
         )
-        this.startActivity(intent)
+
+        /** Открываем DateFragment с переданной датой */
+        navController.navigate(R.id.action_nav_calendar_to_dateFragment, bundle)
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

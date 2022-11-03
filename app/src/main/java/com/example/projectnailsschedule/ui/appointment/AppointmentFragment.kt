@@ -5,9 +5,9 @@ import android.app.TimePickerDialog
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
-import androidx.appcompat.app.AppCompatActivity
-import com.example.projectnailsschedule.databinding.ActivityAppointmentBinding
+import androidx.fragment.app.Fragment
 import com.example.projectnailsschedule.database.ScheduleDbHelper
+import com.example.projectnailsschedule.databinding.FragmentAppointmentBinding
 import com.example.projectnailsschedule.service.Converter
 import java.util.*
 
@@ -17,9 +17,9 @@ import java.util.*
  * Редактировать запись, добавить запись
  * */
 
-class AppointmentFragment : AppCompatActivity() {
+class AppointmentFragment : Fragment() {
 
-    private lateinit var binding: ActivityAppointmentBinding
+    private lateinit var binding: FragmentAppointmentBinding
     private lateinit var databaseHelper: ScheduleDbHelper
     private lateinit var db: SQLiteDatabase
     private val addTitle = "Добавить"
@@ -31,8 +31,8 @@ class AppointmentFragment : AppCompatActivity() {
     private val phone = "phone"
     private val misc = "misc"
 
-    override fun onSaveInstanceState(savedInstanceState: Bundle) {
-        /** Сохранить состояние экрана */
+    /*override fun onSaveInstanceState(savedInstanceState: Bundle) {
+        *//** Сохранить состояние экрана *//*
         super.onSaveInstanceState(savedInstanceState)
         with(savedInstanceState) {
             putString(date, binding.dayEditText.text.toString())
@@ -95,7 +95,7 @@ class AppointmentFragment : AppCompatActivity() {
     }
 
     private fun addRow() {
-        /** Внести значения полей активности в БД */
+        *//** Внести значения полей активности в БД *//*
         // Собрать данные из полей в переменные и
         val fields = arrayListOf(
             binding.dayEditText.text.toString(),
@@ -110,7 +110,7 @@ class AppointmentFragment : AppCompatActivity() {
     }
 
     private fun editIdFields() {
-        /** Заполнить поля актуальными значениями */
+        *//** Заполнить поля актуальными значениями *//*
         // Получаем список для заполнения полей из интента
         val extraArray = intent.getStringArrayListExtra("appointmentExtra")
 
@@ -127,7 +127,7 @@ class AppointmentFragment : AppCompatActivity() {
     }
 
     private fun editIdQuery() {
-        /** Передать в метод БД информацию для обновления */
+        *//** Передать в метод БД информацию для обновления *//*
         // Получаем id строки из интента и передаем
         val id = intent.getStringArrayListExtra("appointmentExtra")?.get(0)?.toString()
         val extraArrayQuery = arrayListOf(
@@ -144,12 +144,12 @@ class AppointmentFragment : AppCompatActivity() {
     }
 
     private fun cancelButton() {
-        /** Кнопка Отмены */
+        *//** Кнопка Отмены *//*
         finish()
     }
 
     private fun selectDate() {
-        /** Устанавливает выбор даты на поле Дата */
+        *//** Устанавливает выбор даты на поле Дата *//*
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
         val month = calendar.get(Calendar.MONTH)
@@ -165,7 +165,7 @@ class AppointmentFragment : AppCompatActivity() {
     }
 
     private fun selectTime() {
-        /** Устанавливает выбор времени на поле Время */
+        *//** Устанавливает выбор времени на поле Время *//*
         val calendar = Calendar.getInstance()
         val mTimePicker: TimePickerDialog
         val hour = calendar.get(Calendar.HOUR_OF_DAY)
@@ -179,5 +179,5 @@ class AppointmentFragment : AppCompatActivity() {
             }, hour, minute, true
         )
         mTimePicker.show()
-    }
+    }*/
 }
