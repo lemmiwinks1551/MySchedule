@@ -31,7 +31,11 @@
             app:popExitAnim="@android:anim/fade_out" />
         <action
             android:id="@+id/action_nav_calendar_to_dateFragment"
-            app:destination="@id/nav_date" />
+            app:destination="@id/nav_date"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_enter_anim"
+            app:popExitAnim="@anim/nav_default_exit_anim" />
     </fragment>
 
     <fragment
@@ -65,14 +69,14 @@
         tools:layout="@layout/fragment_search" />
 
     <fragment
+        android:label=""
         android:id="@+id/nav_appointment"
-        android:name="com.example.projectnailsschedule.ui.appointment.AppointmentFragment"
-        android:label="AppointmentFragment" />
+        android:name="com.example.projectnailsschedule.ui.appointment.AppointmentFragment" />
 
     <fragment
+        android:label=""
         android:id="@+id/nav_date"
-        android:name="com.example.projectnailsschedule.ui.date.DateFragment"
-        android:label="DateFragment">
+        android:name="com.example.projectnailsschedule.ui.date.DateFragment">
         <action
             android:id="@+id/action_dateFragment_to_appointmentFragment"
             app:destination="@id/nav_appointment" />

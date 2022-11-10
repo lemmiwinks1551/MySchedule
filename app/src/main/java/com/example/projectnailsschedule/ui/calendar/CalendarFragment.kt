@@ -3,19 +3,24 @@ package com.example.projectnailsschedule.ui.calendar
 import android.app.Activity
 import android.os.Bundle
 import android.util.Log
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.projectnailsschedule.service.Converter
+import com.example.projectnailsschedule.MainActivity
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentCalendarBinding
-import com.example.projectnailsschedule.ui.calendar.dataShort.DateShortGetDbData
+import com.example.projectnailsschedule.service.Converter
 import com.example.projectnailsschedule.ui.calendar.dataShort.DateShortAdapter
+import com.example.projectnailsschedule.ui.calendar.dataShort.DateShortGetDbData
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.text.SimpleDateFormat
 import java.time.LocalDate
@@ -56,6 +61,23 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         addButton = binding.addData
         dateTextView = binding.dayTextView
         layout = binding.fragmentCalendar
+    }
+
+    override fun onStart() {
+        super.onStart()
+        binding.addData.setOnClickListener {
+            /** Start fragment */
+
+            /** Bundle содержит дату, которую выбрал пользователь */
+            val bundle = Bundle()
+            bundle.putString(
+                "date",
+                "$day.$month.$year"
+            )
+
+            /** Открываем DateFragment с переданной датой */
+            it.findNavController().navigate(R.id.action_nav_calendar_to_dateFragment, bundle)
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

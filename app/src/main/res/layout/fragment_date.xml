@@ -2,19 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_date"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.date.DateFragment">
-
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        android:elevation="4dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:titleTextColor="@color/white" />
 
     <ListView
         android:id="@+id/scheduleListView"
@@ -24,7 +15,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintTop_toBottomOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
     <Spinner
@@ -51,7 +42,6 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addButton"
-        app:tint="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
@@ -64,6 +54,7 @@
         app:layout_constraintHorizontal_bias="0.488"
         app:layout_constraintStart_toEndOf="@+id/spinner_status"
         app:layout_constraintTop_toBottomOf="@id/scheduleListView"
-        app:srcCompat="@android:drawable/ic_input_add" />
+        app:srcCompat="@android:drawable/ic_input_add"
+        app:tint="@color/white" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

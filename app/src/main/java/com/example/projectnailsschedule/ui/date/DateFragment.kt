@@ -51,11 +51,16 @@ class DateFragment : Fragment() {
     private var day: String? = null
     private var statusMap: Map<String, String> = createStatusMap()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        // setContentView(R.layout.fragment_date)
-        Log.e(LOG, "onCreate")
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
 
+        val dateViewModel =
+            ViewModelProvider(this)[DateViewModel::class.java]
+
+        _binding = FragmentDateBinding.inflate(inflater, container, false)
         // Получаем интент с датой
         day = arguments?.getString("date")
 
@@ -63,10 +68,9 @@ class DateFragment : Fragment() {
         day = Converter().dateConverter(day!!)
 
         // Устанавливаем в Toolbar дату
-        /*
-        val toolbar = binding.toolbar
-        toolbar.title = day
-        setSupportActionBar(toolbar)*/
+        val toolbar = binding.description
+        //toolbar.title = day
+        //setSupportActionBar(toolbar)
 
         // Получаем статус дня и устанавливаем в спиннер
         dayStatusSpinner = binding.spinnerStatus
@@ -75,24 +79,12 @@ class DateFragment : Fragment() {
 
         scheduleList = binding.scheduleListView
         databaseHelper = ScheduleDbHelper(context)
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        val dateViewModel =
-            ViewModelProvider(this)[DateViewModel::class.java]
-
-        _binding = FragmentDateBinding.inflate(inflater, container, false)
 
         return binding.root
     }
 
     override fun onResume() {
         super.onResume()
-
         // Получаем строку из БД распасания
         currentDayQuery()
 

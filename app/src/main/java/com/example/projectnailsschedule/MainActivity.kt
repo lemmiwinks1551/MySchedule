@@ -3,7 +3,6 @@ package com.example.projectnailsschedule
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
@@ -50,12 +49,19 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        // Создать при необходимость папки для работы приложения
+        // Create work folders
         if (WorkFolders().state == Thread.State.NEW) {
             WorkFolders().start()
         }
-    }
 
+        // Set click listener on navController
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            if (destination.id == R.id.nav_date) {
+                binding.appBarMain.toolbar.title =
+                    "${CalendarFragment.day}.${CalendarFragment.month}.${CalendarFragment.year}"
+            }
+        }
+    }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -66,21 +72,6 @@ class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
-    }
-
-    fun goIntoDay(view: View) {
-        /** Открываем фрагмент выбранного дня */
-
-        /** Bundle содержит дату, которую выбрал пользователь */
-        val bundle = Bundle()
-        bundle.putString(
-            "date",
-            "${CalendarFragment.day}.${CalendarFragment.month}.${CalendarFragment.year}"
-        )
-
-        /** Открываем DateFragment с переданной датой */
-        navController.navigate(R.id.action_nav_calendar_to_dateFragment, bundle)
-
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
