@@ -69,16 +69,20 @@
         tools:layout="@layout/fragment_search" />
 
     <fragment
-        android:label=""
         android:id="@+id/nav_appointment"
-        android:name="com.example.projectnailsschedule.ui.appointment.AppointmentFragment" />
+        android:name="com.example.projectnailsschedule.ui.appointment.AppointmentFragment"
+        tools:layout="@layout/fragment_appointment" />
 
     <fragment
-        android:label=""
         android:id="@+id/nav_date"
-        android:name="com.example.projectnailsschedule.ui.date.DateFragment">
+        android:name="com.example.projectnailsschedule.ui.date.DateFragment"
+        tools:layout="@layout/fragment_date">
         <action
             android:id="@+id/action_dateFragment_to_appointmentFragment"
-            app:destination="@id/nav_appointment" />
+            app:destination="@id/nav_appointment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_enter_anim"
+            app:popExitAnim="@anim/nav_default_exit_anim" />
     </fragment>
 </navigation>

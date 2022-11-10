@@ -13,6 +13,8 @@ import android.widget.*
 import android.widget.AdapterView.OnItemLongClickListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
+import com.example.projectnailsschedule.MainActivity
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.database.DateStatusDbHelper
 import com.example.projectnailsschedule.database.ScheduleDbHelper
@@ -61,16 +63,12 @@ class DateFragment : Fragment() {
             ViewModelProvider(this)[DateViewModel::class.java]
 
         _binding = FragmentDateBinding.inflate(inflater, container, false)
-        // Получаем интент с датой
+
+        // Get selected date from bundle
         day = arguments?.getString("date")
 
         // Конвертируем дату в формат dd.MM.yyyy
         day = Converter().dateConverter(day!!)
-
-        // Устанавливаем в Toolbar дату
-        val toolbar = binding.description
-        //toolbar.title = day
-        //setSupportActionBar(toolbar)
 
         // Получаем статус дня и устанавливаем в спиннер
         dayStatusSpinner = binding.spinnerStatus
@@ -79,6 +77,10 @@ class DateFragment : Fragment() {
 
         scheduleList = binding.scheduleListView
         databaseHelper = ScheduleDbHelper(context)
+
+        binding.addButton.setOnClickListener{
+           it.findNavController().navigate(R.id.action_dateFragment_to_appointmentFragment)
+        }
 
         return binding.root
     }
@@ -202,14 +204,6 @@ class DateFragment : Fragment() {
     private fun setDayQuery() {
         // Устанавливаем полученную строку в ListView
         scheduleList!!.adapter = adapter
-    }
-
-    fun buttonAdd(view: View) {
-        // Запустить активность по добавлению строки в БД
-/*        val appointmentFragmentIntent = Intent(this, AppointmentFragment::class.java)
-        appointmentFragmentIntent.putExtra("appointmentExtra", day)
-        startActivity(appointmentFragmentIntent)*/
-        // TODO: переписать через кликлистенер
     }
 
     private fun getDayStatus() {
