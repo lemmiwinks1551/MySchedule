@@ -31,7 +31,7 @@ class AppointmentFragment : Fragment() {
     private val phone = "phone"
     private val misc = "misc"
 
-    /*override fun onSaveInstanceState(savedInstanceState: Bundle) {
+    override fun onSaveInstanceState(savedInstanceState: Bundle) {
         *//** Сохранить состояние экрана *//*
         super.onSaveInstanceState(savedInstanceState)
         with(savedInstanceState) {
@@ -179,5 +179,5 @@ class AppointmentFragment : Fragment() {
             }, hour, minute, true
         )
         mTimePicker.show()
-    }*/
+    }
 }

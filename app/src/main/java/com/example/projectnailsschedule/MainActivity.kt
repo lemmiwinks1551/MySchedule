@@ -56,9 +56,11 @@ class MainActivity : AppCompatActivity() {
 
         // Set click listener on navController
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            if (destination.id == R.id.nav_date) {
-                binding.appBarMain.toolbar.title =
+            when (destination.id) {
+                R.id.nav_date -> binding.appBarMain.toolbar.title =
                     "${CalendarFragment.day}.${CalendarFragment.month}.${CalendarFragment.year}"
+                R.id.nav_appointment -> binding.appBarMain.toolbar.title =
+                    "${CalendarFragment.day}.${CalendarFragment.month}.${CalendarFragment.year} добавить запись"
             }
         }
     }
