@@ -14,7 +14,6 @@ import android.widget.AdapterView.OnItemLongClickListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
-import com.example.projectnailsschedule.MainActivity
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.database.DateStatusDbHelper
 import com.example.projectnailsschedule.database.ScheduleDbHelper
@@ -78,8 +77,11 @@ class DateFragment : Fragment() {
         scheduleList = binding.scheduleListView
         databaseHelper = ScheduleDbHelper(context)
 
-        binding.addButton.setOnClickListener{
-           it.findNavController().navigate(R.id.action_dateFragment_to_appointmentFragment)
+        //Вызываем новый фрагмент для добавления новой записи
+        // val bundle = Bundle()
+        // bundle.putString("appointmentExtra")
+        binding.addButton.setOnClickListener {
+            it.findNavController().navigate(R.id.action_dateFragment_to_appointmentFragment)
         }
 
         return binding.root
@@ -159,9 +161,10 @@ class DateFragment : Fragment() {
                 currentCur.getString(6).toString(),
             )
 
-            /*            val appointmentFragmentIntent = Intent(this, AppointmentFragment::class.java)
-            appointmentFragmentIntent.putExtra("appointmentExtra", extraList)
-            startActivity(appointmentFragmentIntent)*/
+            // Передаем в интенте значение полей, если нажали кнопку "Редактировать"
+            val bundle = Bundle()
+            bundle.putStringArrayList("appointmentExtra", extraList)
+            it.findNavController().navigate(R.id.action_dateFragment_to_appointmentFragment, bundle)
             dialog.dismiss()
         }
         dialog.show()

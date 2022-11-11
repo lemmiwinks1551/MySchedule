@@ -5,10 +5,15 @@ import android.app.TimePickerDialog
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.example.projectnailsschedule.database.ScheduleDbHelper
 import com.example.projectnailsschedule.databinding.FragmentAppointmentBinding
 import com.example.projectnailsschedule.service.Converter
+import com.example.projectnailsschedule.ui.date.DateViewModel
 import java.util.*
 
 
@@ -19,7 +24,9 @@ import java.util.*
 
 class AppointmentFragment : Fragment() {
 
-    private lateinit var binding: FragmentAppointmentBinding
+    private var _binding: FragmentAppointmentBinding? = null
+    private val binding get() = _binding!!
+
     private lateinit var databaseHelper: ScheduleDbHelper
     private lateinit var db: SQLiteDatabase
     private val addTitle = "Добавить"
@@ -32,7 +39,8 @@ class AppointmentFragment : Fragment() {
     private val misc = "misc"
 
     override fun onSaveInstanceState(savedInstanceState: Bundle) {
-        *//** Сохранить состояние экрана *//*
+        //** Сохранить состояние экрана *//*
+        // TODO: возможно убрать, переворот отключил
         super.onSaveInstanceState(savedInstanceState)
         with(savedInstanceState) {
             putString(date, binding.dayEditText.text.toString())
@@ -44,12 +52,17 @@ class AppointmentFragment : Fragment() {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        val appointmentViewModel =
+            ViewModelProvider(this)[DateViewModel::class.java]
 
-        binding = ActivityAppointmentBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        databaseHelper = ScheduleDbHelper(applicationContext)
+        _binding = FragmentAppointmentBinding.inflate(inflater, container, false)
+
+        databaseHelper = ScheduleDbHelper(context)
         db = databaseHelper.writableDatabase
 
         // Добавляем ClickListener на кнопки
@@ -74,10 +87,8 @@ class AppointmentFragment : Fragment() {
         // Добавляем формат ввода на поле "Телефон"
         binding.phoneEditText.addTextChangedListener(PhoneNumberFormattingTextWatcher())
 
-        // В зависимости от содержания интента выполняем метод "Редактировать"/установить дату
-        if (intent.getStringExtra("appointmentExtra") != null) {
-            binding.dayEditText.text = intent.getStringExtra("appointmentExtra")
-        } else {
+        // В зависимости от содержания интента выполняем метод "Редактировать"/"Установить дату"
+        if (arguments?.getString("appointmentExtra") != null) {
             editIdFields()
         }
 
@@ -92,10 +103,18 @@ class AppointmentFragment : Fragment() {
                 miscEditText.setText(savedInstanceState.getString(misc))
             }
         }
+
+        return binding.root
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+
     }
 
     private fun addRow() {
-        *//** Внести значения полей активности в БД *//*
+        //** Внести значения полей активности в БД *//*
         // Собрать данные из полей в переменные и
         val fields = arrayListOf(
             binding.dayEditText.text.toString(),
@@ -106,13 +125,13 @@ class AppointmentFragment : Fragment() {
             binding.miscEditText.text.toString()
         )
         databaseHelper.addRow(fields, db)
-        finish()
+        childFragmentManager.popBackStack()
     }
 
     private fun editIdFields() {
-        *//** Заполнить поля актуальными значениями *//*
+        //** Заполнить поля актуальными значениями *//*
         // Получаем список для заполнения полей из интента
-        val extraArray = intent.getStringArrayListExtra("appointmentExtra")
+        val extraArray = arguments?.getStringArray("appointmentExtra")
 
         // Устанавливаем актуальные значения в поля для редактирования
         with(binding) {
@@ -127,9 +146,10 @@ class AppointmentFragment : Fragment() {
     }
 
     private fun editIdQuery() {
-        *//** Передать в метод БД информацию для обновления *//*
+        //** Передать в метод БД информацию для обновления *//*
         // Получаем id строки из интента и передаем
-        val id = intent.getStringArrayListExtra("appointmentExtra")?.get(0)?.toString()
+        val id = arguments?.getStringArray("appointmentExtra")?.get(0)?.toString()
+
         val extraArrayQuery = arrayListOf(
             id!!,
             binding.dayEditText.text.toString(),
@@ -140,23 +160,23 @@ class AppointmentFragment : Fragment() {
             binding.miscEditText.text.toString(),
         )
         databaseHelper.editId(extraArrayQuery, db)
-        finish()
+        childFragmentManager.popBackStack()
     }
 
     private fun cancelButton() {
-        *//** Кнопка Отмены *//*
-        finish()
+        //** Кнопка Отмены *//*
+        childFragmentManager.popBackStack()
     }
 
     private fun selectDate() {
-        *//** Устанавливает выбор даты на поле Дата *//*
+        //** Устанавливает выбор даты на поле Дата *//*
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
         val month = calendar.get(Calendar.MONTH)
         val day = calendar.get(Calendar.DAY_OF_MONTH)
 
         val datePickerDialog = DatePickerDialog(
-            this, { _, pickedYear, pickedMonth, pickedDay ->
+            requireContext(), { _, pickedYear, pickedMonth, pickedDay ->
                 val date = Converter().dateConverter("$pickedDay.${pickedMonth + 1}.$pickedYear")
                 binding.dayEditText.text = date
             }, year, month, day
@@ -165,14 +185,14 @@ class AppointmentFragment : Fragment() {
     }
 
     private fun selectTime() {
-        *//** Устанавливает выбор времени на поле Время *//*
+        //** Устанавливает выбор времени на поле Время *//*
         val calendar = Calendar.getInstance()
         val mTimePicker: TimePickerDialog
         val hour = calendar.get(Calendar.HOUR_OF_DAY)
         val minute = calendar.get(Calendar.MINUTE)
 
         mTimePicker = TimePickerDialog(
-            this, { _, pickedHour, pickedMinute ->
+            context, { _, pickedHour, pickedMinute ->
                 //val time = "$pickedHour:$pickedMinute"
                 val time = String.format("%02d:%02d", pickedHour, pickedMinute)
                 binding.timeEditText.text = time
