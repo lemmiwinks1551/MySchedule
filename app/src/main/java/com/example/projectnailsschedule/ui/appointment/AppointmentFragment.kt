@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.projectnailsschedule.database.ScheduleDbHelper
 import com.example.projectnailsschedule.databinding.FragmentAppointmentBinding
 import com.example.projectnailsschedule.service.Converter
@@ -37,20 +38,6 @@ class AppointmentFragment : Fragment() {
     private val name = "name"
     private val phone = "phone"
     private val misc = "misc"
-
-    override fun onSaveInstanceState(savedInstanceState: Bundle) {
-        //** Сохранить состояние экрана *//*
-        // TODO: возможно убрать, переворот отключил
-        super.onSaveInstanceState(savedInstanceState)
-        with(savedInstanceState) {
-            putString(date, binding.dayEditText.text.toString())
-            putString(time, binding.timeEditText.text.toString())
-            putString(procedure, binding.procedureEditText.text.toString())
-            putString(name, binding.nameEditText.text.toString())
-            putString(phone, binding.phoneEditText.text.toString())
-            putString(misc, binding.miscEditText.text.toString())
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -107,12 +94,6 @@ class AppointmentFragment : Fragment() {
         return binding.root
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-
-    }
-
     private fun addRow() {
         //** Внести значения полей активности в БД *//*
         // Собрать данные из полей в переменные и
@@ -125,7 +106,7 @@ class AppointmentFragment : Fragment() {
             binding.miscEditText.text.toString()
         )
         databaseHelper.addRow(fields, db)
-        childFragmentManager.popBackStack()
+        findNavController().popBackStack()
     }
 
     private fun editIdFields() {
@@ -164,12 +145,12 @@ class AppointmentFragment : Fragment() {
     }
 
     private fun cancelButton() {
-        //** Кнопка Отмены *//*
-        childFragmentManager.popBackStack()
+        // Cancel button
+        findNavController().popBackStack()
     }
 
     private fun selectDate() {
-        //** Устанавливает выбор даты на поле Дата *//*
+        // Устанавливает выбор даты на поле Дата
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
         val month = calendar.get(Calendar.MONTH)
