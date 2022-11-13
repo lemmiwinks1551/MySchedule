@@ -11,18 +11,21 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 
-/**
- * Методы для взаимодействия с БД по записям:
- * создать БД, обновить БД, добавить строку, удалить строку, обновить строку выполнить запрос
- * */
+/** Methods for interacting with the database */
 
-class ScheduleDbHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAME, null, VERSION) {
+class ScheduleDbHelper(context: Context?) :
+    SQLiteOpenHelper(context, DATABASE_NAME, null, VERSION) {
     companion object {
-        var DATABASE_NAME = String.format("${WorkFolders().getFolderPath()}/schedule.db") // название бд
-        private const val VERSION = 24 // версия базы данных
+        // Bd name
+        var DATABASE_NAME = String.format("${WorkFolders().getFolderPath()}/schedule.db")
+
+        // Current bd version
+        private const val VERSION = 24
+
+        // Table name
         const val TABLE_NAME = "schedule" // название таблицы в бд
 
-        // Названия столбцов
+        // Columns
         const val COLUMN_ID = "_id"
         const val COLUMN_DATE = "date"
         const val COLUMN_START_TIME = "start"
@@ -36,9 +39,7 @@ class ScheduleDbHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_N
     private val myContext = context
 
     fun addRow(fields: ArrayList<String>, db: SQLiteDatabase) {
-        /**
-         * Метод добавляет строку в БД
-         * */
+        /** Insert a new row */
         val query = "INSERT INTO $TABLE_NAME " +
                 "($COLUMN_DATE, $COLUMN_START_TIME, " +
                 "$COLUMN_PROCEDURE, $COLUMN_NAME, " +
@@ -51,7 +52,7 @@ class ScheduleDbHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_N
     }
 
     fun deleteRow(currentId: Int, db: SQLiteDatabase) {
-        /** Метод удаляет строку из БЖ */
+        /** Delete a row */
         val query = "DELETE FROM $TABLE_NAME WHERE $COLUMN_ID = $currentId;"
         Log.e(LOG, String.format("Delete row query: $query"))
         db.execSQL(query)
@@ -59,16 +60,15 @@ class ScheduleDbHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_N
     }
 
     fun fetchRow(day: String, db: SQLiteDatabase): Cursor {
-        // Метод получает строку из БД в завимости от дня
+        /** Select a row from a database */
         val query =
             "SELECT * FROM $TABLE_NAME WHERE $COLUMN_DATE = '$day' ORDER BY $COLUMN_START_TIME ASC;"
         Log.e(LOG, String.format("Row № $day fetched"))
-        // Получаем данные из бд в виде курсора
         return db.rawQuery(query, null)
     }
 
     fun editId(extraArray: ArrayList<String>, db: SQLiteDatabase) {
-        // Метод редактирует выбранную строку
+        /** Update a row */
         val query = "UPDATE $TABLE_NAME SET " +
                 "$COLUMN_DATE = '${extraArray[1]}', " +
                 "$COLUMN_START_TIME = '${extraArray[2]}', " +
@@ -79,12 +79,12 @@ class ScheduleDbHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_N
                 "WHERE $COLUMN_ID = ${extraArray[0]};"
         Log.e(LOG, String.format("Edit row query: $query"))
         db.execSQL(query)
-        Log.e(LOG, String.format("Edit row success"))
+        Log.e(LOG, String.format("Row was edited successfully"))
 
     }
 
     override fun onCreate(db: SQLiteDatabase) {
-        Log.e(LOG, "Создаем БД")
+        Log.e(LOG, "Creating database")
         db.execSQL(
             "CREATE TABLE $TABLE_NAME ($COLUMN_ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     "$COLUMN_DATE TEXT NOT NULL, " +
@@ -94,17 +94,19 @@ class ScheduleDbHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_N
                     "$COLUMN_PHONE TEXT NOT NULL, " +
                     "$COLUMN_MISC TEXT);"
         )
-        Log.e(LOG, "DB created")
+        Log.e(LOG, "DB was created")
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        Log.e(LOG, "DB updated")
+        Log.e(LOG, "Updating database")
         // TODO: Добавить логику, чтобы старая БД переписывалась в новую, а не убивалась
         db.execSQL("DROP TABLE IF EXISTS $TABLE_NAME")
         onCreate(db)
+        Log.e(LOG, "Database was updated")
     }
 
     fun fetchNameDate(date: String, db: SQLiteDatabase): Cursor {
+        // Get rows filtered by date
         val query = "SELECT * FROM $TABLE_NAME WHERE $COLUMN_DATE = '$date';"
         return db.rawQuery(query, null)
     }

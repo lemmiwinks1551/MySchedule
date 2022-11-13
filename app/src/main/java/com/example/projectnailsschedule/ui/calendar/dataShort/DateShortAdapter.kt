@@ -14,30 +14,26 @@ internal class DateShortAdapter(
     RecyclerView.Adapter<DateShortViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DateShortViewHolder {
-        // Возвращает объект ViewHolder, который будет хранить данные по одному объекту
+        // Get ViewHolder
+
         val inflater = LayoutInflater.from(parent.context)
         val view: View = inflater.inflate(R.layout.database_short_view, parent, false)
         return DateShortViewHolder(view, date)
     }
 
     override fun onBindViewHolder(holder: DateShortViewHolder, position: Int) {
-        // Получаем соответствие Клиент-Имя
-        // Устанавливаем их в holder
+        // Set name and date in ViewHolder
 
-        val map = dateShorGetDbData.getTimeNameMap() // получаем словарь
-        val namesArray:Array<String> = map.keys.toTypedArray() // создаем массив ключей
+        val map = dateShorGetDbData.getTimeNameMap()            // Create map name:time
+        val namesArray:Array<String> = map.keys.toTypedArray()  // Create array of keys (names)
 
-        val name = namesArray[0]    // Получаем имя, ищем в словаре 0 элемент массива
-        val startTime = map[name]   // Получаем время, ищем по имени в Map
-
-        holder.clientName.text = name     // Устанавливаем в holder Имя
-        holder.starTime.text = startTime  // Устанавилваем в holder Время
-
-        map.remove(name)    // Удаляем из Map элемент с данным именем
+        if (map.size > position) {
+            holder.clientName.text = namesArray[position]       // Set name in holder
+            holder.starTime.text = map[namesArray[position]]    // Set time in holder
+        }
     }
 
     override fun getItemCount(): Int {
         return rowsCount
-
     }
 }

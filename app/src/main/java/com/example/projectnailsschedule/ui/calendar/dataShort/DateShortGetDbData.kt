@@ -21,7 +21,6 @@ class DateShortGetDbData(
 
 
     fun fetchDate() {
-
         // Получаем записи по дню и добавляем в словарь Клиент-Время
         val date = "${Converter().addZero(day)}.${Converter().addZero(month)}.$year"
         val databaseHelper = ScheduleDbHelper(context)

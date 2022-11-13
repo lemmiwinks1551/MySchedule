@@ -52,7 +52,7 @@ class AppointmentFragment : Fragment() {
         databaseHelper = ScheduleDbHelper(context)
         db = databaseHelper.writableDatabase
 
-        // Добавляем ClickListener на кнопки
+        // Set ClickListener
         binding.addEditButton.setOnClickListener {
             when (binding.addEditButton.text.toString()) {
                 // Если на кнопке написано Добавить - вызвать метод по добавлению строки
@@ -79,24 +79,12 @@ class AppointmentFragment : Fragment() {
             editIdFields()
         }
 
-        // Загружаем значения полей после поворота экрана
-        if (savedInstanceState != null) {
-            with(binding) {
-                dayEditText.text = savedInstanceState.getString(date)
-                timeEditText.text = savedInstanceState.getString(time)
-                procedureEditText.setText(savedInstanceState.getString(procedure))
-                nameEditText.setText(savedInstanceState.getString(name))
-                phoneEditText.setText(savedInstanceState.getString(phone))
-                miscEditText.setText(savedInstanceState.getString(misc))
-            }
-        }
-
         return binding.root
     }
 
     private fun addRow() {
-        //** Внести значения полей активности в БД *//*
-        // Собрать данные из полей в переменные и
+        // Add a row in database
+        // Create an array of data
         val fields = arrayListOf(
             binding.dayEditText.text.toString(),
             binding.timeEditText.text.toString(),
@@ -106,6 +94,8 @@ class AppointmentFragment : Fragment() {
             binding.miscEditText.text.toString()
         )
         databaseHelper.addRow(fields, db)
+
+        // Return to previous screen
         findNavController().popBackStack()
     }
 
