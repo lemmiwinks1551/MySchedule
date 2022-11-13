@@ -13,7 +13,9 @@ import android.widget.*
 import android.widget.AdapterView.OnItemLongClickListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.database.DateStatusDbHelper
 import com.example.projectnailsschedule.database.ScheduleDbHelper
@@ -98,7 +100,7 @@ class DateFragment : Fragment() {
                 // Выводим диалоговое окно на экран
                 // Создаем курсор для управления выбранным пунктом ListView
                 val currentCur: Cursor = scheduleList!!.getItemAtPosition(position) as Cursor
-                showDialog(currentCur)
+                showDialog(currentCur, findNavController())
                 true
             }
 
@@ -127,7 +129,7 @@ class DateFragment : Fragment() {
         }
     }
 
-    private fun showDialog(currentCur: Cursor) {
+    private fun showDialog(currentCur: Cursor, navController: NavController) {
         // Метод регулирует работу диалогового окна Удалить/Редактировать
         val dialog = Dialog(requireContext())
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -161,7 +163,7 @@ class DateFragment : Fragment() {
             // Передаем в интенте значение полей, если нажали кнопку "Редактировать"
             val bundle = Bundle()
             bundle.putStringArrayList("appointmentExtra", extraList)
-            it.findNavController().navigate(R.id.action_dateFragment_to_appointmentFragment, bundle)
+            navController.navigate(R.id.action_dateFragment_to_appointmentFragment, bundle)
             dialog.dismiss()
         }
         dialog.show()
