@@ -44,7 +44,7 @@
             app:layout_constraintTop_toBottomOf="@id/title" />
 
         <TextView
-            android:id="@+id/appointment_start"
+            android:id="@+id/database_appointment_start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
@@ -58,7 +58,7 @@
             app:layout_constraintTop_toBottomOf="@id/appointment_date" />
 
         <TextView
-            android:id="@+id/appointment_procedure"
+            android:id="@+id/database_appointment_procedure"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
@@ -67,7 +67,7 @@
             android:textColor="@color/black"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/appointment_start" />
+            app:layout_constraintTop_toBottomOf="@id/database_appointment_start" />
 
         <TextView
             android:id="@+id/appointment_name"
@@ -79,7 +79,7 @@
             android:textColor="@color/black"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/appointment_procedure" />
+            app:layout_constraintTop_toBottomOf="@id/database_appointment_procedure" />
 
         <TextView
             android:id="@+id/appointment_phone"
@@ -142,7 +142,7 @@
             android:textColor="@color/purple_500"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/appointment_start" />
+            app:layout_constraintTop_toBottomOf="@id/database_appointment_start" />
 
         <EditText
             android:id="@+id/name_edit_text"
@@ -157,7 +157,7 @@
             android:textColor="@color/purple_500"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/appointment_procedure" />
+            app:layout_constraintTop_toBottomOf="@id/database_appointment_procedure" />
 
         <EditText
             android:id="@+id/phone_edit_text"

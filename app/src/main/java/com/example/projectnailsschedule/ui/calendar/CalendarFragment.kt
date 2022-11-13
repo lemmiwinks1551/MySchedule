@@ -15,7 +15,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.projectnailsschedule.MainActivity
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentCalendarBinding
 import com.example.projectnailsschedule.service.Converter
@@ -185,7 +184,6 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         val calendarViewModel = ViewModelProvider(this)[CalendarViewModel::class.java]
 
         _binding = FragmentCalendarBinding.inflate(inflater, container, false)
-        val root: View = binding.root
 
         // Вызываем метод, который инициализирует View
         initWidgets()
@@ -201,7 +199,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
             previousMonthAction()
         }
         setHasOptionsMenu(true)
-        return root
+        return binding.root
     }
 
     override fun onItemClick(position: Int, dayText: String?) {

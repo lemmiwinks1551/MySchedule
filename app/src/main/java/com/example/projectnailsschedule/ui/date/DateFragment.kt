@@ -52,10 +52,7 @@ class DateFragment : Fragment() {
     private var day: String? = null
     private var statusMap: Map<String, String> = createStatusMap()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
 
         val dateViewModel =
@@ -78,8 +75,7 @@ class DateFragment : Fragment() {
         databaseHelper = ScheduleDbHelper(context)
 
         //Вызываем новый фрагмент для добавления новой записи
-        // val bundle = Bundle()
-        // bundle.putString("appointmentExtra")
+        // TODO: Передать bundle с датой
         binding.addButton.setOnClickListener {
             it.findNavController().navigate(R.id.action_dateFragment_to_appointmentFragment)
         }
@@ -89,6 +85,7 @@ class DateFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+
         // Получаем строку из БД распасания
         currentDayQuery()
 
@@ -185,8 +182,8 @@ class DateFragment : Fragment() {
 
         // Определяем список элементов, которые будут получать данные из курсова
         val receiver = intArrayOf(
-            R.id.appointment_start,
-            R.id.appointment_procedure,
+            R.id.database_start,
+            R.id.database_procedure,
             R.id.appointment_name,
             R.id.appointment_phone,
             R.id.appointment_misc
@@ -197,8 +194,6 @@ class DateFragment : Fragment() {
             context, R.layout.database,
             cursor, headers, receiver, 0
         )
-
-        scheduleList!!.adapter = adapter
 
         Log.e(LOG, "Адаптер с курсором установлен")
 
