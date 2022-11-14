@@ -79,7 +79,9 @@ class DateFragment : Fragment() {
         //Вызываем новый фрагмент для добавления новой записи
         // TODO: Передать bundle с датой
         binding.addButton.setOnClickListener {
-            it.findNavController().navigate(R.id.action_dateFragment_to_appointmentFragment)
+            val bundle = Bundle()
+            bundle.putString("date", day)
+            it.findNavController().navigate(R.id.action_dateFragment_to_appointmentFragment, bundle)
         }
 
         return binding.root

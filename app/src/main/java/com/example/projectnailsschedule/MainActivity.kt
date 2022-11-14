@@ -20,7 +20,7 @@ import com.google.android.material.navigation.NavigationView
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
-    private lateinit var binding: ActivityMainBinding
+    lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,8 +59,6 @@ class MainActivity : AppCompatActivity() {
             when (destination.id) {
                 R.id.nav_date -> binding.appBarMain.toolbar.title =
                     "${CalendarFragment.day}.${CalendarFragment.month}.${CalendarFragment.year}"
-                R.id.nav_appointment -> binding.appBarMain.toolbar.title =
-                    "${CalendarFragment.day}.${CalendarFragment.month}.${CalendarFragment.year} добавить запись"
             }
         }
     }

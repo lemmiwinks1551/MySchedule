@@ -12,9 +12,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.example.projectnailsschedule.MainActivity
 import com.example.projectnailsschedule.database.ScheduleDbHelper
 import com.example.projectnailsschedule.databinding.FragmentAppointmentBinding
 import com.example.projectnailsschedule.service.Converter
+import com.example.projectnailsschedule.ui.calendar.CalendarFragment
 import com.example.projectnailsschedule.ui.date.DateViewModel
 import java.util.*
 
@@ -34,12 +36,6 @@ class AppointmentFragment : Fragment() {
     val LOG = this::class.simpleName
     private val addTitle = "Добавить"
     private val editTitle = "Редактировать"
-    private val date = "date"
-    private val time = "time"
-    private val procedure = "procedure"
-    private val name = "name"
-    private val phone = "phone"
-    private val misc = "misc"
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -80,6 +76,7 @@ class AppointmentFragment : Fragment() {
         if (arguments?.getStringArrayList("appointmentExtra") != null) {
             editIdFields()
         } else {
+            binding.dayEditText.text = arguments?.getString("date")
             Log.e(LOG, "No Arguments in bundle")
         }
 
@@ -104,9 +101,11 @@ class AppointmentFragment : Fragment() {
     }
 
     private fun editIdFields() {
-        //** Заполнить поля актуальными значениями *//*
+        // Заполнить поля актуальными значениями
         // Получаем список для заполнения полей из интента
+
         val extraArray = arguments?.getStringArrayList("appointmentExtra")
+        binding.title.text = "Редактировать запись"
 
         // Устанавливаем актуальные значения в поля для редактирования
         with(binding) {
@@ -121,9 +120,9 @@ class AppointmentFragment : Fragment() {
     }
 
     private fun editIdQuery() {
-        //** Передать в метод БД информацию для обновления *//*
+        // Передать в метод БД информацию для обновления
         // Получаем id строки из интента и передаем
-        val id = arguments?.getStringArray("appointmentExtra")?.get(0)?.toString()
+        val id = arguments?.getStringArrayList("appointmentExtra")?.get(0)?.toString()
 
         val extraArrayQuery = arrayListOf(
             id!!,
@@ -135,7 +134,7 @@ class AppointmentFragment : Fragment() {
             binding.miscEditText.text.toString(),
         )
         databaseHelper.editId(extraArrayQuery, db)
-        childFragmentManager.popBackStack()
+        findNavController().popBackStack()
     }
 
     private fun cancelButton() {
@@ -168,7 +167,6 @@ class AppointmentFragment : Fragment() {
 
         mTimePicker = TimePickerDialog(
             context, { _, pickedHour, pickedMinute ->
-                //val time = "$pickedHour:$pickedMinute"
                 val time = String.format("%02d:%02d", pickedHour, pickedMinute)
                 binding.timeEditText.text = time
             }, hour, minute, true
