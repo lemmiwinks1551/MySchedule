@@ -186,9 +186,9 @@ class DateFragment : Fragment() {
         val receiver = intArrayOf(
             R.id.database_start,
             R.id.database_procedure,
-            R.id.appointment_name,
-            R.id.appointment_phone,
-            R.id.appointment_misc
+            R.id.database_name,
+            R.id.database_phone,
+            R.id.database_misc
         )
 
         // Создаем адаптер для ListView, передаем в него курсор

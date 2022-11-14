@@ -5,6 +5,7 @@ import android.app.TimePickerDialog
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,6 +31,7 @@ class AppointmentFragment : Fragment() {
 
     private lateinit var databaseHelper: ScheduleDbHelper
     private lateinit var db: SQLiteDatabase
+    val LOG = this::class.simpleName
     private val addTitle = "Добавить"
     private val editTitle = "Редактировать"
     private val date = "date"
@@ -75,8 +77,10 @@ class AppointmentFragment : Fragment() {
         binding.phoneEditText.addTextChangedListener(PhoneNumberFormattingTextWatcher())
 
         // В зависимости от содержания интента выполняем метод "Редактировать"/"Установить дату"
-        if (arguments?.getString("appointmentExtra") != null) {
+        if (arguments?.getStringArrayList("appointmentExtra") != null) {
             editIdFields()
+        } else {
+            Log.e(LOG, "No Arguments in bundle")
         }
 
         return binding.root
@@ -102,7 +106,7 @@ class AppointmentFragment : Fragment() {
     private fun editIdFields() {
         //** Заполнить поля актуальными значениями *//*
         // Получаем список для заполнения полей из интента
-        val extraArray = arguments?.getStringArray("appointmentExtra")
+        val extraArray = arguments?.getStringArrayList("appointmentExtra")
 
         // Устанавливаем актуальные значения в поля для редактирования
         with(binding) {
@@ -156,7 +160,7 @@ class AppointmentFragment : Fragment() {
     }
 
     private fun selectTime() {
-        //** Устанавливает выбор времени на поле Время *//*
+        //** Устанавлива ет выбор времени на поле Время *//*
         val calendar = Calendar.getInstance()
         val mTimePicker: TimePickerDialog
         val hour = calendar.get(Calendar.HOUR_OF_DAY)

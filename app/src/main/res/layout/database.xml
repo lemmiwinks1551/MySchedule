@@ -63,7 +63,7 @@
         app:layout_constraintTop_toBottomOf="@id/COLUMN_END_TEXT" />
 
     <TextView
-        android:id="@+id/name"
+        android:id="@+id/database_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
@@ -85,7 +85,7 @@
         app:layout_constraintTop_toBottomOf="@id/COLUMN_NAME_TEXT" />
 
     <TextView
-        android:id="@+id/phone"
+        android:id="@+id/database_phone"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
@@ -93,7 +93,7 @@
         android:textColor="@color/blue_main"
         android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@id/COLUMN_PHONE_NAME"
-        app:layout_constraintTop_toBottomOf="@id/name" />
+        app:layout_constraintTop_toBottomOf="@id/database_name" />
 
     <TextView
         android:id="@+id/COLUMN_MISC_NAME"
@@ -107,7 +107,7 @@
         app:layout_constraintTop_toBottomOf="@id/COLUMN_PHONE_NAME" />
 
     <TextView
-        android:id="@+id/misc"
+        android:id="@+id/database_misc"
         android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
@@ -115,6 +115,6 @@
         android:textColor="@color/blue_main"
         android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@id/COLUMN_MISC_NAME"
-        app:layout_constraintTop_toBottomOf="@id/phone" />
+        app:layout_constraintTop_toBottomOf="@id/database_phone" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
