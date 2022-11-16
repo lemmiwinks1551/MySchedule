@@ -17,10 +17,13 @@ import android.widget.*
 import android.widget.AdapterView.OnItemClickListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.projectnailsschedule.ui.date.DateFragment
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentSearchBinding
 import com.example.projectnailsschedule.database.ScheduleDbHelper
+import com.example.projectnailsschedule.service.Converter
+import com.example.projectnailsschedule.ui.calendar.CalendarFragment
 
 
 class SearchFragment : Fragment() {
@@ -52,9 +55,12 @@ class SearchFragment : Fragment() {
 
         userList.onItemClickListener = OnItemClickListener { arg0, arg1, position, arg3 ->
             val date = (arg0.adapter as SimpleCursorAdapter).cursor.getString(1)
-            val intent = Intent(context, DateFragment::class.java)
-            intent.putExtra("day", date)
-            startActivity(intent)
+            val bundle = Bundle()
+            bundle.putString("date", date)
+            CalendarFragment.day = Converter().stringToLocalDate(date).dayOfMonth.toString()
+            CalendarFragment.month = Converter().stringToLocalDate(date).monthValue.toString()
+            CalendarFragment.year = Converter().stringToLocalDate(date).year.toString()
+            findNavController().navigate(R.id.action_nav_search_to_nav_date, bundle)
         }
 
         toggleButton?.setOnCheckedChangeListener { _, b ->

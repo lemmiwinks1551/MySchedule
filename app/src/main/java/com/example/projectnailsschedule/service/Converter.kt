@@ -50,7 +50,7 @@ class Converter {
         return formatter.format(parser.parse(day)).toString()
     }
 
-    fun dateParse(date: String): LocalDate {
+    fun stringToLocalDate(date: String): LocalDate {
         /** Parse String "dd.MM.yyyy" into LocalDate */
         return LocalDate.parse(date, DateTimeFormatter.ofPattern("dd.MM.yyyy"))
     }

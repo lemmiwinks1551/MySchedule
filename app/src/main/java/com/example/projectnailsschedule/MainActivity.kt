@@ -16,9 +16,6 @@ import com.example.projectnailsschedule.service.Converter
 import com.example.projectnailsschedule.service.WorkFolders
 import com.example.projectnailsschedule.ui.calendar.CalendarFragment
 import com.google.android.material.navigation.NavigationView
-import java.text.DateFormat
-import java.text.SimpleDateFormat
-import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -65,7 +62,7 @@ class MainActivity : AppCompatActivity() {
                 // Get current date
                 val checkedDate = "${CalendarFragment.day}.${CalendarFragment.month}.${CalendarFragment.year}"
                 // Convert Date string to Local Date
-                val weekDay = Converter().dateParse(checkedDate)
+                val weekDay = Converter().stringToLocalDate(checkedDate)
                 // Set String into toolbar
                 binding.appBarMain.toolbar.title = "${Converter().getWeekDayName(weekDay, this)} $checkedDate"
             }

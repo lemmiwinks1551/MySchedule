@@ -66,7 +66,15 @@
         android:id="@+id/nav_search"
         android:name="com.example.projectnailsschedule.ui.search.SearchFragment"
         android:label="@string/search_client"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_nav_search_to_nav_date"
+            app:destination="@id/nav_date"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_enter_anim"
+            app:popExitAnim="@anim/nav_default_exit_anim" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_appointment"
