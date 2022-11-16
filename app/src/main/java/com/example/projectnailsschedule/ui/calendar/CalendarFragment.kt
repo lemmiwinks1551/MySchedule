@@ -102,6 +102,8 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         // Устанавливаем в RecyclerView менеджера и адаптер
         calendarRecyclerView?.layoutManager = layoutManager
         calendarRecyclerView?.adapter = calendarAdapter
+
+
     }
 
     private fun daysInMonthArray(date: LocalDate): ArrayList<String> {
@@ -261,6 +263,10 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
 
         // Убираем клавиатуру
         hideKeyboard()
+
+        // Clear views
+        dateTextView?.text = null
+        shortDataRecyclerView?.adapter = null
     }
 
     override fun onDestroy() {
@@ -308,5 +314,10 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
             view = View(activity)
         }
         imm.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+
+    fun getSelectedDate(): String {
+        // Return last selected date
+        return "$day.$month.$year"
     }
 }

@@ -59,8 +59,8 @@ class MainActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             // Set toolbar with specific name of week day
             if (destination.id == R.id.nav_date) {
-                // Get current date
-                val checkedDate = "${CalendarFragment.day}.${CalendarFragment.month}.${CalendarFragment.year}"
+                // Get selected date
+                val checkedDate = CalendarFragment().getSelectedDate()
                 // Convert Date string to Local Date
                 val weekDay = Converter().stringToLocalDate(checkedDate)
                 // Set String into toolbar
