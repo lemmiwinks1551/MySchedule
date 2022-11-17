@@ -1,6 +1,5 @@
 package com.example.projectnailsschedule.ui.search
 
-import android.content.Intent
 import android.database.Cursor
 import android.database.SQLException
 import android.database.sqlite.SQLiteDatabase
@@ -18,11 +17,10 @@ import android.widget.AdapterView.OnItemClickListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.example.projectnailsschedule.ui.date.DateFragment
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentSearchBinding
 import com.example.projectnailsschedule.database.ScheduleDbHelper
-import com.example.projectnailsschedule.service.Converter
+import com.example.projectnailsschedule.service.Service
 import com.example.projectnailsschedule.ui.calendar.CalendarFragment
 
 
@@ -57,9 +55,9 @@ class SearchFragment : Fragment() {
             val date = (arg0.adapter as SimpleCursorAdapter).cursor.getString(1)
             val bundle = Bundle()
             bundle.putString("date", date)
-            CalendarFragment.day = Converter().stringToLocalDate(date).dayOfMonth.toString()
-            CalendarFragment.month = Converter().stringToLocalDate(date).monthValue.toString()
-            CalendarFragment.year = Converter().stringToLocalDate(date).year.toString()
+            CalendarFragment.day = Service().stringToLocalDate(date).dayOfMonth.toString()
+            CalendarFragment.month = Service().stringToLocalDate(date).monthValue.toString()
+            CalendarFragment.year = Service().stringToLocalDate(date).year.toString()
             findNavController().navigate(R.id.action_nav_search_to_nav_date, bundle)
         }
 

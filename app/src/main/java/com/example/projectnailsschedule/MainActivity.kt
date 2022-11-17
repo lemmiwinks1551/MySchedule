@@ -12,7 +12,7 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.projectnailsschedule.databinding.ActivityMainBinding
-import com.example.projectnailsschedule.service.Converter
+import com.example.projectnailsschedule.service.Service
 import com.example.projectnailsschedule.service.WorkFolders
 import com.example.projectnailsschedule.ui.calendar.CalendarFragment
 import com.google.android.material.navigation.NavigationView
@@ -62,9 +62,9 @@ class MainActivity : AppCompatActivity() {
                 // Get selected date
                 val checkedDate = CalendarFragment().getSelectedDate()
                 // Convert Date string to Local Date
-                val weekDay = Converter().stringToLocalDate(checkedDate)
+                val weekDay = Service().stringToLocalDate(checkedDate)
                 // Set String into toolbar
-                binding.appBarMain.toolbar.title = "${Converter().getWeekDayName(weekDay, this)} $checkedDate"
+                binding.appBarMain.toolbar.title = "${Service().getWeekDayName(weekDay, this)} $checkedDate"
             }
         }
     }

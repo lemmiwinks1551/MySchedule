@@ -4,7 +4,7 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.util.Log
-import com.example.projectnailsschedule.service.Converter
+import com.example.projectnailsschedule.service.Service
 import com.example.projectnailsschedule.database.DateStatusDbHelper
 import java.time.YearMonth
 
@@ -33,7 +33,7 @@ class StatusesMap : Thread() {
         var cursor: Cursor? = null
 
         month = yearMonth.monthValue.toString()
-        month = Converter().addZero(month)
+        month = Service().addZero(month)
 
         year = yearMonth.year.toString()
 
@@ -44,13 +44,13 @@ class StatusesMap : Thread() {
                 continue
             }
 
-            var dd = Converter().addZero(day)
+            var dd = Service().addZero(day)
             val date = String.format("$dd.$month.$year")
             Log.e(LOG, String.format("Date for queue: $date"))
 
             dbStatus = dateStatusDbHelper.readableDatabase
             cursor = dateStatusDbHelper.fetchDate(date, dbStatus!!)
-            dd = Converter().removeZero(dd)
+            dd = Service().removeZero(dd)
 
             if (cursor.moveToFirst()) {
                 val columnIndex = cursor.getColumnIndex("status")

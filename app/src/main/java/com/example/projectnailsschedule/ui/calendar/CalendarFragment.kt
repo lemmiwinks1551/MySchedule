@@ -1,13 +1,11 @@
 package com.example.projectnailsschedule.ui.calendar
 
-import android.app.Activity
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
@@ -17,7 +15,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentCalendarBinding
-import com.example.projectnailsschedule.service.Converter
+import com.example.projectnailsschedule.service.Service
 import com.example.projectnailsschedule.ui.calendar.dataShort.DateShortAdapter
 import com.example.projectnailsschedule.ui.calendar.dataShort.DateShortGetDbData
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -212,7 +210,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
             dateTextView?.visibility = View.VISIBLE
 
             val date = Date.from(selectedDate?.atStartOfDay(ZoneId.systemDefault())!!.toInstant())
-            day = Converter().addZero(dayText)
+            day = Service().addZero(dayText)
             month = SimpleDateFormat("MM", Locale.getDefault()).format(date)
             year = selectedDate?.year.toString()
 
@@ -262,7 +260,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         shortDate(day, month, year)
 
         // Убираем клавиатуру
-        hideKeyboard()
+        Service().hideKeyboard(requireActivity())
 
         // Clear views
         dateTextView?.text = null
@@ -302,18 +300,6 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         // Устанавливаем иконку поиска видимой (только для фрагмента CalendarFragment)
         menu.findItem(R.id.search).isVisible = true
         super.onPrepareOptionsMenu(menu)
-    }
-
-    private fun hideKeyboard() {
-        val imm: InputMethodManager =
-            requireActivity().getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-        //Find the currently focused view, so we can grab the correct window token from it.
-        var view = requireActivity().currentFocus
-        //If no view currently has focus, create a new one, just so we can grab a window token from it
-        if (view == null) {
-            view = View(activity)
-        }
-        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
     fun getSelectedDate(): String {

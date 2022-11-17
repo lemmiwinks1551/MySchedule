@@ -20,7 +20,7 @@ import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.database.DateStatusDbHelper
 import com.example.projectnailsschedule.database.ScheduleDbHelper
 import com.example.projectnailsschedule.databinding.FragmentDateBinding
-import com.example.projectnailsschedule.service.Converter
+import com.example.projectnailsschedule.service.Service
 
 
 class DateFragment : Fragment() {
@@ -66,7 +66,7 @@ class DateFragment : Fragment() {
         day = arguments?.getString("date")
 
         // Конвертируем дату в формат dd.MM.yyyy
-        day = Converter().dateConverter(day!!)
+        day = Service().dateConverter(day!!)
 
         // Получаем статус дня и устанавливаем в спиннер
         dayStatusSpinner = binding.spinnerStatus
@@ -89,6 +89,9 @@ class DateFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+
+        // Hide keyboard
+        Service().hideKeyboard(requireActivity())
 
         // Получаем строку из БД распасания
         currentDayQuery()
