@@ -12,7 +12,7 @@
         android:layout_height="21dp"
         android:layout_margin="16dp"
         android:text="Время"
-        android:textColor="@color/black"
+        android:textColor="?attr/colorOnSecondary"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:text="Процедура"
-        android:textColor="@color/black"
+        android:textColor="?attr/colorOnSecondary"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/COLUMN_START_TEXT" />
@@ -35,7 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:text="11:00"
-        android:textColor="@color/blue_main"
+        android:textColor="?attr/colorOnSecondary"
         android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@id/COLUMN_START_TEXT"
         app:layout_constraintTop_toTopOf="parent" />
@@ -46,7 +46,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:text="Наименование"
-        android:textColor="@color/blue_main"
+        android:textColor="?attr/colorOnSecondary"
         android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@+id/COLUMN_END_TEXT"
         app:layout_constraintTop_toBottomOf="@id/database_start" />
@@ -57,7 +57,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:text="Клиент"
-        android:textColor="@color/black"
+        android:textColor="?attr/colorOnSecondary"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/COLUMN_END_TEXT" />
@@ -68,7 +68,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:text="Имя"
-        android:textColor="@color/blue_main"
+        android:textColor="?attr/colorOnSecondary"
         android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@id/COLUMN_NAME_TEXT"
         app:layout_constraintTop_toBottomOf="@+id/database_procedure" />
@@ -79,7 +79,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:text="Телефон"
-        android:textColor="@color/black"
+        android:textColor="?attr/colorOnSecondary"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/COLUMN_NAME_TEXT" />
@@ -90,7 +90,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:text="8 800 123 45 67"
-        android:textColor="@color/blue_main"
+        android:textColor="?attr/colorOnSecondary"
         android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@id/COLUMN_PHONE_NAME"
         app:layout_constraintTop_toBottomOf="@id/database_name" />
@@ -101,7 +101,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:text="Комментарии"
-        android:textColor="@color/black"
+        android:textColor="?attr/colorOnSecondary"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/COLUMN_PHONE_NAME" />
@@ -112,7 +112,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:text="..."
-        android:textColor="@color/blue_main"
+        android:textColor="?attr/colorOnSecondary"
         android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@id/COLUMN_MISC_NAME"
         app:layout_constraintTop_toBottomOf="@id/database_phone" />
