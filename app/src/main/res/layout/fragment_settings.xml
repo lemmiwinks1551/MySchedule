@@ -7,16 +7,24 @@
     tools:context=".ui.settings.SettingsFragment">
 
     <TextView
-        android:layout_width="match_parent"
+        android:id="@+id/darkTheme"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_margin="22dp"
+        android:text="Темная тема"
         android:textAlignment="center"
         android:textColor="?attr/colorOnSecondary"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/darkThemeSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/darkTheme"
+        app:layout_constraintStart_toEndOf="@+id/darkTheme"
+        app:layout_constraintTop_toTopOf="@+id/darkTheme" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

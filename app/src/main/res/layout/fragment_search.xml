@@ -6,10 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".ui.search.SearchFragment">
 
-    <ToggleButton
+    <androidx.appcompat.widget.AppCompatToggleButton
         android:textColor="@color/white"
+        android:backgroundTint="?attr/colorPrimary"
         android:id="@+id/toggle_search_button"
-        android:layout_width="wrap_content"
+        android:layout_width="130dp"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:enabled="true"
@@ -19,16 +20,17 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:textColor="?attr/colorOnSecondary"
         android:id="@+id/user_search"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:hint="@string/search_client"
         android:padding="8dp"
+        android:textColor="?attr/colorOnSecondary"
+        app:layout_constraintBottom_toBottomOf="@+id/toggle_search_button"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toEndOf="@+id/toggle_search_button"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/toggle_search_button" />
 
     <ListView
         android:id="@+id/userList"
@@ -38,6 +40,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/user_search" />
+        app:layout_constraintTop_toBottomOf="@+id/toggle_search_button" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
