@@ -13,6 +13,7 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <TextView
+        android:textColor="@color/white"
         android:id="@+id/main_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

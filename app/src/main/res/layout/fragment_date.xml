@@ -34,7 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:text="@string/status_description"
-        android:textColor="@color/black"
+        android:textColor="?attr/colorOnSecondary"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
