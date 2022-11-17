@@ -35,7 +35,7 @@
             android:gravity="center"
             android:text="@string/monthYearTV_hint"
             android:textAlignment="center"
-            android:textColor="@color/black"
+            android:textColor="?attr/colorOnSecondary"
             android:textSize="20sp" />
 
         <ImageButton
@@ -63,7 +63,7 @@
             android:layout_weight="1"
             android:text="@string/mon"
             android:textAlignment="center"
-            android:textColor="@color/black"
+            android:textColor="?attr/colorOnSecondary"
             android:textSize="16sp" />
 
         <TextView
@@ -72,7 +72,7 @@
             android:layout_weight="1"
             android:text="@string/tue"
             android:textAlignment="center"
-            android:textColor="@color/black"
+            android:textColor="?attr/colorOnSecondary"
             android:textSize="16sp" />
 
         <TextView
@@ -81,7 +81,7 @@
             android:layout_weight="1"
             android:text="@string/wed"
             android:textAlignment="center"
-            android:textColor="@color/black"
+            android:textColor="?attr/colorOnSecondary"
             android:textSize="16sp" />
 
         <TextView
@@ -90,7 +90,7 @@
             android:layout_weight="1"
             android:text="@string/thu"
             android:textAlignment="center"
-            android:textColor="@color/black"
+            android:textColor="?attr/colorOnSecondary"
             android:textSize="16sp" />
 
         <TextView
@@ -99,7 +99,7 @@
             android:layout_weight="1"
             android:text="@string/fri"
             android:textAlignment="center"
-            android:textColor="@color/black"
+            android:textColor="?attr/colorOnSecondary"
             android:textSize="16sp" />
 
         <TextView
@@ -109,7 +109,7 @@
             android:layout_weight="1"
             android:text="@string/sat"
             android:textAlignment="center"
-            android:textColor="@color/black"
+            android:textColor="?attr/colorOnSecondary"
             android:textSize="16sp" />
 
         <TextView
@@ -118,7 +118,7 @@
             android:layout_weight="1"
             android:text="@string/sun"
             android:textAlignment="center"
-            android:textColor="@color/black"
+            android:textColor="?attr/colorOnSecondary"
             android:textSize="16sp" />
 
 
@@ -130,10 +130,10 @@
         android:layout_height="match_parent"
         android:layout_margin="8dp"
         android:layout_weight="0.5"
+        android:layoutAnimation="@anim/layout_animation"
         android:scrollbars="vertical"
         android:verticalScrollbarPosition="left"
-        android:layoutAnimation="@anim/layout_animation"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <TextView
         android:id="@+id/dayTextView"
@@ -141,7 +141,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:textAlignment="center"
-        android:textColor="@color/blue_main"
+        android:textColor="?attr/colorOnSecondary"
         android:textSize="20sp" /> <!--Выбранный день-->
 
     <androidx.recyclerview.widget.RecyclerView
@@ -151,7 +151,7 @@
         android:layout_margin="8dp"
         android:layout_weight="0.5"
         android:scrollbars="vertical"
-        android:verticalScrollbarPosition="left"/>
+        android:verticalScrollbarPosition="left" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/add_data"
