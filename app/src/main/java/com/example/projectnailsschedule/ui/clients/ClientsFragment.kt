@@ -25,7 +25,7 @@ class ClientsFragment : Fragment() {
         val clientsViewModel =
             ViewModelProvider(this)[ClientsViewModel::class.java]
 
-        _binding = FragmentClientsBinding.inflate(inflater, container, false)
+        // _binding = FragmentClientsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         val textView: TextView = binding.textGallery

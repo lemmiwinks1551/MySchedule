@@ -9,10 +9,14 @@ import com.example.projectnailsschedule.R
 import java.io.File
 
 
-class LogFile {
+class LogFile: Thread.UncaughtExceptionHandler {
 
     private val filePath = File(String.format("${WorkFolders().getFolderPath()}/log.log"))
     private val LOG = this::class.simpleName
+
+    override fun uncaughtException(p0: Thread, p1: Throwable) {
+        TODO("Not yet implemented")
+    }
 
     fun writeLogFile() {
         // Write log file

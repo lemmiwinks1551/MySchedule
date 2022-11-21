@@ -18,6 +18,7 @@ import com.example.projectnailsschedule.service.Service
 import com.example.projectnailsschedule.service.WorkFolders
 import com.example.projectnailsschedule.ui.calendar.CalendarFragment
 import com.google.android.material.navigation.NavigationView
+import java.net.UnknownHostException
 
 
 class MainActivity : AppCompatActivity() {
@@ -71,7 +72,7 @@ class MainActivity : AppCompatActivity() {
                         "${Service().getWeekDayName(weekDay, this)} $checkedDate"
                 }
             }
-        } catch (e: Exception) {
+        } catch (e: UnknownHostException) {
             LogFile().writeLogFile()
             LogFile().sendLogFile(this)
         }
