@@ -56,4 +56,6 @@
         <item>Выходной</item>
     </string-array>
 
+    <string name="support_email">scheduleapp@mail.ru</string>
+
 </resources>
