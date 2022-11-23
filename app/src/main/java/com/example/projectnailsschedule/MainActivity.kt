@@ -12,7 +12,7 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.projectnailsschedule.databinding.ActivityMainBinding
-import com.example.projectnailsschedule.service.LogFile
+import com.example.projectnailsschedule.service.UncaughtExceptionHandler
 import com.example.projectnailsschedule.service.Service
 import com.example.projectnailsschedule.service.WorkFolders
 import com.example.projectnailsschedule.ui.calendar.CalendarFragment
@@ -24,13 +24,13 @@ class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
-    private val logFile = LogFile()
+    private val uncaughtExceptionHandler = UncaughtExceptionHandler()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // Set uncaught exception handler
-        logFile.context = this
-        Thread.setDefaultUncaughtExceptionHandler(logFile)
+        uncaughtExceptionHandler.context = this
+        Thread.setDefaultUncaughtExceptionHandler(uncaughtExceptionHandler)
 
         super.onCreate(savedInstanceState)
 

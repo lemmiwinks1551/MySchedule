@@ -5,17 +5,17 @@ import android.content.Intent
 import android.net.Uri
 import android.util.Log
 import androidx.core.content.ContextCompat.startActivity
-import com.example.projectnailsschedule.MainActivity
 import com.example.projectnailsschedule.R
 import java.io.File
 
 
-class LogFile: Thread.UncaughtExceptionHandler {
+class UncaughtExceptionHandler : Thread.UncaughtExceptionHandler {
 
     private val filePath = File(String.format("${WorkFolders().getFolderPath()}/log.log"))
-    private val LOG = this::class.simpleName
     private val oldHandler = Thread.getDefaultUncaughtExceptionHandler()
     lateinit var context: Context
+    private val LOG = this::class.simpleName
+
 
     override fun uncaughtException(thread: Thread, throwable: Throwable) {
         // Write log file
@@ -29,10 +29,12 @@ class LogFile: Thread.UncaughtExceptionHandler {
     }
 
     private fun writeLogFile() {
-        // Write log file
+        // Create log file, if not exists
         if (filePath.exists()) {
             filePath.delete()
         }
+
+        // Write log file
         val cmd = "logcat -d -f" + filePath.absolutePath
         filePath.createNewFile()
         Runtime.getRuntime().exec(cmd)
@@ -40,18 +42,17 @@ class LogFile: Thread.UncaughtExceptionHandler {
     }
 
     private fun sendLogFile() {
-        // Send Log file to email
-        val intentMail = Intent(Intent.ACTION_SEND)
-        val supportEmail = context.getString(R.string.support_email)
-        val filePathUri = Uri.fromFile(filePath)
+        // Send Log file by email
+        val supportEmailSubject = context.getString(R.string.support_subject)
+        val supportEmailAddress = context.getString(R.string.support_email)
+        val supportEmailAttachment = Uri.fromFile(filePath)
 
-        intentMail.type = "message/rfc822"
-        with(intentMail) {
-            putExtra(Intent.EXTRA_EMAIL, supportEmail)
-            putExtra(Intent.EXTRA_STREAM, filePathUri)
-            putExtra(Intent.EXTRA_SUBJECT, "Мое расписание, логи")
+        val intent = Intent(Intent.ACTION_SENDTO).apply {
+            data = Uri.parse(supportEmailAddress) // only email apps should handle this
+            putExtra(Intent.EXTRA_SUBJECT, supportEmailSubject)
+            putExtra(Intent.EXTRA_STREAM, supportEmailAttachment)
         }
 
-        startActivity(context, intentMail, null)
+        startActivity(context, intent, null)
     }
 }
