@@ -50,13 +50,11 @@ class SettingsFragment : Fragment() {
     }
 
     fun setTheme(theme: String) {
-        // TODO: Выключател 
+        // TODO: Положение выключателя можно изменять для красоты
         if (theme == "dark") {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-            binding.darkThemeSwitch.isChecked = true
         } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-            binding.darkThemeSwitch.isChecked = false
         }
     }
 
