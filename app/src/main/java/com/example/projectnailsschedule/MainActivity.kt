@@ -102,6 +102,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadSettings() {
+        // Load and set settings
         val settingsDbHelper = SettingsDbHelper(this)
         val db: SQLiteDatabase = settingsDbHelper.readableDatabase
         val cursor: Cursor = settingsDbHelper.getRow("theme", db)
