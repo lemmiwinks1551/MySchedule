@@ -44,6 +44,11 @@ internal class CalendarAdapter(
         holder.dayOfMonth.text = dayInHolder
 
         if (dayInHolder != "") {
+            // TODO: java.util.NoSuchElementException: Key 1 is missing in the map.
+            //        at kotlin.collections.MapsKt__MapWithDefaultKt.getOrImplicitDefaultNullable(MapWithDefault.kt:24)
+            //        at kotlin.collections.MapsKt__MapsKt.getValue(Maps.kt:346)
+            //        at com.example.projectnailsschedule.ui.calendar.CalendarAdapter.onBindViewHolder(CalendarAdapter.kt:47)
+            //        словарь в другом потоке не успевает сформироваться
             when (dayStatuses.getValue(dayInHolder).replace("0", "")) {
                 "medium" -> holder.dayOfMonth.setBackgroundResource(R.drawable.border_medium)
                 "busy" -> holder.dayOfMonth.setBackgroundResource(R.drawable.border_busy)
