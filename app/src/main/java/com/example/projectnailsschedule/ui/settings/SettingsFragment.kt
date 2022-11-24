@@ -1,5 +1,6 @@
 package com.example.projectnailsschedule.ui.settings
 
+import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.projectnailsschedule.database.SettingsDbHelper
 import com.example.projectnailsschedule.databinding.FragmentSettingsBinding
 
 class SettingsFragment : Fragment() {
@@ -18,6 +20,9 @@ class SettingsFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
+    private var settingsDbHelper: SettingsDbHelper? = null
+    private var db: SQLiteDatabase? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -25,26 +30,38 @@ class SettingsFragment : Fragment() {
     ): View {
         val clientsViewModel =
             ViewModelProvider(this)[SettingsViewModel::class.java]
+        settingsDbHelper = SettingsDbHelper(context)
+        db = settingsDbHelper?.writableDatabase
 
         _binding = FragmentSettingsBinding.inflate(inflater, container, false)
 
         // Set listener om theme switch
         binding.darkThemeSwitch.setOnClickListener {
             if (binding.darkThemeSwitch.isChecked) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                Toast.makeText(context, "Темная тема активирована", Toast.LENGTH_SHORT).show()
+                settingsDbHelper!!.updateRow("theme", "dark", db!!)
+                setTheme("dark")
             } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                Toast.makeText(context, "Темная тема активирована", Toast.LENGTH_SHORT).show()
-
+                settingsDbHelper!!.updateRow("theme", "light", db!!)
+                setTheme("light")
             }
         }
 
         return binding.root
     }
 
+    fun setTheme(theme: String) {
+        if (theme == "dark") {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            binding.darkThemeSwitch.isChecked = true
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            binding.darkThemeSwitch.isChecked = false
+        }
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
+        db!!.close()
         _binding = null
     }
 }

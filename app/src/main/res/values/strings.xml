@@ -62,7 +62,7 @@
     </string-array>
 
     <!--Support email settings-->
-    <string name="support_email">"mailto:scheduleapp@mail.ru</string>
+    <string name="support_email">mailto:scheduleapp@mail.ru</string>
     <string name="support_subject">Мое расписание. Ошибки.</string>
     <string name="support_body">Письмо содержит логи для анализа ошибок.</string>
 

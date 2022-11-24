@@ -1,5 +1,7 @@
 package com.example.projectnailsschedule
 
+import android.database.Cursor
+import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -11,11 +13,13 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.example.projectnailsschedule.database.SettingsDbHelper
 import com.example.projectnailsschedule.databinding.ActivityMainBinding
-import com.example.projectnailsschedule.service.UncaughtExceptionHandler
 import com.example.projectnailsschedule.service.Service
+import com.example.projectnailsschedule.service.UncaughtExceptionHandler
 import com.example.projectnailsschedule.service.WorkFolders
 import com.example.projectnailsschedule.ui.calendar.CalendarFragment
+import com.example.projectnailsschedule.ui.settings.SettingsFragment
 import com.google.android.material.navigation.NavigationView
 
 
@@ -31,6 +35,8 @@ class MainActivity : AppCompatActivity() {
         // Set uncaught exception handler
         uncaughtExceptionHandler.context = this
         Thread.setDefaultUncaughtExceptionHandler(uncaughtExceptionHandler)
+
+        loadSettings()
 
         super.onCreate(savedInstanceState)
 
@@ -93,5 +99,15 @@ class MainActivity : AppCompatActivity() {
             R.id.search -> navController.navigate(R.id.nav_search)
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun loadSettings() {
+        val settingsDbHelper = SettingsDbHelper(this)
+        val db: SQLiteDatabase = settingsDbHelper.readableDatabase
+        val cursor: Cursor = settingsDbHelper.getRow("theme", db)
+        cursor.moveToFirst()
+        val value = cursor.getString(2)
+
+        SettingsFragment().setTheme(value)
     }
 }
