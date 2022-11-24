@@ -181,7 +181,7 @@ class DateFragment : Fragment() {
         db = databaseHelper?.readableDatabase
 
         // Получаем курсор с данными из БД по выбранной дате
-        cursor = databaseHelper?.fetchRow(day!!, db!!)
+        cursor = databaseHelper?.getRow(day!!, db!!)
 
         // Определяем, какие столбцы из курсора будут выводиться в ListView
         val headers =

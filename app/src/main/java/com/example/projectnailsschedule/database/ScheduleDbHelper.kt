@@ -11,7 +11,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 
-/** Methods for interacting with the database */
+/** Methods for interacting with Schedule database */
 
 class ScheduleDbHelper(context: Context?) :
     SQLiteOpenHelper(context, DATABASE_NAME, null, VERSION) {
@@ -59,7 +59,7 @@ class ScheduleDbHelper(context: Context?) :
         Log.e(LOG, String.format("Delete row - success"))
     }
 
-    fun fetchRow(day: String, db: SQLiteDatabase): Cursor {
+    fun getRow(day: String, db: SQLiteDatabase): Cursor {
         /** Select a row from a database */
         val query =
             "SELECT * FROM $TABLE_NAME WHERE $COLUMN_DATE = '$day' ORDER BY $COLUMN_START_TIME ASC;"
@@ -67,7 +67,7 @@ class ScheduleDbHelper(context: Context?) :
         return db.rawQuery(query, null)
     }
 
-    fun editId(extraArray: ArrayList<String>, db: SQLiteDatabase) {
+    fun updateRow(extraArray: ArrayList<String>, db: SQLiteDatabase) {
         /** Update a row */
         val query = "UPDATE $TABLE_NAME SET " +
                 "$COLUMN_DATE = '${extraArray[1]}', " +
@@ -80,7 +80,6 @@ class ScheduleDbHelper(context: Context?) :
         Log.e(LOG, String.format("Edit row query: $query"))
         db.execSQL(query)
         Log.e(LOG, String.format("Row was edited successfully"))
-
     }
 
     override fun onCreate(db: SQLiteDatabase) {
@@ -112,6 +111,7 @@ class ScheduleDbHelper(context: Context?) :
     }
 
     fun createDb() {
+        // Method for search fragment
         val file = File(DateStatusDbHelper.DATABASE_NAME)
         if (!file.exists()) {
             //получаем локальную бд как поток

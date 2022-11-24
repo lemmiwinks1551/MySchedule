@@ -136,7 +136,7 @@ class AppointmentFragment : Fragment() {
             binding.phoneEditText.text.toString(),
             binding.miscEditText.text.toString(),
         )
-        databaseHelper.editId(extraArrayQuery, db)
+        databaseHelper.updateRow(extraArrayQuery, db)
         findNavController().popBackStack()
     }
 
