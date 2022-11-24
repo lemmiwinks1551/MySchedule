@@ -109,5 +109,7 @@ class MainActivity : AppCompatActivity() {
         val value = cursor.getString(2)
 
         SettingsFragment().setTheme(value)
+        cursor.close()
+        db.close()
     }
 }

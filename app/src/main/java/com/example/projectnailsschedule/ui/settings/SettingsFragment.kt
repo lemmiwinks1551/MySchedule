@@ -50,6 +50,7 @@ class SettingsFragment : Fragment() {
     }
 
     fun setTheme(theme: String) {
+        // TODO: Выключател 
         if (theme == "dark") {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
             binding.darkThemeSwitch.isChecked = true
