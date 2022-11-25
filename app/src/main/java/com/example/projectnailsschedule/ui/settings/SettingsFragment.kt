@@ -1,11 +1,11 @@
 package com.example.projectnailsschedule.ui.settings
 
+import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -35,6 +35,9 @@ class SettingsFragment : Fragment() {
 
         _binding = FragmentSettingsBinding.inflate(inflater, container, false)
 
+        // Set switch position
+        binding.darkThemeSwitch.isChecked = loadTheme() != "light"
+
         // Set listener om theme switch
         binding.darkThemeSwitch.setOnClickListener {
             if (binding.darkThemeSwitch.isChecked) {
@@ -63,4 +66,19 @@ class SettingsFragment : Fragment() {
         db!!.close()
         _binding = null
     }
+
+    private fun loadTheme() : String {
+        // Load and set settings
+        val settingsDbHelper = SettingsDbHelper(context)
+        val db: SQLiteDatabase = settingsDbHelper.readableDatabase
+        val cursor: Cursor = settingsDbHelper.getRow("theme", db)
+        cursor.moveToFirst()
+        val themeName = cursor.getString(2)
+
+        cursor.close()
+        db.close()
+
+        return themeName
+    }
+
 }
