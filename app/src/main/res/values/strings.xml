@@ -63,6 +63,7 @@
 
     <!--Support email settings-->
     <string name="support_email">scheduleapp@mail.ru</string>
+    <string name="support_email_uri">mailto:scheduleapp@mail.ru</string>
     <string name="support_subject">Мое расписание. Ошибки.</string>
     <string name="support_body">Письмо содержит логи для анализа ошибок.</string>
     <string name="dark_theme_settings_title">Темная тема</string>
