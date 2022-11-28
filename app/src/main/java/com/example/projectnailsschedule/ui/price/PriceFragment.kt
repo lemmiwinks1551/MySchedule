@@ -28,7 +28,7 @@ class PriceFragment : Fragment() {
         _binding = FragmentPriceBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textSlideshow
+        val textView: TextView = binding.textTemplate
         serviceViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
