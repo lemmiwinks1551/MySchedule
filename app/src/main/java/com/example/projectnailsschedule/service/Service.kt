@@ -55,7 +55,12 @@ class Service {
 
     fun stringToLocalDate(date: String): LocalDate {
         /** Parse String "dd.MM.yyyy" into LocalDate */
-        return LocalDate.parse(date, DateTimeFormatter.ofPattern("dd.MM.yyyy"))
+        try {
+            return LocalDate.parse(date, DateTimeFormatter.ofPattern("dd.MM.yyyy"))
+        } catch (e: Exception) {
+            Log.e(LOG, e.toString())
+            return LocalDate.now()
+        }
     }
 
     fun getWeekDayName(date: LocalDate, context: Context): String {
