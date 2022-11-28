@@ -39,7 +39,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:text="Версия 1.0.2"
+        android:text="@string/app_version"
         android:textAlignment="center"
         android:textColor="?attr/colorOnSecondary"
         android:textSize="15sp"
