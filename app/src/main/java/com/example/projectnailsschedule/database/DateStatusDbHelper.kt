@@ -5,7 +5,7 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
-import com.example.projectnailsschedule.service.WorkFolders
+import com.example.projectnailsschedule.util.WorkFolders
 
 /**
  * Методы для взаимодействия с БД по статусам дней календаря:

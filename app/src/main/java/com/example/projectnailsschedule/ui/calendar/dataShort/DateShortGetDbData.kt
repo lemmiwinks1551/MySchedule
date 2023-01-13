@@ -2,7 +2,7 @@ package com.example.projectnailsschedule.ui.calendar.dataShort
 
 import android.content.Context
 import android.util.Log
-import com.example.projectnailsschedule.service.Service
+import com.example.projectnailsschedule.util.Service
 import com.example.projectnailsschedule.database.ScheduleDbHelper
 
 /** Получает данные из БД за выбранную дату

@@ -4,7 +4,7 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.util.Log
-import com.example.projectnailsschedule.service.Service
+import com.example.projectnailsschedule.util.Service
 import com.example.projectnailsschedule.database.DateStatusDbHelper
 import java.time.YearMonth
 

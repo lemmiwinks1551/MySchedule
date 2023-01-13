@@ -1,11 +1,10 @@
-package com.example.projectnailsschedule.service
+package com.example.projectnailsschedule.util
 
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.util.Log
-import android.widget.Toast
 import androidx.core.content.ContextCompat.startActivity
 import com.example.projectnailsschedule.R
 import java.io.File

@@ -6,7 +6,7 @@ import android.database.SQLException
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
-import com.example.projectnailsschedule.service.WorkFolders
+import com.example.projectnailsschedule.util.WorkFolders
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException

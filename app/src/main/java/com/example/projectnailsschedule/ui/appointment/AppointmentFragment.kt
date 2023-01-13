@@ -15,7 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.projectnailsschedule.database.ScheduleDbHelper
 import com.example.projectnailsschedule.databinding.FragmentAppointmentBinding
-import com.example.projectnailsschedule.service.Service
+import com.example.projectnailsschedule.util.Service
 import com.example.projectnailsschedule.ui.calendar.CalendarFragment
 import com.example.projectnailsschedule.ui.date.DateViewModel
 import java.util.*

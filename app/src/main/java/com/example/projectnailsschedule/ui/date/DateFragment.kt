@@ -20,7 +20,7 @@ import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.database.DateStatusDbHelper
 import com.example.projectnailsschedule.database.ScheduleDbHelper
 import com.example.projectnailsschedule.databinding.FragmentDateBinding
-import com.example.projectnailsschedule.service.Service
+import com.example.projectnailsschedule.util.Service
 
 
 class DateFragment : Fragment() {

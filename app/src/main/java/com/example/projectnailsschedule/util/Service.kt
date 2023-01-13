@@ -1,4 +1,4 @@
-package com.example.projectnailsschedule.service
+package com.example.projectnailsschedule.util
 
 import android.annotation.SuppressLint
 import android.app.Activity
