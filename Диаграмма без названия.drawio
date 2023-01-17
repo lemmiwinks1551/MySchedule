@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2023-01-17T18:48:12.871Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36" version="20.8.5" etag="31thfb7IyYvxLkvfAxuA" type="github">
+<mxfile host="app.diagrams.net" modified="2023-01-17T18:50:07.012Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36" version="20.8.5" etag="AB4TPw4YqE3fGVUpdlIr" type="github">
   <diagram id="-fB192dCxYrc6BMrNV2s" name="Страница 1">
-    <mxGraphModel dx="4330" dy="1592" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="4999" dy="1990" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -86,18 +86,20 @@
         <mxCell id="4gGjTpzzvBJ2QWFjTk4x-269" value="Select&lt;br&gt;Date" style="text;strokeColor=none;fillColor=none;html=1;fontSize=35;fontStyle=1;verticalAlign=middle;align=center;strokeWidth=3;fontColor=#000000000;" vertex="1" parent="4gGjTpzzvBJ2QWFjTk4x-267">
           <mxGeometry x="117" y="145" width="100" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="4gGjTpzzvBJ2QWFjTk4x-273" style="edgeStyle=orthogonalEdgeStyle;rounded=0;jumpSize=11;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;strokeWidth=3;fontSize=28;fontColor=#000000000;" edge="1" parent="1" source="4gGjTpzzvBJ2QWFjTk4x-31" target="4gGjTpzzvBJ2QWFjTk4x-265">
+        <mxCell id="4gGjTpzzvBJ2QWFjTk4x-273" style="edgeStyle=orthogonalEdgeStyle;rounded=0;jumpSize=11;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;strokeWidth=3;fontSize=28;fontColor=#000000000;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="4gGjTpzzvBJ2QWFjTk4x-31" target="4gGjTpzzvBJ2QWFjTk4x-265">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="450" y="2460" />
-              <mxPoint x="366" y="2460" />
+              <mxPoint x="450" y="3040" />
+              <mxPoint x="366" y="3040" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="4gGjTpzzvBJ2QWFjTk4x-274" style="edgeStyle=orthogonalEdgeStyle;rounded=0;jumpSize=11;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;strokeWidth=3;fontSize=28;fontColor=#000000000;" edge="1" parent="1" source="4gGjTpzzvBJ2QWFjTk4x-31" target="4gGjTpzzvBJ2QWFjTk4x-268">
+        <mxCell id="4gGjTpzzvBJ2QWFjTk4x-274" style="edgeStyle=orthogonalEdgeStyle;rounded=0;jumpSize=11;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;strokeWidth=3;fontSize=28;fontColor=#000000000;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="4gGjTpzzvBJ2QWFjTk4x-31" target="4gGjTpzzvBJ2QWFjTk4x-268">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="450" y="2460" />
+              <mxPoint x="450" y="3040" />
+              <mxPoint x="370" y="3040" />
+              <mxPoint x="370" y="2460" />
               <mxPoint x="700" y="2460" />
             </Array>
           </mxGeometry>
@@ -113,7 +115,9 @@
         <mxCell id="4gGjTpzzvBJ2QWFjTk4x-278" style="edgeStyle=orthogonalEdgeStyle;rounded=0;jumpSize=11;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;strokeWidth=3;fontSize=28;fontColor=#000000000;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="4gGjTpzzvBJ2QWFjTk4x-31" target="4gGjTpzzvBJ2QWFjTk4x-256">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="450" y="2460" />
+              <mxPoint x="450" y="3040" />
+              <mxPoint x="370" y="3040" />
+              <mxPoint x="370" y="2460" />
               <mxPoint x="32" y="2460" />
             </Array>
           </mxGeometry>
