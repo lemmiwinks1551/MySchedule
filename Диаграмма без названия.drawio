@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-01-17T15:50:18.291Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36" version="20.8.5" etag="RdY76loUl2kxCS9qs-pn" type="github">
+<mxfile host="app.diagrams.net" modified="2023-01-17T15:50:32.110Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36" version="20.8.5" etag="K-paUAB2ob-z-oZqwtBX" type="github">
   <diagram id="-fB192dCxYrc6BMrNV2s" name="Страница 1">
     <mxGraphModel dx="3503" dy="2761" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -134,7 +134,7 @@
           <mxGeometry x="360" y="1900" width="200" height="629" as="geometry" />
         </mxCell>
         <mxCell id="4gGjTpzzvBJ2QWFjTk4x-137" value="" style="swimlane;startSize=0;" vertex="1" parent="4gGjTpzzvBJ2QWFjTk4x-136">
-          <mxGeometry width="200" height="274.0740740740741" as="geometry" />
+          <mxGeometry x="-216" y="-30" width="200" height="274.0740740740741" as="geometry" />
         </mxCell>
         <mxCell id="4gGjTpzzvBJ2QWFjTk4x-138" value="Main&lt;br&gt;Activity" style="text;strokeColor=none;fillColor=none;html=1;fontSize=24;fontStyle=1;verticalAlign=middle;align=center;strokeWidth=3;" vertex="1" parent="4gGjTpzzvBJ2QWFjTk4x-137">
           <mxGeometry x="50" y="117.03999999999996" width="100" height="40" as="geometry" />
@@ -143,10 +143,10 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="4gGjTpzzvBJ2QWFjTk4x-140" value="" style="swimlane;startSize=0;" vertex="1" parent="1">
-          <mxGeometry x="700" y="1899.9959259259258" width="200" height="274.0740740740741" as="geometry" />
+          <mxGeometry x="484" y="1869.9959259259258" width="200" height="274.0740740740741" as="geometry" />
         </mxCell>
         <mxCell id="4gGjTpzzvBJ2QWFjTk4x-141" value="Main Activity&lt;br&gt;ViewModel" style="text;strokeColor=none;fillColor=none;html=1;fontSize=24;fontStyle=1;verticalAlign=middle;align=center;strokeWidth=3;" vertex="1" parent="1">
-          <mxGeometry x="750" y="2017.03" width="100" height="40" as="geometry" />
+          <mxGeometry x="534" y="1987.03" width="100" height="40" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
