@@ -6,7 +6,7 @@
     android:layout_height="fill_parent"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    tools:context=".ui.appointment.AppointmentFragment">
+    tools:context=".presentation.appointment.AppointmentFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/fragment_add_row"
@@ -15,7 +15,7 @@
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:padding="16dp"
-        tools:context=".ui.appointment.AppointmentFragment">
+        tools:context=".presentation.appointment.AppointmentFragment">
 
         <TextView
             android:id="@+id/title"
