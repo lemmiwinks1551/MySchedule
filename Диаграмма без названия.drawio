@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-01-19T16:03:05.268Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36" etag="P-dnF-XX6tXGEHjKPEcC" version="20.8.5" type="github">
+<mxfile host="app.diagrams.net" modified="2023-01-19T16:08:19.218Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36" etag="Dl1ubWkAtBpHfGJeXCME" version="20.8.5" type="github">
   <diagram id="-fB192dCxYrc6BMrNV2s" name="Страница 1">
     <mxGraphModel dx="5607" dy="3822" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -61,17 +61,14 @@
         <mxCell id="avfBRFNsj0o9U9Dhmwhw-40" value="&lt;font color=&quot;#ff3333&quot;&gt;Client&lt;br&gt;Model&lt;br&gt;&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;html=1;fontSize=35;fontStyle=1;verticalAlign=middle;align=center;strokeWidth=3;fontColor=#000000000;" vertex="1" parent="avfBRFNsj0o9U9Dhmwhw-38">
           <mxGeometry x="184.5" y="112.5" width="100" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="avfBRFNsj0o9U9Dhmwhw-44" value="Appointment&lt;br&gt;repository" style="text;strokeColor=none;fillColor=none;html=1;fontSize=35;fontStyle=1;verticalAlign=middle;align=center;strokeWidth=3;container=0;" vertex="1" parent="avfBRFNsj0o9U9Dhmwhw-9">
-          <mxGeometry x="211" y="-1057.96" width="100" height="40" as="geometry" />
+        <mxCell id="avfBRFNsj0o9U9Dhmwhw-57" value="" style="group" vertex="1" connectable="0" parent="avfBRFNsj0o9U9Dhmwhw-9">
+          <mxGeometry x="161" y="-1175" width="399" height="185" as="geometry" />
         </mxCell>
-        <mxCell id="avfBRFNsj0o9U9Dhmwhw-43" value="" style="swimlane;startSize=0;container=0;" vertex="1" parent="avfBRFNsj0o9U9Dhmwhw-9">
-          <mxGeometry x="161" y="-1175" width="200" height="274.0740740740741" as="geometry" />
+        <mxCell id="avfBRFNsj0o9U9Dhmwhw-44" value="Appointment&lt;br&gt;repository" style="text;strokeColor=none;fillColor=none;html=1;fontSize=35;fontStyle=1;verticalAlign=middle;align=center;strokeWidth=3;container=0;" vertex="1" parent="avfBRFNsj0o9U9Dhmwhw-57">
+          <mxGeometry x="99.75" y="79.00199999999995" width="199.5" height="26.999999999999993" as="geometry" />
         </mxCell>
-        <mxCell id="avfBRFNsj0o9U9Dhmwhw-48" value="Clien" style="swimlane;startSize=0;container=0;" vertex="1" parent="avfBRFNsj0o9U9Dhmwhw-9">
-          <mxGeometry x="1101" y="-1205" width="200" height="274.0740740740741" as="geometry" />
-        </mxCell>
-        <mxCell id="avfBRFNsj0o9U9Dhmwhw-49" value="Client&lt;br&gt;repository" style="text;strokeColor=none;fillColor=none;html=1;fontSize=35;fontStyle=1;verticalAlign=middle;align=center;strokeWidth=3;container=0;" vertex="1" parent="avfBRFNsj0o9U9Dhmwhw-9">
-          <mxGeometry x="1151" y="-1087.96" width="100" height="40" as="geometry" />
+        <mxCell id="avfBRFNsj0o9U9Dhmwhw-43" value="" style="swimlane;startSize=0;container=0;" vertex="1" parent="avfBRFNsj0o9U9Dhmwhw-57">
+          <mxGeometry width="399" height="184.99999999999994" as="geometry" />
         </mxCell>
         <mxCell id="4gGjTpzzvBJ2QWFjTk4x-29" value="presentation" style="text;strokeColor=none;fillColor=none;html=1;fontSize=48;fontStyle=1;verticalAlign=middle;align=center;strokeWidth=3;container=0;" parent="1" vertex="1">
           <mxGeometry x="-281" y="2965" width="170" height="40" as="geometry" />
@@ -436,6 +433,21 @@
         </mxCell>
         <mxCell id="avfBRFNsj0o9U9Dhmwhw-56" value="DayStatus&lt;br&gt;Model" style="text;strokeColor=none;fillColor=none;html=1;fontSize=35;fontStyle=1;verticalAlign=middle;align=center;strokeWidth=3;fontColor=#000000000;" vertex="1" parent="1">
           <mxGeometry x="2110" y="202.5" width="103.5" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="avfBRFNsj0o9U9Dhmwhw-58" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="214" y="290" width="399" height="185" as="geometry" />
+        </mxCell>
+        <mxCell id="avfBRFNsj0o9U9Dhmwhw-59" value="DayStatus&lt;br&gt;repository" style="text;strokeColor=none;fillColor=none;html=1;fontSize=35;fontStyle=1;verticalAlign=middle;align=center;strokeWidth=3;container=0;" vertex="1" parent="avfBRFNsj0o9U9Dhmwhw-58">
+          <mxGeometry x="99.75" y="79.00199999999995" width="199.5" height="26.999999999999993" as="geometry" />
+        </mxCell>
+        <mxCell id="avfBRFNsj0o9U9Dhmwhw-60" value="" style="swimlane;startSize=0;container=0;" vertex="1" parent="avfBRFNsj0o9U9Dhmwhw-58">
+          <mxGeometry width="399" height="184.99999999999994" as="geometry" />
+        </mxCell>
+        <mxCell id="avfBRFNsj0o9U9Dhmwhw-61" value="" style="swimlane;startSize=0;container=0;" vertex="1" parent="1">
+          <mxGeometry x="730" y="290" width="399" height="184.99999999999994" as="geometry" />
+        </mxCell>
+        <mxCell id="avfBRFNsj0o9U9Dhmwhw-62" value="Client&lt;br&gt;repository" style="text;strokeColor=none;fillColor=none;html=1;fontSize=35;fontStyle=1;verticalAlign=middle;align=center;strokeWidth=3;container=0;" vertex="1" parent="1">
+          <mxGeometry x="829.75" y="369.00199999999995" width="199.5" height="26.999999999999993" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
