@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-01-19T16:01:57.570Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36" etag="FGxQiMKUbSE5k81Ot0fq" version="20.8.5" type="github">
+<mxfile host="app.diagrams.net" modified="2023-01-19T16:03:05.268Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36" etag="P-dnF-XX6tXGEHjKPEcC" version="20.8.5" type="github">
   <diagram id="-fB192dCxYrc6BMrNV2s" name="Страница 1">
     <mxGraphModel dx="5607" dy="3822" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -430,6 +430,12 @@
         </mxCell>
         <mxCell id="avfBRFNsj0o9U9Dhmwhw-31" value="Appointment&lt;br&gt;model" style="text;strokeColor=none;fillColor=none;html=1;fontSize=35;fontStyle=1;verticalAlign=middle;align=center;strokeWidth=3;fontColor=#000000000;" vertex="1" parent="avfBRFNsj0o9U9Dhmwhw-35">
           <mxGeometry x="184.5" y="112.5" width="100" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="avfBRFNsj0o9U9Dhmwhw-55" value="" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1929" y="90" width="469" height="265" as="geometry" />
+        </mxCell>
+        <mxCell id="avfBRFNsj0o9U9Dhmwhw-56" value="DayStatus&lt;br&gt;Model" style="text;strokeColor=none;fillColor=none;html=1;fontSize=35;fontStyle=1;verticalAlign=middle;align=center;strokeWidth=3;fontColor=#000000000;" vertex="1" parent="1">
+          <mxGeometry x="2110" y="202.5" width="103.5" height="40" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
