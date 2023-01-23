@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2023-01-23T15:32:51.125Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36" etag="wSgzg-lG1JaCFP8g8yr7" version="20.8.7" type="github">
+<mxfile host="app.diagrams.net" modified="2023-01-23T15:34:13.689Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36" etag="xbcWSEnl_grjPNHVgiL7" version="20.8.7" type="github">
   <diagram id="-fB192dCxYrc6BMrNV2s" name="Страница 1">
-    <mxGraphModel dx="4014" dy="2938" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="4412" dy="3159" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -375,7 +375,7 @@
           <mxGeometry x="2695" y="1610" width="100" height="40" as="geometry" />
         </mxCell>
         <mxCell id="avfBRFNsj0o9U9Dhmwhw-11" value="data&lt;br&gt;" style="text;strokeColor=none;fillColor=none;html=1;fontSize=48;fontStyle=1;verticalAlign=middle;align=center;strokeWidth=3;" parent="1" vertex="1">
-          <mxGeometry x="-334" y="-1020" width="170" height="40" as="geometry" />
+          <mxGeometry x="-400" y="-1110" width="170" height="40" as="geometry" />
         </mxCell>
         <mxCell id="4gGjTpzzvBJ2QWFjTk4x-231" value="domain" style="text;strokeColor=none;fillColor=none;html=1;fontSize=48;fontStyle=1;verticalAlign=middle;align=center;strokeWidth=3;" parent="1" vertex="1">
           <mxGeometry x="-334" y="100" width="170" height="40" as="geometry" />
@@ -448,6 +448,30 @@
         </mxCell>
         <mxCell id="avfBRFNsj0o9U9Dhmwhw-62" value="Client&lt;br&gt;repository - Interface" style="text;strokeColor=none;fillColor=none;html=1;fontSize=35;fontStyle=1;verticalAlign=middle;align=center;strokeWidth=3;container=0;" parent="1" vertex="1">
           <mxGeometry x="829.75" y="369.00199999999995" width="199.5" height="26.999999999999993" as="geometry" />
+        </mxCell>
+        <mxCell id="YuYByP1u1iifIEBijTTW-1" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="-296" y="-1000" width="399" height="185" as="geometry" />
+        </mxCell>
+        <mxCell id="YuYByP1u1iifIEBijTTW-2" value="Appointment&lt;br&gt;repository - Implementation" style="text;strokeColor=none;fillColor=none;html=1;fontSize=35;fontStyle=1;verticalAlign=middle;align=center;strokeWidth=3;container=0;" vertex="1" parent="YuYByP1u1iifIEBijTTW-1">
+          <mxGeometry x="99.75" y="79.00199999999995" width="199.5" height="26.999999999999993" as="geometry" />
+        </mxCell>
+        <mxCell id="YuYByP1u1iifIEBijTTW-3" value="" style="swimlane;startSize=0;container=0;" vertex="1" parent="YuYByP1u1iifIEBijTTW-1">
+          <mxGeometry width="399" height="184.99999999999994" as="geometry" />
+        </mxCell>
+        <mxCell id="YuYByP1u1iifIEBijTTW-4" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="208" y="-1000" width="399" height="185" as="geometry" />
+        </mxCell>
+        <mxCell id="YuYByP1u1iifIEBijTTW-5" value="DayStatus&lt;br&gt;repository&amp;nbsp;- Implementation" style="text;strokeColor=none;fillColor=none;html=1;fontSize=35;fontStyle=1;verticalAlign=middle;align=center;strokeWidth=3;container=0;" vertex="1" parent="YuYByP1u1iifIEBijTTW-4">
+          <mxGeometry x="99.75" y="79.00199999999995" width="199.5" height="26.999999999999993" as="geometry" />
+        </mxCell>
+        <mxCell id="YuYByP1u1iifIEBijTTW-6" value="" style="swimlane;startSize=0;container=0;" vertex="1" parent="YuYByP1u1iifIEBijTTW-4">
+          <mxGeometry width="399" height="184.99999999999994" as="geometry" />
+        </mxCell>
+        <mxCell id="YuYByP1u1iifIEBijTTW-7" value="" style="swimlane;startSize=0;container=0;" vertex="1" parent="1">
+          <mxGeometry x="724" y="-1000" width="399" height="184.99999999999994" as="geometry" />
+        </mxCell>
+        <mxCell id="YuYByP1u1iifIEBijTTW-8" value="Client&lt;br&gt;repository&amp;nbsp;- Implementation" style="text;strokeColor=none;fillColor=none;html=1;fontSize=35;fontStyle=1;verticalAlign=middle;align=center;strokeWidth=3;container=0;" vertex="1" parent="1">
+          <mxGeometry x="823.75" y="-920.998" width="199.5" height="26.999999999999993" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
