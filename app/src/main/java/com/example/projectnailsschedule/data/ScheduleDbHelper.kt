@@ -46,7 +46,7 @@ class ScheduleDbHelper(context: Context?) :
                 "$COLUMN_PROCEDURE, $COLUMN_NAME, " +
                 "$COLUMN_PHONE, $COLUMN_MISC) " +
                 "VALUES " +
-                "('${appointmentParams.date}', '${appointmentParams.startTime}', " +
+                "('${appointmentParams.appointmentDate}', '${appointmentParams.startTime}', " +
                 "'${appointmentParams.procedureName}', '${appointmentParams.clientName}', " +
                 "'${appointmentParams.phoneNum}', '${appointmentParams.misc}');"
         Log.e(LOG, String.format("Add row query: $query"))

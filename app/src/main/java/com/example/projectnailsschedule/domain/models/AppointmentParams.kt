@@ -6,7 +6,7 @@ package com.example.projectnailsschedule.domain.models
  * */
 
 class AppointmentParams(
-    val date: String,
+    val appointmentDate: String,
     val clientName: String,
     val startTime: String,
     val procedureName: String,

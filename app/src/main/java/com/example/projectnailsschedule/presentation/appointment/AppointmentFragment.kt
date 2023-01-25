@@ -2,7 +2,6 @@ package com.example.projectnailsschedule.presentation.appointment
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
@@ -15,33 +14,26 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.projectnailsschedule.data.ScheduleDbHelper
-import com.example.projectnailsschedule.data.repository.AppointmentRepositoryImpl
 import com.example.projectnailsschedule.databinding.FragmentAppointmentBinding
 import com.example.projectnailsschedule.domain.models.AppointmentParams
-import com.example.projectnailsschedule.domain.usecase.GetAppointmentUseCase
-import com.example.projectnailsschedule.domain.usecase.SaveAppointmentUseCase
 import com.example.projectnailsschedule.util.Service
-import com.example.projectnailsschedule.presentation.calendar.CalendarFragment
-import com.example.projectnailsschedule.presentation.date.DateViewModel
 import java.util.*
 
 
 /**
  * Методы для взаимодействия с записью:
- * Редактировать запись, добавить запись
- * */
+ * Редактировать запись, добавить запись */
 
 class AppointmentFragment : Fragment() {
 
-
-
-
+    private var appointmentViewModel: AppointmentViewModel? = null
     private var _binding: FragmentAppointmentBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var databaseHelper: ScheduleDbHelper
     private lateinit var db: SQLiteDatabase
-    val LOG = this::class.simpleName
+    val log = this::class.simpleName
+
     private val addTitle = "Добавить"
     private val editTitle = "Редактировать"
 
@@ -50,9 +42,11 @@ class AppointmentFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val appointmentViewModel =
-            ViewModelProvider(this)[DateViewModel::class.java]
 
+        appointmentViewModel = ViewModelProvider(
+            this,
+            AppointmentViewModelFactory(context)
+        )[AppointmentViewModel::class.java]
         _binding = FragmentAppointmentBinding.inflate(inflater, container, false)
 
         databaseHelper = ScheduleDbHelper(context)
@@ -85,40 +79,31 @@ class AppointmentFragment : Fragment() {
             editIdFields()
         } else {
             binding.dayEditText.text = arguments?.getString("date")
-            Log.e(LOG, "No Arguments in bundle")
+            Log.e(log, "No Arguments in bundle")
         }
 
         return binding.root
     }
 
     private fun saveAppointment() {
-        // Add a row in database
-        // Create an array of data
-        val fields = arrayListOf(
-            binding.dayEditText.text.toString(),
-            binding.timeEditText.text.toString(),
-            binding.procedureEditText.text.toString(),
-            binding.nameEditText.text.toString(),
-            binding.phoneEditText.text.toString(),
-            binding.miscEditText.text.toString()
-        )
-        /** Repository and UseCases */
-        val appointmentRepositoryImpl = AppointmentRepositoryImpl(context)
-        val saveAppointmentUseCase = SaveAppointmentUseCase(appointmentRepositoryImpl)
+        /** Send params to ViewModel */
+        with(binding) {
+            val appointmentParams = AppointmentParams(
+                appointmentDate = dayEditText.text.toString(),
+                clientName = nameEditText.text.toString(),
+                startTime = timeEditText.text.toString(),
+                procedureName = procedureEditText.text.toString(),
+                phoneNum = phoneEditText.text.toString(),
+                misc = miscEditText.text.toString()
+            )
+            appointmentViewModel?.saveAppointment(appointmentParams)
 
-        val date: String = binding.dayEditText.text.toString()
-        val clientName: String = binding.nameEditText.text.toString()
-        val startTime: String = binding.timeEditText.text.toString()
-        val procedureName: String = binding.procedureEditText.text.toString()
-        val phoneNum: String = binding.phoneEditText.text.toString()
-        val misc: String = binding.miscEditText.text.toString()
-
-        //databaseHelper.addRow(fields, db) - delete
-        val appointmentParams = AppointmentParams(date, clientName, startTime, procedureName, phoneNum, misc)
-        saveAppointmentUseCase.execute(appointmentParams)
-
-        // Show Toast
-        Toast.makeText(requireContext(), "Запись добавлена ${CalendarFragment().getSelectedDate()}", Toast.LENGTH_LONG).show()
+            Toast.makeText(
+                context,
+                "Запись добавлена ${dayEditText.text}",
+                Toast.LENGTH_LONG
+            ).show()
+        }
 
         // Return to previous screen
         findNavController().popBackStack()
