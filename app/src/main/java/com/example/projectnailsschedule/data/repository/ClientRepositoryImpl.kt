@@ -2,7 +2,7 @@ package com.example.projectnailsschedule.data.repository
 
 import com.example.projectnailsschedule.domain.models.ClientModel
 
-class ClientRepository {
+class ClientRepositoryImpl {
 
     class AppointmentRepository {
 

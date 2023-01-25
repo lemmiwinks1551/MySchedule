@@ -2,7 +2,7 @@ package com.example.projectnailsschedule.data.repository
 
 import com.example.projectnailsschedule.domain.models.StatusModel
 
-class StatusRepository {
+class StatusRepositoryImpl {
 
     class AppointmentRepository {
 

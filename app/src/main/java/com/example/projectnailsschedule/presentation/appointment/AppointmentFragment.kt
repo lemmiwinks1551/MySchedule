@@ -2,6 +2,7 @@ package com.example.projectnailsschedule.presentation.appointment
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
@@ -14,7 +15,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.projectnailsschedule.data.ScheduleDbHelper
+import com.example.projectnailsschedule.data.repository.AppointmentRepositoryImpl
 import com.example.projectnailsschedule.databinding.FragmentAppointmentBinding
+import com.example.projectnailsschedule.domain.models.AppointmentParams
+import com.example.projectnailsschedule.domain.usecase.GetAppointmentUseCase
+import com.example.projectnailsschedule.domain.usecase.SaveAppointmentUseCase
 import com.example.projectnailsschedule.util.Service
 import com.example.projectnailsschedule.presentation.calendar.CalendarFragment
 import com.example.projectnailsschedule.presentation.date.DateViewModel
@@ -27,6 +32,9 @@ import java.util.*
  * */
 
 class AppointmentFragment : Fragment() {
+
+
+
 
     private var _binding: FragmentAppointmentBinding? = null
     private val binding get() = _binding!!
@@ -54,7 +62,7 @@ class AppointmentFragment : Fragment() {
         binding.addEditButton.setOnClickListener {
             when (binding.addEditButton.text.toString()) {
                 // Если на кнопке написано Добавить - вызвать метод по добавлению строки
-                addTitle -> addRow()
+                addTitle -> saveAppointment()
                 // Если на кнопке написано Редактировать - вызвать метод по редактированию строки
                 editTitle -> editIdQuery()
             }
@@ -83,7 +91,7 @@ class AppointmentFragment : Fragment() {
         return binding.root
     }
 
-    private fun addRow() {
+    private fun saveAppointment() {
         // Add a row in database
         // Create an array of data
         val fields = arrayListOf(
@@ -94,7 +102,20 @@ class AppointmentFragment : Fragment() {
             binding.phoneEditText.text.toString(),
             binding.miscEditText.text.toString()
         )
-        databaseHelper.addRow(fields, db)
+        /** Repository and UseCases */
+        val appointmentRepositoryImpl = AppointmentRepositoryImpl(context)
+        val saveAppointmentUseCase = SaveAppointmentUseCase(appointmentRepositoryImpl)
+
+        val date: String = binding.dayEditText.text.toString()
+        val clientName: String = binding.nameEditText.text.toString()
+        val startTime: String = binding.timeEditText.text.toString()
+        val procedureName: String = binding.procedureEditText.text.toString()
+        val phoneNum: String = binding.phoneEditText.text.toString()
+        val misc: String = binding.miscEditText.text.toString()
+
+        //databaseHelper.addRow(fields, db) - delete
+        val appointmentParams = AppointmentParams(date, clientName, startTime, procedureName, phoneNum, misc)
+        saveAppointmentUseCase.execute(appointmentParams)
 
         // Show Toast
         Toast.makeText(requireContext(), "Запись добавлена ${CalendarFragment().getSelectedDate()}", Toast.LENGTH_LONG).show()

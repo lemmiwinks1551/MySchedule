@@ -6,6 +6,7 @@ import android.database.SQLException
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
+import com.example.projectnailsschedule.domain.models.AppointmentParams
 import com.example.projectnailsschedule.util.WorkFolders
 import java.io.File
 import java.io.FileOutputStream
@@ -38,14 +39,16 @@ class ScheduleDbHelper(context: Context?) :
 
     private val myContext = context
 
-    fun addRow(fields: ArrayList<String>, db: SQLiteDatabase) {
+    fun addRow(appointmentParams: AppointmentParams, db: SQLiteDatabase) {
         /** Insert a new row */
         val query = "INSERT INTO $TABLE_NAME " +
                 "($COLUMN_DATE, $COLUMN_START_TIME, " +
                 "$COLUMN_PROCEDURE, $COLUMN_NAME, " +
                 "$COLUMN_PHONE, $COLUMN_MISC) " +
                 "VALUES " +
-                "('${fields[0]}', '${fields[1]}', '${fields[2]}', '${fields[3]}', '${fields[4]}', '${fields[5]}');"
+                "('${appointmentParams.date}', '${appointmentParams.startTime}', " +
+                "'${appointmentParams.procedureName}', '${appointmentParams.clientName}', " +
+                "'${appointmentParams.phoneNum}', '${appointmentParams.misc}');"
         Log.e(LOG, String.format("Add row query: $query"))
         db.execSQL(query)
         Log.e(LOG, String.format("Add row - success"))
