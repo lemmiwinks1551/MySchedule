@@ -15,14 +15,17 @@ class AppointmentRepositoryImpl(private var context: Context?): AppointmentRepos
         /** Save appointment in database */
         databaseHelper = ScheduleDbHelper(context)
         db = databaseHelper.writableDatabase
-        databaseHelper.addRow(appointmentParams, db)
+        databaseHelper.saveAppointmentBD(appointmentParams, db)
+        db.close()
         return true
     }
 
-    override fun getAppointment(): AppointmentParams {
-        /** Get appointment from database */
-        // val appointmentParams: AppointmentParams = AppointmentParams()
-        // TODO: implement logic
-        return AppointmentParams("a","d","a", "a", "a", "a")
+    override fun editAppointment(appointmentParams: AppointmentParams): Boolean {
+        /** Edit appointment in database */
+        databaseHelper = ScheduleDbHelper(context)
+        db = databaseHelper.writableDatabase
+        databaseHelper.editAppointmentBD(appointmentParams, db)
+        db.close()
+        return true
     }
 }

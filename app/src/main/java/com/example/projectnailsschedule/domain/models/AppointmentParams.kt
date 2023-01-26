@@ -6,6 +6,7 @@ package com.example.projectnailsschedule.domain.models
  * */
 
 class AppointmentParams(
+    val _id: Int? = null, // optional field, only need for editAppointment method
     val appointmentDate: String,
     val clientName: String,
     val startTime: String,

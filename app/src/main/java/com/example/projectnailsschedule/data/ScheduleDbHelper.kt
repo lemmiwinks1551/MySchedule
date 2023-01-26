@@ -39,16 +39,20 @@ class ScheduleDbHelper(context: Context?) :
 
     private val myContext = context
 
-    fun addRow(appointmentParams: AppointmentParams, db: SQLiteDatabase) {
+    fun saveAppointmentBD(appointmentParams: AppointmentParams, db: SQLiteDatabase) {
         /** Insert a new row */
-        val query = "INSERT INTO $TABLE_NAME " +
-                "($COLUMN_DATE, $COLUMN_START_TIME, " +
-                "$COLUMN_PROCEDURE, $COLUMN_NAME, " +
-                "$COLUMN_PHONE, $COLUMN_MISC) " +
-                "VALUES " +
-                "('${appointmentParams.appointmentDate}', '${appointmentParams.startTime}', " +
-                "'${appointmentParams.procedureName}', '${appointmentParams.clientName}', " +
-                "'${appointmentParams.phoneNum}', '${appointmentParams.misc}');"
+        var query: String?
+
+        with(appointmentParams) {
+            query = "INSERT INTO $TABLE_NAME " +
+                    "($COLUMN_DATE, $COLUMN_START_TIME, " +
+                    "$COLUMN_PROCEDURE, $COLUMN_NAME, " +
+                    "$COLUMN_PHONE, $COLUMN_MISC) " +
+                    "VALUES " +
+                    "('${appointmentDate}', '${startTime}', " +
+                    "'${procedureName}', '${clientName}', " +
+                    "'${phoneNum}', '${misc}');"
+        }
         Log.e(LOG, String.format("Add row query: $query"))
         db.execSQL(query)
         Log.e(LOG, String.format("Add row - success"))
@@ -70,16 +74,21 @@ class ScheduleDbHelper(context: Context?) :
         return db.rawQuery(query, null)
     }
 
-    fun updateRow(extraArray: ArrayList<String>, db: SQLiteDatabase) {
+    fun editAppointmentBD(appointmentParams: AppointmentParams, db: SQLiteDatabase) {
         /** Update a row */
-        val query = "UPDATE $TABLE_NAME SET " +
-                "$COLUMN_DATE = '${extraArray[1]}', " +
-                "$COLUMN_START_TIME = '${extraArray[2]}', " +
-                "$COLUMN_PROCEDURE = '${extraArray[3]}', " +
-                "$COLUMN_NAME = '${extraArray[4]}', " +
-                "$COLUMN_PHONE = '${extraArray[5]}', " +
-                "$COLUMN_MISC = '${extraArray[6]}' " +
-                "WHERE $COLUMN_ID = ${extraArray[0]};"
+        var query: String?
+
+        with(appointmentParams) {
+            query = "UPDATE $TABLE_NAME SET " +
+                    "$COLUMN_DATE = '${appointmentDate}', " +
+                    "$COLUMN_START_TIME = '${startTime}', " +
+                    "$COLUMN_PROCEDURE = '${procedureName}', " +
+                    "$COLUMN_NAME = '${clientName}', " +
+                    "$COLUMN_PHONE = '${phoneNum}', " +
+                    "$COLUMN_MISC = '${misc}' " +
+                    "WHERE $COLUMN_ID = ${_id};"
+        }
+
         Log.e(LOG, String.format("Edit row query: $query"))
         db.execSQL(query)
         Log.e(LOG, String.format("Row was edited successfully"))

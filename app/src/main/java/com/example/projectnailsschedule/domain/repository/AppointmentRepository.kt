@@ -6,5 +6,5 @@ interface AppointmentRepository {
 
     fun saveAppointment(appointmentParams: AppointmentParams): Boolean
 
-    fun getAppointment(): AppointmentParams
+    fun editAppointment(appointmentParams: AppointmentParams): Boolean
 }

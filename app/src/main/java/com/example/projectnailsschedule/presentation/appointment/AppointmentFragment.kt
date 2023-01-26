@@ -58,7 +58,7 @@ class AppointmentFragment : Fragment() {
                 // Если на кнопке написано Добавить - вызвать метод по добавлению строки
                 addTitle -> saveAppointment()
                 // Если на кнопке написано Редактировать - вызвать метод по редактированию строки
-                editTitle -> editIdQuery()
+                editTitle -> editAppointment()
             }
         }
         binding.cancelButton.setOnClickListener {
@@ -87,6 +87,8 @@ class AppointmentFragment : Fragment() {
 
     private fun saveAppointment() {
         /** Send params to ViewModel */
+
+        // create appointmentParams object
         with(binding) {
             val appointmentParams = AppointmentParams(
                 appointmentDate = dayEditText.text.toString(),
@@ -128,22 +130,35 @@ class AppointmentFragment : Fragment() {
         }
     }
 
-    private fun editIdQuery() {
-        // Передать в метод БД информацию для обновления
-        // Получаем id строки из интента и передаем
-        val id = arguments?.getStringArrayList("appointmentExtra")?.get(0)?.toString()
+    private fun editAppointment() {
+        /** Send params to ViewModel */
 
-        val extraArrayQuery = arrayListOf(
-            id!!,
-            binding.dayEditText.text.toString(),
-            binding.timeEditText.text.toString(),
-            binding.procedureEditText.text.toString(),
-            binding.nameEditText.text.toString(),
-            binding.phoneEditText.text.toString(),
-            binding.miscEditText.text.toString(),
-        )
-        databaseHelper.updateRow(extraArrayQuery, db)
-        findNavController().popBackStack()
+        val id = arguments?.getStringArrayList("appointmentExtra")?.get(0)
+            ?.toInt() // get appointment _id from arguments
+
+        // create appointmentParams object
+        with(binding) {
+            val appointmentParams = AppointmentParams(
+                _id = id,
+                appointmentDate = dayEditText.text.toString(),
+                clientName = nameEditText.text.toString(),
+                startTime = timeEditText.text.toString(),
+                procedureName = procedureEditText.text.toString(),
+                phoneNum = phoneEditText.text.toString(),
+                misc = miscEditText.text.toString()
+            )
+
+            // send to AppointmentViewModel
+            appointmentViewModel?.editAppointment(appointmentParams)
+
+            Toast.makeText(
+                context,
+                "Запись изменена ${dayEditText.text}",
+                Toast.LENGTH_LONG
+            ).show()
+
+            findNavController().popBackStack()
+        }
     }
 
     private fun cancelButton() {
