@@ -20,6 +20,7 @@ import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.data.DateStatusDbHelper
 import com.example.projectnailsschedule.data.ScheduleDbHelper
 import com.example.projectnailsschedule.databinding.FragmentDateBinding
+import com.example.projectnailsschedule.domain.models.AppointmentParams
 import com.example.projectnailsschedule.util.Service
 
 
@@ -54,7 +55,8 @@ class DateFragment : Fragment() {
     private var day: String? = null
     private var statusMap: Map<String, String> = createStatusMap()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
 
         val dateViewModel =
@@ -77,10 +79,19 @@ class DateFragment : Fragment() {
         databaseHelper = ScheduleDbHelper(context)
 
         //Вызываем новый фрагмент для добавления новой записи
-        // TODO: Передать bundle с датой
         binding.addButton.setOnClickListener {
+            // Add new appointment, send date only
+            val appointmentParams = AppointmentParams(
+                _id = null,
+                appointmentDate = day,
+                clientName = null,
+                startTime = null,
+                procedureName = null,
+                phoneNum = null,
+                misc = null
+            )
             val bundle = Bundle()
-            bundle.putString("date", day)
+            bundle.putParcelable("appointmentParams", appointmentParams)
             it.findNavController().navigate(R.id.action_dateFragment_to_appointmentFragment, bundle)
         }
 
@@ -155,19 +166,19 @@ class DateFragment : Fragment() {
         }
 
         editButton?.setOnClickListener {
-            val extraList = arrayListOf(
-                currentCur.getString(0).toString(),
-                currentCur.getString(1).toString(),
-                currentCur.getString(2).toString(),
-                currentCur.getString(3).toString(),
-                currentCur.getString(4).toString(),
-                currentCur.getString(5).toString(),
-                currentCur.getString(6).toString(),
-            )
-
             // Передаем в интенте значение полей, если нажали кнопку "Редактировать"
+            val appointmentParams = AppointmentParams(
+                _id = currentCur.getString(0).toInt(),
+                appointmentDate = currentCur.getString(1).toString(),
+                clientName = currentCur.getString(4).toString(),
+                startTime = currentCur.getString(2).toString(),
+                procedureName = currentCur.getString(3).toString(),
+                phoneNum = currentCur.getString(5).toString(),
+                misc = currentCur.getString(6).toString()
+            )
             val bundle = Bundle()
-            bundle.putStringArrayList("appointmentExtra", extraList)
+            bundle.putParcelable("appointmentParams", appointmentParams)
+
             navController.navigate(R.id.action_dateFragment_to_appointmentFragment, bundle)
             dialog.dismiss()
         }

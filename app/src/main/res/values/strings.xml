@@ -21,7 +21,7 @@
     <string name="misc">Комментарии</string>
     <string name="button_edit">Редактировать</string>
     <string name="button_delete">Удалить</string>
-    <string name="add_appointment_title">Добавить запись</string>
+    <string name="add_appointment_title">Запись</string>
     <string name="day">День</string>
     <string name="example_date">01.01.2022</string>
     <string name="example_time">09:00</string>

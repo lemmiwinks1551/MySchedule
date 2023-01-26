@@ -2,10 +2,8 @@ package com.example.projectnailsschedule.presentation.appointment
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,29 +11,23 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.example.projectnailsschedule.data.ScheduleDbHelper
 import com.example.projectnailsschedule.databinding.FragmentAppointmentBinding
 import com.example.projectnailsschedule.domain.models.AppointmentParams
 import com.example.projectnailsschedule.util.Service
 import java.util.*
-
 
 /**
  * Методы для взаимодействия с записью:
  * Редактировать запись, добавить запись */
 
 class AppointmentFragment : Fragment() {
+    val log = this::class.simpleName
 
     private var appointmentViewModel: AppointmentViewModel? = null
     private var _binding: FragmentAppointmentBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var databaseHelper: ScheduleDbHelper
-    private lateinit var db: SQLiteDatabase
-    val log = this::class.simpleName
-
-    private val addTitle = "Добавить"
-    private val editTitle = "Редактировать"
+    private var appointmentParams: AppointmentParams? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,19 +39,23 @@ class AppointmentFragment : Fragment() {
             this,
             AppointmentViewModelFactory(context)
         )[AppointmentViewModel::class.java]
+
         _binding = FragmentAppointmentBinding.inflate(inflater, container, false)
 
-        databaseHelper = ScheduleDbHelper(context)
-        db = databaseHelper.writableDatabase
+        appointmentParams = arguments?.getParcelable("appointmentParams")
+
+        // True - add new Appointment
+        // False - Edit Appointment
+        val callIntent: Boolean = appointmentParams?._id == null
 
         // Set ClickListener
         binding.addEditButton.setOnClickListener {
-            when (binding.addEditButton.text.toString()) {
-                // Если на кнопке написано Добавить - вызвать метод по добавлению строки
-                addTitle -> saveAppointment()
-                // Если на кнопке написано Редактировать - вызвать метод по редактированию строки
-                editTitle -> editAppointment()
+            if (callIntent) {
+                saveAppointment()
+            } else {
+                editAppointment()
             }
+
         }
         binding.cancelButton.setOnClickListener {
             cancelButton()
@@ -75,12 +71,7 @@ class AppointmentFragment : Fragment() {
         binding.phoneEditText.addTextChangedListener(PhoneNumberFormattingTextWatcher())
 
         // В зависимости от содержания интента выполняем метод "Редактировать"/"Установить дату"
-        if (arguments?.getStringArrayList("appointmentExtra") != null) {
-            editIdFields()
-        } else {
-            binding.dayEditText.text = arguments?.getString("date")
-            Log.e(log, "No Arguments in bundle")
-        }
+        setAppointmentCurrentParams()
 
         return binding.root
     }
@@ -111,30 +102,10 @@ class AppointmentFragment : Fragment() {
         findNavController().popBackStack()
     }
 
-    private fun editIdFields() {
-        // Заполнить поля актуальными значениями
-        // Получаем список для заполнения полей из интента
-
-        val extraArray = arguments?.getStringArrayList("appointmentExtra")
-        binding.title.text = "Редактировать запись"
-
-        // Устанавливаем актуальные значения в поля для редактирования
-        with(binding) {
-            dayEditText.text = extraArray!![1]
-            timeEditText.text = extraArray[2]
-            procedureEditText.setText(extraArray[3])
-            nameEditText.setText(extraArray[4])
-            phoneEditText.setText(extraArray[5])
-            miscEditText.setText(extraArray[6])
-            addEditButton.text = "Редактировать"
-        }
-    }
-
     private fun editAppointment() {
         /** Send params to ViewModel */
-
-        val id = arguments?.getStringArrayList("appointmentExtra")?.get(0)
-            ?.toInt() // get appointment _id from arguments
+        // get appointment _id from arguments
+        val id = appointmentParams?._id
 
         // create appointmentParams object
         with(binding) {
@@ -158,6 +129,23 @@ class AppointmentFragment : Fragment() {
             ).show()
 
             findNavController().popBackStack()
+        }
+    }
+
+    private fun setAppointmentCurrentParams() {
+        // Заполнить поля актуальными значениями
+        // Получаем список для заполнения полей из интента
+
+        val appointmentParams: AppointmentParams? = arguments?.getParcelable("appointmentParams")
+
+        // Устанавливаем актуальные значения в поля для редактирования
+        with(binding) {
+            dayEditText.text = appointmentParams?.appointmentDate
+            timeEditText.text = appointmentParams?.startTime
+            procedureEditText.setText(appointmentParams?.procedureName)
+            nameEditText.setText(appointmentParams?.clientName)
+            phoneEditText.setText(appointmentParams?.phoneNum)
+            miscEditText.setText(appointmentParams?.misc)
         }
     }
 
