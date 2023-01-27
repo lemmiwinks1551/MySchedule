@@ -16,13 +16,11 @@ import com.example.projectnailsschedule.domain.models.AppointmentParams
 import com.example.projectnailsschedule.util.Service
 import java.util.*
 
-/**
- * Методы для взаимодействия с записью:
- * Редактировать запись, добавить запись */
+/** AppointmentFragment View*/
 
 class AppointmentFragment : Fragment() {
     val log = this::class.simpleName
-
+    private val bindingKey = "appointmentParams"
     private var appointmentViewModel: AppointmentViewModel? = null
     private var _binding: FragmentAppointmentBinding? = null
     private val binding get() = _binding!!
@@ -35,48 +33,54 @@ class AppointmentFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
+        // create ViewModel object with Factory
         appointmentViewModel = ViewModelProvider(
             this,
             AppointmentViewModelFactory(context)
         )[AppointmentViewModel::class.java]
 
+        // set binding
         _binding = FragmentAppointmentBinding.inflate(inflater, container, false)
 
-        appointmentParams = arguments?.getParcelable("appointmentParams")
+        // get appointmentParams from arguments
+        appointmentParams = arguments?.getParcelable(bindingKey)
 
-        // True - add new Appointment
-        // False - Edit Appointment
-        val callIntent: Boolean = appointmentParams?._id == null
-
-        // Set ClickListener
-        binding.addEditButton.setOnClickListener {
-            if (callIntent) {
-                saveAppointment()
+        // Set ClickListener on save_changes_button
+        binding.saveChangesButton.setOnClickListener {
+            if (appointmentParams?._id == null) {
+                // no _id - add new Appointment
+                createAppointment()
             } else {
+                // _id - edit Appointment
                 editAppointment()
             }
-
         }
+
+        // set ClickListener on cancel_button
         binding.cancelButton.setOnClickListener {
             cancelButton()
         }
+
+        // set ClickListener on day_edit_text
         binding.dayEditText.setOnClickListener {
             selectDate()
         }
+
+        // set ClickListener on time_edit_text
         binding.timeEditText.setOnClickListener {
             selectTime()
         }
 
-        // Добавляем формат ввода на поле "Телефон"
+        // set phone input format on phone_edit_text
         binding.phoneEditText.addTextChangedListener(PhoneNumberFormattingTextWatcher())
 
-        // В зависимости от содержания интента выполняем метод "Редактировать"/"Установить дату"
+        // set current appointmentParams form DateFragment binding object
         setAppointmentCurrentParams()
 
         return binding.root
     }
 
-    private fun saveAppointment() {
+    private fun createAppointment() {
         /** Send params to ViewModel */
 
         // create appointmentParams object
@@ -93,7 +97,7 @@ class AppointmentFragment : Fragment() {
 
             Toast.makeText(
                 context,
-                "Запись добавлена ${dayEditText.text}",
+                "Запись добавлена ${appointmentParams.appointmentDate}",
                 Toast.LENGTH_LONG
             ).show()
         }
@@ -104,13 +108,11 @@ class AppointmentFragment : Fragment() {
 
     private fun editAppointment() {
         /** Send params to ViewModel */
-        // get appointment _id from arguments
-        val id = appointmentParams?._id
 
         // create appointmentParams object
         with(binding) {
             val appointmentParams = AppointmentParams(
-                _id = id,
+                _id = appointmentParams?._id,
                 appointmentDate = dayEditText.text.toString(),
                 clientName = nameEditText.text.toString(),
                 startTime = timeEditText.text.toString(),
@@ -124,7 +126,7 @@ class AppointmentFragment : Fragment() {
 
             Toast.makeText(
                 context,
-                "Запись изменена ${dayEditText.text}",
+                "Запись изменена ${appointmentParams.appointmentDate}",
                 Toast.LENGTH_LONG
             ).show()
 
@@ -133,12 +135,7 @@ class AppointmentFragment : Fragment() {
     }
 
     private fun setAppointmentCurrentParams() {
-        // Заполнить поля актуальными значениями
-        // Получаем список для заполнения полей из интента
-
-        val appointmentParams: AppointmentParams? = arguments?.getParcelable("appointmentParams")
-
-        // Устанавливаем актуальные значения в поля для редактирования
+        // set current appointmentParams from DateFragment binding object
         with(binding) {
             dayEditText.text = appointmentParams?.appointmentDate
             timeEditText.text = appointmentParams?.startTime
@@ -155,7 +152,7 @@ class AppointmentFragment : Fragment() {
     }
 
     private fun selectDate() {
-        // Устанавливает выбор даты на поле Дата
+        // set datePicker to select date field
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
         val month = calendar.get(Calendar.MONTH)
@@ -171,7 +168,7 @@ class AppointmentFragment : Fragment() {
     }
 
     private fun selectTime() {
-        //** Устанавлива ет выбор времени на поле Время *//*
+        // set time Picker to select time field
         val calendar = Calendar.getInstance()
         val mTimePicker: TimePickerDialog
         val hour = calendar.get(Calendar.HOUR_OF_DAY)
