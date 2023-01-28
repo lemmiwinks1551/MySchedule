@@ -3,8 +3,8 @@ package com.example.projectnailsschedule.presentation.appointment
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.projectnailsschedule.domain.models.AppointmentParams
-import com.example.projectnailsschedule.domain.usecase.EditAppointmentUseCase
-import com.example.projectnailsschedule.domain.usecase.SaveAppointmentUseCase
+import com.example.projectnailsschedule.domain.usecase.appointmentUC.EditAppointmentUseCase
+import com.example.projectnailsschedule.domain.usecase.appointmentUC.SaveAppointmentUseCase
 
 class AppointmentViewModel(
     private val saveAppointmentUseCase: SaveAppointmentUseCase,

@@ -4,8 +4,8 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.projectnailsschedule.data.repository.AppointmentRepositoryImpl
-import com.example.projectnailsschedule.domain.usecase.EditAppointmentUseCase
-import com.example.projectnailsschedule.domain.usecase.SaveAppointmentUseCase
+import com.example.projectnailsschedule.domain.usecase.appointmentUC.EditAppointmentUseCase
+import com.example.projectnailsschedule.domain.usecase.appointmentUC.SaveAppointmentUseCase
 
 class AppointmentViewModelFactory(context: Context?) : ViewModelProvider.Factory {
     /**

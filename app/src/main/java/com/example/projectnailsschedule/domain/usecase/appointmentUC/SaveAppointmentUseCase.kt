@@ -1,4 +1,4 @@
-package com.example.projectnailsschedule.domain.usecase
+package com.example.projectnailsschedule.domain.usecase.appointmentUC
 
 import com.example.projectnailsschedule.domain.models.AppointmentParams
 import com.example.projectnailsschedule.domain.repository.AppointmentRepository
