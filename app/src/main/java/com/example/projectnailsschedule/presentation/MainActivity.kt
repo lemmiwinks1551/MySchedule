@@ -14,7 +14,7 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.projectnailsschedule.R
-import com.example.projectnailsschedule.data.SettingsDbHelper
+import com.example.projectnailsschedule.data.storage.SettingsDbHelper
 import com.example.projectnailsschedule.databinding.ActivityMainBinding
 import com.example.projectnailsschedule.util.Service
 import com.example.projectnailsschedule.util.UncaughtExceptionHandler

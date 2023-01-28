@@ -31,7 +31,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         var day = ""
         var month = ""
         var year = ""
-        var width = 0
+        var width = 0 // ??
     }
 
     private var _binding: FragmentCalendarBinding? = null
@@ -40,6 +40,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
     // onDestroyView.
     private val statusesMap = StatusesMap()
     private val binding get() = _binding!!
+
     private var monthYearText: TextView? = null
     private var calendarRecyclerView: RecyclerView? = null
     private var shortDataRecyclerView: RecyclerView? = null
@@ -48,7 +49,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
     private var selectedDate: LocalDate? = null
     private var additionMonth: Long = 0
     private var layout: LinearLayout? = null
-    private val LOG = this::class.simpleName
+    private val log = this::class.simpleName
 
     private fun initWidgets() {
         // Инициировать view
@@ -62,6 +63,22 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
 
     override fun onStart() {
         super.onStart()
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View {
+        Log.e(log, "onCreateView")
+
+        if (savedInstanceState != null) {
+            additionMonth = savedInstanceState.getLong("additionMonth")
+        }
+
+        // Создаем переменную ViewModel
+        val calendarViewModel = ViewModelProvider(this)[CalendarViewModel::class.java]
+
+        _binding = FragmentCalendarBinding.inflate(inflater, container, false)
+
         binding.addData.setOnClickListener {
             /** Start fragment */
 
@@ -76,10 +93,26 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
             // TODO: Add SelectDate method
             it.findNavController().navigate(R.id.action_nav_calendar_to_dateFragment, bundle)
         }
+
+        // Вызываем метод, который инициализирует View
+        initWidgets()
+
+        // Получить сегодняшню дату yyyy-MM-dd
+        selectedDate = LocalDate.now().plusMonths(additionMonth)
+
+        binding.nextMonth.setOnClickListener {
+            selectNextMonth()
+        }
+
+        binding.prevMonth.setOnClickListener {
+            selectPreviousMonth()
+        }
+        setHasOptionsMenu(true)
+        return binding.root
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        Log.e(LOG, "onSaveInstanceState")
+        Log.e(log, "onSaveInstanceState")
         super.onSaveInstanceState(outState)
         outState.putLong("additionMonth", additionMonth)
     }
@@ -101,8 +134,6 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         // Устанавливаем в RecyclerView менеджера и адаптер
         calendarRecyclerView?.layoutManager = layoutManager
         calendarRecyclerView?.adapter = calendarAdapter
-
-
     }
 
     private fun daysInMonthArray(date: LocalDate): ArrayList<String> {
@@ -173,36 +204,6 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         calendarRecyclerView?.scheduleLayoutAnimation()
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View {
-        Log.e(LOG, "onCreateView")
-
-        if (savedInstanceState != null) {
-            additionMonth = savedInstanceState.getLong("additionMonth")
-        }
-        // Создаем переменную ViewModel
-        val calendarViewModel = ViewModelProvider(this)[CalendarViewModel::class.java]
-
-        _binding = FragmentCalendarBinding.inflate(inflater, container, false)
-
-        // Вызываем метод, который инициализирует View
-        initWidgets()
-
-        // Получить сегодняшню дату yyyy-MM-dd
-        selectedDate = LocalDate.now().plusMonths(additionMonth)
-
-        binding.nextMonth.setOnClickListener {
-            selectNextMonth()
-        }
-
-        binding.prevMonth.setOnClickListener {
-            selectPreviousMonth()
-        }
-        setHasOptionsMenu(true)
-        return binding.root
-    }
-
     override fun onItemClick(position: Int, dayText: String?) {
         if (!dayText.isNullOrEmpty()) {
             // Отобразить педварительный просмотр и кнопку
@@ -251,7 +252,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
     }
 
     override fun onResume() {
-        Log.e(LOG, "onResume")
+        Log.e(log, "onResume")
         super.onResume()
 
         // Вызываем метод, который устанавливает название месяца, создает и устанавливает адаптер и менеджер
@@ -269,7 +270,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
     }
 
     override fun onDestroy() {
-        Log.e(LOG, "onDestroy")
+        Log.e(log, "onDestroy")
         CalendarAdapter.month = 0
 
         super.onDestroy()
@@ -291,7 +292,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
     }
 
     override fun onDestroyView() {
-        Log.e(LOG, "onDestroyView")
+        Log.e(log, "onDestroyView")
         super.onDestroyView()
         _binding = null
 

@@ -5,8 +5,11 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.util.Log
 import com.example.projectnailsschedule.util.Service
-import com.example.projectnailsschedule.data.DateStatusDbHelper
+import com.example.projectnailsschedule.data.storage.CalendarDbHelper
+import com.example.projectnailsschedule.domain.models.DateParams
 import java.time.YearMonth
+import java.util.*
+import kotlin.collections.ArrayList
 
 class StatusesMap : Thread() {
 
@@ -28,7 +31,7 @@ class StatusesMap : Thread() {
         // Получаем по каждому дню статус из БД и устанавливаем в словарь
         Log.e(LOG, "Run $name")
 
-        val dateStatusDbHelper = DateStatusDbHelper(context)
+        val calendarDbHelper = CalendarDbHelper(context)
         var dbStatus: SQLiteDatabase? = null
         var cursor: Cursor? = null
 
@@ -48,8 +51,10 @@ class StatusesMap : Thread() {
             val date = String.format("$dd.$month.$year")
             Log.e(LOG, String.format("Date for queue: $date"))
 
-            dbStatus = dateStatusDbHelper.readableDatabase
-            cursor = dateStatusDbHelper.fetchDate(date, dbStatus!!)
+            dbStatus = calendarDbHelper.readableDatabase
+
+            val dateParameterName = DateParams(_id = null, date = date, status = null)
+            cursor = calendarDbHelper.getDate(dateParameterName, dbStatus!!)
             dd = Service().removeZero(dd)
 
             if (cursor.moveToFirst()) {

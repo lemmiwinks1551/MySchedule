@@ -1,4 +1,4 @@
-package com.example.projectnailsschedule.data
+package com.example.projectnailsschedule.data.storage
 
 import android.content.Context
 import android.database.Cursor
@@ -35,7 +35,7 @@ class SettingsDbHelper(context: Context?) :
 
         Log.e(LOG, "Creating database")
         db.execSQL(
-            "CREATE TABLE $TABLE_NAME (${COLUMN_ID} INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            "CREATE TABLE $TABLE_NAME ($COLUMN_ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     "$COLUMN_SETTING TEXT NOT NULL, " +
                     "$COLUMN_VALUE TEXT NOT NULL);"
         )

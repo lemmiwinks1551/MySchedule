@@ -1,4 +1,4 @@
-package com.example.projectnailsschedule.data
+package com.example.projectnailsschedule.data.storage
 
 import android.content.Context
 import android.database.Cursor
@@ -124,12 +124,12 @@ class ScheduleDbHelper(context: Context?) :
 
     fun createDb() {
         // Method for search fragment
-        val file = File(DateStatusDbHelper.DATABASE_NAME)
+        val file = File(CalendarDbHelper.DATABASE_NAME)
         if (!file.exists()) {
             //получаем локальную бд как поток
             try {
-                myContext?.assets?.open(DateStatusDbHelper.DATABASE_NAME).use { myInput ->
-                    FileOutputStream(DateStatusDbHelper.DATABASE_NAME).use { myOutput ->
+                myContext?.assets?.open(CalendarDbHelper.DATABASE_NAME).use { myInput ->
+                    FileOutputStream(CalendarDbHelper.DATABASE_NAME).use { myOutput ->
 
                         // побайтово копируем данные
                         val buffer = ByteArray(1024)

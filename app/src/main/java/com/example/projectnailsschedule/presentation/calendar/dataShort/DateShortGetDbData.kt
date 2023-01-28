@@ -3,7 +3,7 @@ package com.example.projectnailsschedule.presentation.calendar.dataShort
 import android.content.Context
 import android.util.Log
 import com.example.projectnailsschedule.util.Service
-import com.example.projectnailsschedule.data.ScheduleDbHelper
+import com.example.projectnailsschedule.data.storage.ScheduleDbHelper
 
 /** Получает данные из БД за выбранную дату
  * Хранит полученные данные в массиве */

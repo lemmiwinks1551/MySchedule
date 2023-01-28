@@ -17,10 +17,11 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.projectnailsschedule.R
-import com.example.projectnailsschedule.data.DateStatusDbHelper
-import com.example.projectnailsschedule.data.ScheduleDbHelper
+import com.example.projectnailsschedule.data.storage.CalendarDbHelper
+import com.example.projectnailsschedule.data.storage.ScheduleDbHelper
 import com.example.projectnailsschedule.databinding.FragmentDateBinding
 import com.example.projectnailsschedule.domain.models.AppointmentParams
+import com.example.projectnailsschedule.domain.models.DateParams
 import com.example.projectnailsschedule.util.Service
 
 
@@ -46,7 +47,7 @@ class DateFragment : Fragment() {
 
     private var databaseHelper: ScheduleDbHelper? = null
     private var db: SQLiteDatabase? = null
-    private var dateStatusDbHelper: DateStatusDbHelper? = null
+    private var calendarDbHelper: CalendarDbHelper? = null
     private var dbStatus: SQLiteDatabase? = null
 
     private var cursor: Cursor? = null
@@ -224,16 +225,18 @@ class DateFragment : Fragment() {
 
     private fun getDayStatus() {
         // Получаем из БД статус выбранного дня
-        dateStatusDbHelper = DateStatusDbHelper(context)
-        dbStatus = dateStatusDbHelper?.readableDatabase
-        cursor = dateStatusDbHelper?.fetchDate(day!!, dbStatus!!)
+        calendarDbHelper = CalendarDbHelper(context)
+        dbStatus = calendarDbHelper?.readableDatabase
+
+        val dateParams = DateParams(_id = null, date = day, status = null)
+        cursor = calendarDbHelper?.getDate(dateParams, dbStatus!!)
 
         // Получаем статус дня из курсора
         // Если не удалось подтянуть статус - установить "no status"
         if (cursor!!.moveToFirst()) {
             val columnIndex = cursor!!.getColumnIndex("status")
             dayStatus = cursor!!.getString(columnIndex)
-            Log.e(LOG, "Day $day status fetched: ${DateStatusDbHelper.COLUMN_STATUS}")
+            Log.e(LOG, "Day $day status fetched: ${CalendarDbHelper.COLUMN_STATUS}")
         } else {
             Log.e(LOG, "Cannot fetch status, no data")
             dayStatus = "no status"
@@ -253,7 +256,7 @@ class DateFragment : Fragment() {
         adapterStatus.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item)
 
         // В зависимости от статуса устанавливаем значение переменной
-        with(DateStatusDbHelper) {
+        with(CalendarDbHelper) {
             when (dayStatus) {
                 STATUS_FREE -> statusForSpinner = statusMap[STATUS_FREE].toString()
                 STATUS_MEDIUM -> statusForSpinner = statusMap[STATUS_MEDIUM].toString()
@@ -276,19 +279,23 @@ class DateFragment : Fragment() {
 
         // Если данного дня нет в БД - создаем запись
         // Если запись уже была - обновляем существующую
-        db = dateStatusDbHelper?.writableDatabase
+        val dateParams = DateParams(_id = null, date = day, status = null)
+
+        db = calendarDbHelper?.writableDatabase
         val dbStatus = statusMap.entries.find { it.value == status }!!.key
         if (dayStatus != "no status") {
-            dateStatusDbHelper?.updateDate(day!!, dbStatus, db!!)
+
+
+            calendarDbHelper?.editDate(dateParams, db!!)
         } else {
-            dateStatusDbHelper?.addDate(day!!, dbStatus, db!!)
+            calendarDbHelper?.addDate(dateParams = dateParams, db!!)
         }
-        dateStatusDbHelper?.close()
+        calendarDbHelper?.close()
     }
 
     private fun createStatusMap(): Map<String, String> {
         // Метод наполняяет словарь для соотношения статуса в БД и статуса в UI
-        with(DateStatusDbHelper) {
+        with(CalendarDbHelper) {
             return mapOf(
                 STATUS_FREE to "Свободен",
                 STATUS_MEDIUM to "Есть записи",

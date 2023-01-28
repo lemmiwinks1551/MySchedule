@@ -18,5 +18,4 @@ class AppointmentParams(
     val phoneNum: String? = null,
     val misc: String? = null
 ) : Parcelable {
-
 }

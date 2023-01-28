@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.projectnailsschedule.data.SettingsDbHelper
+import com.example.projectnailsschedule.data.storage.SettingsDbHelper
 import com.example.projectnailsschedule.databinding.FragmentSettingsBinding
 
 class SettingsFragment : Fragment() {
