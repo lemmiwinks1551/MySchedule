@@ -13,7 +13,7 @@ class AppointmentViewModel(
 
     val log = this::class.simpleName
 
-    fun saveAppointment(appointmentParams: AppointmentParams) {
+    fun createAppointment(appointmentParams: AppointmentParams) {
         saveAppointmentUseCase.execute(appointmentParams)
         Log.e(log, "Appointment saved")
     }

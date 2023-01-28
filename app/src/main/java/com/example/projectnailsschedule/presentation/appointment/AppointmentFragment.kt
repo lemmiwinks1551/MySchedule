@@ -21,17 +21,17 @@ import java.util.*
 class AppointmentFragment : Fragment() {
     val log = this::class.simpleName
     private val bindingKey = "appointmentParams"
+    private val toastCreated = "Запись добавлена"
+    private val toastEdited = "Запись изменена"
+
     private var appointmentViewModel: AppointmentViewModel? = null
     private var _binding: FragmentAppointmentBinding? = null
     private val binding get() = _binding!!
 
     private var appointmentParams: AppointmentParams? = null
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
         // create ViewModel object with Factory
         appointmentViewModel = ViewModelProvider(
@@ -39,11 +39,18 @@ class AppointmentFragment : Fragment() {
             AppointmentViewModelFactory(context)
         )[AppointmentViewModel::class.java]
 
-        // set binding
-        _binding = FragmentAppointmentBinding.inflate(inflater, container, false)
-
         // get appointmentParams from arguments
         appointmentParams = arguments?.getParcelable(bindingKey)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+
+        // set binding
+        _binding = FragmentAppointmentBinding.inflate(inflater, container, false)
 
         // Set ClickListener on save_changes_button
         binding.saveChangesButton.setOnClickListener {
@@ -93,11 +100,11 @@ class AppointmentFragment : Fragment() {
                 phoneNum = phoneEditText.text.toString(),
                 misc = miscEditText.text.toString()
             )
-            appointmentViewModel?.saveAppointment(appointmentParams)
+            appointmentViewModel?.createAppointment(appointmentParams)
 
             Toast.makeText(
                 context,
-                "Запись добавлена ${appointmentParams.appointmentDate}",
+                "$toastCreated ${appointmentParams.appointmentDate}",
                 Toast.LENGTH_LONG
             ).show()
         }
@@ -126,7 +133,7 @@ class AppointmentFragment : Fragment() {
 
             Toast.makeText(
                 context,
-                "Запись изменена ${appointmentParams.appointmentDate}",
+                "$toastEdited ${appointmentParams.appointmentDate}",
                 Toast.LENGTH_LONG
             ).show()
 
