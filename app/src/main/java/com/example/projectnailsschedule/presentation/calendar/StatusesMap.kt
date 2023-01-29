@@ -65,8 +65,8 @@ class StatusesMap : Thread() {
                 dayStatuses[dd] = ""
             }
         }
-        cursor?.close()
-        dbStatus?.close()
+/*        cursor?.close()
+        dbStatus?.close()*/
     }
 
 

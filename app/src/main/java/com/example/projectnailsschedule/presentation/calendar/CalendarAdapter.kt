@@ -6,12 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
+import com.example.projectnailsschedule.domain.models.DateParams
 import java.time.LocalDate
 
 internal class CalendarAdapter(
     private val daysOfMonth: ArrayList<String>,
     private val onItemListener: CalendarFragment,
-    private val dayStatuses: MutableMap<String, String>
+    private val calendarViewModel: CalendarViewModel
 ) :
     RecyclerView.Adapter<CalendarViewHolder>() {
 
@@ -41,11 +42,18 @@ internal class CalendarAdapter(
             holder.dayOfMonth.setTypeface(null, Typeface.BOLD)
             holder.dayOfMonth.textSize = 23f
         }
+
         holder.dayOfMonth.text = dayInHolder
 
         if (dayInHolder != "") {
-            // TODO: для наблюдения: словарь не успеет сформироваться
-            when (dayStatuses.getValue(dayInHolder).replace("0", "")) {
+            var dateParams = DateParams(
+                _id = null,
+                date = dayInHolder,
+                status = null)
+
+            dateParams = calendarViewModel.getDayStatus(dateParams)
+
+            when (dateParams.status?.replace("0", "")) {
                 "medium" -> holder.dayOfMonth.setBackgroundResource(R.drawable.border_medium)
                 "busy" -> holder.dayOfMonth.setBackgroundResource(R.drawable.border_busy)
                 "dayOff" -> holder.dayOfMonth.setBackgroundResource(R.drawable.border_day_off)

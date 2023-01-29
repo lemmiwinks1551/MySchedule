@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentCalendarBinding
+import com.example.projectnailsschedule.presentation.appointment.AppointmentViewModel
+import com.example.projectnailsschedule.presentation.appointment.AppointmentViewModelFactory
 import com.example.projectnailsschedule.util.Service
 import com.example.projectnailsschedule.presentation.calendar.dataShort.DateShortAdapter
 import com.example.projectnailsschedule.presentation.calendar.dataShort.DateShortGetDbData
@@ -34,11 +36,12 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         var width = 0 // ??
     }
 
+    private var calendarViewModel: CalendarViewModel? = null
     private var _binding: FragmentCalendarBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
-    private val statusesMap = StatusesMap()
+    // private val statusesMap = StatusesMap()
     private val binding get() = _binding!!
 
     private var monthYearText: TextView? = null
@@ -61,21 +64,23 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         layout = binding.fragmentCalendar
     }
 
-    override fun onStart() {
-        super.onStart()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // create ViewModel object with Factory
+        calendarViewModel = ViewModelProvider(
+            this,
+            CalendarViewModelFactory(context)
+        )[CalendarViewModel::class.java]
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        Log.e(log, "onCreateView")
 
         if (savedInstanceState != null) {
             additionMonth = savedInstanceState.getLong("additionMonth")
         }
-
-        // Создаем переменную ViewModel
-        val calendarViewModel = ViewModelProvider(this)[CalendarViewModel::class.java]
 
         _binding = FragmentCalendarBinding.inflate(inflater, container, false)
 
@@ -124,7 +129,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
 
         // Создаем CalendarAdapter, передаем количество дней в месяце и listener
         val calendarAdapter =
-            daysInMonth?.let { CalendarAdapter(it, this, statusesMap.dayStatuses) }
+            daysInMonth?.let { CalendarAdapter(it, this, calendarViewModel!!) }
 
         // Создаем layoutManager и устанавливает способ отображения элементов в нем
         // GridLayoutManager упорядочивает элементы в виде таблицы со столлбцами и строками (7 элементов в ряд)
@@ -164,7 +169,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         }
 
         // Запускаем поток для выгрузки статусов
-        runStatusesMapThread(daysInMonthArray, yearMonth)
+        //runStatusesMapThread(daysInMonthArray, yearMonth)
         return daysInMonthArray
     }
 
@@ -278,7 +283,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
 
     private fun runStatusesMapThread(daysInMonthArray: ArrayList<String>, yearMonth: YearMonth) {
         // Запускаем новый поток, который формирует словарь для отрисовки интерфейса
-        statusesMap.name = "StatusesMap Thread"
+/*        statusesMap.name = "StatusesMap Thread"
         statusesMap.setDaysOfMonth(daysInMonthArray)
         statusesMap.setYearMonth(yearMonth)
         statusesMap.setContext(this.requireContext())
@@ -288,7 +293,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
             statusesMap.start()
         } else {
             statusesMap.run()
-        }
+        }*/
     }
 
     override fun onDestroyView() {

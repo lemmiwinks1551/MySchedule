@@ -70,12 +70,12 @@ class AppointmentFragment : Fragment() {
 
         // set ClickListener on day_edit_text
         binding.dayEditText.setOnClickListener {
-            selectDate()
+            setDatePicker()
         }
 
         // set ClickListener on time_edit_text
         binding.timeEditText.setOnClickListener {
-            selectTime()
+            setTimePicker()
         }
 
         // set phone input format on phone_edit_text
@@ -158,7 +158,7 @@ class AppointmentFragment : Fragment() {
         findNavController().popBackStack()
     }
 
-    private fun selectDate() {
+    private fun setDatePicker() {
         // set datePicker to select date field
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
@@ -174,7 +174,7 @@ class AppointmentFragment : Fragment() {
         datePickerDialog.show()
     }
 
-    private fun selectTime() {
+    private fun setTimePicker() {
         // set time Picker to select time field
         val calendar = Calendar.getInstance()
         val mTimePicker: TimePickerDialog

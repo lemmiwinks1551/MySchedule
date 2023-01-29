@@ -6,7 +6,7 @@ interface CalendarRepository {
 
     fun addDate(dateParams: DateParams): Boolean
 
-    fun getDate(dateParams: DateParams): Boolean
+    fun getDate(dateParams: DateParams): DateParams
 
     fun editDate(dateParams: DateParams): Boolean
 }

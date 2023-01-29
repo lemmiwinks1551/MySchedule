@@ -14,12 +14,12 @@ class AppointmentViewModelFactory(context: Context?) : ViewModelProvider.Factory
      * @param modelClass a `Class` whose instance is requested
      * @return a newly created ViewModel
      */
-    private val appointmentRepositoryImpl = AppointmentRepositoryImpl(context = context)
+    private val appointmentRepository = AppointmentRepositoryImpl(context = context)
 
     private val saveAppointmentUseCase =
-        SaveAppointmentUseCase(appointmentRepository = appointmentRepositoryImpl)
+        SaveAppointmentUseCase(appointmentRepository = appointmentRepository)
     private val editAppointmentUseCase =
-        EditAppointmentUseCase(appointmentRepository = appointmentRepositoryImpl)
+        EditAppointmentUseCase(appointmentRepository = appointmentRepository)
 
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
