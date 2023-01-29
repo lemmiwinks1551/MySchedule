@@ -168,8 +168,6 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
             }
         }
 
-        // Запускаем поток для выгрузки статусов
-        //runStatusesMapThread(daysInMonthArray, yearMonth)
         return daysInMonthArray
     }
 
@@ -277,30 +275,13 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
     override fun onDestroy() {
         Log.e(log, "onDestroy")
         CalendarAdapter.month = 0
-
         super.onDestroy()
-    }
-
-    private fun runStatusesMapThread(daysInMonthArray: ArrayList<String>, yearMonth: YearMonth) {
-        // Запускаем новый поток, который формирует словарь для отрисовки интерфейса
-/*        statusesMap.name = "StatusesMap Thread"
-        statusesMap.setDaysOfMonth(daysInMonthArray)
-        statusesMap.setYearMonth(yearMonth)
-        statusesMap.setContext(this.requireContext())
-
-        // Если поток уже создан - перезапустить
-        if (statusesMap.state == Thread.State.NEW) {
-            statusesMap.start()
-        } else {
-            statusesMap.run()
-        }*/
     }
 
     override fun onDestroyView() {
         Log.e(log, "onDestroyView")
         super.onDestroyView()
         _binding = null
-
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
