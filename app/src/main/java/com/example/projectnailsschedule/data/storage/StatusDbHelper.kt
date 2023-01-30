@@ -42,7 +42,7 @@ class StatusDbHelper(context: Context?) :
         /** Метод добавляет строку в БД **/
         val query = "INSERT INTO $TABLE_NAME " +
                 "($COLUMN_DATE, $COLUMN_STATUS) " +
-                "VALUES ('${dateParams}', '${dateParams.status}');"
+                "VALUES ('${dateParams.date}', '${dateParams.status}');"
         Log.e(log, String.format("Add row query: $query"))
         db.execSQL(query)
         Log.e(log, String.format("Add row - success"))

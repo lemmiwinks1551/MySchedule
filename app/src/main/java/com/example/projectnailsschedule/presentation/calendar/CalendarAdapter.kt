@@ -7,12 +7,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.domain.models.DateParams
+import com.example.projectnailsschedule.util.Service
 import java.time.LocalDate
 
 internal class CalendarAdapter(
     private val daysOfMonth: ArrayList<String>,
     private val onItemListener: CalendarFragment,
-    private val calendarViewModel: CalendarViewModel
+    private val calendarViewModel: CalendarViewModel,
+    private val date: String
 ) :
     RecyclerView.Adapter<CalendarViewHolder>() {
 
@@ -48,15 +50,15 @@ internal class CalendarAdapter(
         if (dayInHolder != "") {
             var dateParams = DateParams(
                 _id = null,
-                date = dayInHolder,
+                date = "01.01.2023",
                 status = null)
 
             dateParams = calendarViewModel.getDayStatus(dateParams)
 
-            when (dateParams.status?.replace("0", "")) {
-                "medium" -> holder.dayOfMonth.setBackgroundResource(R.drawable.border_medium)
-                "busy" -> holder.dayOfMonth.setBackgroundResource(R.drawable.border_busy)
-                "dayOff" -> holder.dayOfMonth.setBackgroundResource(R.drawable.border_day_off)
+            when (dateParams.status) {
+                "Есть записи" -> holder.dayOfMonth.setBackgroundResource(R.drawable.border_medium)
+                "Занят" -> holder.dayOfMonth.setBackgroundResource(R.drawable.border_busy)
+                "Выходной" -> holder.dayOfMonth.setBackgroundResource(R.drawable.border_day_off)
             }
         }
     }

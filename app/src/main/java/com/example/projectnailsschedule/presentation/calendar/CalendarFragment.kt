@@ -129,7 +129,10 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
 
         // Создаем CalendarAdapter, передаем количество дней в месяце и listener
         val calendarAdapter =
-            daysInMonth?.let { CalendarAdapter(it, this, calendarViewModel!!) }
+            daysInMonth?.let { CalendarAdapter(it,
+                this,
+                calendarViewModel!!,
+            String.format("$day.$month.$year")) }
 
         // Создаем layoutManager и устанавливает способ отображения элементов в нем
         // GridLayoutManager упорядочивает элементы в виде таблицы со столлбцами и строками (7 элементов в ряд)
