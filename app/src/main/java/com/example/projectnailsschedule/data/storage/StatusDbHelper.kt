@@ -14,22 +14,22 @@ import com.example.projectnailsschedule.util.WorkFolders
  * https://developer.android.com/training/data-storage
  * */
 
-class CalendarDbHelper(context: Context?) :
+class StatusDbHelper(context: Context?) :
     SQLiteOpenHelper(context, DATABASE_NAME, null, VERSION) {
 
     companion object {
 
         // Получить название БД (если создана спец. папка. то в неё положить файл БД, если нет - внутри приложения
-        var DATABASE_NAME = String.format("${WorkFolders().getFolderPath()}/calendar.db") // название бд
+        var DATABASE_NAME = String.format("${WorkFolders().getFolderPath()}/status.db") // название БД>
         private const val VERSION = 2       // версия базы данных
-        var TABLE_NAME = "calendar"         // название таблицы в бд
+        var TABLE_NAME = "status"           // название таблицы в бд
 
         // Названия столбцов
         const val COLUMN_ID = "_id"
         const val COLUMN_DATE = "date"
         const val COLUMN_STATUS = "status"
 
-        val LOG = this::class.simpleName
+        val log = this::class.simpleName
 
         // Статусы:
         const val STATUS_FREE = "free"
@@ -43,41 +43,41 @@ class CalendarDbHelper(context: Context?) :
         val query = "INSERT INTO $TABLE_NAME " +
                 "($COLUMN_DATE, $COLUMN_STATUS) " +
                 "VALUES ('${dateParams}', '${dateParams.status}');"
-        Log.e(LOG, String.format("Add row query: $query"))
+        Log.e(log, String.format("Add row query: $query"))
         db.execSQL(query)
-        Log.e(LOG, String.format("Add row - success"))
+        Log.e(log, String.format("Add row - success"))
     }
 
     fun getDate(dateParams: DateParams, db: SQLiteDatabase): Cursor {
         // Метод получает строку из БД в завимости от дня
         val query = "SELECT * FROM $TABLE_NAME WHERE $COLUMN_DATE = '${dateParams.date}';"
-        Log.e(LOG, String.format("Row № ${dateParams.date} fetched"))
+        Log.e(log, String.format("Row № ${dateParams.date} fetched"))
         // Получаем данные из бд в виде курсора
         return db.rawQuery(query, null)
     }
 
-    fun editDate(dateParams: DateParams, db: SQLiteDatabase) {
-        // Метод редактирует выбранную строку
+    fun setStatus(dateParams: DateParams, db: SQLiteDatabase) {
+        // Set status in date
         val query = "UPDATE $TABLE_NAME SET " +
                 "$COLUMN_STATUS = '${dateParams.status}' " +
                 "WHERE $COLUMN_DATE = '${dateParams.date}';"
-        Log.e(LOG, String.format("Edit row query: $query"))
+        Log.e(log, String.format("Edit row query: $query"))
         db.execSQL(query)
-        Log.e(LOG, String.format("Edit row success"))
+        Log.e(log, String.format("Edit row success"))
     }
 
     override fun onCreate(db: SQLiteDatabase) {
-        Log.e(LOG, "Status DB creating")
+        Log.e(log, "Status DB creating")
         db.execSQL(
             "CREATE TABLE $TABLE_NAME ($COLUMN_ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     "$COLUMN_DATE TEXT NOT NULL," +
                     "$COLUMN_STATUS TEXT NOT NULL);"
         )
-        Log.e(LOG, "Status DB created")
+        Log.e(log, "Status DB created")
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        Log.e(LOG, "Status DB updated")
+        Log.e(log, "Status DB updated")
         db.execSQL("DROP TABLE IF EXISTS $TABLE_NAME")
         onCreate(db)
     }

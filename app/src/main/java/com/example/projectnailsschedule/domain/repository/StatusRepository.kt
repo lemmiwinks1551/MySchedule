@@ -2,11 +2,11 @@ package com.example.projectnailsschedule.domain.repository
 
 import com.example.projectnailsschedule.domain.models.DateParams
 
-interface CalendarRepository {
+interface StatusRepository {
 
     fun addDate(dateParams: DateParams): Boolean
 
-    fun getDate(dateParams: DateParams): DateParams
+    fun getStatus(dateParams: DateParams): DateParams
 
-    fun editDate(dateParams: DateParams): Boolean
+    fun setStatus(dateParams: DateParams): Boolean
 }

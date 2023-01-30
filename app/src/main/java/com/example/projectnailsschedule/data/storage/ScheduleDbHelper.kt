@@ -18,13 +18,13 @@ class ScheduleDbHelper(context: Context?) :
     SQLiteOpenHelper(context, DATABASE_NAME, null, VERSION) {
     companion object {
         // Bd name
-        var DATABASE_NAME = String.format("${WorkFolders().getFolderPath()}/schedule.db")
+        var DATABASE_NAME = String.format("${WorkFolders().getFolderPath()}/appointment.db")
 
         // Current bd version
         private const val VERSION = 24
 
         // Table name
-        const val TABLE_NAME = "schedule" // название таблицы в бд
+        const val TABLE_NAME = "appointment" // название таблицы в бд
 
         // Columns
         const val COLUMN_ID = "_id"
@@ -124,12 +124,12 @@ class ScheduleDbHelper(context: Context?) :
 
     fun createDb() {
         // Method for search fragment
-        val file = File(CalendarDbHelper.DATABASE_NAME)
+        val file = File(StatusDbHelper.DATABASE_NAME)
         if (!file.exists()) {
             //получаем локальную бд как поток
             try {
-                myContext?.assets?.open(CalendarDbHelper.DATABASE_NAME).use { myInput ->
-                    FileOutputStream(CalendarDbHelper.DATABASE_NAME).use { myOutput ->
+                myContext?.assets?.open(StatusDbHelper.DATABASE_NAME).use { myInput ->
+                    FileOutputStream(StatusDbHelper.DATABASE_NAME).use { myOutput ->
 
                         // побайтово копируем данные
                         val buffer = ByteArray(1024)
