@@ -23,6 +23,7 @@ import com.example.projectnailsschedule.databinding.FragmentDateBinding
 import com.example.projectnailsschedule.domain.models.AppointmentParams
 import com.example.projectnailsschedule.domain.models.DateParams
 import com.example.projectnailsschedule.util.Service
+import java.util.*
 
 
 class DateFragment : Fragment() {
@@ -39,6 +40,7 @@ class DateFragment : Fragment() {
 
     private var _binding: FragmentDateBinding? = null
     private val binding get() = _binding!!
+    private val bindingKey = "dateParams"
 
     private var scheduleList: ListView? = null
     private var deleteButton: Button? = null
@@ -66,7 +68,10 @@ class DateFragment : Fragment() {
         _binding = FragmentDateBinding.inflate(inflater, container, false)
 
         // Get selected date from bundle
-        day = arguments?.getString("date")
+        val dateParams: DateParams? = arguments?.getParcelable(bindingKey)
+        if (dateParams != null) {
+            day = dateParams.date
+        }
 
         // Конвертируем дату в формат dd.MM.yyyy
         day = Service().dateConverter(day!!)
@@ -81,7 +86,7 @@ class DateFragment : Fragment() {
 
         //Вызываем новый фрагмент для добавления новой записи
         binding.addButton.setOnClickListener {
-            // Add new appointment, send date only
+            // Add new appointment, send date
             val appointmentParams = AppointmentParams(
                 _id = null,
                 appointmentDate = day,

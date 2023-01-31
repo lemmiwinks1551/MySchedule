@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentCalendarBinding
+import com.example.projectnailsschedule.domain.models.AppointmentParams
+import com.example.projectnailsschedule.domain.models.DateParams
 import com.example.projectnailsschedule.presentation.appointment.AppointmentViewModel
 import com.example.projectnailsschedule.presentation.appointment.AppointmentViewModelFactory
 import com.example.projectnailsschedule.util.Service
@@ -35,13 +37,9 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         var year = ""
         var width = 0 // ??
     }
-
+    private val log = this::class.simpleName
     private var calendarViewModel: CalendarViewModel? = null
     private var _binding: FragmentCalendarBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    // private val statusesMap = StatusesMap()
     private val binding get() = _binding!!
 
     private var monthYearText: TextView? = null
@@ -52,17 +50,6 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
     private var selectedDate: LocalDate? = null
     private var additionMonth: Long = 0
     private var layout: LinearLayout? = null
-    private val log = this::class.simpleName
-
-    private fun initWidgets() {
-        // Инициировать view
-        calendarRecyclerView = binding.calendarRecyclerView
-        shortDataRecyclerView = binding.shortDataRecyclerView
-        monthYearText = binding.monthYearTV
-        addButton = binding.addData
-        dateTextView = binding.dayTextView
-        layout = binding.fragmentCalendar
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,15 +61,26 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         )[CalendarViewModel::class.java]
     }
 
+    private fun initWidgets() {
+        // Инициировать view
+        calendarRecyclerView = binding.calendarRecyclerView
+        shortDataRecyclerView = binding.shortDataRecyclerView
+        monthYearText = binding.monthYearTV
+        addButton = binding.addData
+        dateTextView = binding.dayTextView
+        layout = binding.fragmentCalendar
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
 
+        // set binding
+        _binding = FragmentCalendarBinding.inflate(inflater, container, false)
+
         if (savedInstanceState != null) {
             additionMonth = savedInstanceState.getLong("additionMonth")
         }
-
-        _binding = FragmentCalendarBinding.inflate(inflater, container, false)
 
         binding.addData.setOnClickListener {
             /** Start fragment */
@@ -93,6 +91,15 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
                 "date",
                 "$day.$month.$year"
             )
+
+            // Add new appointment, send date only
+            val dateParams = DateParams(
+                _id = null,
+                date = "$day.$month.$year",
+                status = null
+            )
+
+            bundle.putParcelable("dateParams", dateParams)
 
             /** Открываем DateFragment с переданной датой */
             // TODO: Add SelectDate method

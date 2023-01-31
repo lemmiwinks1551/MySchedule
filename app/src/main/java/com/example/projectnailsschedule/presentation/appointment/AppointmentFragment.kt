@@ -143,6 +143,7 @@ class AppointmentFragment : Fragment() {
 
     private fun setAppointmentCurrentParams() {
         // set current appointmentParams from DateFragment binding object
+
         with(binding) {
             dayEditText.text = appointmentParams?.appointmentDate
             timeEditText.text = appointmentParams?.startTime
