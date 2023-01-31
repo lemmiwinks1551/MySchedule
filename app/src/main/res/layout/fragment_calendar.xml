@@ -16,7 +16,7 @@
         android:orientation="horizontal">
 
         <ImageButton
-            android:id="@+id/prevMonth"
+            android:id="@+id/prev_month"
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_weight="1"
@@ -28,7 +28,7 @@
             tools:ignore="SpeakableTextPresentCheck" />
 
         <TextView
-            android:id="@+id/monthYearTV"
+            android:id="@+id/month_year_text"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"
@@ -39,7 +39,7 @@
             android:textSize="20sp" />
 
         <ImageButton
-            android:id="@+id/nextMonth"
+            android:id="@+id/next_month"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -154,7 +154,7 @@
         android:verticalScrollbarPosition="left" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/add_data"
+        android:id="@+id/go_into_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center|top"

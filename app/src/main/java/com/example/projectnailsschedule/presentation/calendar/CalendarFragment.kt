@@ -15,13 +15,10 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentCalendarBinding
-import com.example.projectnailsschedule.domain.models.AppointmentParams
 import com.example.projectnailsschedule.domain.models.DateParams
-import com.example.projectnailsschedule.presentation.appointment.AppointmentViewModel
-import com.example.projectnailsschedule.presentation.appointment.AppointmentViewModelFactory
-import com.example.projectnailsschedule.util.Service
 import com.example.projectnailsschedule.presentation.calendar.dataShort.DateShortAdapter
 import com.example.projectnailsschedule.presentation.calendar.dataShort.DateShortGetDbData
+import com.example.projectnailsschedule.util.Service
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.text.SimpleDateFormat
 import java.time.LocalDate
@@ -37,6 +34,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         var year = ""
         var width = 0 // ??
     }
+
     private val log = this::class.simpleName
     private var calendarViewModel: CalendarViewModel? = null
     private var _binding: FragmentCalendarBinding? = null
@@ -61,16 +59,6 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         )[CalendarViewModel::class.java]
     }
 
-    private fun initWidgets() {
-        // Инициировать view
-        calendarRecyclerView = binding.calendarRecyclerView
-        shortDataRecyclerView = binding.shortDataRecyclerView
-        monthYearText = binding.monthYearTV
-        addButton = binding.addData
-        dateTextView = binding.dayTextView
-        layout = binding.fragmentCalendar
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -78,49 +66,54 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         // set binding
         _binding = FragmentCalendarBinding.inflate(inflater, container, false)
 
-        if (savedInstanceState != null) {
-            additionMonth = savedInstanceState.getLong("additionMonth")
-        }
+        // init all widgets
+        initWidgets()
 
-        binding.addData.setOnClickListener {
-            /** Start fragment */
+        // set click listener on button go_into_date
+        binding.goIntoDate.setOnClickListener {
+            /** Start fragment with chosen date */
 
-            /** Bundle содержит дату, которую выбрал пользователь */
+            // create bundle
             val bundle = Bundle()
-            bundle.putString(
-                "date",
-                "$day.$month.$year"
-            )
 
-            // Add new appointment, send date only
+            // crete dateParams obj with chosen date
             val dateParams = DateParams(
                 _id = null,
                 date = "$day.$month.$year",
                 status = null
             )
 
+            // put dateParams to bundle
             bundle.putParcelable("dateParams", dateParams)
 
-            /** Открываем DateFragment с переданной датой */
-            // TODO: Add SelectDate method
+            // start appointment fragment with bundle
             it.findNavController().navigate(R.id.action_nav_calendar_to_dateFragment, bundle)
         }
 
-        // Вызываем метод, который инициализирует View
-        initWidgets()
+        // set click listener on button next_month
+        binding.nextMonth.setOnClickListener {
+            changeMonth(operator = '+')
+        }
 
+        // set click listener on button previous_month
+        binding.prevMonth.setOnClickListener {
+            changeMonth(operator = '-')
+        }
         // Получить сегодняшню дату yyyy-MM-dd
         selectedDate = LocalDate.now().plusMonths(additionMonth)
 
-        binding.nextMonth.setOnClickListener {
-            selectNextMonth()
-        }
-
-        binding.prevMonth.setOnClickListener {
-            selectPreviousMonth()
-        }
         setHasOptionsMenu(true)
         return binding.root
+    }
+
+    private fun initWidgets() {
+        // Инициировать view
+        calendarRecyclerView = binding.calendarRecyclerView
+        shortDataRecyclerView = binding.shortDataRecyclerView
+        monthYearText = binding.monthYearText
+        addButton = binding.goIntoDate
+        dateTextView = binding.dayTextView
+        layout = binding.fragmentCalendar
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -136,10 +129,14 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
 
         // Создаем CalendarAdapter, передаем количество дней в месяце и listener
         val calendarAdapter =
-            daysInMonth?.let { CalendarAdapter(it,
-                this,
-                calendarViewModel!!,
-            String.format("$day.$month.$year")) }
+            daysInMonth?.let {
+                CalendarAdapter(
+                    it,
+                    this,
+                    calendarViewModel!!,
+                    String.format("$day.$month.$year")
+                )
+            }
 
         // Создаем layoutManager и устанавливает способ отображения элементов в нем
         // GridLayoutManager упорядочивает элементы в виде таблицы со столлбцами и строками (7 элементов в ряд)
@@ -189,28 +186,20 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         return "$month $year"
     }
 
-    private fun selectPreviousMonth() {
-        // Обработка нажатия на кнопку Предыдущий месяц
-        // Вычитаем один месяц из текущего
+    private fun changeMonth(operator: Char) {
+        // hide go_into_date button
         addButton?.visibility = View.INVISIBLE
 
-        selectedDate = selectedDate?.minusMonths(1)
-        CalendarAdapter.month--
-        additionMonth--
-        setMonthView()
-        shortDataRecyclerView?.adapter = null
-        dateTextView?.text = null
-        calendarRecyclerView?.scheduleLayoutAnimation()
-    }
+        if (operator == '+') {
+            selectedDate = selectedDate?.plusMonths(1)
+            CalendarAdapter.month++
+            additionMonth++
+        } else {
+            selectedDate = selectedDate?.minusMonths(1)
+            CalendarAdapter.month--
+            additionMonth--
+        }
 
-    private fun selectNextMonth() {
-        // Обработка нажатия на кнопку Следующий месяц
-        // Добавляем один месяц к текущему
-        addButton?.visibility = View.INVISIBLE
-
-        selectedDate = selectedDate?.plusMonths(1)
-        CalendarAdapter.month++
-        additionMonth++
         setMonthView()
         shortDataRecyclerView?.adapter = null
         dateTextView?.text = null
