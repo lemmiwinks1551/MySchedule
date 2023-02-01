@@ -28,12 +28,6 @@ import java.util.*
 
 
 class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
-    companion object {
-        var day = ""
-        var month = ""
-        var year = ""
-        var width = 0 // ??
-    }
 
     private val log = this::class.simpleName
     private var calendarViewModel: CalendarViewModel? = null
@@ -70,23 +64,11 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
 
         // set click listener on button go_into_date
         binding.goIntoDate.setOnClickListener {
-            /** Start fragment with chosen date */
-
-            // create bundle
-            val bundle = Bundle()
-
-            // crete dateParams obj with chosen date
-            val dateParams = DateParams(
-                _id = null,
-                date = "$day.$month.$year",
-                status = null
+            // start fragment with chosen date
+            it.findNavController().navigate(
+                R.id.action_nav_calendar_to_dateFragment,
+                calendarViewModel?.selectDate()
             )
-
-            // put dateParams to bundle
-            bundle.putParcelable("dateParams", dateParams)
-
-            // start appointment fragment with bundle
-            it.findNavController().navigate(R.id.action_nav_calendar_to_dateFragment, bundle)
         }
 
         // set click listener on button next_month
@@ -114,9 +96,10 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
     }
 
     private fun setMonthView() {
-        // Устанавливаем название месяца в TextView
-        monthYearText?.text = monthYearFromDate()
+        // set month and year name into textview
+        monthYearText?.text = calendarViewModel?.getMonthYearName()
 
+        // get
         val daysInMonth = calendarViewModel?.currentMonth?.let { daysInMonthArray(it) } // ??
 
         // Создаем CalendarAdapter, передаем количество дней в месяце и listener
@@ -126,7 +109,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
                     it,
                     this,
                     calendarViewModel!!,
-                    String.format("$day.$month.$year")
+                    String.format("${calendarViewModel?.day}.${calendarViewModel?.day}.${calendarViewModel?.day}")
                 )
             }
 
@@ -170,14 +153,6 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         return daysInMonthArray
     }
 
-    private fun monthYearFromDate(): String {
-        // get Month name by date
-        val date = Date.from(calendarViewModel?.currentMonth?.atStartOfDay(ZoneId.systemDefault())!!.toInstant())
-        val month = SimpleDateFormat("LLLL", Locale.getDefault()).format(date)
-        val year: String = calendarViewModel?.currentMonth?.year.toString()
-        return "$month $year"
-    }
-
     private fun changeMonth(operator: Char) {
         // hide go_into_date button
         addButton?.visibility = View.INVISIBLE
@@ -200,13 +175,13 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
             dateTextView?.visibility = View.VISIBLE
 
             val date = Date.from(calendarViewModel?.currentMonth?.atStartOfDay(ZoneId.systemDefault())!!.toInstant())
-            day = Service().addZero(dayText)
-            month = SimpleDateFormat("MM", Locale.getDefault()).format(date)
-            year = calendarViewModel?.currentMonth?.year.toString()
+            calendarViewModel?.day = Service().addZero(dayText)
+            calendarViewModel?.month = SimpleDateFormat("MM", Locale.getDefault()).format(date)
+            calendarViewModel?.year = calendarViewModel?.currentMonth?.year.toString()
 
-            dateTextView?.text = String.format("${day}.${month}.${year}")
+            dateTextView?.text = String.format("${calendarViewModel?.day}.${calendarViewModel?.month}.${calendarViewModel?.year}")
 
-            shortDate(day, month, year) // Отрисовать предпросмотр выбранного дня
+            shortDate(calendarViewModel?.day.toString(), calendarViewModel?.day.toString(), calendarViewModel?.year.toString()) // Отрисовать предпросмотр выбранного дня
         } else {
             // Убрать предварительный просмотр и кнопку
             addButton?.visibility = View.INVISIBLE
@@ -247,7 +222,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         setMonthView()
 
         // Обновляет выбранную дату в предварительном просмотре
-        shortDate(day, month, year)
+        shortDate(calendarViewModel?.day.toString(), calendarViewModel?.month.toString(), calendarViewModel?.year.toString())
 
         // Убираем клавиатуру
         Service().hideKeyboard(requireActivity())
@@ -277,6 +252,6 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
 
     fun getSelectedDate(): String {
         // Return last selected date
-        return "$day.$month.$year"
+        return "${calendarViewModel?.day}.${calendarViewModel?.month}.${calendarViewModel?.year}"
     }
 }

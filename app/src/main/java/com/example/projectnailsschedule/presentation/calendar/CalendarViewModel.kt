@@ -1,5 +1,6 @@
 package com.example.projectnailsschedule.presentation.calendar
 
+import android.os.Bundle
 import androidx.lifecycle.ViewModel
 import com.example.projectnailsschedule.domain.models.DateParams
 import com.example.projectnailsschedule.domain.usecase.calendarUC.LoadCalendarUseCase
@@ -21,21 +22,36 @@ class CalendarViewModel(
     private val log = this::class.simpleName
     var currentMonth: LocalDate = LocalDate.now()
 
-    var day = ""
-    var month = ""
-    var year = ""
+    //
+    var day: String = ""
+    var month: String = ""
+    var year: String = ""
     var extraMonth: Long = 0
 
     fun getDayStatus(dateParams: DateParams): DateParams {
+        // get day status from data
         loadCalendarUseCase.execute(dateParams)
         return dateParams
     }
 
-    fun selectDate() {
+    fun selectDate(): Bundle {
+        // create bundle
+        val bundle = Bundle()
 
+        // crete dateParams obj with chosen date
+        val dateParams = DateParams(
+            _id = null,
+            date = "$day.$month.$year",
+            status = null
+        )
+
+        // put dateParams to the bundle
+        bundle.putParcelable("dateParams", dateParams)
+        return bundle
     }
 
     fun changeMonth(operator: Char) {
+        // change current month
         if (operator == '+') {
             currentMonth = currentMonth.plusMonths(1)
             CalendarAdapter.month++ // ??
@@ -47,11 +63,11 @@ class CalendarViewModel(
         }
     }
 
-    fun getMonthYearName() : String {
-        val date = Date.from(currentMonth?.atStartOfDay(ZoneId.systemDefault())!!.toInstant())
+    fun getMonthYearName(): String {
+        // return current year and month in format "Январь 2000"
+        val date = Date.from(currentMonth.atStartOfDay(ZoneId.systemDefault())!!.toInstant())
         val month = SimpleDateFormat("LLLL", Locale.getDefault()).format(date)
-        val year: String = currentMonth?.year.toString()
+        val year: String = currentMonth.year.toString()
         return "$month $year"
     }
-
 }

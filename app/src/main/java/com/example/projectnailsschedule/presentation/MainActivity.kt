@@ -78,8 +78,8 @@ class MainActivity : AppCompatActivity() {
                 // Convert Date string to Local Date
                 val weekDay = Service().stringToLocalDate(checkedDate)
                 // Set String into toolbar
-                binding.appBarMain.toolbar.title =
-                    "${Service().getWeekDayName(weekDay, this)} $checkedDate"
+                // TODO: !!! !!!
+                binding.appBarMain.toolbar.title = "test"
             }
         }
     }

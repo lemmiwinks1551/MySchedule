@@ -22,6 +22,7 @@ import com.example.projectnailsschedule.databinding.FragmentSearchBinding
 import com.example.projectnailsschedule.data.storage.ScheduleDbHelper
 import com.example.projectnailsschedule.util.Service
 import com.example.projectnailsschedule.presentation.calendar.CalendarFragment
+import com.example.projectnailsschedule.presentation.calendar.CalendarViewModel
 
 
 class SearchFragment : Fragment() {
@@ -55,9 +56,10 @@ class SearchFragment : Fragment() {
             val date = (arg0.adapter as SimpleCursorAdapter).cursor.getString(1)
             val bundle = Bundle()
             bundle.putString("date", date)
-            CalendarFragment.day = Service().stringToLocalDate(date).dayOfMonth.toString()
-            CalendarFragment.month = Service().stringToLocalDate(date).monthValue.toString()
-            CalendarFragment.year = Service().stringToLocalDate(date).year.toString()
+            // TODO: ??? !!! клик по полю в поиске
+/*           CalendarViewModel.day = Service().stringToLocalDate(date).dayOfMonth.toString()
+            CalendarViewModel.month = Service().stringToLocalDate(date).monthValue.toString()
+            CalendarViewModel.year = Service().stringToLocalDate(date).year.toString()*/
             findNavController().navigate(R.id.action_nav_search_to_nav_date, bundle)
         }
 
