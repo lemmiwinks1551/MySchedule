@@ -17,8 +17,11 @@ internal class CalendarAdapter(
     private val date: String
 ) :
     RecyclerView.Adapter<CalendarViewHolder>() {
+    private var log = this::class.simpleName
 
-    private var LOG = this::class.simpleName
+    companion object {
+        var month = 0
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalendarViewHolder {
         // Возвращает объект ViewHolder, который будет хранить данные по одному объекту
@@ -71,10 +74,5 @@ internal class CalendarAdapter(
     interface OnItemListener {
         // Подключаем интерфейс onItemListener
         fun onItemClick(position: Int, dayText: String?)
-    }
-
-    companion object {
-        // Адаптер работает с ViewHolder`ом
-        var month = 0
     }
 }

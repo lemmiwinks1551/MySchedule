@@ -6,6 +6,10 @@ import com.example.projectnailsschedule.domain.usecase.calendarUC.LoadCalendarUs
 import com.example.projectnailsschedule.domain.usecase.calendarUC.SelectDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.SelectNextMonthUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.SelectPrevMonthUseCase
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.ZoneId
+import java.util.*
 
 class CalendarViewModel(
     private val loadCalendarUseCase: LoadCalendarUseCase,
@@ -14,7 +18,13 @@ class CalendarViewModel(
     private val selectPrevMonthUseCase: SelectPrevMonthUseCase
 ) : ViewModel() {
 
-    val log = this::class.simpleName
+    private val log = this::class.simpleName
+    var currentMonth: LocalDate = LocalDate.now()
+
+    var day = ""
+    var month = ""
+    var year = ""
+    var extraMonth: Long = 0
 
     fun getDayStatus(dateParams: DateParams): DateParams {
         loadCalendarUseCase.execute(dateParams)
@@ -25,12 +35,23 @@ class CalendarViewModel(
 
     }
 
-    fun selectNextMonth() {
-
+    fun changeMonth(operator: Char) {
+        if (operator == '+') {
+            currentMonth = currentMonth.plusMonths(1)
+            CalendarAdapter.month++ // ??
+            extraMonth++
+        } else {
+            currentMonth = currentMonth.minusMonths(1)
+            CalendarAdapter.month-- // ??
+            extraMonth--
+        }
     }
 
-    fun selectPrevMonth() {
-
+    fun getMonthYearName() : String {
+        val date = Date.from(currentMonth?.atStartOfDay(ZoneId.systemDefault())!!.toInstant())
+        val month = SimpleDateFormat("LLLL", Locale.getDefault()).format(date)
+        val year: String = currentMonth?.year.toString()
+        return "$month $year"
     }
 
 }

@@ -45,8 +45,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
     private var shortDataRecyclerView: RecyclerView? = null
     private var dateTextView: TextView? = null
     private var addButton: FloatingActionButton? = null
-    private var selectedDate: LocalDate? = null
-    private var additionMonth: Long = 0
+
     private var layout: LinearLayout? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -99,8 +98,6 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         binding.prevMonth.setOnClickListener {
             changeMonth(operator = '-')
         }
-        // Получить сегодняшню дату yyyy-MM-dd
-        selectedDate = LocalDate.now().plusMonths(additionMonth)
 
         setHasOptionsMenu(true)
         return binding.root
@@ -116,16 +113,11 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         layout = binding.fragmentCalendar
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        Log.e(log, "onSaveInstanceState")
-        super.onSaveInstanceState(outState)
-        outState.putLong("additionMonth", additionMonth)
-    }
-
     private fun setMonthView() {
         // Устанавливаем название месяца в TextView
         monthYearText?.text = monthYearFromDate()
-        val daysInMonth = selectedDate?.let { daysInMonthArray(it) }
+
+        val daysInMonth = calendarViewModel?.currentMonth?.let { daysInMonthArray(it) } // ??
 
         // Создаем CalendarAdapter, передаем количество дней в месяце и listener
         val calendarAdapter =
@@ -159,7 +151,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         val daysInMonth = yearMonth.lengthOfMonth()
 
         // Получаем первый день текущего месяца
-        val firstOfMonth: LocalDate = selectedDate!!.withDayOfMonth(1)
+        val firstOfMonth: LocalDate = calendarViewModel?.currentMonth?.withDayOfMonth(1) ?: LocalDate.now()
 
         // Получаем день недели первого дня месяца
         val dayOfWeek = firstOfMonth.dayOfWeek.value - 1
@@ -179,10 +171,10 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
     }
 
     private fun monthYearFromDate(): String {
-        // Метод форматирует название месяца и год для отображения во View
-        val date = Date.from(selectedDate?.atStartOfDay(ZoneId.systemDefault())!!.toInstant())
+        // get Month name by date
+        val date = Date.from(calendarViewModel?.currentMonth?.atStartOfDay(ZoneId.systemDefault())!!.toInstant())
         val month = SimpleDateFormat("LLLL", Locale.getDefault()).format(date)
-        val year: String = selectedDate?.year.toString()
+        val year: String = calendarViewModel?.currentMonth?.year.toString()
         return "$month $year"
     }
 
@@ -190,17 +182,11 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         // hide go_into_date button
         addButton?.visibility = View.INVISIBLE
 
-        if (operator == '+') {
-            selectedDate = selectedDate?.plusMonths(1)
-            CalendarAdapter.month++
-            additionMonth++
-        } else {
-            selectedDate = selectedDate?.minusMonths(1)
-            CalendarAdapter.month--
-            additionMonth--
-        }
-
+        // make calculations
+        calendarViewModel?.changeMonth(operator = operator)
         setMonthView()
+
+        // clear DateShort RecyclerView
         shortDataRecyclerView?.adapter = null
         dateTextView?.text = null
         calendarRecyclerView?.scheduleLayoutAnimation()
@@ -213,10 +199,10 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
             shortDataRecyclerView?.visibility = View.VISIBLE
             dateTextView?.visibility = View.VISIBLE
 
-            val date = Date.from(selectedDate?.atStartOfDay(ZoneId.systemDefault())!!.toInstant())
+            val date = Date.from(calendarViewModel?.currentMonth?.atStartOfDay(ZoneId.systemDefault())!!.toInstant())
             day = Service().addZero(dayText)
             month = SimpleDateFormat("MM", Locale.getDefault()).format(date)
-            year = selectedDate?.year.toString()
+            year = calendarViewModel?.currentMonth?.year.toString()
 
             dateTextView?.text = String.format("${day}.${month}.${year}")
 
