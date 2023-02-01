@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.domain.models.DateParams
-import com.example.projectnailsschedule.util.Service
 import java.time.LocalDate
 
 internal class CalendarAdapter(
@@ -54,7 +53,8 @@ internal class CalendarAdapter(
             var dateParams = DateParams(
                 _id = null,
                 date = "01.01.2023",
-                status = null)
+                status = null
+            )
 
             dateParams = calendarViewModel.getDayStatus(dateParams)
 

@@ -9,6 +9,7 @@ import com.example.projectnailsschedule.domain.usecase.calendarUC.SelectNextMont
 import com.example.projectnailsschedule.domain.usecase.calendarUC.SelectPrevMonthUseCase
 import java.text.SimpleDateFormat
 import java.time.LocalDate
+import java.time.YearMonth
 import java.time.ZoneId
 import java.util.*
 
@@ -70,4 +71,35 @@ class CalendarViewModel(
         val year: String = currentMonth.year.toString()
         return "$month $year"
     }
+
+    fun daysInMonthArray(date: LocalDate): ArrayList<String> {
+        // get days in current month in ArrayList<String>
+        val daysInMonthArray = ArrayList<String>()
+
+        // Получаем месяц
+        val yearMonth = YearMonth.from(date)
+
+        // Получаем длину месяца
+        val daysInMonth = yearMonth.lengthOfMonth()
+
+        // Получаем первый день текущего месяца
+        val firstOfMonth: LocalDate = currentMonth.withDayOfMonth(1) ?: LocalDate.now()
+
+        // Получаем день недели первого дня месяца
+        val dayOfWeek = firstOfMonth.dayOfWeek.value - 1
+
+        // Заполняем массив для отображения в RecyclerView
+        // Учитываем пустые дни (дни прошлого месяца
+        // TODO: 12.07.2022 Добавить дни прошлого и будущего месяцев
+        for (i in 1..42) {
+            if (i <= dayOfWeek || i > daysInMonth + dayOfWeek) {
+                daysInMonthArray.add("")
+            } else {
+                daysInMonthArray.add((i - dayOfWeek).toString())
+            }
+        }
+
+        return daysInMonthArray
+    }
+
 }
