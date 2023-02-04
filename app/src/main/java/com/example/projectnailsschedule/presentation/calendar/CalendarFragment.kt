@@ -15,15 +15,13 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentCalendarBinding
+import com.example.projectnailsschedule.domain.models.DateParams
 import com.example.projectnailsschedule.presentation.calendar.dataShort.DateShortAdapter
 import com.example.projectnailsschedule.presentation.calendar.dataShort.DateShortGetDbData
 import com.example.projectnailsschedule.util.Service
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import java.text.SimpleDateFormat
 import java.time.LocalDate
-import java.time.YearMonth
-import java.time.ZoneId
-import java.util.*
+import java.time.format.DateTimeFormatter
 
 
 class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
@@ -33,7 +31,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
     private var _binding: FragmentCalendarBinding? = null
     private val binding get() = _binding!!
 
-    private var monthYearText: TextView? = null
+    private var monthYearTextView: TextView? = null
     private var calendarRecyclerView: RecyclerView? = null
     private var shortDataRecyclerView: RecyclerView? = null
     private var dateTextView: TextView? = null
@@ -66,7 +64,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
             // start fragment with chosen date
             it.findNavController().navigate(
                 R.id.action_nav_calendar_to_dateFragment,
-                calendarViewModel?.selectDate()
+                calendarViewModel?.goIntoDate()
             )
         }
 
@@ -80,6 +78,16 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
             changeMonth(operator = '-')
         }
 
+        // set observer
+        calendarViewModel?.selectedDate?.observe(viewLifecycleOwner) {
+            if (it != null) {
+                setMonthYearTextView(it)
+                inflateCalendarRecyclerView(it)
+                inflateShortDateRecyclerView(it)
+                setSelectedDayTextView(it)
+            }
+        }
+
         setHasOptionsMenu(true)
         return binding.root
     }
@@ -88,28 +96,30 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         // Инициировать view
         calendarRecyclerView = binding.calendarRecyclerView
         shortDataRecyclerView = binding.shortDataRecyclerView
-        monthYearText = binding.monthYearText
+        monthYearTextView = binding.monthYearText
         addButton = binding.goIntoDate
         dateTextView = binding.dayTextView
         layout = binding.fragmentCalendar
     }
 
-    private fun setMonthView() {
+    private fun setMonthYearTextView(selectedDate: LocalDate) {
         // set month and year name into textview
-        monthYearText?.text = calendarViewModel?.getMonthYearName()
+        // TODO: поправить на формат Месяц ГОД (Январь 2022)
+        monthYearTextView?.text = selectedDate.month.value.toString()
+    }
 
-        // get days in current month in array
-        val daysInMonth: ArrayList<String>? = calendarViewModel?.daysInMonthArray(calendarViewModel!!.currentMonth)
+    private fun inflateCalendarRecyclerView(selectedDate: LocalDate) {
+        // get array of days from selected month
+        val daysInMonth: ArrayList<String>? =
+            calendarViewModel?.daysInMonthArray()
 
         // Создаем CalendarAdapter, передаем количество дней в месяце и listener
-        val calendarAdapter = daysInMonth?.let {
-            CalendarAdapter(
-                it,
-                this,
-                calendarViewModel!!,
-                String.format("${calendarViewModel?.day}.${calendarViewModel?.day}.${calendarViewModel?.day}")
-            )
-        }
+        val calendarAdapter = CalendarAdapter(
+            daysInMonth = daysInMonth!!,
+            onItemListener = this,
+            calendarViewModel = calendarViewModel!!,
+            selectedDate = selectedDate
+        )
 
         // Создаем layoutManager и устанавливает способ отображения элементов в нем
         // GridLayoutManager упорядочивает элементы в виде таблицы со столлбцами и строками (7 элементов в ряд)
@@ -125,38 +135,34 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         // hide go_into_date button
         addButton?.visibility = View.INVISIBLE
 
-        // make calculations
-        calendarViewModel?.changeMonth(operator = operator)
-        setMonthView()
-
         // clear DateShort RecyclerView
         shortDataRecyclerView?.adapter = null
         dateTextView?.text = null
         calendarRecyclerView?.scheduleLayoutAnimation()
+
+        // make calculations in ViewModel
+        calendarViewModel?.changeMonth(operator = operator)
     }
 
     override fun onItemClick(position: Int, dayText: String?) {
         if (!dayText.isNullOrEmpty()) {
-            // Отобразить педварительный просмотр и кнопку
+            // set button go_into_date and recycler view components visible
             addButton?.visibility = View.VISIBLE
             shortDataRecyclerView?.visibility = View.VISIBLE
             dateTextView?.visibility = View.VISIBLE
 
-            val date = Date.from(
-                calendarViewModel?.currentMonth?.atStartOfDay(ZoneId.systemDefault())!!.toInstant()
-            )
-            calendarViewModel?.day = Service().addZero(dayText)
-            calendarViewModel?.month = SimpleDateFormat("MM", Locale.getDefault()).format(date)
-            calendarViewModel?.year = calendarViewModel?.currentMonth?.year.toString()
+            val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("")
 
+            val dateParams = DateParams(_id = null, date = calendarViewModel?.selectedDate?.value, status = null)
+
+            calendarViewModel?.selectDate(dateParams)
+
+            //
             dateTextView?.text =
-                String.format("${calendarViewModel?.day}.${calendarViewModel?.month}.${calendarViewModel?.year}")
+                String.format("${calendarViewModel?.selectedDate?.value?.dayOfMonth}." +
+                        "${calendarViewModel?.selectedDate?.value?.monthValue}." +
+                        "${calendarViewModel?.selectedDate?.value?.year}")
 
-            shortDate(
-                calendarViewModel?.day.toString(),
-                calendarViewModel?.day.toString(),
-                calendarViewModel?.year.toString()
-            ) // Отрисовать предпросмотр выбранного дня
         } else {
             // Убрать предварительный просмотр и кнопку
             addButton?.visibility = View.INVISIBLE
@@ -165,18 +171,18 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         }
     }
 
-    private fun shortDate(date: String, month: String, year: String) {
+    private fun inflateShortDateRecyclerView(selectedDate: LocalDate) {
         // TODO: метод будет получать данные из класса DateShortGetDb и устанавливать в RecyclerView
-        val dateShortDbData = DateShortGetDbData(date, month, year, this.requireContext())
+        val dateShortDbData = DateShortGetDbData(selectedDate, this.requireContext())
 
         dateShortDbData.fetchDate()
 
         // Создаем CalendarAdapter, передаем количество строк в курсоре
-        val calendarAdapter =
+        val dateShortAdapter =
             DateShortAdapter(
                 dateShortDbData.getDataRows(),
                 dateShortDbData,
-                String.format("${date}.${month}.${year}")
+                String.format("${selectedDate.dayOfMonth}.${selectedDate.monthValue}.${selectedDate.year}")
             )
 
         // Создаем layoutManager и устанавливает способ отображения элементов в нем
@@ -186,22 +192,12 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
 
         // Устанавливаем в RecyclerView менеджера и адаптер
         shortDataRecyclerView?.layoutManager = layoutManager
-        shortDataRecyclerView?.adapter = calendarAdapter
+        shortDataRecyclerView?.adapter = dateShortAdapter
     }
 
     override fun onResume() {
         Log.e(log, "onResume")
         super.onResume()
-
-        // Вызываем метод, который устанавливает название месяца, создает и устанавливает адаптер и менеджер
-        setMonthView()
-
-        // Обновляет выбранную дату в предварительном просмотре
-        shortDate(
-            calendarViewModel?.day.toString(),
-            calendarViewModel?.month.toString(),
-            calendarViewModel?.year.toString()
-        )
 
         // Убираем клавиатуру
         Service().hideKeyboard(requireActivity())
@@ -209,12 +205,6 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         // Clear views
         dateTextView?.text = null
         shortDataRecyclerView?.adapter = null
-    }
-
-    override fun onDestroy() {
-        Log.e(log, "onDestroy")
-        CalendarAdapter.month = 0
-        super.onDestroy()
     }
 
     override fun onDestroyView() {
@@ -229,8 +219,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         super.onPrepareOptionsMenu(menu)
     }
 
-    fun getSelectedDate(): String {
-        // Return last selected date
-        return "${calendarViewModel?.day}.${calendarViewModel?.month}.${calendarViewModel?.year}"
+    private fun setSelectedDayTextView(selectedDate: LocalDate) {
+
     }
 }

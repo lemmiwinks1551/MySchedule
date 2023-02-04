@@ -10,17 +10,13 @@ import com.example.projectnailsschedule.domain.models.DateParams
 import java.time.LocalDate
 
 internal class CalendarAdapter(
-    private val daysOfMonth: ArrayList<String>,
+    private val daysInMonth: ArrayList<String>,
     private val onItemListener: CalendarFragment,
     private val calendarViewModel: CalendarViewModel,
-    private val date: String
+    private val selectedDate: LocalDate
 ) :
     RecyclerView.Adapter<CalendarViewHolder>() {
     private var log = this::class.simpleName
-
-    companion object {
-        var month = 0
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalendarViewHolder {
         // Возвращает объект ViewHolder, который будет хранить данные по одному объекту
@@ -37,12 +33,13 @@ internal class CalendarAdapter(
 
     override fun onBindViewHolder(holder: CalendarViewHolder, position: Int) {
         // выполняет привязку объекта ViewHolder к объекту по определенной позиции.
-        // Если день имесяц для отправки в холдер текущие - покрасить ячейку
+        // Если день и месяц для отправки в холдер текущие - покрасить ячейку
         val nowDate = LocalDate.now()
-        val dayInHolder = daysOfMonth[position]
+        val dayInHolder = daysInMonth[position]
 
         //Устанавливаем фон для сегодняшнего дня
-        if (dayInHolder == nowDate.dayOfMonth.toString() && month == 0) {
+        if (nowDate.month == selectedDate.month &&
+                nowDate.dayOfMonth.toString() == dayInHolder) {
             holder.dayOfMonth.setTypeface(null, Typeface.BOLD)
             holder.dayOfMonth.textSize = 23f
         }
@@ -52,7 +49,7 @@ internal class CalendarAdapter(
         if (dayInHolder != "") {
             var dateParams = DateParams(
                 _id = null,
-                date = "01.01.2023",
+                date = LocalDate.now(),
                 status = null
             )
 
@@ -68,7 +65,7 @@ internal class CalendarAdapter(
 
     override fun getItemCount(): Int {
         // возвращает количество объектов в списке
-        return daysOfMonth.size
+        return daysInMonth.size
     }
 
     interface OnItemListener {

@@ -1,12 +1,15 @@
 package com.example.projectnailsschedule.presentation.calendar
 
 import android.os.Bundle
+import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.projectnailsschedule.domain.models.DateParams
 import com.example.projectnailsschedule.domain.usecase.calendarUC.LoadCalendarUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.SelectDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.SelectNextMonthUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.SelectPrevMonthUseCase
+import com.example.projectnailsschedule.util.Service
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.YearMonth
@@ -21,28 +24,31 @@ class CalendarViewModel(
 ) : ViewModel() {
 
     private val log = this::class.simpleName
-    var currentMonth: LocalDate = LocalDate.now()
 
-    //
-    var day: String = ""
-    var month: String = ""
-    var year: String = ""
-    var extraMonth: Long = 0
+    var selectedDate = MutableLiveData<LocalDate?>()
+
+    init {
+        selectedDate.value = LocalDate.now()
+    }
 
     fun getDayStatus(dateParams: DateParams): DateParams {
-        // get day status from data
+        // get day status from repository
         loadCalendarUseCase.execute(dateParams)
         return dateParams
     }
 
-    fun selectDate(): Bundle {
+    fun selectDate(dateParams: DateParams) {
+        selectedDate.value = dateParams.date
+    }
+
+    fun goIntoDate(): Bundle {
         // create bundle
         val bundle = Bundle()
 
         // crete dateParams obj with chosen date
         val dateParams = DateParams(
             _id = null,
-            date = "$day.$month.$year",
+            date = selectedDate.value,
             status = null
         )
 
@@ -54,36 +60,27 @@ class CalendarViewModel(
     fun changeMonth(operator: Char) {
         // change current month
         if (operator == '+') {
-            currentMonth = currentMonth.plusMonths(1)
-            CalendarAdapter.month++ // ??
-            extraMonth++
+            selectedDate.value = selectedDate.value?.plusMonths(1)
+            Log.e(log, "Month +")
         } else {
-            currentMonth = currentMonth.minusMonths(1)
-            CalendarAdapter.month-- // ??
-            extraMonth--
+            selectedDate.value = selectedDate.value?.minusMonths(1)
+            Log.e(log, "Month -")
         }
     }
 
-    fun getMonthYearName(): String {
-        // return current year and month in format "Январь 2000"
-        val date = Date.from(currentMonth.atStartOfDay(ZoneId.systemDefault())!!.toInstant())
-        val month = SimpleDateFormat("LLLL", Locale.getDefault()).format(date)
-        val year: String = currentMonth.year.toString()
-        return "$month $year"
-    }
-
-    fun daysInMonthArray(date: LocalDate): ArrayList<String> {
+    fun daysInMonthArray(): ArrayList<String> {
+        // TODO: УБРАТЬ РЕТЕРН
         // get days in current month in ArrayList<String>
         val daysInMonthArray = ArrayList<String>()
 
         // Получаем месяц
-        val yearMonth = YearMonth.from(date)
+        val yearMonth = YearMonth.from(selectedDate.value)
 
         // Получаем длину месяца
         val daysInMonth = yearMonth.lengthOfMonth()
 
         // Получаем первый день текущего месяца
-        val firstOfMonth: LocalDate = currentMonth.withDayOfMonth(1) ?: LocalDate.now()
+        val firstOfMonth: LocalDate = selectedDate.value?.withDayOfMonth(1) ?: LocalDate.now()
 
         // Получаем день недели первого дня месяца
         val dayOfWeek = firstOfMonth.dayOfWeek.value - 1

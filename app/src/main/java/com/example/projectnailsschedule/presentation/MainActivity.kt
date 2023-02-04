@@ -20,6 +20,7 @@ import com.example.projectnailsschedule.util.Service
 import com.example.projectnailsschedule.util.UncaughtExceptionHandler
 import com.example.projectnailsschedule.util.WorkFolders
 import com.example.projectnailsschedule.presentation.calendar.CalendarFragment
+import com.example.projectnailsschedule.presentation.calendar.CalendarViewModel
 import com.example.projectnailsschedule.presentation.settings.SettingsFragment
 import com.google.android.material.navigation.NavigationView
 
@@ -74,7 +75,7 @@ class MainActivity : AppCompatActivity() {
             // Set toolbar with specific name of week day
             if (destination.id == R.id.nav_date) {
                 // Get selected date
-                val checkedDate = CalendarFragment().getSelectedDate()
+                val checkedDate = "date"
                 // Convert Date string to Local Date
                 val weekDay = Service().stringToLocalDate(checkedDate)
                 // Set String into toolbar

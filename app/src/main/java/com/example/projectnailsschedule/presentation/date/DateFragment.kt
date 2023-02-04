@@ -23,6 +23,7 @@ import com.example.projectnailsschedule.databinding.FragmentDateBinding
 import com.example.projectnailsschedule.domain.models.AppointmentParams
 import com.example.projectnailsschedule.domain.models.DateParams
 import com.example.projectnailsschedule.util.Service
+import java.time.LocalDate
 import java.util.*
 
 
@@ -58,6 +59,8 @@ class DateFragment : Fragment() {
     private var day: String? = null
     private var statusMap: Map<String, String> = createStatusMap()
 
+    private var chosenDate: LocalDate? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -70,7 +73,8 @@ class DateFragment : Fragment() {
         // Get selected date from bundle
         val dateParams: DateParams? = arguments?.getParcelable(bindingKey)
         if (dateParams != null) {
-            day = dateParams.date
+            day = dateParams.date?.dayOfMonth.toString()
+            chosenDate = dateParams.date
         }
 
         // Конвертируем дату в формат dd.MM.yyyy
@@ -233,7 +237,7 @@ class DateFragment : Fragment() {
         statusDbHelper = StatusDbHelper(context)
         dbStatus = statusDbHelper?.readableDatabase
 
-        val dateParams = DateParams(_id = null, date = day, status = null)
+        val dateParams = DateParams(_id = null, date = chosenDate, status = null)
         cursor = statusDbHelper?.getDate(dateParams, dbStatus!!)
 
         // Получаем статус дня из курсора
@@ -284,7 +288,7 @@ class DateFragment : Fragment() {
 
         // Если данного дня нет в БД - создаем запись
         // Если запись уже была - обновляем существующую
-        val dateParams = DateParams(_id = null, date = day, status = status)
+        val dateParams = DateParams(_id = null, date = chosenDate, status = status)
         db = statusDbHelper?.writableDatabase
         statusDbHelper?.addDate(dateParams, db!!)
         statusDbHelper?.setStatus(dateParams, db!!)

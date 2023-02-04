@@ -4,14 +4,13 @@ import android.content.Context
 import android.util.Log
 import com.example.projectnailsschedule.util.Service
 import com.example.projectnailsschedule.data.storage.ScheduleDbHelper
+import java.time.LocalDate
 
 /** Получает данные из БД за выбранную дату
  * Хранит полученные данные в массиве */
 
 class DateShortGetDbData(
-    private var day: String,
-    private var month: String,
-    private var year: String,
+    private var selectedDate: LocalDate,
     private var context: Context
 ) {
 
@@ -22,7 +21,9 @@ class DateShortGetDbData(
 
     fun fetchDate() {
         // Получаем записи по дню и добавляем в словарь Клиент-Время
-        val date = "${Service().addZero(day)}.${Service().addZero(month)}.$year"
+        val date = "${Service().addZero(selectedDate.dayOfMonth.toString())}." +
+                "${Service().addZero(selectedDate.monthValue.toString())}." +
+                selectedDate.year.toString()
         val databaseHelper = ScheduleDbHelper(context)
         val db = databaseHelper.readableDatabase
         val cursor = databaseHelper.fetchNameDate(date, db)
