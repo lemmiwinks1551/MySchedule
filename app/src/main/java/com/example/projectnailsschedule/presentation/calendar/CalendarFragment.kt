@@ -22,6 +22,8 @@ import com.example.projectnailsschedule.util.Service
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
@@ -93,7 +95,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
     }
 
     private fun initWidgets() {
-        // Инициировать view
+        // init all widgets
         calendarRecyclerView = binding.calendarRecyclerView
         shortDataRecyclerView = binding.shortDataRecyclerView
         monthYearTextView = binding.monthYearText
@@ -105,7 +107,8 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
     private fun setMonthYearTextView(selectedDate: LocalDate) {
         // set month and year name into textview
         // TODO: поправить на формат Месяц ГОД (Январь 2022)
-        monthYearTextView?.text = selectedDate.month.value.toString()
+        val formatter = DateTimeFormatter.ofPattern("LLLL yyyy", Locale.getDefault())
+        monthYearTextView?.text = selectedDate.format(formatter)
     }
 
     private fun inflateCalendarRecyclerView(selectedDate: LocalDate) {
@@ -152,12 +155,13 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
             dateTextView?.visibility = View.VISIBLE
 
             val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("")
-
+            // TODO: м выбираем день и должны обновить его во вью модели и поставить в текст вью
+            //  новую выбранную дату
             val dateParams = DateParams(_id = null, date = calendarViewModel?.selectedDate?.value, status = null)
 
-            calendarViewModel?.selectDate(dateParams)
+           calendarViewModel?.selectDate(dateParams)
 
-            //
+            // TODO: не обращаться так к вью модели 
             dateTextView?.text =
                 String.format("${calendarViewModel?.selectedDate?.value?.dayOfMonth}." +
                         "${calendarViewModel?.selectedDate?.value?.monthValue}." +
