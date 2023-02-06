@@ -128,7 +128,6 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         // get array of days from selected month
         val daysInMonth: ArrayList<String> = Util().getArrayFromMonth(selectedDate)
 
-        Log.e("RecyclerView", selectedDate.month.toString())
         // create adapter
         val calendarAdapter = CalendarAdapter(
             daysInMonth = daysInMonth,
@@ -137,12 +136,9 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
             selectedDate = selectedDate
         )
 
-        // Создаем layoutManager и устанавливает способ отображения элементов в нем
-        // GridLayoutManager упорядочивает элементы в виде таблицы со столлбцами и строками (7 элементов в ряд)
         val layoutManager: RecyclerView.LayoutManager =
             GridLayoutManager(activity, 7)
 
-        // Устанавливаем в RecyclerView менеджера и адаптер
         calendarRecyclerView?.layoutManager = layoutManager
         calendarRecyclerView?.adapter = calendarAdapter
     }
@@ -162,6 +158,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
     }
 
     override fun onItemClick(position: Int, dayText: String?) {
+        // click on day in calendar
         if (!dayText.isNullOrEmpty()) {
             // set button go_into_date and recycler view components visible
             addButton?.visibility = View.VISIBLE
