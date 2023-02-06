@@ -89,7 +89,6 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         // set month observer for CalendarRecyclerView
         calendarViewModel?.selectedMonth?.observe(viewLifecycleOwner) {
             inflateCalendarRecyclerView(it)
-            setShortDateTextView(it)
         }
 
         setHasOptionsMenu(true)
@@ -140,13 +139,14 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         // hide go_into_date button
         addButton?.visibility = View.INVISIBLE
 
+        // make calculations in ViewModel
+        calendarViewModel?.changeMonth(operator = operator)
+
         // clear DateShort RecyclerView
         shortDataRecyclerView?.adapter = null
         dateTextView?.text = null
         calendarRecyclerView?.scheduleLayoutAnimation()
 
-        // make calculations in ViewModel
-        calendarViewModel?.changeMonth(operator = operator)
     }
 
     override fun onItemClick(position: Int, dayText: String?) {
