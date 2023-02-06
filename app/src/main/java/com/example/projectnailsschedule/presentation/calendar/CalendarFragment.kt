@@ -22,7 +22,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
@@ -37,7 +36,6 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
     private var shortDataRecyclerView: RecyclerView? = null
     private var dateTextView: TextView? = null
     private var addButton: FloatingActionButton? = null
-
     private var layout: LinearLayout? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,10 +81,15 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         calendarViewModel?.selectedDate?.observe(viewLifecycleOwner) {
             if (it != null) {
                 setMonthYearTextView(it)
-                inflateCalendarRecyclerView(it)
                 inflateShortDateRecyclerView(it)
-                setSelectedDayTextView(it)
+                setShortDateTextView(it)
             }
+        }
+
+        // set month observer for CalendarRecyclerView
+        calendarViewModel?.selectedMonth?.observe(viewLifecycleOwner) {
+            inflateCalendarRecyclerView(it)
+            setShortDateTextView(it)
         }
 
         setHasOptionsMenu(true)
@@ -153,12 +156,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
             shortDataRecyclerView?.visibility = View.VISIBLE
             dateTextView?.visibility = View.VISIBLE
 
-            val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("")
-            // TODO: м выбираем день и должны обновить его во вью модели и поставить в текст вью
-            //  новую выбранную дату
-            Log.e(log, "Chosen date $dayText")
-
-           calendarViewModel?.chooseDay(day = dayText.toInt())
+            calendarViewModel?.changeDay(day = dayText.toInt())
         }
     }
 
@@ -186,11 +184,9 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         shortDataRecyclerView?.adapter = dateShortAdapter
     }
 
-    private fun inflateShortDateTextView(selectedDate: LocalDate) {
-        dateTextView?.text =
-            String.format("${calendarViewModel?.selectedDate?.value?.dayOfMonth}." +
-                    "${calendarViewModel?.selectedDate?.value?.monthValue}." +
-                    "${calendarViewModel?.selectedDate?.value?.year}")
+    private fun setShortDateTextView(selectedDate: LocalDate) {
+        val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
+        dateTextView?.text = selectedDate.format(formatter)
     }
 
     override fun onResume() {
@@ -215,9 +211,5 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         // Устанавливаем иконку поиска видимой (только для фрагмента CalendarFragment)
         menu.findItem(R.id.search).isVisible = true
         super.onPrepareOptionsMenu(menu)
-    }
-
-    private fun setSelectedDayTextView(selectedDate: LocalDate) {
-
     }
 }

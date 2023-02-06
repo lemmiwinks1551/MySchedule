@@ -25,11 +25,8 @@ class CalendarViewModel(
 
     private val log = this::class.simpleName
 
-    var selectedDate = MutableLiveData<LocalDate?>()
-
-    init {
-        selectedDate.value = LocalDate.now()
-    }
+    var selectedDate = MutableLiveData(LocalDate.now())
+    var selectedMonth = MutableLiveData(LocalDate.now())
 
     fun getDayStatus(dateParams: DateParams): DateParams {
         // get day status from repository
@@ -37,10 +34,21 @@ class CalendarViewModel(
         return dateParams
     }
 
-    fun chooseDay(day: Int) {
+    fun changeDay(day: Int) {
         selectedDate.value = selectedDate.value?.withDayOfMonth(day)
-        Log.e(log, "Chosen date ${selectedDate.value.toString()}")
+        Log.e(log, "Chosen day ${selectedDate.value.toString()}")
+    }
 
+    fun changeMonth(operator: Char) {
+        // change current month
+        if (operator == '+') {
+            selectedDate.value = selectedDate.value?.plusMonths(1)
+        } else {
+            selectedDate.value = selectedDate.value?.minusMonths(1)
+        }
+        // change selectedMonth for CalendarRecyclerView observer
+        selectedMonth = selectedDate
+        Log.e(log, "Chosen month ${selectedDate.value?.month}")
     }
 
     fun goIntoDate(): Bundle {
@@ -57,17 +65,6 @@ class CalendarViewModel(
         // put dateParams to the bundle
         bundle.putParcelable("dateParams", dateParams)
         return bundle
-    }
-
-    fun changeMonth(operator: Char) {
-        // change current month
-        if (operator == '+') {
-            selectedDate.value = selectedDate.value?.plusMonths(1)
-            Log.e(log, "Month +")
-        } else {
-            selectedDate.value = selectedDate.value?.minusMonths(1)
-            Log.e(log, "Month -")
-        }
     }
 
     fun daysInMonthArray(): ArrayList<String> {
