@@ -17,7 +17,7 @@ import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentCalendarBinding
 import com.example.projectnailsschedule.presentation.calendar.dataShort.DateShortAdapter
 import com.example.projectnailsschedule.presentation.calendar.dataShort.DateShortGetDbData
-import com.example.projectnailsschedule.util.Service
+import com.example.projectnailsschedule.util.Util
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -58,6 +58,27 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         // init all widgets
         initWidgets()
 
+        //init click listeners
+        initClickListeners()
+
+        // inti observers
+        initObservers()
+
+        setHasOptionsMenu(true)
+        return binding.root
+    }
+
+    private fun initWidgets() {
+        // init all widgets
+        calendarRecyclerView = binding.calendarRecyclerView
+        shortDataRecyclerView = binding.shortDataRecyclerView
+        monthYearTextView = binding.monthYearText
+        addButton = binding.goIntoDate
+        dateTextView = binding.dayTextView
+        layout = binding.fragmentCalendar
+    }
+
+    private fun initClickListeners() {
         // set click listener on button go_into_date
         binding.goIntoDate.setOnClickListener {
             // start fragment with chosen date
@@ -76,8 +97,10 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         binding.prevMonth.setOnClickListener {
             changeMonth(operator = '-')
         }
+    }
 
-        // set observer
+    private fun initObservers() {
+        // set observer for TextViews and ShortDateRecyclerView
         calendarViewModel?.selectedDate?.observe(viewLifecycleOwner) {
             if (it != null) {
                 setMonthYearTextView(it)
@@ -88,21 +111,10 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
 
         // set month observer for CalendarRecyclerView
         calendarViewModel?.selectedMonth?.observe(viewLifecycleOwner) {
-            inflateCalendarRecyclerView(it)
+            if (it != null) {
+                inflateCalendarRecyclerView(it)
+            }
         }
-
-        setHasOptionsMenu(true)
-        return binding.root
-    }
-
-    private fun initWidgets() {
-        // init all widgets
-        calendarRecyclerView = binding.calendarRecyclerView
-        shortDataRecyclerView = binding.shortDataRecyclerView
-        monthYearTextView = binding.monthYearText
-        addButton = binding.goIntoDate
-        dateTextView = binding.dayTextView
-        layout = binding.fragmentCalendar
     }
 
     private fun setMonthYearTextView(selectedDate: LocalDate) {
@@ -114,12 +126,12 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
 
     private fun inflateCalendarRecyclerView(selectedDate: LocalDate) {
         // get array of days from selected month
-        val daysInMonth: ArrayList<String>? =
-            calendarViewModel?.daysInMonthArray()
+        val daysInMonth: ArrayList<String> = Util().getArrayFromMonth(selectedDate)
 
-        // Создаем CalendarAdapter, передаем количество дней в месяце и listener
+        Log.e("RecyclerView", selectedDate.month.toString())
+        // create adapter
         val calendarAdapter = CalendarAdapter(
-            daysInMonth = daysInMonth!!,
+            daysInMonth = daysInMonth,
             onItemListener = this,
             calendarViewModel = calendarViewModel!!,
             selectedDate = selectedDate
@@ -194,22 +206,22 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         super.onResume()
 
         // Убираем клавиатуру
-        Service().hideKeyboard(requireActivity())
+        Util().hideKeyboard(requireActivity())
 
         // Clear views
         dateTextView?.text = null
         shortDataRecyclerView?.adapter = null
     }
 
-    override fun onDestroyView() {
-        Log.e(log, "onDestroyView")
-        super.onDestroyView()
-        _binding = null
-    }
-
     override fun onPrepareOptionsMenu(menu: Menu) {
         // Устанавливаем иконку поиска видимой (только для фрагмента CalendarFragment)
         menu.findItem(R.id.search).isVisible = true
         super.onPrepareOptionsMenu(menu)
+    }
+
+    override fun onDestroyView() {
+        Log.e(log, "onDestroyView")
+        super.onDestroyView()
+        _binding = null
     }
 }

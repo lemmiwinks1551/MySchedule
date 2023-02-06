@@ -16,11 +16,9 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.data.storage.SettingsDbHelper
 import com.example.projectnailsschedule.databinding.ActivityMainBinding
-import com.example.projectnailsschedule.util.Service
+import com.example.projectnailsschedule.util.Util
 import com.example.projectnailsschedule.util.UncaughtExceptionHandler
 import com.example.projectnailsschedule.util.WorkFolders
-import com.example.projectnailsschedule.presentation.calendar.CalendarFragment
-import com.example.projectnailsschedule.presentation.calendar.CalendarViewModel
 import com.example.projectnailsschedule.presentation.settings.SettingsFragment
 import com.google.android.material.navigation.NavigationView
 
@@ -78,7 +76,7 @@ class MainActivity : AppCompatActivity() {
                 // Get selected date
                 val checkedDate = "date"
                 // Convert Date string to Local Date
-                val weekDay = Service().stringToLocalDate(checkedDate)
+                val weekDay = Util().stringToLocalDate(checkedDate)
                 // Set String into toolbar
                 // TODO: !!! !!!
                 binding.appBarMain.toolbar.title = "test"

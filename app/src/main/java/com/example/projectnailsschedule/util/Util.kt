@@ -9,13 +9,15 @@ import android.view.inputmethod.InputMethodManager
 import com.example.projectnailsschedule.R
 import java.text.SimpleDateFormat
 import java.time.LocalDate
+import java.time.YearMonth
 import java.time.format.DateTimeFormatter
+import java.util.ArrayList
 
 /**
  * Вспомогательный класс, выполняющий коенвертации даты
  * */
 
-class Service {
+class Util {
 
     val LOG = this::class.simpleName
 
@@ -93,5 +95,35 @@ class Service {
             view = View(activity)
         }
         imm.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+
+    fun getArrayFromMonth(selectedDate: LocalDate): ArrayList<String> {
+        // get days in current month in ArrayList<String>
+        val daysInMonthArray = ArrayList<String>()
+
+        // Получаем месяц
+        val yearMonth = YearMonth.from(selectedDate)
+
+        // Получаем длину месяца
+        val daysInMonth = yearMonth.lengthOfMonth()
+
+        // Получаем первый день текущего месяца
+        val firstOfMonth: LocalDate = selectedDate.withDayOfMonth(1) ?: LocalDate.now()
+
+        // Получаем день недели первого дня месяца
+        val dayOfWeek = firstOfMonth.dayOfWeek.value - 1
+
+        // Заполняем массив для отображения в RecyclerView
+        // Учитываем пустые дни (дни прошлого месяца
+        // TODO: 12.07.2022 Добавить дни прошлого и будущего месяцев
+        for (i in 1..42) {
+            if (i <= dayOfWeek || i > daysInMonth + dayOfWeek) {
+                daysInMonthArray.add("")
+            } else {
+                daysInMonthArray.add((i - dayOfWeek).toString())
+            }
+        }
+
+        return daysInMonthArray
     }
 }

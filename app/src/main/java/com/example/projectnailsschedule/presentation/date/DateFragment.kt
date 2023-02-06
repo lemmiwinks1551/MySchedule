@@ -22,9 +22,8 @@ import com.example.projectnailsschedule.data.storage.ScheduleDbHelper
 import com.example.projectnailsschedule.databinding.FragmentDateBinding
 import com.example.projectnailsschedule.domain.models.AppointmentParams
 import com.example.projectnailsschedule.domain.models.DateParams
-import com.example.projectnailsschedule.util.Service
+import com.example.projectnailsschedule.util.Util
 import java.time.LocalDate
-import java.util.*
 
 
 class DateFragment : Fragment() {
@@ -78,7 +77,7 @@ class DateFragment : Fragment() {
         }
 
         // Конвертируем дату в формат dd.MM.yyyy
-        day = Service().dateConverter(day!!)
+        day = Util().dateConverter(day!!)
 
         // Получаем статус дня и устанавливаем в спиннер
         dayStatusSpinner = binding.spinnerStatus
@@ -112,7 +111,7 @@ class DateFragment : Fragment() {
         super.onResume()
 
         // Hide keyboard
-        Service().hideKeyboard(requireActivity())
+        Util().hideKeyboard(requireActivity())
 
         // Получаем строку из БД распасания
         currentDayQuery()

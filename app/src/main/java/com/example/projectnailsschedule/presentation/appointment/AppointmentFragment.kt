@@ -13,7 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.projectnailsschedule.databinding.FragmentAppointmentBinding
 import com.example.projectnailsschedule.domain.models.AppointmentParams
-import com.example.projectnailsschedule.util.Service
+import com.example.projectnailsschedule.util.Util
 import java.util.*
 
 /** AppointmentFragment View*/
@@ -168,7 +168,7 @@ class AppointmentFragment : Fragment() {
 
         val datePickerDialog = DatePickerDialog(
             requireContext(), { _, pickedYear, pickedMonth, pickedDay ->
-                val date = Service().dateConverter("$pickedDay.${pickedMonth + 1}.$pickedYear")
+                val date = Util().dateConverter("$pickedDay.${pickedMonth + 1}.$pickedYear")
                 binding.dayEditText.text = date
             }, year, month, day
         )

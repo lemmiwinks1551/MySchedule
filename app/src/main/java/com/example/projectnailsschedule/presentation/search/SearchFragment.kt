@@ -20,9 +20,6 @@ import androidx.navigation.fragment.findNavController
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentSearchBinding
 import com.example.projectnailsschedule.data.storage.ScheduleDbHelper
-import com.example.projectnailsschedule.util.Service
-import com.example.projectnailsschedule.presentation.calendar.CalendarFragment
-import com.example.projectnailsschedule.presentation.calendar.CalendarViewModel
 
 
 class SearchFragment : Fragment() {

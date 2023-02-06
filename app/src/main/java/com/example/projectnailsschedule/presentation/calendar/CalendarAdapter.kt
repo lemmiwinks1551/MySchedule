@@ -17,35 +17,35 @@ internal class CalendarAdapter(
 ) :
     RecyclerView.Adapter<CalendarViewHolder>() {
     private var log = this::class.simpleName
+    private val busyDay = "Занят"
+    private val semiBusyDay = "Есть записи"
+    private val notBusyDay = "Выходной"
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalendarViewHolder {
         // Возвращает объект ViewHolder, который будет хранить данные по одному объекту
         val inflater = LayoutInflater.from(parent.context)
         val view: View = inflater.inflate(R.layout.calendar_cell, parent, false)
 
-        // Выравнивает элементы по высоте
-        val layoutParams = view.layoutParams
-
-        //layoutParams.height = (parent.height * 0.2).toInt()
-
         return CalendarViewHolder(view, onItemListener)
     }
 
     override fun onBindViewHolder(holder: CalendarViewHolder, position: Int) {
-        // выполняет привязку объекта ViewHolder к объекту по определенной позиции.
-        // Если день и месяц для отправки в холдер текущие - покрасить ячейку
-        val nowDate = LocalDate.now()
+        // get day to work with
         val dayInHolder = daysInMonth[position]
 
-        //Устанавливаем фон для сегодняшнего дня
+        // set bold font for current day
+        val nowDate = LocalDate.now()
         if (nowDate.month == selectedDate.month &&
-                nowDate.dayOfMonth.toString() == dayInHolder) {
+            nowDate.dayOfMonth.toString() == dayInHolder
+        ) {
             holder.dayOfMonth.setTypeface(null, Typeface.BOLD)
             holder.dayOfMonth.textSize = 23f
         }
 
+        // set day number in CalendarViewHolder (even if it`s empty)
         holder.dayOfMonth.text = dayInHolder
 
+        // set background for days with special statuses
         if (dayInHolder != "") {
             var dateParams = DateParams(
                 _id = null,
@@ -53,23 +53,22 @@ internal class CalendarAdapter(
                 status = null
             )
 
+            // get day status from Data
             dateParams = calendarViewModel.getDayStatus(dateParams)
 
             when (dateParams.status) {
-                "Есть записи" -> holder.dayOfMonth.setBackgroundResource(R.drawable.border_medium)
-                "Занят" -> holder.dayOfMonth.setBackgroundResource(R.drawable.border_busy)
-                "Выходной" -> holder.dayOfMonth.setBackgroundResource(R.drawable.border_day_off)
+                semiBusyDay -> holder.dayOfMonth.setBackgroundResource(R.drawable.border_medium)
+                busyDay -> holder.dayOfMonth.setBackgroundResource(R.drawable.border_busy)
+                notBusyDay -> holder.dayOfMonth.setBackgroundResource(R.drawable.border_day_off)
             }
         }
     }
 
     override fun getItemCount(): Int {
-        // возвращает количество объектов в списке
         return daysInMonth.size
     }
 
     interface OnItemListener {
-        // Подключаем интерфейс onItemListener
         fun onItemClick(position: Int, dayText: String?)
     }
 }

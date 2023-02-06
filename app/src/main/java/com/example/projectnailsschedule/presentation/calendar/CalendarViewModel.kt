@@ -8,22 +8,18 @@ import com.example.projectnailsschedule.domain.models.DateParams
 import com.example.projectnailsschedule.domain.usecase.calendarUC.LoadCalendarUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.SelectDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.SelectNextMonthUseCase
-import com.example.projectnailsschedule.domain.usecase.calendarUC.SelectPrevMonthUseCase
-import com.example.projectnailsschedule.util.Service
-import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.YearMonth
-import java.time.ZoneId
 import java.util.*
 
 class CalendarViewModel(
     private val loadCalendarUseCase: LoadCalendarUseCase,
     private val selectDateUseCase: SelectDateUseCase,
-    private val selectNextMonthUseCase: SelectNextMonthUseCase,
-    private val selectPrevMonthUseCase: SelectPrevMonthUseCase
+    private val selectMonth: SelectNextMonthUseCase
 ) : ViewModel() {
 
     private val log = this::class.simpleName
+    private val operatorAdd = '+'
 
     var selectedDate = MutableLiveData(LocalDate.now())
     var selectedMonth = MutableLiveData(LocalDate.now())
@@ -41,14 +37,14 @@ class CalendarViewModel(
 
     fun changeMonth(operator: Char) {
         // change current month
-        if (operator == '+') {
+        // change selectedMonth for CalendarRecyclerView observer
+        if (operator == operatorAdd) {
             selectedDate.value = selectedDate.value?.plusMonths(1)
+            selectedMonth.value = selectedMonth.value?.plusMonths(1)
         } else {
             selectedDate.value = selectedDate.value?.minusMonths(1)
+            selectedMonth.value = selectedMonth.value?.minusMonths(1)
         }
-        // change selectedMonth for CalendarRecyclerView observer
-        selectedMonth = selectedDate
-        Log.e(log, "Chosen month ${selectedDate.value?.month}")
     }
 
     fun goIntoDate(): Bundle {
@@ -66,36 +62,4 @@ class CalendarViewModel(
         bundle.putParcelable("dateParams", dateParams)
         return bundle
     }
-
-    fun daysInMonthArray(): ArrayList<String> {
-        // TODO: УБРАТЬ РЕТЕРН
-        // get days in current month in ArrayList<String>
-        val daysInMonthArray = ArrayList<String>()
-
-        // Получаем месяц
-        val yearMonth = YearMonth.from(selectedDate.value)
-
-        // Получаем длину месяца
-        val daysInMonth = yearMonth.lengthOfMonth()
-
-        // Получаем первый день текущего месяца
-        val firstOfMonth: LocalDate = selectedDate.value?.withDayOfMonth(1) ?: LocalDate.now()
-
-        // Получаем день недели первого дня месяца
-        val dayOfWeek = firstOfMonth.dayOfWeek.value - 1
-
-        // Заполняем массив для отображения в RecyclerView
-        // Учитываем пустые дни (дни прошлого месяца
-        // TODO: 12.07.2022 Добавить дни прошлого и будущего месяцев
-        for (i in 1..42) {
-            if (i <= dayOfWeek || i > daysInMonth + dayOfWeek) {
-                daysInMonthArray.add("")
-            } else {
-                daysInMonthArray.add((i - dayOfWeek).toString())
-            }
-        }
-
-        return daysInMonthArray
-    }
-
 }

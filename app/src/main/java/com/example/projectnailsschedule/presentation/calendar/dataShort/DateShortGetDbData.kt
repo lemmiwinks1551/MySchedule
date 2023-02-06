@@ -2,7 +2,7 @@ package com.example.projectnailsschedule.presentation.calendar.dataShort
 
 import android.content.Context
 import android.util.Log
-import com.example.projectnailsschedule.util.Service
+import com.example.projectnailsschedule.util.Util
 import com.example.projectnailsschedule.data.storage.ScheduleDbHelper
 import java.time.LocalDate
 
@@ -21,8 +21,8 @@ class DateShortGetDbData(
 
     fun fetchDate() {
         // Получаем записи по дню и добавляем в словарь Клиент-Время
-        val date = "${Service().addZero(selectedDate.dayOfMonth.toString())}." +
-                "${Service().addZero(selectedDate.monthValue.toString())}." +
+        val date = "${Util().addZero(selectedDate.dayOfMonth.toString())}." +
+                "${Util().addZero(selectedDate.monthValue.toString())}." +
                 selectedDate.year.toString()
         val databaseHelper = ScheduleDbHelper(context)
         val db = databaseHelper.readableDatabase
