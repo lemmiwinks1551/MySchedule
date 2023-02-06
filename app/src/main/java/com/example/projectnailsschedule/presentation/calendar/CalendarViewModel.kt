@@ -37,8 +37,10 @@ class CalendarViewModel(
         return dateParams
     }
 
-    fun selectDate(dateParams: DateParams) {
-        selectedDate.value = dateParams.date
+    fun chooseDay(day: Int) {
+        selectedDate.value = selectedDate.value?.withDayOfMonth(day)
+        Log.e(log, "Chosen date ${selectedDate.value.toString()}")
+
     }
 
     fun goIntoDate(): Bundle {

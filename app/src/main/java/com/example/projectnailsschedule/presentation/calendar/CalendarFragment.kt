@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentCalendarBinding
-import com.example.projectnailsschedule.domain.models.DateParams
 import com.example.projectnailsschedule.presentation.calendar.dataShort.DateShortAdapter
 import com.example.projectnailsschedule.presentation.calendar.dataShort.DateShortGetDbData
 import com.example.projectnailsschedule.util.Service
@@ -107,7 +106,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
     private fun setMonthYearTextView(selectedDate: LocalDate) {
         // set month and year name into textview
         // TODO: поправить на формат Месяц ГОД (Январь 2022)
-        val formatter = DateTimeFormatter.ofPattern("LLLL yyyy", Locale.getDefault())
+        val formatter = DateTimeFormatter.ofPattern("MMMM yyyy", Locale.getDefault())
         monthYearTextView?.text = selectedDate.format(formatter)
     }
 
@@ -157,21 +156,9 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
             val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("")
             // TODO: м выбираем день и должны обновить его во вью модели и поставить в текст вью
             //  новую выбранную дату
-            val dateParams = DateParams(_id = null, date = calendarViewModel?.selectedDate?.value, status = null)
+            Log.e(log, "Chosen date $dayText")
 
-           calendarViewModel?.selectDate(dateParams)
-
-            // TODO: не обращаться так к вью модели 
-            dateTextView?.text =
-                String.format("${calendarViewModel?.selectedDate?.value?.dayOfMonth}." +
-                        "${calendarViewModel?.selectedDate?.value?.monthValue}." +
-                        "${calendarViewModel?.selectedDate?.value?.year}")
-
-        } else {
-            // Убрать предварительный просмотр и кнопку
-            addButton?.visibility = View.INVISIBLE
-            shortDataRecyclerView?.visibility = View.INVISIBLE
-            dateTextView?.text = "Выберите дату из календаря"
+           calendarViewModel?.chooseDay(day = dayText.toInt())
         }
     }
 
@@ -197,6 +184,13 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         // Устанавливаем в RecyclerView менеджера и адаптер
         shortDataRecyclerView?.layoutManager = layoutManager
         shortDataRecyclerView?.adapter = dateShortAdapter
+    }
+
+    private fun inflateShortDateTextView(selectedDate: LocalDate) {
+        dateTextView?.text =
+            String.format("${calendarViewModel?.selectedDate?.value?.dayOfMonth}." +
+                    "${calendarViewModel?.selectedDate?.value?.monthValue}." +
+                    "${calendarViewModel?.selectedDate?.value?.year}")
     }
 
     override fun onResume() {

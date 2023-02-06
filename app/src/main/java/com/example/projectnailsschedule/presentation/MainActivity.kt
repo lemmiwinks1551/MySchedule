@@ -38,11 +38,12 @@ class MainActivity : AppCompatActivity() {
         uncaughtExceptionHandler.context = this
         Thread.setDefaultUncaughtExceptionHandler(uncaughtExceptionHandler)
 
-        loadSettings()
-
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
+
+        loadSettings()
+
         setContentView(binding.root)
 
         setSupportActionBar(binding.appBarMain.toolbar)
