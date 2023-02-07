@@ -1,7 +1,6 @@
 package com.example.projectnailsschedule.presentation.calendar
 
 import android.os.Bundle
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.projectnailsschedule.domain.models.DateParams
@@ -22,6 +21,7 @@ class CalendarViewModel(
     var selectedDate = MutableLiveData(LocalDate.now())
     var selectedMonth = MutableLiveData(LocalDate.now())
     var selectedYearValue = MutableLiveData<Int>()
+    var bundleDateParams = MutableLiveData<Bundle>()
 
     fun getDayStatus(dateParams: DateParams): DateParams {
         // get day status from repository
@@ -31,7 +31,6 @@ class CalendarViewModel(
 
     fun changeDay(day: Int) {
         selectedDate.value = selectedDate.value?.withDayOfMonth(day)
-        Log.e(log, "Chosen day ${selectedDate.value.toString()}")
     }
 
     fun changeMonth(operator: Char) {
@@ -51,19 +50,14 @@ class CalendarViewModel(
         }
     }
 
-    fun goIntoDate(): Bundle {
-        // create bundle
-        val bundle = Bundle()
-
-        // crete dateParams obj with chosen date
+    fun goIntoDate() {
+        // create dateParams obj with chosen date
         val dateParams = DateParams(
             _id = null,
             date = selectedDate.value,
-            status = null
-        )
+            status = null)
 
-        // put dateParams to the bundle
-        bundle.putParcelable("dateParams", dateParams)
-        return bundle
+        // get bundle from SelectDateUseCase
+        bundleDateParams.value = selectDateUseCase.execute(dateParams)
     }
 }

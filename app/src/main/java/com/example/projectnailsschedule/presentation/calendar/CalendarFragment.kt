@@ -85,10 +85,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         // set click listener on button go_into_date
         binding.goIntoDate.setOnClickListener {
             // start fragment with chosen date
-            it.findNavController().navigate(
-                R.id.action_nav_calendar_to_dateFragment,
-                calendarViewModel?.goIntoDate()
-            )
+            calendarViewModel?.goIntoDate()
         }
 
         // set click listener on button next_month
@@ -124,6 +121,13 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
             if (it != null) {
                 setYearTextView(it)
             }
+        }
+
+        // set observer for bundle
+        calendarViewModel?.bundleDateParams?.observe(viewLifecycleOwner) {
+            binding.goIntoDate.findNavController().navigate(
+                R.id.action_nav_calendar_to_dateFragment,
+                it)
         }
     }
 

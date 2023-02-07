@@ -24,6 +24,8 @@ import com.example.projectnailsschedule.domain.models.AppointmentParams
 import com.example.projectnailsschedule.domain.models.DateParams
 import com.example.projectnailsschedule.util.Util
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 
 class DateFragment : Fragment() {
@@ -77,7 +79,10 @@ class DateFragment : Fragment() {
         }
 
         // Конвертируем дату в формат dd.MM.yyyy
-        day = Util().dateConverter(day!!)
+        val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
+        if (dateParams != null) {
+            day = dateParams.date!!.format(formatter)!!
+        }
 
         // Получаем статус дня и устанавливаем в спиннер
         dayStatusSpinner = binding.spinnerStatus
