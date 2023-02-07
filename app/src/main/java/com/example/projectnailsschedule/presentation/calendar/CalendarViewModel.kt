@@ -9,8 +9,6 @@ import com.example.projectnailsschedule.domain.usecase.calendarUC.LoadCalendarUs
 import com.example.projectnailsschedule.domain.usecase.calendarUC.SelectDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.SelectNextMonthUseCase
 import java.time.LocalDate
-import java.time.YearMonth
-import java.util.*
 
 class CalendarViewModel(
     private val loadCalendarUseCase: LoadCalendarUseCase,
@@ -23,6 +21,7 @@ class CalendarViewModel(
 
     var selectedDate = MutableLiveData(LocalDate.now())
     var selectedMonth = MutableLiveData(LocalDate.now())
+    var selectedYearValue = MutableLiveData<Int>()
 
     fun getDayStatus(dateParams: DateParams): DateParams {
         // get day status from repository
@@ -44,6 +43,11 @@ class CalendarViewModel(
         } else {
             selectedDate.value = selectedDate.value?.minusMonths(1)
             selectedMonth.value = selectedMonth.value?.minusMonths(1)
+        }
+
+        // change year if year changed
+        if (selectedYearValue.value != selectedDate.value?.year) {
+            selectedYearValue.value = selectedDate.value?.year
         }
     }
 

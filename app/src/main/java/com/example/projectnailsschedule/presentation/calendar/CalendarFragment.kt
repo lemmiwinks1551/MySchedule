@@ -21,6 +21,7 @@ import com.example.projectnailsschedule.util.Util
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.time.format.TextStyle
 import java.util.*
 
 
@@ -31,7 +32,8 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
     private var _binding: FragmentCalendarBinding? = null
     private val binding get() = _binding!!
 
-    private var monthYearTextView: TextView? = null
+    private var monthTextView: TextView? = null
+    private var yearTextView: TextView? = null
     private var calendarRecyclerView: RecyclerView? = null
     private var shortDataRecyclerView: RecyclerView? = null
     private var dateTextView: TextView? = null
@@ -58,7 +60,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         // init all widgets
         initWidgets()
 
-        //init click listeners
+        // init click listeners
         initClickListeners()
 
         // inti observers
@@ -72,7 +74,8 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         // init all widgets
         calendarRecyclerView = binding.calendarRecyclerView
         shortDataRecyclerView = binding.shortDataRecyclerView
-        monthYearTextView = binding.monthYearText
+        monthTextView = binding.monthTextView
+        yearTextView = binding.yearTextView
         addButton = binding.goIntoDate
         dateTextView = binding.dayTextView
         layout = binding.fragmentCalendar
@@ -103,7 +106,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         // set observer for TextViews and ShortDateRecyclerView
         calendarViewModel?.selectedDate?.observe(viewLifecycleOwner) {
             if (it != null) {
-                setMonthYearTextView(it)
+                setMonthTextView(it)
                 inflateShortDateRecyclerView(it)
                 setShortDateTextView(it)
             }
@@ -115,13 +118,24 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
                 inflateCalendarRecyclerView(it)
             }
         }
+
+        // set year observer for YearTextView
+        calendarViewModel?.selectedYearValue?.observe(viewLifecycleOwner) {
+            if (it != null) {
+                setYearTextView(it)
+            }
+        }
     }
 
-    private fun setMonthYearTextView(selectedDate: LocalDate) {
-        // set month and year name into textview
-        // TODO: поправить на формат Месяц ГОД (Январь 2022)
-        val formatter = DateTimeFormatter.ofPattern("MMMM yyyy", Locale.getDefault())
-        monthYearTextView?.text = selectedDate.format(formatter)
+    private fun setMonthTextView(selectedDate: LocalDate) {
+        // set month into textview
+        // TODO: поправить формат
+        monthTextView?.text = selectedDate.month.getDisplayName(TextStyle.FULL, Locale("eng"))
+    }
+
+    private fun setYearTextView(yearValue: Int) {
+        // set year into textview
+        yearTextView?.text = yearValue.toString()
     }
 
     private fun inflateCalendarRecyclerView(selectedDate: LocalDate) {
@@ -165,6 +179,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
             shortDataRecyclerView?.visibility = View.VISIBLE
             dateTextView?.visibility = View.VISIBLE
 
+            // change selected date in ViewModel
             calendarViewModel?.changeDay(day = dayText.toInt())
         }
     }
