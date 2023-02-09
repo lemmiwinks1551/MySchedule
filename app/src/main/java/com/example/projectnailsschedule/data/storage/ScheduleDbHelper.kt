@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
 import com.example.projectnailsschedule.domain.models.AppointmentParams
+import com.example.projectnailsschedule.domain.models.DateParams
 import com.example.projectnailsschedule.util.WorkFolders
 import java.io.File
 import java.io.FileOutputStream
@@ -56,6 +57,11 @@ class ScheduleDbHelper(context: Context?) :
         Log.e(LOG, String.format("Add row query: $query"))
         db.execSQL(query)
         Log.e(LOG, String.format("Add row - success"))
+    }
+
+    fun getDateAppointments(dateParams: DateParams, db: SQLiteDatabase): Cursor {
+        val query = "SELECT * FROM $TABLE_NAME WHERE $COLUMN_DATE = '${dateParams.date}';"
+        return db.rawQuery(query, null)
     }
 
     fun deleteRow(currentId: Int, db: SQLiteDatabase) {

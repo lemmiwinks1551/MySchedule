@@ -1,5 +1,6 @@
 package com.example.projectnailsschedule.presentation.calendar
 
+import android.database.Cursor
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.projectnailsschedule.domain.models.DateParams
@@ -35,18 +36,23 @@ class CalendarViewModel(
         return loadCalendarUseCase.execute(dateParams)
     }
 
-    fun setDayAppointmentsShort(dateParams: DateParams): DateParams {
-        // get day appointments short from repository
+    private fun getDayAppointments(): Int {
+        // get day appointments from repository
+        return loadShortDateUseCase.execute(selectedDateParams.value!!).count
+    }
+
+    fun getCursorAppointments(dateParams: DateParams): Cursor {
         return loadShortDateUseCase.execute(dateParams)
     }
 
     fun changeDay(day: Int) {
         // set month day in selectedDayParams
+        val appointmentCount = getDayAppointments()
         selectedDateParams.value = DateParams(
             _id = selectedDateParams.value?._id,
             date = selectedDateParams.value?.date?.withDayOfMonth(day),
             status = selectedDateParams.value?.status,
-            appointmentCount = selectedDateParams.value?.appointmentCount
+            appointmentCount = appointmentCount
         )
     }
 

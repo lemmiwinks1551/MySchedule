@@ -5,14 +5,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
-import com.example.projectnailsschedule.data.storage.DateShortDbHelper
 import com.example.projectnailsschedule.domain.models.DateParams
-import java.time.LocalDate
+import com.example.projectnailsschedule.presentation.calendar.CalendarViewModel
 
 internal class DateShortAdapter(
     private val rowsCount: Int,
-    private val dateShorGetDbData: DateShortDbHelper,
-    private val selectedDate: LocalDate
+    private val selectedDayParams: DateParams,
+    private val calendarViewModel: CalendarViewModel
 ) :
     RecyclerView.Adapter<DateShortViewHolder>() {
 
@@ -24,19 +23,14 @@ internal class DateShortAdapter(
     }
 
     override fun onBindViewHolder(holder: DateShortViewHolder, position: Int) {
-        // Set name and date in ViewHolder
-        val dateParams = DateParams(
-            _id = null,
-            date = selectedDate,
-            status = null)
 
-        val map = dateShorGetDbData.getTimeNameMap()            // Create map name:time
-        val namesArray:Array<String> = map.keys.toTypedArray()  // Create array of keys (names)
+        val cursor = calendarViewModel.getCursorAppointments(selectedDayParams)
 
-        if (map.size > position) {
-            holder.clientName.text = namesArray[position]       // Set name in holder
-            holder.starTime.text = map[namesArray[position]]    // Set time in holder
-        }
+        // Set name in holder
+        holder.clientName.text = cursor.getString(position)
+
+        // Set time in holder
+        holder.starTime.text = cursor.getString(position)
     }
 
     override fun getItemCount(): Int {

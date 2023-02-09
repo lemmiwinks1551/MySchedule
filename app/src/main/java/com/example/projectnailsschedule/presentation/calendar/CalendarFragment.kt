@@ -104,8 +104,11 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         // set observer for TextViews and ShortDateRecyclerView
         calendarViewModel?.selectedDateParams?.observe(viewLifecycleOwner) {
             if (it != null) {
+                Log.e(log, "selected date params: $it")
                 setMonthTextView(it)
-                inflateShortDateRecyclerView(it)
+                if (it.appointmentCount != null) {
+                    inflateShortDateRecyclerView(it)
+                }
                 setShortDateTextView(it)
             }
         }
@@ -192,18 +195,14 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         }
     }
 
-    private fun inflateShortDateRecyclerView(selectedDateParams: DateParams) {/*
-        // TODO: метод будет получать данные из класса DateShortGetDb и устанавливать в RecyclerView
-        val dateShortDbData = DateShortDbHelper(selectedDateParams.date, this.requireContext())
-
-        dateShortDbData.fetchDate()
+    private fun inflateShortDateRecyclerView(selectedDateParams: DateParams) {
 
         // Создаем CalendarAdapter, передаем количество строк в курсоре
         val dateShortAdapter =
             DateShortAdapter(
-                dateShortDbData.getDataRows(),
-                dateShortDbData,
-                selectedDate
+                selectedDateParams.appointmentCount!!,
+                selectedDateParams,
+                calendarViewModel!!
             )
 
         // Создаем layoutManager и устанавливает способ отображения элементов в нем
@@ -213,7 +212,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
 
         // Устанавливаем в RecyclerView менеджера и адаптер
         shortDataRecyclerView?.layoutManager = layoutManager
-        shortDataRecyclerView?.adapter = dateShortAdapter*/
+        shortDataRecyclerView?.adapter = dateShortAdapter
     }
 
     private fun setShortDateTextView(selectedDateParams: DateParams) {
