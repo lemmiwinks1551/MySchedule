@@ -1,4 +1,4 @@
-package com.example.projectnailsschedule.presentation.calendar.dataShort
+package com.example.projectnailsschedule.data.storage
 
 import android.content.Context
 import android.util.Log
@@ -9,7 +9,7 @@ import java.time.LocalDate
 /** Получает данные из БД за выбранную дату
  * Хранит полученные данные в массиве */
 
-class DateShortGetDbData(
+class DateShortDbHelper(
     private var selectedDate: LocalDate,
     private var context: Context
 ) {
@@ -17,7 +17,6 @@ class DateShortGetDbData(
     private val LOG = this::class.simpleName
     private val timeNameMap = mutableMapOf<String, String>()
     private var rowsCount = 0
-
 
     fun fetchDate() {
         // Получаем записи по дню и добавляем в словарь Клиент-Время

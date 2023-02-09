@@ -12,7 +12,12 @@ import java.time.LocalDate
 @Parcelize
 class DateParams(
     val _id: Int? = null,
-    val date: LocalDate? = null,
-    var status: String? = null
+    var date: LocalDate? = null,
+    var status: String? = null,
+    var appointmentCount: Int? = null
 ) : Parcelable {
+
+    override fun toString(): String {
+        return String.format("$_id")
+    }
 }

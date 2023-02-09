@@ -16,7 +16,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentCalendarBinding
 import com.example.projectnailsschedule.presentation.calendar.dataShort.DateShortAdapter
-import com.example.projectnailsschedule.presentation.calendar.dataShort.DateShortGetDbData
+import com.example.projectnailsschedule.data.storage.DateShortDbHelper
+import com.example.projectnailsschedule.domain.models.DateParams
 import com.example.projectnailsschedule.util.Util
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.time.LocalDate
@@ -101,7 +102,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
 
     private fun initObservers() {
         // set observer for TextViews and ShortDateRecyclerView
-        calendarViewModel?.selectedDate?.observe(viewLifecycleOwner) {
+        calendarViewModel?.selectedDateParams?.observe(viewLifecycleOwner) {
             if (it != null) {
                 setMonthTextView(it)
                 inflateShortDateRecyclerView(it)
@@ -124,17 +125,20 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         }
 
         // set observer for bundle
-        calendarViewModel?.bundleDateParams?.observe(viewLifecycleOwner) {
+        calendarViewModel?.dateParamsChangeDay?.observe(viewLifecycleOwner) {
+            // put dateParams to the bundle
+            val bundle = Bundle()
+            bundle.putParcelable("dateParams", it)
             binding.goIntoDate.findNavController().navigate(
                 R.id.action_nav_calendar_to_dateFragment,
-                it)
+                bundle)
         }
     }
 
-    private fun setMonthTextView(selectedDate: LocalDate) {
+    private fun setMonthTextView(selectedDateParams: DateParams) {
         // set month into textview
         // TODO: поправить формат
-        monthTextView?.text = selectedDate.month.getDisplayName(TextStyle.FULL, Locale("eng"))
+        monthTextView?.text = selectedDateParams.date!!.month?.getDisplayName(TextStyle.FULL, Locale("eng"))
     }
 
     private fun setYearTextView(yearValue: Int) {
@@ -188,9 +192,9 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         }
     }
 
-    private fun inflateShortDateRecyclerView(selectedDate: LocalDate) {
+    private fun inflateShortDateRecyclerView(selectedDateParams: DateParams) {/*
         // TODO: метод будет получать данные из класса DateShortGetDb и устанавливать в RecyclerView
-        val dateShortDbData = DateShortGetDbData(selectedDate, this.requireContext())
+        val dateShortDbData = DateShortDbHelper(selectedDateParams.date, this.requireContext())
 
         dateShortDbData.fetchDate()
 
@@ -199,7 +203,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
             DateShortAdapter(
                 dateShortDbData.getDataRows(),
                 dateShortDbData,
-                String.format("${selectedDate.dayOfMonth}.${selectedDate.monthValue}.${selectedDate.year}")
+                selectedDate
             )
 
         // Создаем layoutManager и устанавливает способ отображения элементов в нем
@@ -209,12 +213,12 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
 
         // Устанавливаем в RecyclerView менеджера и адаптер
         shortDataRecyclerView?.layoutManager = layoutManager
-        shortDataRecyclerView?.adapter = dateShortAdapter
+        shortDataRecyclerView?.adapter = dateShortAdapter*/
     }
 
-    private fun setShortDateTextView(selectedDate: LocalDate) {
+    private fun setShortDateTextView(selectedDateParams: DateParams) {
         val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
-        dateTextView?.text = selectedDate.format(formatter)
+        dateTextView?.text = selectedDateParams.date?.format(formatter)
     }
 
     override fun onResume() {

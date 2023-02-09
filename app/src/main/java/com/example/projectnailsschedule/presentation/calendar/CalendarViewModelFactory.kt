@@ -5,8 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.projectnailsschedule.data.repository.StatusRepositoryImpl
 import com.example.projectnailsschedule.domain.usecase.calendarUC.LoadCalendarUseCase
-import com.example.projectnailsschedule.domain.usecase.calendarUC.SelectDateUseCase
-import com.example.projectnailsschedule.domain.usecase.calendarUC.SelectNextMonthUseCase
+import com.example.projectnailsschedule.domain.usecase.calendarUC.LoadShortDateUseCase
 
 /** Create Factory for Calendar Fragment with UseCases */
 
@@ -17,17 +16,13 @@ class CalendarViewModelFactory(context: Context?) : ViewModelProvider.Factory {
     private val loadCalendarUseCase =
         LoadCalendarUseCase(statusRepository = calendarRepository)
 
-    private val selectDayUseCase =
-        SelectDateUseCase(statusRepository = calendarRepository)
-
-    private val selectMonth =
-        SelectNextMonthUseCase(statusRepository = calendarRepository)
+    private val loadShortDateUseCase =
+        LoadShortDateUseCase(statusRepository = calendarRepository)
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return CalendarViewModel(
             loadCalendarUseCase,
-            selectDayUseCase,
-            selectMonth
+            loadShortDateUseCase
         ) as T
     }
 }
