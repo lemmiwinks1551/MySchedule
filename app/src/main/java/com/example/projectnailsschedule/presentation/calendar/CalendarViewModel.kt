@@ -36,9 +36,9 @@ class CalendarViewModel(
         return loadCalendarUseCase.execute(dateParams)
     }
 
-    private fun getDayAppointments(): Int {
+    private fun getDayAppointments(dateParams: DateParams): Int {
         // get day appointments from repository
-        return loadShortDateUseCase.execute(selectedDateParams.value!!).count
+        return loadShortDateUseCase.execute(dateParams).count
     }
 
     fun getCursorAppointments(dateParams: DateParams): Cursor {
@@ -47,7 +47,8 @@ class CalendarViewModel(
 
     fun changeDay(day: Int) {
         // set month day in selectedDayParams
-        val appointmentCount = getDayAppointments()
+        val dateParamsNew = DateParams(date = selectedDateParams.value?.date?.withDayOfMonth(day))
+        val appointmentCount = getDayAppointments(dateParamsNew)
         selectedDateParams.value = DateParams(
             _id = selectedDateParams.value?._id,
             date = selectedDateParams.value?.date?.withDayOfMonth(day),

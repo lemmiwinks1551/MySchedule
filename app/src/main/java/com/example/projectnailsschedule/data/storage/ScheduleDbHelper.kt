@@ -12,6 +12,8 @@ import com.example.projectnailsschedule.util.WorkFolders
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 /** Methods for interacting with Schedule database */
 
@@ -60,7 +62,9 @@ class ScheduleDbHelper(context: Context?) :
     }
 
     fun getDateAppointments(dateParams: DateParams, db: SQLiteDatabase): Cursor {
-        val query = "SELECT * FROM $TABLE_NAME WHERE $COLUMN_DATE = '${dateParams.date}';"
+        val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
+        val query = "SELECT * FROM $TABLE_NAME WHERE $COLUMN_DATE = '${dateParams.date?.format(formatter)}';"
+        Log.e(LOG, String.format("getDateAppointments query: $query"))
         return db.rawQuery(query, null)
     }
 
