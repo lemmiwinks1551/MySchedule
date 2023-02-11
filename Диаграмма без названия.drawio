@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-02-11T09:22:13.874Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36" etag="seb5CIlO0JPZVRdkObPx" version="20.8.19" type="github">
+<mxfile host="app.diagrams.net" modified="2023-02-11T09:36:41.369Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36" etag="G0cpHmBiByL58UfD0C9-" version="20.8.19" type="github">
   <diagram id="-fB192dCxYrc6BMrNV2s" name="Страница 1">
     <mxGraphModel dx="4924" dy="5781" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -669,6 +669,9 @@
         </mxCell>
         <mxCell id="_tsZlj0rPt46MBjvnL1X-2" value="Status&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;repository - Interface" style="text;strokeColor=none;fillColor=none;html=1;fontSize=35;fontStyle=1;verticalAlign=middle;align=center;strokeWidth=3;container=0;" parent="_tsZlj0rPt46MBjvnL1X-1" vertex="1">
           <mxGeometry x="99.75" y="79.00199999999995" width="199.5" height="26.999999999999993" as="geometry" />
+        </mxCell>
+        <mxCell id="g3TXEs6j1-RWAtcXsQVe-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="avfBRFNsj0o9U9Dhmwhw-43" target="4gGjTpzzvBJ2QWFjTk4x-250">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
