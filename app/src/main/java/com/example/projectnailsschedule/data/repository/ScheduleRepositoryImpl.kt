@@ -6,9 +6,9 @@ import android.database.sqlite.SQLiteDatabase
 import com.example.projectnailsschedule.data.storage.ScheduleDbHelper
 import com.example.projectnailsschedule.domain.models.AppointmentParams
 import com.example.projectnailsschedule.domain.models.DateParams
-import com.example.projectnailsschedule.domain.repository.AppointmentRepository
+import com.example.projectnailsschedule.domain.repository.ScheduleRepository
 
-class AppointmentRepositoryImpl(context: Context?): AppointmentRepository {
+class ScheduleRepositoryImpl(context: Context?): ScheduleRepository {
     private var scheduleDbHelper: ScheduleDbHelper = ScheduleDbHelper(context)
     private var db: SQLiteDatabase = scheduleDbHelper.writableDatabase
 

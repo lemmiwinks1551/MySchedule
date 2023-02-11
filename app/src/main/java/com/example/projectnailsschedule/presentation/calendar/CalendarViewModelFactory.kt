@@ -3,7 +3,7 @@ package com.example.projectnailsschedule.presentation.calendar
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.projectnailsschedule.data.repository.AppointmentRepositoryImpl
+import com.example.projectnailsschedule.data.repository.ScheduleRepositoryImpl
 import com.example.projectnailsschedule.data.repository.StatusRepositoryImpl
 import com.example.projectnailsschedule.domain.usecase.calendarUC.LoadCalendarUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.LoadShortDateUseCase
@@ -13,13 +13,13 @@ import com.example.projectnailsschedule.domain.usecase.calendarUC.LoadShortDateU
 class CalendarViewModelFactory(context: Context?) : ViewModelProvider.Factory {
 
     private val statusRepositoryImpl = StatusRepositoryImpl(context = context)
-    private val appointmentRepositoryImpl = AppointmentRepositoryImpl(context = context)
+    private val scheduleRepositoryImpl = ScheduleRepositoryImpl(context = context)
 
     private val loadCalendarUseCase =
         LoadCalendarUseCase(statusRepository = statusRepositoryImpl)
 
     private val loadShortDateUseCase =
-        LoadShortDateUseCase(appointmentRepositoryImpl = appointmentRepositoryImpl)
+        LoadShortDateUseCase(scheduleRepositoryImpl = scheduleRepositoryImpl)
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return CalendarViewModel(

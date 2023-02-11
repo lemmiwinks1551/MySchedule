@@ -116,6 +116,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         // set month observer for CalendarRecyclerView
         calendarViewModel?.selectedMonth?.observe(viewLifecycleOwner) {
             if (it != null) {
+                Log.e(log, "month selected: $it")
                 inflateCalendarRecyclerView(it)
             }
         }
@@ -123,6 +124,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         // set year observer for YearTextView
         calendarViewModel?.selectedYearValue?.observe(viewLifecycleOwner) {
             if (it != null) {
+                Log.e(log, "year selected: $it")
                 setYearTextView(it)
             }
         }
@@ -196,8 +198,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
     }
 
     private fun inflateShortDateRecyclerView(selectedDateParams: DateParams) {
-
-        // Создаем CalendarAdapter, передаем количество строк в курсоре
+        // create adapter for ShortDateRecyclerVIew
         val dateShortAdapter =
             DateShortAdapter(
                 selectedDateParams.appointmentCount!!,
@@ -205,12 +206,11 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
                 calendarViewModel!!
             )
 
-        // Создаем layoutManager и устанавливает способ отображения элементов в нем
-        // GridLayoutManager упорядочивает элементы в виде таблицы со столлбцами и строками (1 элемент в ряд)
+        // create layoutManager with 1 elements in a row
         val layoutManager: RecyclerView.LayoutManager =
             GridLayoutManager(activity, 1)
 
-        // Устанавливаем в RecyclerView менеджера и адаптер
+        // set adapter and layout manager to recycler view
         shortDataRecyclerView?.layoutManager = layoutManager
         shortDataRecyclerView?.adapter = dateShortAdapter
     }
@@ -224,7 +224,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         Log.e(log, "onResume")
         super.onResume()
 
-        // Убираем клавиатуру
+        // hide keyboard
         Util().hideKeyboard(requireActivity())
 
         // Clear views
@@ -233,14 +233,8 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
-        // Устанавливаем иконку поиска видимой (только для фрагмента CalendarFragment)
+        // set search button visible
         menu.findItem(R.id.search).isVisible = true
         super.onPrepareOptionsMenu(menu)
-    }
-
-    override fun onDestroyView() {
-        Log.e(log, "onDestroyView")
-        super.onDestroyView()
-        _binding = null
     }
 }

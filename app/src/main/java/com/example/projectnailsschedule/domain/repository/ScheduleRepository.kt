@@ -4,7 +4,7 @@ import android.database.Cursor
 import com.example.projectnailsschedule.domain.models.AppointmentParams
 import com.example.projectnailsschedule.domain.models.DateParams
 
-interface AppointmentRepository {
+interface ScheduleRepository {
 
     fun saveAppointment(appointmentParams: AppointmentParams): Boolean
 
