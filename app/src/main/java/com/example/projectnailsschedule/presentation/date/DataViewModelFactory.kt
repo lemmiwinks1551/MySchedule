@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.projectnailsschedule.data.repository.ScheduleRepositoryImpl
 import com.example.projectnailsschedule.data.repository.StatusRepositoryImpl
 import com.example.projectnailsschedule.domain.usecase.dateUC.DeleteAppointmentUseCase
-import com.example.projectnailsschedule.domain.usecase.dateUC.SetDayStatusUseCase
+import com.example.projectnailsschedule.domain.usecase.dateUC.SetDateStatusUseCase
 
 /** Create Factory for Date Fragment with UseCases */
 
@@ -16,13 +16,16 @@ class DataViewModelFactory(context: Context?) : ViewModelProvider.Factory {
     private val statusRepositoryImpl = StatusRepositoryImpl(context = context)
     private val scheduleRepositoryImpl = ScheduleRepositoryImpl(context = context)
 
-    private val deleteAppointment =
+    private var deleteAppointmentUseCase =
         DeleteAppointmentUseCase(scheduleRepository = scheduleRepositoryImpl)
 
-    private val setDateStatus =
-        SetDayStatusUseCase(statusRepository = statusRepositoryImpl)
+    private val setDateStatusUseCase =
+        SetDateStatusUseCase(statusRepository = statusRepositoryImpl)
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        TODO("Not yet implemented")
+        return DateViewModel (
+            deleteAppointmentUseCase = deleteAppointmentUseCase,
+            setDateStatusUseCase = setDateStatusUseCase
+        ) as T
     }
 }
