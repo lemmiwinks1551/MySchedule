@@ -17,15 +17,14 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.projectnailsschedule.R
-import com.example.projectnailsschedule.data.storage.StatusDbHelper
 import com.example.projectnailsschedule.data.storage.ScheduleDbHelper
+import com.example.projectnailsschedule.data.storage.StatusDbHelper
 import com.example.projectnailsschedule.databinding.FragmentDateBinding
 import com.example.projectnailsschedule.domain.models.AppointmentParams
 import com.example.projectnailsschedule.domain.models.DateParams
 import com.example.projectnailsschedule.util.Util
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import java.util.*
 
 
 class DateFragment : Fragment() {
@@ -57,47 +56,59 @@ class DateFragment : Fragment() {
     private var cursor: Cursor? = null
     private var adapter: SimpleCursorAdapter? = null
 
-    private var day: String? = null
+    private var date: String? = null
     private var statusMap: Map<String, String> = createStatusMap()
 
+
+    private var dateParams: DateParams? = null
+    private var dateViewModel: DateViewModel? = null
     private var chosenDate: LocalDate? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // create ViewModel object with Factory
+        dateViewModel = ViewModelProvider(
+            this,
+            DataViewModelFactory(context)
+        )[DateViewModel::class.java]
+
+        // get dateParams from Bundle
+        dateParams = arguments?.getParcelable(bindingKey)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-
-        val dateViewModel =
-            ViewModelProvider(this)[DateViewModel::class.java]
+        val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
 
         _binding = FragmentDateBinding.inflate(inflater, container, false)
 
-        // Get selected date from bundle
-        val dateParams: DateParams? = arguments?.getParcelable(bindingKey)
-        if (dateParams != null) {
-            day = dateParams.date?.dayOfMonth.toString()
-            chosenDate = dateParams.date
-        }
+        // set day
+        date = dateParams?.date?.format(formatter)
+        chosenDate = dateParams?.date
 
-        // Конвертируем дату в формат dd.MM.yyyy
-        val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
-        if (dateParams != null) {
-            day = dateParams.date!!.format(formatter)!!
-        }
+        // init widgets
+        initWidgets()
+
+        // init clickListeners
+        initClickListeners()
 
         // Получаем статус дня и устанавливаем в спиннер
-        dayStatusSpinner = binding.spinnerStatus
         getDayStatus()
         setStatusInSpinner()
 
-        scheduleList = binding.scheduleListView
         databaseHelper = ScheduleDbHelper(context)
 
-        //Вызываем новый фрагмент для добавления новой записи
+        return binding.root
+    }
+
+    private fun initClickListeners() {
+        // add new appointment
         binding.addButton.setOnClickListener {
-            // Add new appointment, send date
             val appointmentParams = AppointmentParams(
                 _id = null,
-                appointmentDate = day,
+                appointmentDate = date,
                 clientName = null,
                 startTime = null,
                 procedureName = null,
@@ -109,22 +120,7 @@ class DateFragment : Fragment() {
             it.findNavController().navigate(R.id.action_dateFragment_to_appointmentFragment, bundle)
         }
 
-        return binding.root
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        // Hide keyboard
-        Util().hideKeyboard(requireActivity())
-
-        // Получаем строку из БД распасания
-        currentDayQuery()
-
-        // Устанавливаем полученные строки в ListView
-        setDayQuery()
-
-        // Добавляем ClickListener к ListView расписания
+        // click on List
         scheduleList!!.onItemLongClickListener =
             OnItemLongClickListener { _, _, position, _ ->
                 // Выводим диалоговое окно на экран
@@ -134,7 +130,7 @@ class DateFragment : Fragment() {
                 true
             }
 
-        // Добавляем ClickListener на Spinner со статусами дня
+        // click on spinner
         dayStatusSpinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
@@ -157,6 +153,24 @@ class DateFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun initWidgets() {
+        dayStatusSpinner = binding.spinnerStatus
+        scheduleList = binding.scheduleListView
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        // hide keyboard
+        Util().hideKeyboard(requireActivity())
+
+        // Получаем строку из БД распасания
+        currentDayQuery()
+
+        // Устанавливаем полученные строки в ListView
+        setDayQuery()
     }
 
     private fun showDialog(currentCur: Cursor, navController: NavController) {
@@ -206,7 +220,7 @@ class DateFragment : Fragment() {
         db = databaseHelper?.readableDatabase
 
         // Получаем курсор с данными из БД по выбранной дате
-        cursor = databaseHelper?.getRow(day!!, db!!)
+        cursor = databaseHelper?.getRow(date!!, db!!)
 
         // Определяем, какие столбцы из курсора будут выводиться в ListView
         val headers =
@@ -249,7 +263,7 @@ class DateFragment : Fragment() {
         if (cursor!!.moveToFirst()) {
             val columnIndex = cursor!!.getColumnIndex("status")
             dayStatus = cursor!!.getString(columnIndex)
-            Log.e(LOG, "Day $day status fetched: ${StatusDbHelper.COLUMN_STATUS}")
+            Log.e(LOG, "Day $date status fetched: ${StatusDbHelper.COLUMN_STATUS}")
         } else {
             Log.e(LOG, "Cannot fetch status, no data")
             dayStatus = "no status"

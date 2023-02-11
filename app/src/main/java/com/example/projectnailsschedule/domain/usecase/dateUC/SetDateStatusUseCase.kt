@@ -1,9 +1,11 @@
 package com.example.projectnailsschedule.domain.usecase.dateUC
 
+import com.example.projectnailsschedule.domain.models.DateParams
 import com.example.projectnailsschedule.domain.repository.StatusRepository
 
 class SetDateStatusUseCase(private val statusRepository: StatusRepository) {
 
-    fun execute() {
+    fun execute(dateParams: DateParams) {
+
     }
 }
