@@ -1,12 +1,12 @@
 package com.example.projectnailsschedule.domain.usecase.calendarUC
 
 import android.database.Cursor
-import com.example.projectnailsschedule.data.repository.ScheduleRepositoryImpl
 import com.example.projectnailsschedule.domain.models.DateParams
+import com.example.projectnailsschedule.domain.repository.ScheduleRepository
 
-class LoadShortDateUseCase(private val scheduleRepositoryImpl: ScheduleRepositoryImpl) {
+class LoadShortDateUseCase(private val scheduleRepository: ScheduleRepository) {
 
     fun execute(selectedDateParams: DateParams): Cursor {
-        return scheduleRepositoryImpl.getDateAppointments(dateParams = selectedDateParams)
+        return scheduleRepository.getDateAppointments(dateParams = selectedDateParams)
     }
 }

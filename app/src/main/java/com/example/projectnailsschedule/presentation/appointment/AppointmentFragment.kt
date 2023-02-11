@@ -63,6 +63,16 @@ class AppointmentFragment : Fragment() {
             }
         }
 
+        // set ClickListeners
+        setClickListeners()
+
+        // set current appointmentParams form DateFragment binding object
+        setAppointmentCurrentParams()
+
+        return binding.root
+    }
+
+    private fun setClickListeners() {
         // set ClickListener on cancel_button
         binding.cancelButton.setOnClickListener {
             cancelButton()
@@ -80,11 +90,6 @@ class AppointmentFragment : Fragment() {
 
         // set phone input format on phone_edit_text
         binding.phoneEditText.addTextChangedListener(PhoneNumberFormattingTextWatcher())
-
-        // set current appointmentParams form DateFragment binding object
-        setAppointmentCurrentParams()
-
-        return binding.root
     }
 
     private fun createAppointment() {

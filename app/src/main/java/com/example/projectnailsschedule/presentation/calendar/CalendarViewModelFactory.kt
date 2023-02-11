@@ -19,7 +19,7 @@ class CalendarViewModelFactory(context: Context?) : ViewModelProvider.Factory {
         LoadCalendarUseCase(statusRepository = statusRepositoryImpl)
 
     private val loadShortDateUseCase =
-        LoadShortDateUseCase(scheduleRepositoryImpl = scheduleRepositoryImpl)
+        LoadShortDateUseCase(scheduleRepository = scheduleRepositoryImpl)
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return CalendarViewModel(
