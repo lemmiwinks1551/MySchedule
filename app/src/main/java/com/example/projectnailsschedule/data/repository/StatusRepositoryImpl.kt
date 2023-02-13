@@ -27,7 +27,7 @@ class StatusRepositoryImpl(context: Context?) : StatusRepository {
 
         if (cursor.moveToFirst()) {
             val columnIndex = cursor.getColumnIndex(StatusDbHelper.COLUMN_STATUS)
-            Log.e(log, "Day ${dateParams.date}, set status ${cursor.getString(columnIndex)}")
+            Log.e(log, "Day ${dateParams.date}, status ${cursor.getString(columnIndex)}")
             dateParams.status = cursor.getString(columnIndex)
         }
         cursor.close()

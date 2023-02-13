@@ -8,7 +8,7 @@ import com.example.projectnailsschedule.domain.repository.StatusRepository
  * add day status
  * return dateParams */
 
-class LoadCalendarUseCase(private val statusRepository: StatusRepository) {
+class GetDateStatusUseCase(private val statusRepository: StatusRepository) {
 
     fun execute(dateParams: DateParams): DateParams {
         return statusRepository.getStatus(dateParams = dateParams)

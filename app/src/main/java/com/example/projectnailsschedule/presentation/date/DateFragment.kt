@@ -120,6 +120,8 @@ class DateFragment : Fragment(), CalendarAdapter.OnItemListener {
         // dateParams observer
         dateViewModel?.selectedDateParams?.observe(viewLifecycleOwner) {
             if (it != null) {
+                dateViewModel!!.getDateStatus()
+                dateViewModel!!.getDateAppointmentCount()
                 inflateDateRecyclerView(it)
             }
         }

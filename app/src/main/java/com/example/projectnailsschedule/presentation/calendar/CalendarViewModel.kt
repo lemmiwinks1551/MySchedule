@@ -4,12 +4,12 @@ import android.database.Cursor
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.projectnailsschedule.domain.models.DateParams
-import com.example.projectnailsschedule.domain.usecase.calendarUC.LoadCalendarUseCase
+import com.example.projectnailsschedule.domain.usecase.calendarUC.GetDateStatusUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.LoadShortDateUseCase
 import java.time.LocalDate
 
 class CalendarViewModel(
-    private val loadCalendarUseCase: LoadCalendarUseCase,
+    private val getDateStatusUseCase: GetDateStatusUseCase,
     private val loadShortDateUseCase: LoadShortDateUseCase
 ) : ViewModel() {
 
@@ -33,7 +33,7 @@ class CalendarViewModel(
     fun getDayStatus(dateParams: DateParams): DateParams {
         // get day status from repository
         // use in CalendarRecyclerView
-        return loadCalendarUseCase.execute(dateParams)
+        return getDateStatusUseCase.execute(dateParams)
     }
 
     private fun getDayAppointments(dateParams: DateParams): Int {
