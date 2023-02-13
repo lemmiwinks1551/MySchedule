@@ -8,21 +8,26 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentDateBinding
 import com.example.projectnailsschedule.domain.models.AppointmentParams
 import com.example.projectnailsschedule.domain.models.DateParams
+import com.example.projectnailsschedule.presentation.calendar.calendarRecyclerView.CalendarAdapter
+import com.example.projectnailsschedule.presentation.date.dateRecyclerView.DateAdapter
 import com.example.projectnailsschedule.util.Util
+import java.util.ArrayList
 
 
-class DateFragment : Fragment() {
+class DateFragment : Fragment(), CalendarAdapter.OnItemListener {
     val log = this::class.simpleName
 
     private var _binding: FragmentDateBinding? = null
     private val binding get() = _binding!!
     private val bindingKey = "dateParams"
     private val bindingKeyAppointment = "appointmentParams"
+    private val dateRecyclerViewSpanCount = 1
 
     private var dayStatusSpinner: Spinner? = null
     private var dateParams: DateParams? = null
@@ -40,6 +45,9 @@ class DateFragment : Fragment() {
 
         // get dateParams from Bundle
         dateParams = arguments?.getParcelable(bindingKey)
+
+        // set dateParams to ViewModel
+        dateViewModel!!.selectedDateParams.value = dateParams
     }
 
     override fun onCreateView(
@@ -53,6 +61,9 @@ class DateFragment : Fragment() {
 
         // init clickListeners
         initClickListeners()
+
+        // set observers
+        setObservers()
 
         // set current status in spinner
         setStatusInSpinner()
@@ -82,7 +93,6 @@ class DateFragment : Fragment() {
             it.findNavController().navigate(R.id.action_dateFragment_to_appointmentFragment, bundle)
         }
 
-
         // click on spinner
         dayStatusSpinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -101,6 +111,34 @@ class DateFragment : Fragment() {
         }
     }
 
+    override fun onItemClick(position: Int, dayText: String?) {
+        // click on appointment
+
+    }
+
+    private fun setObservers() {
+        // dateParams observer
+        dateViewModel?.selectedDateParams?.observe(viewLifecycleOwner) {
+            if (it != null) {
+                inflateDateRecyclerView(it)
+            }
+        }
+    }
+
+    private fun inflateDateRecyclerView(selectedDate: DateParams) {
+        // create adapter
+        val dateAdapter = DateAdapter(
+            appointmentsCount = selectedDate.appointmentCount!!,
+            dateParams = dateParams!!
+        )
+
+        val layoutManager: RecyclerView.LayoutManager =
+            GridLayoutManager(activity, dateRecyclerViewSpanCount)
+
+        dateRecyclerView?.layoutManager = layoutManager
+        dateRecyclerView?.adapter = dateAdapter
+    }
+
     override fun onResume() {
         super.onResume()
         // hide keyboard
@@ -108,10 +146,12 @@ class DateFragment : Fragment() {
     }
 
     private fun setStatusInSpinner() {
-        //
+        // set current status in spinner by index fo statusArray
         val statusArray: String = getString(R.string.status_description)
         val statusIndex = statusArray.indexOf(statusArray)
         dayStatusSpinner?.setSelection(statusIndex)
     }
+
+
 }
 

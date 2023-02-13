@@ -11,14 +11,12 @@ class CalendarViewHolder internal constructor(itemView: View, onItemListener: Ca
     RecyclerView.ViewHolder(itemView), View.OnClickListener {
     // ViewHolder - класс, содержащий ссылки на все View, которые находятся в одном элементе RecyclerView элементы
     // Через ViewHolder заполняется RecyclerVIew
-    // TODO: 13.07.2022 Сделать через binding
 
     val dayOfMonth: TextView
     private val onItemListener: CalendarAdapter.OnItemListener
 
     init {
         dayOfMonth = itemView.findViewById(R.id.cellDayText)
-        // TODO: делить всю ширину экрана на 7, чтобы рассчитать ширину дней в календаре 
         this.onItemListener = onItemListener
         itemView.setOnClickListener(this)
     }
