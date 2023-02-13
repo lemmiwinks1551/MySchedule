@@ -1,4 +1,4 @@
-package com.example.projectnailsschedule.presentation.calendar.dataShort
+package com.example.projectnailsschedule.presentation.calendar.dateShortRecyclerView
 
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +9,7 @@ import com.example.projectnailsschedule.domain.models.DateParams
 import com.example.projectnailsschedule.presentation.calendar.CalendarViewModel
 
 internal class DateShortAdapter(
-    private val rowsCount: Int,
+    private val appointmentsCount: Int,
     private val selectedDayParams: DateParams,
     private val calendarViewModel: CalendarViewModel
 ) :
@@ -36,6 +36,6 @@ internal class DateShortAdapter(
     }
 
     override fun getItemCount(): Int {
-        return rowsCount
+        return appointmentsCount
     }
 }

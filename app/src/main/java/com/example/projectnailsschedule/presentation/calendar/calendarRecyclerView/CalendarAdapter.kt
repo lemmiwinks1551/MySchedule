@@ -1,4 +1,4 @@
-package com.example.projectnailsschedule.presentation.calendar
+package com.example.projectnailsschedule.presentation.calendar.calendarRecyclerView
 
 import android.graphics.Typeface
 import android.view.LayoutInflater
@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.domain.models.DateParams
+import com.example.projectnailsschedule.presentation.calendar.CalendarFragment
+import com.example.projectnailsschedule.presentation.calendar.CalendarViewModel
 import java.time.LocalDate
 
 internal class CalendarAdapter(

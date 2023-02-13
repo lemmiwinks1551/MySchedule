@@ -71,5 +71,6 @@
     <string name="app_fullname">Мое расписание</string>
     <string name="save_changes_button">Сохранить</string>
     <string name="cancel__button">Отмена</string>
+    <string name="avatar_description">clicable client avatar</string>
 
 </resources>

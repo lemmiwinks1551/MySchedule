@@ -7,10 +7,14 @@
     android:layout_height="match_parent"
     tools:context=".presentation.date.DateFragment">
 
-    <ListView
-        android:id="@+id/scheduleListView"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/scheduleRecyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layoutAnimation="@anim/layout_animation"
+        android:scrollbars="vertical"
+        android:verticalScrollbarPosition="left"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:layout_constraintBottom_toTopOf="@id/addButton"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -26,7 +30,7 @@
         android:entries="@array/day_status"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/description"
-        app:layout_constraintTop_toBottomOf="@+id/scheduleListView" />
+        app:layout_constraintTop_toBottomOf="@+id/scheduleRecyclerView" />
 
     <TextView
         android:id="@+id/description"
@@ -38,7 +42,7 @@
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/scheduleListView" />
+        app:layout_constraintTop_toBottomOf="@id/scheduleRecyclerView" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addButton"
@@ -52,7 +56,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.488"
         app:layout_constraintStart_toEndOf="@+id/spinner_status"
-        app:layout_constraintTop_toBottomOf="@id/scheduleListView"
+        app:layout_constraintTop_toBottomOf="@id/scheduleRecyclerView"
         app:srcCompat="@android:drawable/ic_input_add"
         app:tint="@color/white" />
 

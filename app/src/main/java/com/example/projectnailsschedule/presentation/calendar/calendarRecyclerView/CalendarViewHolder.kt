@@ -1,9 +1,10 @@
-package com.example.projectnailsschedule.presentation.calendar
+package com.example.projectnailsschedule.presentation.calendar.calendarRecyclerView
 
 import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
+import com.example.projectnailsschedule.presentation.calendar.CalendarFragment
 
 
 class CalendarViewHolder internal constructor(itemView: View, onItemListener: CalendarFragment) :

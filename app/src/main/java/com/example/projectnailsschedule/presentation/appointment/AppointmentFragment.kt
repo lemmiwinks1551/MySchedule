@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.projectnailsschedule.databinding.FragmentAppointmentBinding
 import com.example.projectnailsschedule.domain.models.AppointmentParams
 import com.example.projectnailsschedule.util.Util
+import java.time.LocalDate
 import java.util.*
 
 /** AppointmentFragment View*/
@@ -98,7 +99,7 @@ class AppointmentFragment : Fragment() {
         // create appointmentParams object
         with(binding) {
             val appointmentParams = AppointmentParams(
-                appointmentDate = dayEditText.text.toString(),
+                appointmentDate = LocalDate.parse(dayEditText.toString()),
                 clientName = nameEditText.text.toString(),
                 startTime = timeEditText.text.toString(),
                 procedureName = procedureEditText.text.toString(),
@@ -125,7 +126,7 @@ class AppointmentFragment : Fragment() {
         with(binding) {
             val appointmentParams = AppointmentParams(
                 _id = appointmentParams?._id,
-                appointmentDate = dayEditText.text.toString(),
+                appointmentDate = LocalDate.parse(dayEditText.toString()),
                 clientName = nameEditText.text.toString(),
                 startTime = timeEditText.text.toString(),
                 procedureName = procedureEditText.text.toString(),
@@ -150,7 +151,7 @@ class AppointmentFragment : Fragment() {
         // set current appointmentParams from DateFragment binding object
 
         with(binding) {
-            dayEditText.text = appointmentParams?.appointmentDate
+            dayEditText.text = appointmentParams?.appointmentDate.toString().format("dd.MM.yyyy")
             timeEditText.text = appointmentParams?.startTime
             procedureEditText.setText(appointmentParams?.procedureName)
             nameEditText.setText(appointmentParams?.clientName)

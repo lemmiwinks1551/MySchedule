@@ -15,9 +15,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentCalendarBinding
-import com.example.projectnailsschedule.presentation.calendar.dataShort.DateShortAdapter
-import com.example.projectnailsschedule.data.storage.DateShortDbHelper
+import com.example.projectnailsschedule.presentation.calendar.dateShortRecyclerView.DateShortAdapter
 import com.example.projectnailsschedule.domain.models.DateParams
+import com.example.projectnailsschedule.presentation.calendar.calendarRecyclerView.CalendarAdapter
 import com.example.projectnailsschedule.util.Util
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.time.LocalDate

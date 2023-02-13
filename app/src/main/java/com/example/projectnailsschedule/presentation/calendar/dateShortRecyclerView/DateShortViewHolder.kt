@@ -1,4 +1,4 @@
-package com.example.projectnailsschedule.presentation.calendar.dataShort
+package com.example.projectnailsschedule.presentation.calendar.dateShortRecyclerView
 
 import android.view.View
 import android.widget.TextView
@@ -10,6 +10,7 @@ class DateShortViewHolder internal constructor(itemView: View) :
 
     val clientName: TextView
     val starTime: TextView
+
     init {
         clientName = itemView.findViewById(R.id.appointment_name_short)
         starTime = itemView.findViewById(R.id.appointment_start_short)

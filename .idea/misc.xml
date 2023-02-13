@@ -12,6 +12,7 @@
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.3605" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/drawable/ic_baseline_attach_money_24.xml" value="0.251" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/drawable/ic_baseline_calendar_month_24.xml" value="0.251" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/drawable/ic_baseline_face_24.xml" value="0.2315" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/drawable/ic_baseline_info_24.xml" value="0.3605" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/drawable/ic_baseline_keyboard_arrow_left_24.xml" value="0.3605" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/drawable/ic_baseline_keyboard_arrow_right_24.xml" value="0.3605" />
@@ -33,6 +34,7 @@
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/layout/content_main.xml" value="0.33" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/layout/database.xml" value="0.5" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/layout/database_short_view.xml" value="0.5" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/layout/date_appointments_recycler_view.xml" value="0.5" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/layout/dialog_db.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/layout/dialog_db_item.xml" value="0.33" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/layout/fragment_about.xml" value="0.365625" />

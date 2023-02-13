@@ -2,6 +2,7 @@ package com.example.projectnailsschedule.domain.models
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
+import java.time.LocalDate
 
 /***
  * Class model for getting and saving
@@ -11,7 +12,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 class AppointmentParams(
     val _id: Int? = null, // optional field, only need for editAppointment method
-    val appointmentDate: String? = null,
+    val appointmentDate: LocalDate? = null,
     val clientName: String? = null,
     val startTime: String? = null,
     val procedureName: String? = null,
