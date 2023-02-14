@@ -14,13 +14,14 @@ import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentDateBinding
 import com.example.projectnailsschedule.domain.models.AppointmentParams
 import com.example.projectnailsschedule.domain.models.DateParams
+import com.example.projectnailsschedule.domain.usecase.dateUC.GetDateAppointmentsUseCase
 import com.example.projectnailsschedule.presentation.calendar.calendarRecyclerView.CalendarAdapter
 import com.example.projectnailsschedule.presentation.date.dateRecyclerView.DateAdapter
 import com.example.projectnailsschedule.util.Util
 import java.util.ArrayList
 
 
-class DateFragment : Fragment(), CalendarAdapter.OnItemListener {
+class DateFragment : Fragment(), DateAdapter.OnItemListener {
     val log = this::class.simpleName
 
     private var _binding: FragmentDateBinding? = null
@@ -61,6 +62,8 @@ class DateFragment : Fragment(), CalendarAdapter.OnItemListener {
 
         // init clickListeners
         initClickListeners()
+
+        dateViewModel?.updateDateParams()
 
         // set observers
         setObservers()
@@ -113,15 +116,13 @@ class DateFragment : Fragment(), CalendarAdapter.OnItemListener {
 
     override fun onItemClick(position: Int, dayText: String?) {
         // click on appointment
-
+        Toast.makeText(context, "Appointment has been clicked", Toast.LENGTH_SHORT).show()
     }
 
     private fun setObservers() {
         // dateParams observer
         dateViewModel?.selectedDateParams?.observe(viewLifecycleOwner) {
             if (it != null) {
-                dateViewModel!!.getDateStatus()
-                dateViewModel!!.getDateAppointmentCount()
                 inflateDateRecyclerView(it)
             }
         }
@@ -131,7 +132,9 @@ class DateFragment : Fragment(), CalendarAdapter.OnItemListener {
         // create adapter
         val dateAdapter = DateAdapter(
             appointmentsCount = selectedDate.appointmentCount!!,
-            dateParams = dateParams!!
+            dateParams = dateParams!!,
+            onItemListener = this,
+            dateViewModel = dateViewModel!!
         )
 
         val layoutManager: RecyclerView.LayoutManager =
@@ -153,7 +156,5 @@ class DateFragment : Fragment(), CalendarAdapter.OnItemListener {
         val statusIndex = statusArray.indexOf(statusArray)
         dayStatusSpinner?.setSelection(statusIndex)
     }
-
-
 }
 

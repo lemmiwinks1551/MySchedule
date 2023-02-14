@@ -89,7 +89,7 @@ class SearchFragment : Fragment() {
                 ScheduleDbHelper.COLUMN_DATE,
                 ScheduleDbHelper.COLUMN_START_TIME
             )
-            val headersInt = intArrayOf(R.id.database_name, R.id.database_phone, R.id.date, R.id.time)
+            val headersInt = intArrayOf(R.id.appointment_name, R.id.appointmentName_phone, R.id.date, R.id.time)
 
             userAdapter = SimpleCursorAdapter(
                 context, R.layout.search_list_item,

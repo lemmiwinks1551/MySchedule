@@ -1,21 +1,24 @@
 package com.example.projectnailsschedule.presentation.date
 
+import android.database.Cursor
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.projectnailsschedule.domain.models.AppointmentParams
 import com.example.projectnailsschedule.domain.models.DateParams
 import com.example.projectnailsschedule.domain.usecase.calendarUC.GetDateStatusUseCase
 import com.example.projectnailsschedule.domain.usecase.dateUC.DeleteAppointmentUseCase
-import com.example.projectnailsschedule.domain.usecase.dateUC.GetAppointmentsCountUseCase
+import com.example.projectnailsschedule.domain.usecase.dateUC.GetDateAppointmentsUseCase
 import com.example.projectnailsschedule.domain.usecase.dateUC.SetDateStatusUseCase
 
 class DateViewModel(
-    private var deleteAppointmentUseCase: DeleteAppointmentUseCase,
     private var setDateStatusUseCase: SetDateStatusUseCase,
     private var getDateStatusUseCase: GetDateStatusUseCase,
-    private var getAppointmentsCountUseCase: GetAppointmentsCountUseCase
-) : ViewModel() {
+    private var deleteAppointmentUseCase: DeleteAppointmentUseCase,
+    private var getDateAppointmentsUseCase: GetDateAppointmentsUseCase
+    ) : ViewModel() {
 
+    val log = this::class.simpleName
     var selectedDateParams =
         MutableLiveData(
             DateParams(
@@ -26,23 +29,26 @@ class DateViewModel(
             )
         )
 
-    fun getDateStatus() {
-        selectedDateParams.value = DateParams(
-            _id = selectedDateParams.value?._id,
-            date = selectedDateParams.value?.date,
-            status =
-            getDateStatusUseCase.execute(selectedDateParams.value!!).status.toString(),
-            appointmentCount = null
-        )
+    fun updateDateParams() {
+        getDateStatus()
+        getDateAppointmentCount()
+        selectedDateParams.value = selectedDateParams.value
     }
 
-    fun getDateAppointmentCount() {
-        selectedDateParams.value = DateParams(
-            _id = selectedDateParams.value?._id,
-            date = selectedDateParams.value?.date,
-            status = selectedDateParams.value?.status,
-            appointmentCount = getAppointmentsCountUseCase.execute(selectedDateParams.value!!)
-        )
+    private fun getDateStatus() {
+        selectedDateParams.value?.status =
+            getDateStatusUseCase.execute(selectedDateParams.value!!).status.toString()
+        Log.e(log, "Status got")
+    }
+
+    private fun getDateAppointmentCount() {
+        selectedDateParams.value?.appointmentCount =
+            getDateAppointmentsUseCase.execute(selectedDateParams.value!!).count
+        Log.e(log, "AppointmentCount got")
+    }
+
+    fun getDateAppointments(dateParams: DateParams): Cursor {
+        return getDateAppointmentsUseCase.execute(dateParams = selectedDateParams.value!!)
     }
 
     fun deleteAppointment(appointmentParams: AppointmentParams) {
