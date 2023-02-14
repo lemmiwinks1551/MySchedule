@@ -46,9 +46,6 @@ class DateFragment : Fragment(), DateAdapter.OnItemListener {
 
         // get dateParams from Bundle
         dateParams = arguments?.getParcelable(bindingKey)
-
-        // set dateParams to ViewModel
-        dateViewModel!!.selectedDateParams.value = dateParams
     }
 
     override fun onCreateView(
@@ -63,6 +60,10 @@ class DateFragment : Fragment(), DateAdapter.OnItemListener {
         // init clickListeners
         initClickListeners()
 
+        // set current date in viewModel
+        dateViewModel!!.selectedDateParams.value = dateParams
+
+        // get status and appointments from date
         dateViewModel?.updateDateParams()
 
         // set observers
@@ -114,11 +115,6 @@ class DateFragment : Fragment(), DateAdapter.OnItemListener {
         }
     }
 
-    override fun onItemClick(position: Int, dayText: String?) {
-        // click on appointment
-        Toast.makeText(context, "Appointment has been clicked", Toast.LENGTH_SHORT).show()
-    }
-
     private fun setObservers() {
         // dateParams observer
         dateViewModel?.selectedDateParams?.observe(viewLifecycleOwner) {
@@ -132,7 +128,6 @@ class DateFragment : Fragment(), DateAdapter.OnItemListener {
         // create adapter
         val dateAdapter = DateAdapter(
             appointmentsCount = selectedDate.appointmentCount!!,
-            dateParams = dateParams!!,
             onItemListener = this,
             dateViewModel = dateViewModel!!
         )
@@ -155,6 +150,12 @@ class DateFragment : Fragment(), DateAdapter.OnItemListener {
         val statusArray: String = getString(R.string.status_description)
         val statusIndex = statusArray.indexOf(statusArray)
         dayStatusSpinner?.setSelection(statusIndex)
+    }
+
+    override fun onItemClick(position: Int) {
+        // click on appointment
+        Toast.makeText(context, "Appointment has been clicked", Toast.LENGTH_SHORT).show()
+        // TODO: сделать диалоговое окно редактировать и удалить 
     }
 }
 

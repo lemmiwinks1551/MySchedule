@@ -30,6 +30,7 @@ class DateViewModel(
         )
 
     fun updateDateParams() {
+        // set day status and appointmentsCount
         getDateStatus()
         getDateAppointmentCount()
         selectedDateParams.value = selectedDateParams.value
@@ -38,16 +39,14 @@ class DateViewModel(
     private fun getDateStatus() {
         selectedDateParams.value?.status =
             getDateStatusUseCase.execute(selectedDateParams.value!!).status.toString()
-        Log.e(log, "Status got")
     }
 
     private fun getDateAppointmentCount() {
         selectedDateParams.value?.appointmentCount =
             getDateAppointmentsUseCase.execute(selectedDateParams.value!!).count
-        Log.e(log, "AppointmentCount got")
     }
 
-    fun getDateAppointments(dateParams: DateParams): Cursor {
+    fun getDateAppointments(): Cursor {
         return getDateAppointmentsUseCase.execute(dateParams = selectedDateParams.value!!)
     }
 

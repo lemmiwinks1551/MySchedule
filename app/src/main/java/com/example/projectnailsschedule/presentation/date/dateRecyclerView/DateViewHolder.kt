@@ -9,7 +9,7 @@ import com.example.projectnailsschedule.presentation.date.DateFragment
 class DateViewHolder internal constructor(itemView: View, onItemListener: DateFragment) :
     RecyclerView.ViewHolder(itemView), View.OnClickListener {
 
-    val onItemListener: DateAdapter.OnItemListener
+    private val onItemListener: DateAdapter.OnItemListener
     val appointmentTime: TextView
     val appointmentProcedure: TextView
     val appointmentClientName: TextView
@@ -27,7 +27,7 @@ class DateViewHolder internal constructor(itemView: View, onItemListener: DateFr
     }
 
     override fun onClick(p0: View?) {
-        TODO("click on appointment (delete/edit)")
+        onItemListener.onItemClick(adapterPosition)
     }
 
 }

@@ -11,7 +11,6 @@ import com.example.projectnailsschedule.presentation.date.DateViewModel
 
 class DateAdapter(
     private val appointmentsCount: Int,
-    private val dateParams: DateParams,
     private val onItemListener: DateFragment,
     private val dateViewModel: DateViewModel
 ) : RecyclerView.Adapter<DateViewHolder>() {
@@ -23,10 +22,11 @@ class DateAdapter(
     }
 
     override fun onBindViewHolder(holder: DateViewHolder, position: Int) {
-        val dateAppointmentsCursor = dateViewModel.getDateAppointments(dateParams)
-
+        // get date appointments
+        val dateAppointmentsCursor = dateViewModel.getDateAppointments()
         dateAppointmentsCursor.moveToFirst()
 
+        // inflate view holder if data exists
         if (dateAppointmentsCursor.moveToPosition(position)) {
             // Set time in holder
             holder.appointmentTime.text = dateAppointmentsCursor.getString(2)
@@ -50,7 +50,7 @@ class DateAdapter(
     }
 
     interface OnItemListener {
-        fun onItemClick(position: Int, dayText: String?)
+        fun onItemClick(position: Int)
     }
 
 }
