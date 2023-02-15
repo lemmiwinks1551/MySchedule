@@ -51,12 +51,13 @@
         app:layout_constraintStart_toEndOf="@id/COLUMN_NAME_TEXT"
         app:layout_constraintTop_toBottomOf="@+id/appointment_start_short" />
 
-    <View
+    <ImageView
+        android:id="@+id/border_line_appointment_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="5dp"
         android:layout_margin="8dp"
-        android:background="?attr/colorOnSecondary"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/appointment_name_short" />
+        android:layerType="software"
+        android:src="@drawable/border_line_appointment_recycler_view"
+        app:layout_constraintTop_toBottomOf="@id/COLUMN_NAME_TEXT" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

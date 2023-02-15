@@ -62,13 +62,12 @@ class ScheduleDbHelper(context: Context?) :
     }
 
     fun getDateAppointments(dateParams: DateParams, db: SQLiteDatabase): Cursor {
-        val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
-        val query = "SELECT * FROM $TABLE_NAME WHERE $COLUMN_DATE = '${dateParams.date?.format(formatter)}';"
+        val query = "SELECT * FROM $TABLE_NAME WHERE $COLUMN_DATE = '${dateParams.date}';"
         Log.e(LOG, String.format("getDateAppointments query: $query"))
         return db.rawQuery(query, null)
     }
 
-    fun deleteRow(currentId: Int, db: SQLiteDatabase) {
+    fun deleteAppointment(currentId: Int, db: SQLiteDatabase) {
         /** Delete a row */
         val query = "DELETE FROM $TABLE_NAME WHERE $COLUMN_ID = $currentId;"
         Log.e(LOG, String.format("Delete row query: $query"))

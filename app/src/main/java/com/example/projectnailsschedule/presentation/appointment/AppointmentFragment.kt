@@ -15,6 +15,7 @@ import com.example.projectnailsschedule.databinding.FragmentAppointmentBinding
 import com.example.projectnailsschedule.domain.models.AppointmentParams
 import com.example.projectnailsschedule.util.Util
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 /** AppointmentFragment View*/
@@ -45,24 +46,11 @@ class AppointmentFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
 
         // set binding
         _binding = FragmentAppointmentBinding.inflate(inflater, container, false)
-
-        // Set ClickListener on save_changes_button
-        binding.saveChangesButton.setOnClickListener {
-            if (appointmentParams?._id == null) {
-                // no _id - add new Appointment
-                createAppointment()
-            } else {
-                // _id - edit Appointment
-                editAppointment()
-            }
-        }
 
         // set ClickListeners
         setClickListeners()
@@ -74,6 +62,17 @@ class AppointmentFragment : Fragment() {
     }
 
     private fun setClickListeners() {
+        // Set ClickListener on save_changes_button
+        binding.saveChangesButton.setOnClickListener {
+            if (appointmentParams?._id == null) {
+                // no _id - add new Appointment
+                createAppointment()
+            } else {
+                // _id - edit Appointment
+                editAppointment()
+            }
+        }
+
         // set ClickListener on cancel_button
         binding.cancelButton.setOnClickListener {
             cancelButton()
@@ -96,10 +95,12 @@ class AppointmentFragment : Fragment() {
     private fun createAppointment() {
         /** Send params to ViewModel */
 
+        val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
+
         // create appointmentParams object
         with(binding) {
             val appointmentParams = AppointmentParams(
-                appointmentDate = LocalDate.parse(dayEditText.toString()),
+                appointmentDate = LocalDate.parse(dayEditText.text, formatter),
                 clientName = nameEditText.text.toString(),
                 startTime = timeEditText.text.toString(),
                 procedureName = procedureEditText.text.toString(),
@@ -110,7 +111,7 @@ class AppointmentFragment : Fragment() {
 
             Toast.makeText(
                 context,
-                "$toastCreated ${appointmentParams.appointmentDate}",
+                "$toastCreated ${appointmentParams.appointmentDate?.format(formatter)}",
                 Toast.LENGTH_LONG
             ).show()
         }
@@ -149,9 +150,10 @@ class AppointmentFragment : Fragment() {
 
     private fun setAppointmentCurrentParams() {
         // set current appointmentParams from DateFragment binding object
+        val dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
 
         with(binding) {
-            dayEditText.text = appointmentParams?.appointmentDate.toString().format("dd.MM.yyyy")
+            dayEditText.text = appointmentParams?.appointmentDate?.format(dateFormatter)
             timeEditText.text = appointmentParams?.startTime
             procedureEditText.setText(appointmentParams?.procedureName)
             nameEditText.setText(appointmentParams?.clientName)

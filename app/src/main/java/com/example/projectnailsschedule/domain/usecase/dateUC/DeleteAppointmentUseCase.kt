@@ -5,7 +5,7 @@ import com.example.projectnailsschedule.domain.repository.ScheduleRepository
 
 class DeleteAppointmentUseCase(private val scheduleRepository: ScheduleRepository) {
 
-    fun execute(appointmentParams: AppointmentParams) {
-
+    fun execute(id: Int) {
+        scheduleRepository.deleteAppointment(id)
     }
 }

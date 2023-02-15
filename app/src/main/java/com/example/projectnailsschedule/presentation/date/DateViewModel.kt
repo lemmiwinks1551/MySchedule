@@ -1,7 +1,6 @@
 package com.example.projectnailsschedule.presentation.date
 
 import android.database.Cursor
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.projectnailsschedule.domain.models.AppointmentParams
@@ -29,11 +28,19 @@ class DateViewModel(
             )
         )
 
+    var dateAppointmentsCursor = MutableLiveData<Cursor>()
+
     fun updateDateParams() {
         // set day status and appointmentsCount
         getDateStatus()
         getDateAppointmentCount()
         selectedDateParams.value = selectedDateParams.value
+    }
+
+    fun setDateAppointments(cursor : Cursor) {
+        // update appointmentCursor
+        dateAppointmentsCursor.value = cursor
+        dateAppointmentsCursor.value = dateAppointmentsCursor.value
     }
 
     private fun getDateStatus() {
@@ -50,8 +57,9 @@ class DateViewModel(
         return getDateAppointmentsUseCase.execute(dateParams = selectedDateParams.value!!)
     }
 
-    fun deleteAppointment(appointmentParams: AppointmentParams) {
-        deleteAppointmentUseCase.execute(appointmentParams = appointmentParams)
+    fun deleteAppointment(id: Int) {
+        dateAppointmentsCursor.value?.moveToPosition(id)
+        deleteAppointmentUseCase.execute(dateAppointmentsCursor.value?.getString(0)!!.toInt())
     }
 
     fun setDateStatus(dateParams: DateParams) {

@@ -141,4 +141,13 @@
         app:layout_constraintStart_toEndOf="@id/COLUMN_MISC_NAME"
         app:layout_constraintTop_toBottomOf="@id/appointmentName_phone" />
 
+    <ImageView
+        android:id="@+id/border_line_appointment_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:layout_margin="8dp"
+        android:layerType="software"
+        android:src="@drawable/border_line_appointment_recycler_view"
+        app:layout_constraintTop_toBottomOf="@id/COLUMN_MISC_NAME" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

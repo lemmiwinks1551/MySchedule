@@ -18,7 +18,7 @@ internal class DateShortAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DateShortViewHolder {
         // Set ViewHolder
         val inflater = LayoutInflater.from(parent.context)
-        val view: View = inflater.inflate(R.layout.database_short_view, parent, false)
+        val view: View = inflater.inflate(R.layout.database_short_recycler_view, parent, false)
         return DateShortViewHolder(view)
     }
 

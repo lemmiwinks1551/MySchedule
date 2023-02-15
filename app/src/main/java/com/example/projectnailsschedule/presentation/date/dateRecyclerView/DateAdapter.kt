@@ -5,7 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
-import com.example.projectnailsschedule.domain.models.DateParams
 import com.example.projectnailsschedule.presentation.date.DateFragment
 import com.example.projectnailsschedule.presentation.date.DateViewModel
 
@@ -24,7 +23,6 @@ class DateAdapter(
     override fun onBindViewHolder(holder: DateViewHolder, position: Int) {
         // get date appointments
         val dateAppointmentsCursor = dateViewModel.getDateAppointments()
-        dateAppointmentsCursor.moveToFirst()
 
         // inflate view holder if data exists
         if (dateAppointmentsCursor.moveToPosition(position)) {
@@ -43,6 +41,8 @@ class DateAdapter(
             // Set misc in holder
             holder.appointmentMisc.text = dateAppointmentsCursor.getString(6)
         }
+
+        dateViewModel.setDateAppointments(dateAppointmentsCursor)
     }
 
     override fun getItemCount(): Int {

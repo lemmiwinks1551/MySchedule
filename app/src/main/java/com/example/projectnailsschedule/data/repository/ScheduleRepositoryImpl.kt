@@ -34,4 +34,10 @@ class ScheduleRepositoryImpl(context: Context?): ScheduleRepository {
         )
     }
 
+    override fun deleteAppointment(id: Int) {
+        val db: SQLiteDatabase = scheduleDbHelper.writableDatabase
+        scheduleDbHelper.deleteAppointment(id, db)
+    }
+
+
 }
