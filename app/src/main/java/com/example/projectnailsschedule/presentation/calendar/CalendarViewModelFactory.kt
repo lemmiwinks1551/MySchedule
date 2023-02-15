@@ -7,6 +7,7 @@ import com.example.projectnailsschedule.data.repository.ScheduleRepositoryImpl
 import com.example.projectnailsschedule.data.repository.StatusRepositoryImpl
 import com.example.projectnailsschedule.domain.usecase.calendarUC.GetDateStatusUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.LoadShortDateUseCase
+import com.example.projectnailsschedule.domain.usecase.dateUC.GetDateAppointmentsUseCase
 
 /** Create Factory for Calendar Fragment with UseCases */
 
@@ -21,10 +22,14 @@ class CalendarViewModelFactory(context: Context?) : ViewModelProvider.Factory {
     private val loadShortDateUseCase =
         LoadShortDateUseCase(scheduleRepository = scheduleRepositoryImpl)
 
+    private var getDateAppointmentsUseCase =
+        GetDateAppointmentsUseCase(scheduleRepository = scheduleRepositoryImpl)
+
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return CalendarViewModel(
             getDateStatusUseCase,
-            loadShortDateUseCase
+            loadShortDateUseCase,
+            getDateAppointmentsUseCase
         ) as T
     }
 }

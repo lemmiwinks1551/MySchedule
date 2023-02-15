@@ -1,16 +1,20 @@
 package com.example.projectnailsschedule.presentation.calendar
 
 import android.database.Cursor
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.projectnailsschedule.domain.models.DateParams
 import com.example.projectnailsschedule.domain.usecase.calendarUC.GetDateStatusUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.LoadShortDateUseCase
+import com.example.projectnailsschedule.domain.usecase.dateUC.GetDateAppointmentsUseCase
+import com.example.projectnailsschedule.presentation.date.DateViewModel
 import java.time.LocalDate
 
 class CalendarViewModel(
     private val getDateStatusUseCase: GetDateStatusUseCase,
-    private val loadShortDateUseCase: LoadShortDateUseCase
+    private val loadShortDateUseCase: LoadShortDateUseCase,
+    private var getDateAppointmentsUseCase: GetDateAppointmentsUseCase
 ) : ViewModel() {
 
     private val log = this::class.simpleName
@@ -26,9 +30,6 @@ class CalendarViewModel(
             )
         )
 
-    var selectedMonth = MutableLiveData(LocalDate.now())
-    var selectedYearValue = MutableLiveData(LocalDate.now().year)
-    var dateParamsChangeDay = MutableLiveData<DateParams>()
 
     fun getDayStatus(dateParams: DateParams): DateParams {
         // get day status from repository
@@ -36,62 +37,35 @@ class CalendarViewModel(
         return getDateStatusUseCase.execute(dateParams)
     }
 
-    private fun getDayAppointments(dateParams: DateParams): Int {
-        // get day appointments from repository
-        return loadShortDateUseCase.execute(dateParams).count
-    }
-
     fun getCursorAppointments(dateParams: DateParams): Cursor {
         return loadShortDateUseCase.execute(dateParams)
     }
 
+    private fun getDateAppointmentCount() {
+        selectedDateParams.value?.appointmentCount =
+            getDateAppointmentsUseCase.execute(selectedDateParams.value!!).count
+        // selectedDateParams.value = selectedDateParams.value
+    }
+
     fun changeDay(day: Int) {
         // set month day in selectedDayParams
-        val dateParamsNew = DateParams(date = selectedDateParams.value?.date?.withDayOfMonth(day))
-        val appointmentCount = getDayAppointments(dateParamsNew)
-        selectedDateParams.value = DateParams(
-            _id = selectedDateParams.value?._id,
-            date = selectedDateParams.value?.date?.withDayOfMonth(day),
-            status = selectedDateParams.value?.status,
-            appointmentCount = appointmentCount
-        )
+        selectedDateParams.value?.date = selectedDateParams.value?.date?.withDayOfMonth(day)
+        getDateAppointmentCount()
+        selectedDateParams.value = selectedDateParams.value
     }
 
     fun changeMonth(operator: Char) {
         // change current month
-        // change selectedMonth for CalendarRecyclerView observer
         if (operator == operatorAdd) {
-            selectedDateParams.value = DateParams(
-                _id = selectedDateParams.value?._id,
-                date = selectedDateParams.value?.date?.plusMonths(1),
-                status = selectedDateParams.value?.status,
-                appointmentCount = selectedDateParams.value?.appointmentCount
-            )
-
-            selectedMonth.value = selectedMonth.value?.plusMonths(1)
+            selectedDateParams.value?.date = selectedDateParams.value?.date?.plusMonths(1)
         } else {
-
-            selectedDateParams.value = DateParams(
-                _id = selectedDateParams.value?._id,
-                date = selectedDateParams.value?.date?.minusMonths(1),
-                status = selectedDateParams.value?.status,
-                appointmentCount = selectedDateParams.value?.appointmentCount
-            )
-            selectedMonth.value = selectedMonth.value?.minusMonths(1)
+            selectedDateParams.value?.date = selectedDateParams.value?.date?.minusMonths(1)
         }
-
-        // change year if necessary
-        if (selectedYearValue.value != selectedDateParams.value?.date?.year) {
-            selectedYearValue.value = selectedDateParams.value?.date?.year
-        }
+        selectedDateParams.value = selectedDateParams.value
     }
 
-    fun goIntoDate() {
-        // create dateParams obj with chosen date
-        dateParamsChangeDay.value = DateParams(
-            _id = null,
-            date = selectedDateParams.value?.date,
-            status = null
-        )
+    override fun onCleared() {
+        super.onCleared()
+        Log.e(log, "onCLeared")
     }
 }

@@ -144,6 +144,7 @@ class DateFragment : Fragment(), DateAdapter.OnItemListener {
 
         dateRecyclerView?.layoutManager = layoutManager
         dateRecyclerView?.adapter = dateAdapter
+        dateRecyclerView?.scheduleLayoutAnimation()
     }
 
     override fun onResume() {
