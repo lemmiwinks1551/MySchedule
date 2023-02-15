@@ -1,10 +1,15 @@
 package com.example.projectnailsschedule.presentation.date
 
+import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.view.Window
+import android.widget.AdapterView
+import android.widget.Button
+import android.widget.Spinner
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
@@ -14,11 +19,8 @@ import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentDateBinding
 import com.example.projectnailsschedule.domain.models.AppointmentParams
 import com.example.projectnailsschedule.domain.models.DateParams
-import com.example.projectnailsschedule.domain.usecase.dateUC.GetDateAppointmentsUseCase
-import com.example.projectnailsschedule.presentation.calendar.calendarRecyclerView.CalendarAdapter
 import com.example.projectnailsschedule.presentation.date.dateRecyclerView.DateAdapter
 import com.example.projectnailsschedule.util.Util
-import java.util.ArrayList
 
 
 class DateFragment : Fragment(), DateAdapter.OnItemListener {
@@ -34,6 +36,10 @@ class DateFragment : Fragment(), DateAdapter.OnItemListener {
     private var dateParams: DateParams? = null
     private var dateViewModel: DateViewModel? = null
     private var dateRecyclerView: RecyclerView? = null
+
+    // dialog buttons
+    private var deleteButton: Button? = null
+    private var editButton: Button? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -98,6 +104,7 @@ class DateFragment : Fragment(), DateAdapter.OnItemListener {
         }
 
         // click on spinner
+        // TODO: add set status  
         dayStatusSpinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
@@ -106,11 +113,11 @@ class DateFragment : Fragment(), DateAdapter.OnItemListener {
                 parent: AdapterView<*>?, view: View?, position: Int, id: Long
             ) {
                 val spinnerText = dayStatusSpinner?.selectedItem
-                    Toast.makeText(
-                        context,
-                        "Статус дня $spinnerText",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                Toast.makeText(
+                    context,
+                    "Статус дня $spinnerText",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }
@@ -154,8 +161,28 @@ class DateFragment : Fragment(), DateAdapter.OnItemListener {
 
     override fun onItemClick(position: Int) {
         // click on appointment
-        Toast.makeText(context, "Appointment has been clicked", Toast.LENGTH_SHORT).show()
-        // TODO: сделать диалоговое окно редактировать и удалить 
+        // show dialog with edit/delete options
+        val dialog = Dialog(requireContext())
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(true)
+        dialog.setContentView(R.layout.dialog_db)
+
+        // init dialog buttons
+        deleteButton = dialog.findViewById(R.id.delete)
+        editButton = dialog.findViewById(R.id.edit)
+
+
+        deleteButton?.setOnClickListener {
+            dateViewModel?.deleteAppointment(position)
+            dialog.dismiss()
+            dateViewModel?.updateDateParams()
+        }
+
+        editButton?.setOnClickListener {
+            // TODO: edit appointment
+        }
+
+        dialog.show()
     }
 }
 
