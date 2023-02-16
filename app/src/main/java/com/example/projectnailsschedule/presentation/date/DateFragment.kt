@@ -21,6 +21,7 @@ import com.example.projectnailsschedule.domain.models.AppointmentParams
 import com.example.projectnailsschedule.domain.models.DateParams
 import com.example.projectnailsschedule.presentation.date.dateRecyclerView.DateAdapter
 import com.example.projectnailsschedule.util.Util
+import java.time.format.DateTimeFormatter
 
 
 class DateFragment : Fragment(), DateAdapter.OnItemListener {
@@ -31,6 +32,7 @@ class DateFragment : Fragment(), DateAdapter.OnItemListener {
     private val bindingKey = "dateParams"
     private val bindingKeyAppointment = "appointmentParams"
     private val dateRecyclerViewSpanCount = 1
+    private val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
 
     private var dayStatusSpinner: Spinner? = null
     private var dateParams: DateParams? = null
@@ -182,7 +184,6 @@ class DateFragment : Fragment(), DateAdapter.OnItemListener {
         editButton?.setOnClickListener {
             // TODO: edit appointment
         }
-
         dialog.show()
     }
 }

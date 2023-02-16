@@ -57,7 +57,7 @@
         android:layout_height="5dp"
         android:layout_margin="8dp"
         android:layerType="software"
-        android:src="@drawable/border_line_appointment_recycler_view"
+        android:src="@drawable/border_line_horizontal"
         app:layout_constraintTop_toBottomOf="@id/COLUMN_NAME_TEXT" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

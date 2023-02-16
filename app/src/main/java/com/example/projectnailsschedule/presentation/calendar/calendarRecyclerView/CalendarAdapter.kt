@@ -26,7 +26,7 @@ internal class CalendarAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalendarViewHolder {
         // Возвращает объект ViewHolder, который будет хранить данные по одному объекту
         val inflater = LayoutInflater.from(parent.context)
-        val view: View = inflater.inflate(R.layout.calendar_cell, parent, false)
+        val view: View = inflater.inflate(R.layout.calendar_recycler_view_cell, parent, false)
 
         return CalendarViewHolder(view, onItemListener)
     }
@@ -34,15 +34,6 @@ internal class CalendarAdapter(
     override fun onBindViewHolder(holder: CalendarViewHolder, position: Int) {
         // get day to work with
         val dayInHolder = daysInMonth[position]
-
-        // set bold font for current day
-        val nowDate = LocalDate.now()
-        if (nowDate.month == selectedDate.month &&
-            nowDate.dayOfMonth.toString() == dayInHolder
-        ) {
-            holder.dayOfMonth.setTypeface(null, Typeface.BOLD)
-            holder.dayOfMonth.textSize = 23f
-        }
 
         // set day number in CalendarViewHolder (even if it`s empty)
         holder.dayOfMonth.text = dayInHolder

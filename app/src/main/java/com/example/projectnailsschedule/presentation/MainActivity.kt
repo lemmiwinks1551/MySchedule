@@ -68,20 +68,6 @@ class MainActivity : AppCompatActivity() {
         if (WorkFolders().state == Thread.State.NEW) {
             WorkFolders().start()
         }
-
-        // Set click listener on navController
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-            // Set toolbar with specific name of week day
-            if (destination.id == R.id.nav_date) {
-                // Get selected date
-                val checkedDate = "date"
-                // Convert Date string to Local Date
-                val weekDay = Util().stringToLocalDate(checkedDate)
-                // Set String into toolbar
-                // TODO: !!! !!!
-                binding.appBarMain.toolbar.title = "test"
-            }
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

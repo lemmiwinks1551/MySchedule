@@ -151,11 +151,12 @@
     </LinearLayout> <!--Дни недели-->
 
     <androidx.recyclerview.widget.RecyclerView
+        android:background="@drawable/calendar_recycler_view_background"
         android:id="@+id/calendarRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="8dp"
-        android:layout_weight="0.5"
+        android:layout_marginBottom="8dp"
+        android:layout_weight="0.35"
         android:layoutAnimation="@anim/layout_animation"
         android:scrollbars="vertical"
         android:verticalScrollbarPosition="left"
