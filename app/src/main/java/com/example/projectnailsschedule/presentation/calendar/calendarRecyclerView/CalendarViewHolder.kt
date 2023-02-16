@@ -16,7 +16,7 @@ class CalendarViewHolder internal constructor(itemView: View, onItemListener: Ca
     private val onItemListener: CalendarAdapter.OnItemListener
 
     init {
-        dayOfMonth = itemView.findViewById(R.id.day_cell)
+        dayOfMonth = itemView.findViewById(R.id.date_cell)
         this.onItemListener = onItemListener
         itemView.setOnClickListener(this)
     }
