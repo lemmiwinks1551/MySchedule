@@ -1,6 +1,6 @@
 package com.example.projectnailsschedule.presentation.calendar.calendarRecyclerView
 
-import android.graphics.Typeface
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,19 +9,14 @@ import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.domain.models.DateParams
 import com.example.projectnailsschedule.presentation.calendar.CalendarFragment
 import com.example.projectnailsschedule.presentation.calendar.CalendarViewModel
-import java.time.LocalDate
 
 internal class CalendarAdapter(
     private val daysInMonth: ArrayList<String>,
     private val onItemListener: CalendarFragment,
-    private val calendarViewModel: CalendarViewModel,
-    private val selectedDate: LocalDate
+    private val calendarViewModel: CalendarViewModel
 ) :
     RecyclerView.Adapter<CalendarViewHolder>() {
     private var log = this::class.simpleName
-    private val busyDay = "Занят"
-    private val semiBusyDay = "Есть записи"
-    private val notBusyDay = "Выходной"
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalendarViewHolder {
         // Возвращает объект ViewHolder, который будет хранить данные по одному объекту
@@ -36,23 +31,26 @@ internal class CalendarAdapter(
         val dayInHolder = daysInMonth[position]
 
         // set day number in CalendarViewHolder (even if it`s empty)
-        holder.dayOfMonth.text = dayInHolder
+        holder.date.text = dayInHolder
 
-        // set background for days with special statuses
+        // set appointments count
         if (dayInHolder != "") {
-            var dateParams = DateParams(
-                _id = null,
-                date = LocalDate.now(),
-                status = null
-            )
+            try {
+                // try to get appointment count from date
+                // can throw exception if day is`t exists in month
+                val appointmentCount: Int
+                val dateParams = DateParams(
+                    date = calendarViewModel.selectedDateParams.value?.date?.withDayOfMonth(dayInHolder.toInt())
+                )
+                appointmentCount =
+                    calendarViewModel.getCursorAppointments(dateParams = dateParams).count
 
-            // get day status from Data
-            dateParams = calendarViewModel.getDayStatus(dateParams)
-
-            when (dateParams.status) {
-                semiBusyDay -> holder.dayOfMonth.setBackgroundResource(R.drawable.border_medium)
-                busyDay -> holder.dayOfMonth.setBackgroundResource(R.drawable.border_busy)
-                notBusyDay -> holder.dayOfMonth.setBackgroundResource(R.drawable.border_day_off)
+                if (appointmentCount > 0) {
+                    // if appointments exists
+                    holder.dateAppointmentsCount.text = appointmentCount.toString()
+                }
+            } catch (e: Exception) {
+                Log.e(log, e.toString())
             }
         }
     }

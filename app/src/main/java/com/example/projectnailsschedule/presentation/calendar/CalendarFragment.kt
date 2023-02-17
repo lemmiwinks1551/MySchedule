@@ -136,7 +136,6 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
             dateParams = DateParams(
                 _id = null,
                 date = it.date,
-                status = null,
                 appointmentCount = null
             )
         }
@@ -162,8 +161,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         val calendarAdapter = CalendarAdapter(
             daysInMonth = daysInMonth,
             onItemListener = this,
-            calendarViewModel = calendarViewModel!!,
-            selectedDate = selectedDate
+            calendarViewModel = calendarViewModel!!
         )
 
         val layoutManager: RecyclerView.LayoutManager =
@@ -245,7 +243,6 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         dateParams = DateParams(
             _id = null,
             date = null,
-            status = null,
             appointmentCount = null
         )
         super.onDestroyView()

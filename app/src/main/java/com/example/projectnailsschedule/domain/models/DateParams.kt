@@ -13,7 +13,6 @@ import java.time.LocalDate
 class DateParams(
     val _id: Int? = null,
     var date: LocalDate? = null,
-    var status: String? = null,
     var appointmentCount: Int? = null
 ) : Parcelable {
 
@@ -21,7 +20,6 @@ class DateParams(
         return String.format("" +
                 "id = $_id " +
                 "date = $date " +
-                "status = $status " +
                 "appointmentCount = $appointmentCount")
     }
 }

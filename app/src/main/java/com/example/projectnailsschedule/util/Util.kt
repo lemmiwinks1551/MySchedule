@@ -2,16 +2,14 @@ package com.example.projectnailsschedule.util
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Context
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import com.example.projectnailsschedule.R
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.YearMonth
-import java.time.format.DateTimeFormatter
-import java.util.ArrayList
+import java.time.temporal.WeekFields
+import java.util.*
 
 /**
  * Вспомогательный класс, выполняющий коенвертации даты
@@ -55,36 +53,6 @@ class Util {
         return formatter.format(parser.parse(day)).toString()
     }
 
-    fun stringToLocalDate(date: String): LocalDate {
-        /** Parse String "dd.MM.yyyy" into LocalDate */
-        try {
-            return LocalDate.parse(date, DateTimeFormatter.ofPattern("dd.MM.yyyy"))
-        } catch (e: Exception) {
-            Log.e(LOG, e.toString())
-            return LocalDate.now()
-        }
-    }
-
-    fun getWeekDayName(date: LocalDate, context: Context): String {
-        /** Get name of week day for toolbar */
-        with(context) {
-            return when (date.dayOfWeek.value) {
-                1 -> getString(R.string.mon)
-                2 -> getString(R.string.tue)
-                3 -> getString(R.string.wed)
-                4 -> getString(R.string.thu)
-                5 -> getString(R.string.fri)
-                6 -> getString(R.string.sat)
-                7 -> getString(R.string.sun)
-                else -> {
-                    Log.e(LOG, "No such string with that day of week")
-                    ""
-                }
-            }
-        }
-
-    }
-
     fun hideKeyboard(activity: Activity) {
         val imm: InputMethodManager =
             activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -113,17 +81,25 @@ class Util {
         // Получаем день недели первого дня месяца
         val dayOfWeek = firstOfMonth.dayOfWeek.value - 1
 
+        val maxGridValue = 7 * getWeeksInMonth(date = selectedDate)
         // Заполняем массив для отображения в RecyclerView
         // Учитываем пустые дни (дни прошлого месяца
-        // TODO: 12.07.2022 Добавить дни прошлого и будущего месяцев
-        for (i in 1..42) {
+
+        for (i in 1..maxGridValue) {
             if (i <= dayOfWeek || i > daysInMonth + dayOfWeek) {
                 daysInMonthArray.add("")
             } else {
                 daysInMonthArray.add((i - dayOfWeek).toString())
             }
         }
-
         return daysInMonthArray
+    }
+
+    fun getWeeksInMonth(date: LocalDate): Int {
+        // get weeks in month
+        val locale = Locale("ru")
+        val weekOfMonthStart = date.withDayOfMonth(1).get(WeekFields.of(locale).weekOfYear())
+        val weekOfMonthEnd = date.withDayOfMonth(date.lengthOfMonth()).get(WeekFields.of(locale).weekOfYear())
+        return weekOfMonthEnd - weekOfMonthStart + 1
     }
 }

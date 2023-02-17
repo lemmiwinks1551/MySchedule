@@ -133,12 +133,12 @@ class ScheduleDbHelper(context: Context?) :
 
     fun createDb() {
         // Method for search fragment
-        val file = File(StatusDbHelper.DATABASE_NAME)
+        val file = File(DATABASE_NAME)
         if (!file.exists()) {
             //получаем локальную бд как поток
             try {
-                myContext?.assets?.open(StatusDbHelper.DATABASE_NAME).use { myInput ->
-                    FileOutputStream(StatusDbHelper.DATABASE_NAME).use { myOutput ->
+                myContext?.assets?.open(DATABASE_NAME).use { myInput ->
+                    FileOutputStream(DATABASE_NAME).use { myOutput ->
 
                         // побайтово копируем данные
                         val buffer = ByteArray(1024)
