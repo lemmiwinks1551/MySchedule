@@ -4,7 +4,7 @@
     android:id="@+id/calendarRecyclerViewCell"
     android:layout_width="match_parent"
     android:layout_height="50sp"
-    android:background="@drawable/borders_test">
+    android:background="@drawable/calendar_recycler_view_borders">
 
     <!--ViewHolder для RecyclerView-->
     <TextView

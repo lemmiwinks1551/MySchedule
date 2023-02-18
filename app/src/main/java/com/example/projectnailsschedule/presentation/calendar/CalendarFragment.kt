@@ -1,5 +1,6 @@
 package com.example.projectnailsschedule.presentation.calendar
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -17,11 +18,11 @@ import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentCalendarBinding
 import com.example.projectnailsschedule.domain.models.DateParams
 import com.example.projectnailsschedule.presentation.calendar.calendarRecyclerView.CalendarAdapter
+import com.example.projectnailsschedule.presentation.calendar.calendarRecyclerView.CalendarViewHolder
 import com.example.projectnailsschedule.presentation.calendar.dateShortRecyclerView.DateShortAdapter
 import com.example.projectnailsschedule.util.Util
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
 import java.util.*
 
@@ -37,10 +38,13 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
     private var yearTextView: TextView? = null
     private var calendarRecyclerView: RecyclerView? = null
     private var shortDataRecyclerView: RecyclerView? = null
-    private var dateTextView: TextView? = null
     private var addButton: FloatingActionButton? = null
     private var layout: LinearLayout? = null
     private var dateParams: DateParams? = null
+
+    // control background click listener
+    private var prevHolderPos: Int? = null
+    private var click: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,7 +83,6 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         monthTextView = binding.monthTextView
         yearTextView = binding.yearTextView
         addButton = binding.goIntoDate
-        dateTextView = binding.dayTextView
         layout = binding.fragmentCalendar
     }
 
@@ -128,9 +131,6 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
             ) {
                 inflateShortDateRecyclerView(it)
             }
-
-            // update day
-            setShortDateTextView(it)
 
             // reset local DateParams
             dateParams = DateParams(
@@ -181,7 +181,6 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
 
         // clear DateShort RecyclerView
         shortDataRecyclerView?.adapter = null
-        dateTextView?.text = null
     }
 
     override fun onItemClick(position: Int, dayText: String?) {
@@ -190,11 +189,44 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
             // set button go_into_date and recycler view components visible
             addButton?.visibility = View.VISIBLE
             shortDataRecyclerView?.visibility = View.VISIBLE
-            dateTextView?.visibility = View.VISIBLE
 
             // change selected date in ViewModel
             calendarViewModel?.changeDay(day = dayText.toInt())
         }
+
+        // set current holder and prev view holder
+        val holderNew: CalendarViewHolder =
+            calendarRecyclerView?.findViewHolderForAdapterPosition(position) as CalendarViewHolder
+        var holderOld: CalendarViewHolder? = null
+
+        if (prevHolderPos != null) {
+            holderOld  =
+                calendarRecyclerView?.findViewHolderForAdapterPosition(prevHolderPos!!) as CalendarViewHolder
+        }
+
+        if (position != prevHolderPos) {
+            if (!click || position != prevHolderPos) {
+                holderNew.cellLayout.setBackgroundColor(Color.RED)
+                holderOld?.cellLayout?.setBackgroundResource(R.drawable.calendar_recycler_view_borders)
+            } else {
+                holderOld?.cellLayout?.setBackgroundResource(R.drawable.calendar_recycler_view_borders)
+            }
+        } else {
+            if (!click) {
+                holderNew.cellLayout.setBackgroundColor(Color.RED)
+            } else {
+                holderOld?.cellLayout?.setBackgroundResource(R.drawable.calendar_recycler_view_borders)
+            }
+        }
+
+
+        // set prev and old position
+        prevHolderPos = position
+        clickSwith()
+    }
+
+    fun clickSwith() {
+        click = !click
     }
 
     private fun inflateShortDateRecyclerView(selectedDateParams: DateParams) {
@@ -215,11 +247,6 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         shortDataRecyclerView?.adapter = dateShortAdapter
     }
 
-    private fun setShortDateTextView(selectedDateParams: DateParams) {
-        val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
-        dateTextView?.text = selectedDateParams.date?.format(formatter)
-    }
-
     override fun onResume() {
         Log.e(log, "onResume")
         super.onResume()
@@ -228,7 +255,6 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         Util().hideKeyboard(requireActivity())
 
         // Clear views
-        dateTextView?.text = null
         shortDataRecyclerView?.adapter = null
     }
 

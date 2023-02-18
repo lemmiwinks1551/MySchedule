@@ -1,5 +1,6 @@
 package com.example.projectnailsschedule.presentation.calendar.calendarRecyclerView
 
+import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -18,6 +19,7 @@ internal class CalendarAdapter(
     RecyclerView.Adapter<CalendarViewHolder>() {
     private var log = this::class.simpleName
 
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalendarViewHolder {
         // Возвращает объект ViewHolder, который будет хранить данные по одному объекту
         val inflater = LayoutInflater.from(parent.context)
@@ -29,7 +31,6 @@ internal class CalendarAdapter(
     override fun onBindViewHolder(holder: CalendarViewHolder, position: Int) {
         // get day to work with
         val dayInHolder = daysInMonth[position]
-
         // set day number in CalendarViewHolder (even if it`s empty)
         holder.date.text = dayInHolder
 
@@ -40,7 +41,9 @@ internal class CalendarAdapter(
                 // can throw exception if day is`t exists in month
                 val appointmentCount: Int
                 val dateParams = DateParams(
-                    date = calendarViewModel.selectedDateParams.value?.date?.withDayOfMonth(dayInHolder.toInt())
+                    date = calendarViewModel.selectedDateParams.value?.date?.withDayOfMonth(
+                        dayInHolder.toInt()
+                    )
                 )
                 appointmentCount =
                     calendarViewModel.getCursorAppointments(dateParams = dateParams).count
