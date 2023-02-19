@@ -22,8 +22,10 @@ import com.example.projectnailsschedule.presentation.calendar.calendarRecyclerVi
 import com.example.projectnailsschedule.presentation.calendar.dateShortRecyclerView.DateShortAdapter
 import com.example.projectnailsschedule.util.Util
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import java.text.SimpleDateFormat
 import java.time.LocalDate
-import java.time.format.TextStyle
+import java.time.ZoneId
+import java.time.temporal.TemporalQueries.localDate
 import java.util.*
 
 
@@ -144,8 +146,10 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
     private fun setMonthTextView(selectedDateParams: DateParams) {
         // set month into textview
         // TODO: поправить формат
-        monthTextView?.text =
-            selectedDateParams.date!!.month?.getDisplayName(TextStyle.FULL, Locale("eng"))
+        val date = Date.from(selectedDateParams.date?.atStartOfDay(ZoneId.systemDefault())?.toInstant())
+        val month =
+            SimpleDateFormat("LLLL", Locale("ru")).format(date).replaceFirstChar { it.uppercase() }
+        monthTextView?.text = month
     }
 
     private fun setYearTextView(yearValue: Int) {
