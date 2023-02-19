@@ -53,10 +53,6 @@ class SearchFragment : Fragment() {
             val date = (arg0.adapter as SimpleCursorAdapter).cursor.getString(1)
             val bundle = Bundle()
             bundle.putString("date", date)
-            // TODO: ??? !!! клик по полю в поиске
-/*           CalendarViewModel.day = Service().stringToLocalDate(date).dayOfMonth.toString()
-            CalendarViewModel.month = Service().stringToLocalDate(date).monthValue.toString()
-            CalendarViewModel.year = Service().stringToLocalDate(date).year.toString()*/
             findNavController().navigate(R.id.action_nav_search_to_nav_date, bundle)
         }
 
@@ -74,7 +70,6 @@ class SearchFragment : Fragment() {
         }
 
 
-        // TODO: implement Filter method
         try {
             db = scheduleDbHelper?.open()
             userCursor = db?.rawQuery(

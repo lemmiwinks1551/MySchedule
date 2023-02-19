@@ -32,19 +32,6 @@ class Util {
         }
     }
 
-    fun removeZero(digit: String): String {
-        /** Удаляем 0 у однозначных чисел */
-        val output: String
-        if (digit[0].toString() == "0") {
-            output = digit.replace("0", "")
-            Log.e(LOG, "Удален 0, возвращаем $output")
-            return output
-        } else {
-            Log.e(LOG, "Удалять 0 не требуется, возвращаем $digit")
-            return digit
-        }
-    }
-
     @SuppressLint("SimpleDateFormat")
     fun dateConverter(day: String): String {
         /** Получаем день формате d.M.yyyy и конвертируем в формат dd.MM.yyyy */

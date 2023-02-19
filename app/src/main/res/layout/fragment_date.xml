@@ -22,28 +22,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
-    <Spinner
-        android:id="@+id/spinner_status"
-        android:layout_width="170dp"
-        android:layout_height="48dp"
-        android:layout_margin="8dp"
-        android:entries="@array/day_status"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/description"
-        app:layout_constraintTop_toBottomOf="@+id/scheduleRecyclerView" />
-
-    <TextView
-        android:id="@+id/description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:text="@string/status_description"
-        android:textColor="?attr/colorOnSecondary"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/scheduleRecyclerView" />
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addButton"
         android:layout_width="wrap_content"
@@ -55,7 +33,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.488"
-        app:layout_constraintStart_toEndOf="@+id/spinner_status"
         app:layout_constraintTop_toBottomOf="@id/scheduleRecyclerView"
         app:srcCompat="@android:drawable/ic_input_add"
         app:tint="@color/white" />
