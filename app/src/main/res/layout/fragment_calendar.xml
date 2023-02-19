@@ -157,28 +157,20 @@
         android:layout_marginStart="2dp"
         android:layout_marginEnd="2dp"
         android:layout_marginBottom="8dp"
-        android:layout_weight="0.33"
+        android:layout_weight="0.4"
         android:background="@drawable/calendar_recycler_view_background"
         android:layoutAnimation="@anim/layout_animation"
         android:scrollbars="vertical"
         android:verticalScrollbarPosition="left"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-    <TextView
-        android:id="@+id/dayTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:textAlignment="center"
-        android:textColor="?attr/colorOnSecondary"
-        android:textSize="20sp" /> <!--Выбранный день-->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/shortDataRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="8dp"
-        android:layout_weight="0.5"
+        android:layout_weight="0.6"
         android:scrollbars="vertical"
         android:verticalScrollbarPosition="left" />
 

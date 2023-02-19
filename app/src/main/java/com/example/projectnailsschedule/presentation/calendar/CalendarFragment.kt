@@ -42,7 +42,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
     private var layout: LinearLayout? = null
     private var dateParams: DateParams? = null
 
-    // control background click listener
+    // color background click listener
     private var prevHolderPos: Int? = null
     private var click: Boolean = false
 
@@ -181,6 +181,9 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
 
         // clear DateShort RecyclerView
         shortDataRecyclerView?.adapter = null
+
+        // clear click
+        click = false
     }
 
     override fun onItemClick(position: Int, dayText: String?) {
@@ -192,18 +195,23 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
 
             // change selected date in ViewModel
             calendarViewModel?.changeDay(day = dayText.toInt())
-        }
 
+            setBackgroundColor(position)
+        }
+    }
+
+    private fun setBackgroundColor(position: Int) {
         // set current holder and prev view holder
         val holderNew: CalendarViewHolder =
             calendarRecyclerView?.findViewHolderForAdapterPosition(position) as CalendarViewHolder
         var holderOld: CalendarViewHolder? = null
 
         if (prevHolderPos != null) {
-            holderOld  =
+            holderOld =
                 calendarRecyclerView?.findViewHolderForAdapterPosition(prevHolderPos!!) as CalendarViewHolder
         }
 
+        // set background
         if (position != prevHolderPos) {
             if (!click || position != prevHolderPos) {
                 holderNew.cellLayout.setBackgroundColor(Color.RED)
@@ -219,13 +227,12 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
             }
         }
 
-
         // set prev and old position
         prevHolderPos = position
-        clickSwith()
+        clickSwitch()
     }
 
-    fun clickSwith() {
+    private fun clickSwitch() {
         click = !click
     }
 
