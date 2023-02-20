@@ -14,5 +14,5 @@ interface ScheduleRepository {
 
     fun deleteAppointment(id: Int)
 
-    fun searchAppointment(searchString: Array<String>) : Cursor
+    fun searchAppointment(searchString: ArrayList<String>) : Cursor
 }

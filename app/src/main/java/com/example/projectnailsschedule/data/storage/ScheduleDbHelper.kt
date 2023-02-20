@@ -13,6 +13,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.util.*
+import kotlin.collections.ArrayList
 
 /** Methods for interacting with Schedule database */
 
@@ -74,12 +75,12 @@ class ScheduleDbHelper(context: Context?) :
         Log.e(log, String.format("Delete row - success"))
     }
 
-    fun searchAppointments(searchString: Array<String>, db: SQLiteDatabase): Cursor {
+    fun searchAppointments(searchString: ArrayList<String>, db: SQLiteDatabase): Cursor {
         /** Get a row(s) from a database */
         val query =
             "SELECT * FROM $TABLE_NAME WHERE $COLUMN_NAME LIKE ? ORDER BY $COLUMN_DATE DESC"
         Log.e(log, String.format("Row $searchString fetched"))
-        return db.rawQuery(query, searchString)
+        return db.rawQuery(query, searchString.toTypedArray())
     }
 
     fun editAppointmentBD(appointmentParams: AppointmentParams, db: SQLiteDatabase) {
