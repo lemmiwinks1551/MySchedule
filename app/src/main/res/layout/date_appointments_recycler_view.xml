@@ -82,7 +82,7 @@
         app:layout_constraintTop_toBottomOf="@id/COLUMN_END_TEXT" />
 
     <TextView
-        android:id="@+id/appointment_name"
+        android:id="@+id/client_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
@@ -107,7 +107,7 @@
         app:layout_constraintTop_toBottomOf="@id/COLUMN_NAME_TEXT" />
 
     <TextView
-        android:id="@+id/appointmentName_phone"
+        android:id="@+id/client_phone"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
@@ -116,7 +116,7 @@
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/COLUMN_PHONE_NAME"
-        app:layout_constraintTop_toBottomOf="@id/appointment_name" />
+        app:layout_constraintTop_toBottomOf="@id/client_name" />
 
     <TextView
         android:id="@+id/COLUMN_MISC_NAME"
@@ -139,7 +139,7 @@
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/COLUMN_MISC_NAME"
-        app:layout_constraintTop_toBottomOf="@id/appointmentName_phone" />
+        app:layout_constraintTop_toBottomOf="@id/client_phone" />
 
     <ImageView
         android:id="@+id/border_line_appointment_recycler_view"

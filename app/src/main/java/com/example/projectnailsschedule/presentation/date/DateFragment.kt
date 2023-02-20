@@ -85,7 +85,6 @@ class DateFragment : Fragment(), DateAdapter.OnItemListener {
 
     private fun initWidgets() {
         dateRecyclerView = binding.scheduleRecyclerView
-        dayStatusSpinner = binding.spinnerStatus
     }
 
     private fun initClickListeners() {

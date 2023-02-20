@@ -8,20 +8,26 @@ import com.example.projectnailsschedule.domain.models.AppointmentParams
 import com.example.projectnailsschedule.domain.models.DateParams
 import com.example.projectnailsschedule.domain.repository.ScheduleRepository
 
-class ScheduleRepositoryImpl(context: Context?): ScheduleRepository {
+class ScheduleRepositoryImpl(context: Context?) : ScheduleRepository {
     private var scheduleDbHelper: ScheduleDbHelper = ScheduleDbHelper(context)
     private var db: SQLiteDatabase = scheduleDbHelper.writableDatabase
 
     override fun saveAppointment(appointmentParams: AppointmentParams): Boolean {
         /** Save appointment in database */
-        scheduleDbHelper.saveAppointmentBD(appointmentParams, db)
+        scheduleDbHelper.saveAppointmentBD(
+            appointmentParams = appointmentParams,
+            db = db
+        )
         db.close()
         return true
     }
 
     override fun editAppointment(appointmentParams: AppointmentParams): Boolean {
         /** Edit appointment in database */
-        scheduleDbHelper.editAppointmentBD(appointmentParams, db)
+        scheduleDbHelper.editAppointmentBD(
+            appointmentParams = appointmentParams,
+            db = db
+        )
         db.close()
         return true
     }
@@ -36,8 +42,17 @@ class ScheduleRepositoryImpl(context: Context?): ScheduleRepository {
 
     override fun deleteAppointment(id: Int) {
         val db: SQLiteDatabase = scheduleDbHelper.writableDatabase
-        scheduleDbHelper.deleteAppointment(id, db)
+        scheduleDbHelper.deleteAppointment(
+            currentId = id,
+            db = db
+        )
     }
 
-
+    override fun searchAppointment (searchString: Array<String>): Cursor {
+        val db: SQLiteDatabase = scheduleDbHelper.readableDatabase
+        return scheduleDbHelper.searchAppointments(
+            searchString = searchString,
+            db = db
+        )
+    }
 }

@@ -71,8 +71,8 @@ class SettingsDbHelper(context: Context?) :
         val query = "UPDATE $TABLE_NAME SET " +
                 "$COLUMN_VALUE = '$value' " +
                 "WHERE $COLUMN_SETTING = '$setting';"
-        Log.e(ScheduleDbHelper.LOG, String.format("Update row query: $query"))
+        Log.e(ScheduleDbHelper.log, String.format("Update row query: $query"))
         db.execSQL(query)
-        Log.e(ScheduleDbHelper.LOG, String.format("Row was updated"))
+        Log.e(ScheduleDbHelper.log, String.format("Row was updated"))
     }
 }

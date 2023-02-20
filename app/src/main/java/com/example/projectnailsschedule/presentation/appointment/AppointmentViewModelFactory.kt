@@ -21,7 +21,6 @@ class AppointmentViewModelFactory(context: Context?) : ViewModelProvider.Factory
     private val editAppointmentUseCase =
         EditAppointmentUseCase(scheduleRepository = scheduleRepositoryImpl)
 
-
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return AppointmentViewModel(
             saveAppointmentUseCase = saveAppointmentUseCase,

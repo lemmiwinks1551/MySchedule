@@ -12,7 +12,6 @@ import com.example.projectnailsschedule.util.WorkFolders
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 /** Methods for interacting with Schedule database */
@@ -37,7 +36,7 @@ class ScheduleDbHelper(context: Context?) :
         const val COLUMN_NAME = "name"
         const val COLUMN_PHONE = "phone"
         const val COLUMN_MISC = "misc"
-        val LOG = this::class.simpleName
+        val log = this::class.simpleName
     }
 
     private val myContext = context
@@ -56,31 +55,31 @@ class ScheduleDbHelper(context: Context?) :
                     "'${procedureName}', '${clientName}', " +
                     "'${phoneNum}', '${misc}');"
         }
-        Log.e(LOG, String.format("Add row query: $query"))
+        Log.e(log, String.format("Add row query: $query"))
         db.execSQL(query)
-        Log.e(LOG, String.format("Add row - success"))
+        Log.e(log, String.format("Add row - success"))
     }
 
     fun getDateAppointments(dateParams: DateParams, db: SQLiteDatabase): Cursor {
         val query = "SELECT * FROM $TABLE_NAME WHERE $COLUMN_DATE = '${dateParams.date}';"
-        Log.e(LOG, String.format("getDateAppointments query: $query"))
+        Log.e(log, String.format("getDateAppointments query: $query"))
         return db.rawQuery(query, null)
     }
 
     fun deleteAppointment(currentId: Int, db: SQLiteDatabase) {
         /** Delete a row */
         val query = "DELETE FROM $TABLE_NAME WHERE $COLUMN_ID = $currentId;"
-        Log.e(LOG, String.format("Delete row query: $query"))
+        Log.e(log, String.format("Delete row query: $query"))
         db.execSQL(query)
-        Log.e(LOG, String.format("Delete row - success"))
+        Log.e(log, String.format("Delete row - success"))
     }
 
-    fun getRow(day: String, db: SQLiteDatabase): Cursor {
-        /** Select a row from a database */
+    fun searchAppointments(searchString: Array<String>, db: SQLiteDatabase): Cursor {
+        /** Get a row(s) from a database */
         val query =
-            "SELECT * FROM $TABLE_NAME WHERE $COLUMN_DATE = '$day' ORDER BY $COLUMN_START_TIME ASC;"
-        Log.e(LOG, String.format("Row № $day fetched"))
-        return db.rawQuery(query, null)
+            "SELECT * FROM $TABLE_NAME WHERE $COLUMN_NAME LIKE ? ORDER BY $COLUMN_DATE DESC"
+        Log.e(log, String.format("Row $searchString fetched"))
+        return db.rawQuery(query, searchString)
     }
 
     fun editAppointmentBD(appointmentParams: AppointmentParams, db: SQLiteDatabase) {
@@ -98,13 +97,13 @@ class ScheduleDbHelper(context: Context?) :
                     "WHERE $COLUMN_ID = ${_id};"
         }
 
-        Log.e(LOG, String.format("Edit row query: $query"))
+        Log.e(log, String.format("Edit row query: $query"))
         db.execSQL(query)
-        Log.e(LOG, String.format("Row was edited successfully"))
+        Log.e(log, String.format("Row was edited successfully"))
     }
 
     override fun onCreate(db: SQLiteDatabase) {
-        Log.e(LOG, "Creating database")
+        Log.e(log, "Creating database")
         db.execSQL(
             "CREATE TABLE $TABLE_NAME ($COLUMN_ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     "$COLUMN_DATE TEXT NOT NULL, " +
@@ -114,15 +113,15 @@ class ScheduleDbHelper(context: Context?) :
                     "$COLUMN_PHONE TEXT NOT NULL, " +
                     "$COLUMN_MISC TEXT);"
         )
-        Log.e(LOG, "DB was created")
+        Log.e(log, "DB was created")
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        Log.e(LOG, "Updating database")
+        Log.e(log, "Updating database")
         // TODO: Добавить логику, чтобы старая БД переписывалась в новую, а не убивалась
         db.execSQL("DROP TABLE IF EXISTS $TABLE_NAME")
         onCreate(db)
-        Log.e(LOG, "Database was updated")
+        Log.e(log, "Database was updated")
     }
 
     fun fetchNameDate(date: String, db: SQLiteDatabase): Cursor {
@@ -152,7 +151,7 @@ class ScheduleDbHelper(context: Context?) :
                     }
                 }
             } catch (e: IOException) {
-                Log.d(LOG, e.toString())
+                Log.d(log, e.toString())
             }
         }
     }

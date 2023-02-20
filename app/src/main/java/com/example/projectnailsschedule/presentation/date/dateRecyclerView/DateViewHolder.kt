@@ -19,8 +19,8 @@ class DateViewHolder internal constructor(itemView: View, onItemListener: DateFr
     init {
         appointmentTime = itemView.findViewById(R.id.appointment_time)
         appointmentProcedure = itemView.findViewById(R.id.appointment_procedure)
-        appointmentClientName = itemView.findViewById(R.id.appointment_name)
-        appointmentNamePhone = itemView.findViewById(R.id.appointmentName_phone)
+        appointmentClientName = itemView.findViewById(R.id.client_name)
+        appointmentNamePhone = itemView.findViewById(R.id.client_phone)
         appointmentMisc = itemView.findViewById(R.id.appointment_misc)
         this.onItemListener = onItemListener
         itemView.setOnClickListener(this)

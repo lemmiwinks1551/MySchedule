@@ -8,7 +8,7 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/appointment_name"
+        android:id="@+id/client_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
@@ -20,7 +20,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/date"
+        android:id="@+id/appointment_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
@@ -28,10 +28,10 @@
         android:textColor="?attr/colorOnSecondary"
         android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@+id/date_text"
-        app:layout_constraintTop_toBottomOf="@id/appointment_name" />
+        app:layout_constraintTop_toBottomOf="@id/client_name" />
 
     <TextView
-        android:id="@+id/time"
+        android:id="@+id/appointment_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
@@ -39,17 +39,17 @@
         android:textColor="?attr/colorOnSecondary"
         android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@+id/time_text"
-        app:layout_constraintTop_toBottomOf="@id/date" />
+        app:layout_constraintTop_toBottomOf="@id/appointment_date" />
 
     <TextView
-        android:id="@+id/appointmentName_phone"
+        android:id="@+id/client_phone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:text="+7 952 590 82 49"
         android:textColor="?attr/colorOnSecondary"
         android:textSize="16sp"
-        app:layout_constraintStart_toEndOf="@+id/appointment_name"
+        app:layout_constraintStart_toEndOf="@+id/client_name"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -61,7 +61,7 @@
         android:textColor="?attr/colorOnSecondary"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/appointment_name" />
+        app:layout_constraintTop_toBottomOf="@id/client_name" />
 
     <TextView
         android:id="@+id/time_text"

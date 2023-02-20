@@ -70,7 +70,7 @@
             app:layout_constraintTop_toBottomOf="@id/database_appointment_start" />
 
         <TextView
-            android:id="@+id/appointment_name"
+            android:id="@+id/client_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
@@ -91,7 +91,7 @@
             android:textColor="?attr/colorOnSecondary"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/appointment_name" />
+            app:layout_constraintTop_toBottomOf="@id/client_name" />
 
         <TextView
             android:id="@+id/appointment_misc"
@@ -171,7 +171,7 @@
             android:textColor="?attr/colorOnSecondary"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/appointment_name" />
+            app:layout_constraintTop_toBottomOf="@id/client_name" />
 
         <EditText
             android:id="@+id/misc_edit_text"
