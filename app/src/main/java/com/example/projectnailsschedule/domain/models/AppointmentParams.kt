@@ -15,7 +15,7 @@ class AppointmentParams(
     val appointmentDate: LocalDate? = null,
     val clientName: String? = null,
     val startTime: String? = null,
-    val procedureName: String? = null,
+    val procedure: String? = null,
     val phoneNum: String? = null,
     val misc: String? = null
 ) : Parcelable {

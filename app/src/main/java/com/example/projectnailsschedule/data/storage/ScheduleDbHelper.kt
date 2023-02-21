@@ -12,7 +12,6 @@ import com.example.projectnailsschedule.util.WorkFolders
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
-import java.util.*
 import kotlin.collections.ArrayList
 
 /** Methods for interacting with Schedule database */
@@ -53,7 +52,7 @@ class ScheduleDbHelper(context: Context?) :
                     "$COLUMN_PHONE, $COLUMN_MISC) " +
                     "VALUES " +
                     "('${appointmentDate}', '${startTime}', " +
-                    "'${procedureName}', '${clientName}', " +
+                    "'${procedure}', '${clientName}', " +
                     "'${phoneNum}', '${misc}');"
         }
         Log.e(log, String.format("Add row query: $query"))
@@ -75,12 +74,12 @@ class ScheduleDbHelper(context: Context?) :
         Log.e(log, String.format("Delete row - success"))
     }
 
-    fun searchAppointments(searchString: ArrayList<String>, db: SQLiteDatabase): Cursor {
+    fun searchAppointments(db: SQLiteDatabase): Cursor {
         /** Get a row(s) from a database */
         val query =
-            "SELECT * FROM $TABLE_NAME WHERE $COLUMN_NAME LIKE ? ORDER BY $COLUMN_DATE DESC"
-        Log.e(log, String.format("Row $searchString fetched"))
-        return db.rawQuery(query, searchString.toTypedArray())
+            "SELECT * FROM $TABLE_NAME ORDER BY $COLUMN_DATE DESC"
+        Log.e(log, String.format("All datatable fetched"))
+        return db.rawQuery(query, null)
     }
 
     fun editAppointmentBD(appointmentParams: AppointmentParams, db: SQLiteDatabase) {
@@ -91,7 +90,7 @@ class ScheduleDbHelper(context: Context?) :
             query = "UPDATE $TABLE_NAME SET " +
                     "$COLUMN_DATE = '${appointmentDate}', " +
                     "$COLUMN_START_TIME = '${startTime}', " +
-                    "$COLUMN_PROCEDURE = '${procedureName}', " +
+                    "$COLUMN_PROCEDURE = '${procedure}', " +
                     "$COLUMN_NAME = '${clientName}', " +
                     "$COLUMN_PHONE = '${phoneNum}', " +
                     "$COLUMN_MISC = '${misc}' " +

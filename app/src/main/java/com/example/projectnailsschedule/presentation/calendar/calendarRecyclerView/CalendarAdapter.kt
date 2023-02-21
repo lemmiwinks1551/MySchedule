@@ -1,6 +1,5 @@
 package com.example.projectnailsschedule.presentation.calendar.calendarRecyclerView
 
-import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +12,7 @@ import com.example.projectnailsschedule.presentation.calendar.CalendarViewModel
 
 internal class CalendarAdapter(
     private val daysInMonth: ArrayList<String>,
-    private val onItemListener: CalendarFragment,
+    private val calendarFragment: CalendarFragment,
     private val calendarViewModel: CalendarViewModel
 ) :
     RecyclerView.Adapter<CalendarViewHolder>() {
@@ -25,7 +24,7 @@ internal class CalendarAdapter(
         val inflater = LayoutInflater.from(parent.context)
         val view: View = inflater.inflate(R.layout.calendar_recycler_view_cell, parent, false)
 
-        return CalendarViewHolder(view, onItemListener)
+        return CalendarViewHolder(view, calendarFragment)
     }
 
     override fun onBindViewHolder(holder: CalendarViewHolder, position: Int) {

@@ -164,7 +164,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         // create adapter
         val calendarAdapter = CalendarAdapter(
             daysInMonth = daysInMonth,
-            onItemListener = this,
+            calendarFragment = this,
             calendarViewModel = calendarViewModel!!
         )
 

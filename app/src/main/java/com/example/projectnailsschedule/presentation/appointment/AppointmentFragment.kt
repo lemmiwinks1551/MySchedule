@@ -103,7 +103,7 @@ class AppointmentFragment : Fragment() {
                 appointmentDate = LocalDate.parse(dayEditText.text, formatter),
                 clientName = nameEditText.text.toString(),
                 startTime = timeEditText.text.toString(),
-                procedureName = procedureEditText.text.toString(),
+                procedure = procedureEditText.text.toString(),
                 phoneNum = phoneEditText.text.toString(),
                 misc = miscEditText.text.toString()
             )
@@ -130,7 +130,7 @@ class AppointmentFragment : Fragment() {
                 appointmentDate = LocalDate.parse(dayEditText.toString()),
                 clientName = nameEditText.text.toString(),
                 startTime = timeEditText.text.toString(),
-                procedureName = procedureEditText.text.toString(),
+                procedure = procedureEditText.text.toString(),
                 phoneNum = phoneEditText.text.toString(),
                 misc = miscEditText.text.toString()
             )
@@ -155,7 +155,7 @@ class AppointmentFragment : Fragment() {
         with(binding) {
             dayEditText.text = appointmentParams?.appointmentDate?.format(dateFormatter)
             timeEditText.text = appointmentParams?.startTime
-            procedureEditText.setText(appointmentParams?.procedureName)
+            procedureEditText.setText(appointmentParams?.procedure)
             nameEditText.setText(appointmentParams?.clientName)
             phoneEditText.setText(appointmentParams?.phoneNum)
             miscEditText.setText(appointmentParams?.misc)

@@ -95,7 +95,7 @@ class DateFragment : Fragment(), DateAdapter.OnItemListener {
                 appointmentDate = dateParams?.date,
                 clientName = null,
                 startTime = null,
-                procedureName = null,
+                procedure = null,
                 phoneNum = null,
                 misc = null
             )
