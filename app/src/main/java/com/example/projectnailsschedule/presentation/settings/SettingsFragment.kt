@@ -31,6 +31,7 @@ class SettingsFragment : Fragment() {
         val clientsViewModel =
             ViewModelProvider(this)[SettingsViewModel::class.java]
         settingsDbHelper = SettingsDbHelper(context)
+
         db = settingsDbHelper?.writableDatabase
 
         _binding = FragmentSettingsBinding.inflate(inflater, container, false)

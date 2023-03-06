@@ -139,7 +139,7 @@ class SearchFragment : Fragment(), SearchAdapter.OnItemListener {
     }
 
     override fun onItemClick(position: Int, dayText: String?) {
-        // клик с переходом в день
+        // go into date
 
     }
 }

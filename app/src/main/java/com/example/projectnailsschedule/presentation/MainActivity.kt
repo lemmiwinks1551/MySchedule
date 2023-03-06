@@ -1,5 +1,6 @@
 package com.example.projectnailsschedule.presentation
 
+import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
@@ -99,5 +100,11 @@ class MainActivity : AppCompatActivity() {
         SettingsFragment().setTheme(value)
         cursor.close()
         db.close()
+
+        val sharedPreference =  getSharedPreferences("PREFERENCE_NAME", Context.MODE_PRIVATE)
+        var editor = sharedPreference.edit()
+        editor.putString("username","Anupam")
+        editor.putLong("l",100L)
+        editor.apply()
     }
 }
