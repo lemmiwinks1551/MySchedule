@@ -1,86 +1,69 @@
 package com.example.projectnailsschedule.presentation.settings
 
-import android.database.Cursor
-import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.widget.SwitchCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.projectnailsschedule.data.storage.SettingsDbHelper
 import com.example.projectnailsschedule.databinding.FragmentSettingsBinding
 
 class SettingsFragment : Fragment() {
 
     private var _binding: FragmentSettingsBinding? = null
+    private var settingsViewModel: SettingsViewModel? = null
+
+    private var themeSwitcher: SwitchCompat? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-
-    private var settingsDbHelper: SettingsDbHelper? = null
-    private var db: SQLiteDatabase? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val clientsViewModel =
-            ViewModelProvider(this)[SettingsViewModel::class.java]
-        settingsDbHelper = SettingsDbHelper(context)
 
-        db = settingsDbHelper?.writableDatabase
+        // create ViewModel object with Factory
+        settingsViewModel = ViewModelProvider(
+            this,
+            SettingsViewModelFactory(this.context)
+        )[SettingsViewModel::class.java]
 
         _binding = FragmentSettingsBinding.inflate(inflater, container, false)
 
-        // Set switch position
-        binding.darkThemeSwitch.isChecked = loadTheme() != "light"
+        initAllWidgets()
 
-        // Set listener om theme switch
-        // TODO: implement SetTheme Method 
-        binding.darkThemeSwitch.setOnClickListener {
-            if (binding.darkThemeSwitch.isChecked) {
-                settingsDbHelper!!.updateRow("theme", "dark", db!!)
-                setTheme("dark")
-            } else {
-                settingsDbHelper!!.updateRow("theme", "light", db!!)
-                setTheme("light")
-            }
-        }
+        initClickListeners()
 
         return binding.root
     }
 
-    fun setTheme(theme: String) {
-        // TODO: Положение выключателя нужно устанавливать, а то приходится жать 2 раза
-        if (theme == "dark") {
+    private fun initAllWidgets() {
+        themeSwitcher = binding.themeSwithcer
+        // TODO: привести в порядок, сделать красиво, чтобы при включении приложения тема сразу менялась на актуальную, а не после захода во фрагмент 
+        if (settingsViewModel!!.loadTheme()) {
+            settingsViewModel!!.setDarkTheme()
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         } else {
+            settingsViewModel!!.setLightTheme()
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        db!!.close()
-        _binding = null
+    private fun initClickListeners() {
+        themeSwitcher?.setOnClickListener {
+            if (themeSwitcher!!.isChecked) {
+                settingsViewModel!!.setDarkTheme()
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            } else {
+                settingsViewModel!!.setLightTheme()
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
+            }
+        }
     }
-
-    private fun loadTheme() : String {
-        // Load and set settings
-        val settingsDbHelper = SettingsDbHelper(context)
-        val db: SQLiteDatabase = settingsDbHelper.readableDatabase
-        val cursor: Cursor = settingsDbHelper.getRow("theme", db)
-        cursor.moveToFirst()
-        val themeName = cursor.getString(2)
-
-        cursor.close()
-        db.close()
-
-        return themeName
-    }
-
 }

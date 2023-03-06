@@ -1,8 +1,5 @@
 package com.example.projectnailsschedule.presentation
 
-import android.content.Context
-import android.database.Cursor
-import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -15,12 +12,9 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.projectnailsschedule.R
-import com.example.projectnailsschedule.data.storage.SettingsDbHelper
 import com.example.projectnailsschedule.databinding.ActivityMainBinding
-import com.example.projectnailsschedule.util.Util
 import com.example.projectnailsschedule.util.UncaughtExceptionHandler
 import com.example.projectnailsschedule.util.WorkFolders
-import com.example.projectnailsschedule.presentation.settings.SettingsFragment
 import com.google.android.material.navigation.NavigationView
 
 
@@ -31,7 +25,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
     private val uncaughtExceptionHandler = UncaughtExceptionHandler()
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         // Set uncaught exception handler
         uncaughtExceptionHandler.context = this
@@ -40,8 +33,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
-
-        loadSettings()
 
         setContentView(binding.root)
 
@@ -87,24 +78,5 @@ class MainActivity : AppCompatActivity() {
             R.id.search -> navController.navigate(R.id.nav_search)
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    private fun loadSettings() {
-        // Load and set settings
-        val settingsDbHelper = SettingsDbHelper(this)
-        val db: SQLiteDatabase = settingsDbHelper.readableDatabase
-        val cursor: Cursor = settingsDbHelper.getRow("theme", db)
-        cursor.moveToFirst()
-        val value = cursor.getString(2)
-
-        SettingsFragment().setTheme(value)
-        cursor.close()
-        db.close()
-
-        val sharedPreference =  getSharedPreferences("PREFERENCE_NAME", Context.MODE_PRIVATE)
-        var editor = sharedPreference.edit()
-        editor.putString("username","Anupam")
-        editor.putLong("l",100L)
-        editor.apply()
     }
 }
