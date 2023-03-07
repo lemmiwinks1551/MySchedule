@@ -1,6 +1,5 @@
 package com.example.projectnailsschedule.presentation.settings
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.projectnailsschedule.domain.usecase.settingsUC.LoadThemeUseCase
@@ -13,15 +12,23 @@ class SettingsViewModel(
     private val loadThemeUseCase: LoadThemeUseCase
 ) : ViewModel() {
 
+    var darkThemeOn = MutableLiveData<Boolean>()
+
+    init {
+        loadTheme()
+    }
+
     fun setLightTheme() {
         setLightThemeUseCase.execute()
+        darkThemeOn.value = false
     }
 
     fun setDarkTheme() {
         setDarkThemeUseCase.execute()
+        darkThemeOn.value = true
     }
 
-    fun loadTheme(): Boolean {
-        return loadThemeUseCase.execute()
+    private fun loadTheme() {
+        darkThemeOn.value = loadThemeUseCase.execute()
     }
 }

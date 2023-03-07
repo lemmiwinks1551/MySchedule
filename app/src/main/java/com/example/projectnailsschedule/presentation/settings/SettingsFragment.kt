@@ -17,8 +17,6 @@ class SettingsFragment : Fragment() {
 
     private var themeSwitcher: SwitchCompat? = null
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -35,35 +33,48 @@ class SettingsFragment : Fragment() {
 
         _binding = FragmentSettingsBinding.inflate(inflater, container, false)
 
+        // init all widgets
         initAllWidgets()
 
+        // init click listeners
         initClickListeners()
+
+        // set observers
+        setObservers()
 
         return binding.root
     }
 
+
     private fun initAllWidgets() {
         themeSwitcher = binding.themeSwithcer
-        // TODO: привести в порядок, сделать красиво, чтобы при включении приложения тема сразу менялась на актуальную, а не после захода во фрагмент 
-        if (settingsViewModel!!.loadTheme()) {
-            settingsViewModel!!.setDarkTheme()
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-        } else {
-            settingsViewModel!!.setLightTheme()
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-        }
     }
 
     private fun initClickListeners() {
+        // set theme switcher click listener
         themeSwitcher?.setOnClickListener {
             if (themeSwitcher!!.isChecked) {
                 settingsViewModel!!.setDarkTheme()
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
             } else {
                 settingsViewModel!!.setLightTheme()
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-
             }
+        }
+    }
+
+    private fun setObservers() {
+        settingsViewModel?.darkThemeOn?.observe(viewLifecycleOwner) {
+            changeTheme(it)
+        }
+    }
+
+    private fun changeTheme(darkThemeOn: Boolean) {
+        // set actual theme
+        if (darkThemeOn) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            themeSwitcher?.isChecked = true
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            themeSwitcher?.isChecked = false
         }
     }
 }
