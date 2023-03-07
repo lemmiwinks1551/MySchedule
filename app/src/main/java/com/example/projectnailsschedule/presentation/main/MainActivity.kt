@@ -1,5 +1,6 @@
 package com.example.projectnailsschedule.presentation.main
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -42,6 +43,7 @@ class MainActivity : AppCompatActivity() {
             MainActivityViewModelFactory(this)
         )[MainViewModel::class.java]
 
+        mainViewModel?.loadTheme()
         loadTheme()
 
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -83,7 +85,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadTheme() {
-        // TODO: не перерисовывать если тема == актуальной 
         if (mainViewModel?.darkThemeOn!!) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         } else {

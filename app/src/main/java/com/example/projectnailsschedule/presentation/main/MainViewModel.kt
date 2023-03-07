@@ -4,12 +4,12 @@ import androidx.lifecycle.ViewModel
 import com.example.projectnailsschedule.domain.usecase.settingsUC.LoadThemeUseCase
 
 class MainViewModel(
-    loadThemeUseCase: LoadThemeUseCase
+    private val loadThemeUseCase: LoadThemeUseCase
 ) : ViewModel() {
 
     var darkThemeOn: Boolean? = null
 
-    init {
+    fun loadTheme() {
         darkThemeOn = loadThemeUseCase.execute()
     }
 }

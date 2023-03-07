@@ -1,14 +1,17 @@
 package com.example.projectnailsschedule.presentation.settings
 
+import android.app.Activity
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SwitchCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.projectnailsschedule.databinding.FragmentSettingsBinding
+import com.example.projectnailsschedule.presentation.main.MainActivity
+
 
 class SettingsFragment : Fragment() {
 
@@ -16,7 +19,6 @@ class SettingsFragment : Fragment() {
     private var settingsViewModel: SettingsViewModel? = null
 
     private var themeSwitcher: SwitchCompat? = null
-
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -36,11 +38,10 @@ class SettingsFragment : Fragment() {
         // init all widgets
         initAllWidgets()
 
+        setThemeSwitcher()
+
         // init click listeners
         initClickListeners()
-
-        // set observers
-        setObservers()
 
         return binding.root
     }
@@ -54,20 +55,31 @@ class SettingsFragment : Fragment() {
         themeSwitcher?.setOnClickListener {
             if (themeSwitcher!!.isChecked) {
                 settingsViewModel!!.setDarkTheme()
+                themeSwitcher?.isChecked = true
             } else {
                 settingsViewModel!!.setLightTheme()
+                themeSwitcher?.isChecked = false
             }
+            restartApp()
         }
     }
 
-    private fun setObservers() {
-        settingsViewModel?.darkThemeOn?.observe(viewLifecycleOwner) {
-            changeTheme(it)
-        }
+    private fun setThemeSwitcher() {
+        themeSwitcher?.isChecked = settingsViewModel?.darkThemeOn == true
     }
 
-    private fun changeTheme(darkThemeOn: Boolean) {
-        // set actual theme
-        themeSwitcher?.isChecked = darkThemeOn
+
+    private fun restartApp() {
+        activity?.recreate()
+/*        val intent = requireActivity().intent
+        intent.addFlags(
+            Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+                    or Intent.FLAG_ACTIVITY_NO_ANIMATION
+        )
+        requireActivity().overridePendingTransition(0, 0)
+        requireActivity().finish()
+
+        requireActivity().overridePendingTransition(0, 0)
+        startActivity(intent)*/
     }
 }
