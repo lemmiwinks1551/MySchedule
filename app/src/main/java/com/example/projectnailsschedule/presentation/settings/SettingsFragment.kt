@@ -60,26 +60,11 @@ class SettingsFragment : Fragment() {
                 settingsViewModel!!.setLightTheme()
                 themeSwitcher?.isChecked = false
             }
-            restartApp()
+            activity?.recreate()
         }
     }
 
     private fun setThemeSwitcher() {
         themeSwitcher?.isChecked = settingsViewModel?.darkThemeOn == true
-    }
-
-
-    private fun restartApp() {
-        activity?.recreate()
-/*        val intent = requireActivity().intent
-        intent.addFlags(
-            Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
-                    or Intent.FLAG_ACTIVITY_NO_ANIMATION
-        )
-        requireActivity().overridePendingTransition(0, 0)
-        requireActivity().finish()
-
-        requireActivity().overridePendingTransition(0, 0)
-        startActivity(intent)*/
     }
 }

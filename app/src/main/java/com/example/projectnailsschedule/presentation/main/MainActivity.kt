@@ -2,6 +2,7 @@ package com.example.projectnailsschedule.presentation.main
 
 import android.content.res.Configuration
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -43,8 +44,9 @@ class MainActivity : AppCompatActivity() {
             MainActivityViewModelFactory(this)
         )[MainViewModel::class.java]
 
+        // set theme
         mainViewModel?.loadTheme()
-        loadTheme()
+        setTheme()
 
         binding = ActivityMainBinding.inflate(layoutInflater)
 
@@ -84,11 +86,27 @@ class MainActivity : AppCompatActivity() {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
-    private fun loadTheme() {
-        if (mainViewModel?.darkThemeOn!!) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-        } else {
+    private fun setTheme() {
+        // change theme if it changed
+        var actualDarkThemeOn: Boolean? = null
+
+        val nightModeFlags: Int = this.resources.configuration.uiMode and
+                Configuration.UI_MODE_NIGHT_MASK
+        when (nightModeFlags) {
+            Configuration.UI_MODE_NIGHT_YES -> {
+                actualDarkThemeOn = true
+            }
+            Configuration.UI_MODE_NIGHT_NO -> {
+                actualDarkThemeOn = false
+            }
+        }
+
+        if (!mainViewModel?.darkThemeOn!! && actualDarkThemeOn == true) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        }
+
+        if (mainViewModel?.darkThemeOn!! && actualDarkThemeOn == false) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         }
     }
 
