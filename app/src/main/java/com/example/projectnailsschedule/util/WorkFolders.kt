@@ -8,7 +8,7 @@ import java.io.File
  * Класс создает необходимые папки
  * */
 
-class WorkFolders : Thread() {
+class WorkFolders{
 
     private val LOG = this::class.simpleName
     private val mainFolderName: String = "MySchedule"
@@ -17,11 +17,10 @@ class WorkFolders : Thread() {
         mainFolderName
     )
 
-    override fun run() {
+    fun run() {
         if (!directoryExists()) {
             createDbDir()
         }
-        super.run()
     }
 
     private fun createDbDir() {

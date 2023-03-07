@@ -1,10 +1,12 @@
-package com.example.projectnailsschedule.presentation
+package com.example.projectnailsschedule.presentation.main
 
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -24,6 +26,8 @@ class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
     private val uncaughtExceptionHandler = UncaughtExceptionHandler()
+    private var mainViewModel: MainViewModel? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // Set uncaught exception handler
@@ -31,6 +35,14 @@ class MainActivity : AppCompatActivity() {
         Thread.setDefaultUncaughtExceptionHandler(uncaughtExceptionHandler)
 
         super.onCreate(savedInstanceState)
+
+        // create ViewModel object with Factory
+        mainViewModel = ViewModelProvider(
+            this,
+            MainActivityViewModelFactory(this)
+        )[MainViewModel::class.java]
+
+        loadTheme()
 
         binding = ActivityMainBinding.inflate(layoutInflater)
 
@@ -56,9 +68,7 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
 
         // Create work folders
-        if (WorkFolders().state == Thread.State.NEW) {
-            WorkFolders().start()
-        }
+        WorkFolders().run()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -70,6 +80,15 @@ class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    private fun loadTheme() {
+        // TODO: не перерисовывать если тема == актуальной 
+        if (mainViewModel?.darkThemeOn!!) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

@@ -14,10 +14,6 @@ class SettingsViewModel(
 
     var darkThemeOn = MutableLiveData<Boolean>()
 
-    init {
-        loadTheme()
-    }
-
     fun setLightTheme() {
         setLightThemeUseCase.execute()
         darkThemeOn.value = false
@@ -26,9 +22,5 @@ class SettingsViewModel(
     fun setDarkTheme() {
         setDarkThemeUseCase.execute()
         darkThemeOn.value = true
-    }
-
-    private fun loadTheme() {
-        darkThemeOn.value = loadThemeUseCase.execute()
     }
 }

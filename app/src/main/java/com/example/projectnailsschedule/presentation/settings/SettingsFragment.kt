@@ -45,7 +45,6 @@ class SettingsFragment : Fragment() {
         return binding.root
     }
 
-
     private fun initAllWidgets() {
         themeSwitcher = binding.themeSwithcer
     }
@@ -69,12 +68,6 @@ class SettingsFragment : Fragment() {
 
     private fun changeTheme(darkThemeOn: Boolean) {
         // set actual theme
-        if (darkThemeOn) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-            themeSwitcher?.isChecked = true
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-            themeSwitcher?.isChecked = false
-        }
+        themeSwitcher?.isChecked = darkThemeOn
     }
 }
