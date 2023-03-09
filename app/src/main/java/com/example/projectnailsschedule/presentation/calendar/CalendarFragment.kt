@@ -226,11 +226,12 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         if (position == prevHolderPos) {
             // if position is the same - change background every next click
             clicked = if (clicked) {
-                // if clicked is true
+                // if clicked is true - clear background and short data recycler view
                 holderClicked.cellLayout.setBackgroundResource(R.drawable.calendar_recycler_view_borders)
+                shortDataRecyclerView?.adapter = null
                 false
             } else {
-                // if clicked is false
+                // if clicked is false - set new background and short data recycler view
                 holderClicked.cellLayout.setBackgroundColor(Color.RED)
                 true
             }
@@ -238,11 +239,6 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
 
         // set prev position
         prevHolderPos = position
-    }
-
-    private fun clickedSwitch() {
-        // set clicked switch
-        clicked = !clicked
     }
 
     private fun inflateShortDateRecyclerView(selectedDateParams: DateParams) {
