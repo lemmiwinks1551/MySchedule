@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
@@ -218,7 +219,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         // set background
         if (position != prevHolderPos) {
             // if position is new - change colors for new holder and prev holder
-            holderClicked.cellLayout.setBackgroundColor(Color.RED)
+            holderClicked.cellLayout.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.selected_calendar_cell))
             holderPrev?.cellLayout?.setBackgroundResource(R.drawable.calendar_recycler_view_borders)
             clicked = true
         }
@@ -232,7 +233,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
                 false
             } else {
                 // if clicked is false - set new background and short data recycler view
-                holderClicked.cellLayout.setBackgroundColor(Color.RED)
+                holderClicked.cellLayout.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.selected_calendar_cell))
                 true
             }
         }

@@ -11,5 +11,6 @@
     <color name="green">#4CAF50</color>
     <color name="yellow">#FFD75E</color>
     <color name="red">#FF6498</color>
+    <color name="selected_calendar_cell">#573700B3</color>
 
 </resources>

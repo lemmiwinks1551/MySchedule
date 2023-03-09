@@ -36,13 +36,13 @@
     <string name="release_year">2022</string>
 
     <!--Week days-->
-    <string name="mon">Пн.</string>
-    <string name="tue">Вт.</string>
-    <string name="wed">Ср.</string>
-    <string name="thu">Чт.</string>
-    <string name="fri">Пт.</string>
-    <string name="sat">Сб.</string>
-    <string name="sun">Вс.</string>
+    <string name="mon">Пн</string>
+    <string name="tue">Вт</string>
+    <string name="wed">Ср</string>
+    <string name="thu">Чт</string>
+    <string name="fri">Пт</string>
+    <string name="sat">Сб</string>
+    <string name="sun">Вс</string>
 
     <string name="search">Search</string>
     <string name="search_client">Поиск</string>
@@ -71,6 +71,7 @@
     <string name="app_fullname">Мое расписание</string>
     <string name="save_changes_button">Сохранить</string>
     <string name="cancel__button">Отмена</string>
-    <string name="avatar_description">clicable client avatar</string>
+    <string name="avatar_description">clickable client avatar</string>
+    <string name="date_edit">edit date</string>
 
 </resources>
