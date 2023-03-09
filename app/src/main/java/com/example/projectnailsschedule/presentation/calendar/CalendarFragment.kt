@@ -25,7 +25,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.ZoneId
-import java.time.temporal.TemporalQueries.localDate
 import java.util.*
 
 
@@ -46,7 +45,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
 
     // color background click listener
     private var prevHolderPos: Int? = null
-    private var click: Boolean = false
+    private var clicked: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -145,8 +144,8 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
 
     private fun setMonthTextView(selectedDateParams: DateParams) {
         // set month into textview
-        // TODO: поправить формат
-        val date = Date.from(selectedDateParams.date?.atStartOfDay(ZoneId.systemDefault())?.toInstant())
+        val date =
+            Date.from(selectedDateParams.date?.atStartOfDay(ZoneId.systemDefault())?.toInstant())
         val month =
             SimpleDateFormat("LLLL", Locale("ru")).format(date).replaceFirstChar { it.uppercase() }
         monthTextView?.text = month
@@ -187,7 +186,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         shortDataRecyclerView?.adapter = null
 
         // clear click
-        click = false
+        clicked = false
     }
 
     override fun onItemClick(position: Int, dayText: String?) {
@@ -206,38 +205,44 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
 
     private fun setBackgroundColor(position: Int) {
         // set current holder and prev view holder
-        val holderNew: CalendarViewHolder =
+        val holderClicked: CalendarViewHolder =
             calendarRecyclerView?.findViewHolderForAdapterPosition(position) as CalendarViewHolder
-        var holderOld: CalendarViewHolder? = null
+        var holderPrev: CalendarViewHolder? = null
 
         if (prevHolderPos != null) {
-            holderOld =
+            // init previous holder
+            holderPrev =
                 calendarRecyclerView?.findViewHolderForAdapterPosition(prevHolderPos!!) as CalendarViewHolder
         }
 
         // set background
         if (position != prevHolderPos) {
-            if (!click || position != prevHolderPos) {
-                holderNew.cellLayout.setBackgroundColor(Color.RED)
-                holderOld?.cellLayout?.setBackgroundResource(R.drawable.calendar_recycler_view_borders)
+            // if position is new - change colors for new holder and prev holder
+            holderClicked.cellLayout.setBackgroundColor(Color.RED)
+            holderPrev?.cellLayout?.setBackgroundResource(R.drawable.calendar_recycler_view_borders)
+            clicked = true
+        }
+
+        if (position == prevHolderPos) {
+            // if position is the same - change background every next click
+            clicked = if (clicked) {
+                // if clicked is true
+                holderClicked.cellLayout.setBackgroundResource(R.drawable.calendar_recycler_view_borders)
+                false
             } else {
-                holderOld?.cellLayout?.setBackgroundResource(R.drawable.calendar_recycler_view_borders)
-            }
-        } else {
-            if (!click) {
-                holderNew.cellLayout.setBackgroundColor(Color.RED)
-            } else {
-                holderOld?.cellLayout?.setBackgroundResource(R.drawable.calendar_recycler_view_borders)
+                // if clicked is false
+                holderClicked.cellLayout.setBackgroundColor(Color.RED)
+                true
             }
         }
 
-        // set prev and old position
+        // set prev position
         prevHolderPos = position
-        clickSwitch()
     }
 
-    private fun clickSwitch() {
-        click = !click
+    private fun clickedSwitch() {
+        // set clicked switch
+        clicked = !clicked
     }
 
     private fun inflateShortDateRecyclerView(selectedDateParams: DateParams) {

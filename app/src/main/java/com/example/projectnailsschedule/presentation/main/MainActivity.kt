@@ -30,6 +30,9 @@ class MainActivity : AppCompatActivity() {
     private val uncaughtExceptionHandler = UncaughtExceptionHandler()
     private var mainViewModel: MainViewModel? = null
 
+    private var drawerLayout: DrawerLayout? = null
+    private var navView: NavigationView? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // Set uncaught exception handler
@@ -44,7 +47,7 @@ class MainActivity : AppCompatActivity() {
             MainActivityViewModelFactory(this)
         )[MainViewModel::class.java]
 
-        // set theme
+        // set dark/light theme
         mainViewModel?.loadTheme()
         setTheme()
 
@@ -54,11 +57,10 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.appBarMain.toolbar)
 
-        val drawerLayout: DrawerLayout = binding.drawerLayout
-        val navView: NavigationView = binding.navView
+        // init all widgets
+        initWidgets()
 
-        navController = findNavController(R.id.nav_host_fragment_content_main)
-
+        // configure app bar
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.nav_calendar,
@@ -69,10 +71,16 @@ class MainActivity : AppCompatActivity() {
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
-        navView.setupWithNavController(navController)
+        navView?.setupWithNavController(navController)
 
         // Create work folders
         WorkFolders().run()
+    }
+
+    private fun initWidgets() {
+        drawerLayout = binding.drawerLayout
+        navView = binding.navView
+        navController = findNavController(R.id.nav_host_fragment_content_main)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

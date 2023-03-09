@@ -1,7 +1,5 @@
 package com.example.projectnailsschedule.presentation.settings
 
-import android.app.Activity
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +8,6 @@ import androidx.appcompat.widget.SwitchCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.projectnailsschedule.databinding.FragmentSettingsBinding
-import com.example.projectnailsschedule.presentation.main.MainActivity
 
 
 class SettingsFragment : Fragment() {
