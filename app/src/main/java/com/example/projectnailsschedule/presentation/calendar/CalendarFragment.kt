@@ -1,6 +1,5 @@
 package com.example.projectnailsschedule.presentation.calendar
 
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -219,7 +218,12 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         // set background
         if (position != prevHolderPos) {
             // if position is new - change colors for new holder and prev holder
-            holderClicked.cellLayout.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.selected_calendar_cell))
+            holderClicked.cellLayout.setBackgroundColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.selected_calendar_cell
+                )
+            )
             holderPrev?.cellLayout?.setBackgroundResource(R.drawable.calendar_recycler_view_borders)
             clicked = true
         }
@@ -233,7 +237,12 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
                 false
             } else {
                 // if clicked is false - set new background and short data recycler view
-                holderClicked.cellLayout.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.selected_calendar_cell))
+                holderClicked.cellLayout.setBackgroundColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.selected_calendar_cell
+                    )
+                )
                 true
             }
         }

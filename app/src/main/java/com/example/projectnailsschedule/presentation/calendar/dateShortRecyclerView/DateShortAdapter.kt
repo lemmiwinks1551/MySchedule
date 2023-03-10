@@ -27,11 +27,14 @@ internal class DateShortAdapter(
         val cursor = calendarViewModel.getCursorAppointments(selectedDayParams)
         cursor.moveToFirst()
         if (cursor.moveToPosition(position)) {
+            // Set time in holder
+            holder.starTime.text = cursor.getString(2)
+
             // Set name in holder
             holder.clientName.text = cursor.getString(4)
 
-            // Set time in holder
-            holder.starTime.text = cursor.getString(2)
+            // Set procedure in holder
+            holder.starTime.text = cursor.getString(3)
         }
     }
 

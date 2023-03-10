@@ -6,10 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import android.widget.AdapterView
 import android.widget.Button
 import android.widget.Spinner
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
@@ -20,6 +18,7 @@ import com.example.projectnailsschedule.databinding.FragmentDateBinding
 import com.example.projectnailsschedule.domain.models.AppointmentParams
 import com.example.projectnailsschedule.domain.models.DateParams
 import com.example.projectnailsschedule.presentation.date.dateRecyclerView.DateAdapter
+import com.example.projectnailsschedule.presentation.date.dateRecyclerView.DateViewHolder
 import com.example.projectnailsschedule.util.Util
 import java.time.format.DateTimeFormatter
 
@@ -77,9 +76,6 @@ class DateFragment : Fragment(), DateAdapter.OnItemListener {
         // set observers
         setObservers()
 
-        // set current status in spinner
-        setStatusInSpinner()
-
         return binding.root
     }
 
@@ -102,24 +98,6 @@ class DateFragment : Fragment(), DateAdapter.OnItemListener {
             val bundle = Bundle()
             bundle.putParcelable(bindingKeyAppointment, appointmentParams)
             it.findNavController().navigate(R.id.action_dateFragment_to_appointmentFragment, bundle)
-        }
-
-        // click on spinner
-        // TODO: add set status  
-        dayStatusSpinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-            }
-
-            override fun onItemSelected(
-                parent: AdapterView<*>?, view: View?, position: Int, id: Long
-            ) {
-                val spinnerText = dayStatusSpinner?.selectedItem
-                Toast.makeText(
-                    context,
-                    "Статус дня $spinnerText",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
         }
     }
 
@@ -154,13 +132,6 @@ class DateFragment : Fragment(), DateAdapter.OnItemListener {
         Util().hideKeyboard(requireActivity())
     }
 
-    private fun setStatusInSpinner() {
-        // set current status in spinner by index fo statusArray
-        val statusArray: String = getString(R.string.status_description)
-        val statusIndex = statusArray.indexOf(statusArray)
-        dayStatusSpinner?.setSelection(statusIndex)
-    }
-
     override fun onItemClick(position: Int) {
         // click on appointment
         // show dialog with edit/delete options
@@ -173,7 +144,6 @@ class DateFragment : Fragment(), DateAdapter.OnItemListener {
         deleteButton = dialog.findViewById(R.id.delete)
         editButton = dialog.findViewById(R.id.edit)
 
-
         deleteButton?.setOnClickListener {
             dateViewModel?.deleteAppointment(position)
             dialog.dismiss()
@@ -181,7 +151,25 @@ class DateFragment : Fragment(), DateAdapter.OnItemListener {
         }
 
         editButton?.setOnClickListener {
-            // TODO: edit appointment
+            // get information from clicked item
+            // start fragment with selected data
+            val holderClicked: DateViewHolder =
+                dateRecyclerView?.findViewHolderForAdapterPosition(position) as DateViewHolder
+
+            val appointmentParams = AppointmentParams(
+                _id = null,
+                appointmentDate = dateParams?.date,
+                clientName = holderClicked.appointmentClientName.text.toString(),
+                startTime = holderClicked.appointmentTime.text.toString(),
+                procedure = holderClicked.appointmentProcedure.text.toString(),
+                phoneNum = holderClicked.appointmentNamePhone.text.toString(),
+                misc = holderClicked.appointmentMisc.text.toString()
+            )
+            dialog.dismiss()
+            val bundle = Bundle()
+            bundle.putParcelable(bindingKeyAppointment, appointmentParams)
+            activity?.findNavController(R.id.addButton)
+                ?.navigate(R.id.action_dateFragment_to_appointmentFragment, bundle)
         }
         dialog.show()
     }
