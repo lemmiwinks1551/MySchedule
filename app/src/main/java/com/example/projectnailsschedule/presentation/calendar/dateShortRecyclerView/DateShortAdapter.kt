@@ -34,7 +34,7 @@ internal class DateShortAdapter(
             holder.clientName.text = cursor.getString(4)
 
             // Set procedure in holder
-            holder.starTime.text = cursor.getString(3)
+            holder.procedure.text = cursor.getString(3)
         }
     }
 

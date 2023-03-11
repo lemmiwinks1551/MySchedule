@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fragment_calendar"
@@ -10,184 +10,212 @@
     tools:context=".presentation.calendar.CalendarFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/linearLayout"
+        android:id="@+id/month_constraint_layout"
         android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp">
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
             android:id="@+id/prev_month"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@null"
-            android:contentDescription="@string/choose_previous_month"
+            android:contentDescription="@string/select_previous_month"
             android:src="@drawable/ic_baseline_keyboard_arrow_left_24"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/next_month"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/month_text_view"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/month_text_view"
-            app:layout_constraintVertical_bias="1.0"
-            tools:ignore="SpeakableTextPresentCheck" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/year_text_view"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/year_text_view"
             android:textAlignment="center"
             android:textColor="?attr/colorOnSecondary"
-            android:textSize="20sp"
+            android:textSize="11sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/next_month"
-            app:layout_constraintStart_toEndOf="@+id/prev_month"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/month_text_view" />
-
 
         <TextView
             android:id="@+id/month_text_view"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/month_text_view"
             android:textAlignment="center"
             android:textColor="?attr/colorOnSecondary"
             android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/next_month"
-            app:layout_constraintStart_toEndOf="@+id/prev_month"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.035" />
+            app:layout_constraintBottom_toTopOf="@id/year_text_view"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
             android:id="@+id/next_month"
             android:layout_width="0dp"
-            android:layout_height="48dp"
+            android:layout_height="0dp"
             android:background="@null"
             android:contentDescription="@string/choose_next_month"
             android:src="@drawable/ic_baseline_keyboard_arrow_right_24"
-            android:textSize="20sp"
-            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/month_text_view"
-            app:layout_constraintTop_toTopOf="@+id/month_text_view" />
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout> <!--Название месяца и кнопки-->
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/week_days_constraint_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_margin="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/month_constraint_layout">
 
         <TextView
+            android:gravity="center"
             android:id="@+id/monday"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="@string/mon"
-            android:textAlignment="center"
             android:textColor="?attr/colorOnSecondary"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/tuesday"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:gravity="center"
+            android:id="@+id/tuesday"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="@string/tue"
-            android:textAlignment="center"
             android:textColor="?attr/colorOnSecondary"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/wednesday"
+            app:layout_constraintStart_toEndOf="@id/monday"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:gravity="center"
+            android:id="@+id/wednesday"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="@string/wed"
-            android:textAlignment="center"
             android:textColor="?attr/colorOnSecondary"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/thursday"
+            app:layout_constraintStart_toEndOf="@id/tuesday"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:gravity="center"
+            android:id="@+id/thursday"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="@string/thu"
-            android:textAlignment="center"
             android:textColor="?attr/colorOnSecondary"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/friday"
+            app:layout_constraintStart_toEndOf="@id/wednesday"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:gravity="center"
+            android:id="@+id/friday"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="@string/fri"
-            android:textAlignment="center"
             android:textColor="?attr/colorOnSecondary"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/saturday"
+            app:layout_constraintStart_toEndOf="@id/thursday"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-
+            android:gravity="center"
+            android:id="@+id/saturday"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="@string/sat"
-            android:textAlignment="center"
             android:textColor="?attr/colorOnSecondary"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/sunday"
+            app:layout_constraintStart_toEndOf="@id/friday"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:gravity="center"
+            android:id="@+id/sunday"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="@string/sun"
-            android:textAlignment="center"
             android:textColor="?attr/colorOnSecondary"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/saturday"
+            app:layout_constraintTop_toTopOf="parent" />
 
+    </androidx.constraintlayout.widget.ConstraintLayout> <!--Дни недели-->
 
-    </LinearLayout> <!--Дни недели-->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/calendarRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginStart="2dp"
-        android:layout_marginEnd="2dp"
-        android:layout_marginBottom="8dp"
-        android:layout_weight="0.4"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
         android:layoutAnimation="@anim/layout_animation"
         android:scrollbars="vertical"
         android:verticalScrollbarPosition="left"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/week_days_constraint_layout" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/shortDataRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:layout_margin="8dp"
-        android:layout_weight="0.6"
         android:scrollbars="vertical"
-        android:verticalScrollbarPosition="left" />
+        android:fadeScrollbars="false"
+        android:verticalScrollbarPosition="left"
+        app:layout_constraintBottom_toTopOf="@+id/go_into_date"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/calendarRecyclerView" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_margin="24dp"
         android:id="@+id/go_into_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center|top"
-        android:layout_marginBottom="16dp"
         android:backgroundTint="@color/blue_main"
         android:contentDescription="@string/date_edit"
         android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@android:drawable/ic_input_add"
         app:tint="@color/white" />
 
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
 
 
 

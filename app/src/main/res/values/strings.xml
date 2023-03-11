@@ -73,5 +73,6 @@
     <string name="cancel__button">Отмена</string>
     <string name="avatar_description">clickable client avatar</string>
     <string name="date_edit">edit date</string>
+    <string name="select_previous_month">select previous month</string>
 
 </resources>
