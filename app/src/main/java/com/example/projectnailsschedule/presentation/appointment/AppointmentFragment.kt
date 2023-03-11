@@ -31,6 +31,7 @@ class AppointmentFragment : Fragment() {
     private val binding get() = _binding!!
 
     private var appointmentParams: AppointmentParams? = null
+    private val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -95,8 +96,6 @@ class AppointmentFragment : Fragment() {
     private fun createAppointment() {
         /** Send params to ViewModel */
 
-        val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
-
         // create appointmentParams object
         with(binding) {
             val appointmentParams = AppointmentParams(
@@ -109,11 +108,7 @@ class AppointmentFragment : Fragment() {
             )
             appointmentViewModel?.createAppointment(appointmentParams)
 
-            Toast.makeText(
-                context,
-                "$toastCreated ${appointmentParams.appointmentDate?.format(formatter)}",
-                Toast.LENGTH_LONG
-            ).show()
+            Toast.makeText(context, toastCreated, Toast.LENGTH_LONG).show()
         }
 
         // Return to previous screen
@@ -127,7 +122,7 @@ class AppointmentFragment : Fragment() {
         with(binding) {
             val appointmentParams = AppointmentParams(
                 _id = appointmentParams?._id,
-                appointmentDate = LocalDate.parse(dayEditText.toString()),
+                appointmentDate = LocalDate.parse(dayEditText.text, formatter),
                 clientName = nameEditText.text.toString(),
                 startTime = timeEditText.text.toString(),
                 procedure = procedureEditText.text.toString(),
@@ -138,11 +133,7 @@ class AppointmentFragment : Fragment() {
             // send to AppointmentViewModel
             appointmentViewModel?.editAppointment(appointmentParams)
 
-            Toast.makeText(
-                context,
-                "$toastEdited ${appointmentParams.appointmentDate}",
-                Toast.LENGTH_LONG
-            ).show()
+            Toast.makeText(context, toastEdited, Toast.LENGTH_LONG).show()
 
             findNavController().popBackStack()
         }
@@ -150,10 +141,9 @@ class AppointmentFragment : Fragment() {
 
     private fun setAppointmentCurrentParams() {
         // set current appointmentParams from DateFragment binding object
-        val dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
 
         with(binding) {
-            dayEditText.text = appointmentParams?.appointmentDate?.format(dateFormatter)
+            dayEditText.text = appointmentParams?.appointmentDate?.format(formatter)
             timeEditText.text = appointmentParams?.startTime
             procedureEditText.setText(appointmentParams?.procedure)
             nameEditText.setText(appointmentParams?.clientName)

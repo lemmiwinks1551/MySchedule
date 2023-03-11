@@ -26,6 +26,9 @@ class DateAdapter(
 
         // inflate view holder if data exists
         if (dateAppointmentsCursor.moveToPosition(position)) {
+            // Set id in holder
+            holder.appointmentId = dateAppointmentsCursor.getInt(0)
+
             // Set time in holder
             holder.appointmentTime.text = dateAppointmentsCursor.getString(2)
 

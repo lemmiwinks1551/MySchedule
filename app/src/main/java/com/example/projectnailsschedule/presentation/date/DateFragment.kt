@@ -31,9 +31,7 @@ class DateFragment : Fragment(), DateAdapter.OnItemListener {
     private val bindingKey = "dateParams"
     private val bindingKeyAppointment = "appointmentParams"
     private val dateRecyclerViewSpanCount = 1
-    private val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
 
-    private var dayStatusSpinner: Spinner? = null
     private var dateParams: DateParams? = null
     private var dateViewModel: DateViewModel? = null
     private var dateRecyclerView: RecyclerView? = null
@@ -157,7 +155,7 @@ class DateFragment : Fragment(), DateAdapter.OnItemListener {
                 dateRecyclerView?.findViewHolderForAdapterPosition(position) as DateViewHolder
 
             val appointmentParams = AppointmentParams(
-                _id = null,
+                _id = holderClicked.appointmentId,
                 appointmentDate = dateParams?.date,
                 clientName = holderClicked.appointmentClientName.text.toString(),
                 startTime = holderClicked.appointmentTime.text.toString(),

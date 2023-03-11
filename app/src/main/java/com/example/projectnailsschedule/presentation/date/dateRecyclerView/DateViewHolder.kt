@@ -15,6 +15,7 @@ class DateViewHolder internal constructor(itemView: View, onItemListener: DateFr
     val appointmentClientName: TextView
     val appointmentNamePhone: TextView
     val appointmentMisc: TextView
+    var appointmentId: Int? = null
 
     init {
         appointmentTime = itemView.findViewById(R.id.appointment_time)
