@@ -273,6 +273,9 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         Log.e(log, "onResume")
         super.onResume()
 
+        // reset clicked var
+        clicked = false
+
         // hide keyboard
         Util().hideKeyboard(requireActivity())
 
