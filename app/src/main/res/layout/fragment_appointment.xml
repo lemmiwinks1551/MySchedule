@@ -181,7 +181,7 @@
             android:autofillHints="password"
             android:hint="@string/example_misc"
             android:inputType="text"
-            android:maxLength="10"
+            android:maxLength="50"
             android:maxLines="1"
             android:padding="8dp"
             android:textColor="?attr/colorOnSecondary"

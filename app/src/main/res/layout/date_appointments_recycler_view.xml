@@ -9,8 +9,8 @@
 
     <ImageButton
         android:id="@+id/client_avatar"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:adjustViewBounds="true"
         android:background="#00000000"
@@ -20,34 +20,21 @@
         android:src="@drawable/ic_baseline_face_48"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" /> <!--Client image button-->
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/start_constraint_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="4dp"
+        android:layout_margin="8dp"
         app:layout_constraintEnd_toStartOf="@id/edit_note"
         app:layout_constraintStart_toEndOf="@+id/client_avatar"
         app:layout_constraintTop_toTopOf="parent">
-
-        <!--        <TextView
-                    android:id="@+id/time_text"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/time"
-                    android:textColor="?attr/colorOnSecondary"
-                    android:textSize="16sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/time_value"
-                    app:layout_constraintTop_toTopOf="parent" />-->
 
         <TextView
             android:id="@+id/time_value"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:text="@string/example_time"
             android:textColor="?attr/colorOnSecondary"
             android:textSize="16sp"
@@ -63,29 +50,15 @@
         android:id="@+id/procedure_constraint_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="4dp"
+        android:layout_margin="8dp"
         app:layout_constraintEnd_toStartOf="@id/edit_note"
-
         app:layout_constraintStart_toEndOf="@+id/client_avatar"
         app:layout_constraintTop_toBottomOf="@id/start_constraint_layout">
-
-        <!--        <TextView
-                    android:id="@+id/procedure_text"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/procedure"
-                    android:textColor="?attr/colorOnSecondary"
-                    android:textSize="16sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/procedure_value"
-                    app:layout_constraintTop_toTopOf="parent" />-->
 
         <TextView
             android:id="@+id/procedure_value"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:text="@string/example_procedure"
             android:textColor="?attr/colorOnSecondary"
             android:textSize="16sp"
@@ -100,30 +73,15 @@
         android:id="@+id/client_constraint_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="4dp"
+        android:layout_margin="8dp"
         app:layout_constraintEnd_toStartOf="@id/edit_note"
-
         app:layout_constraintStart_toEndOf="@+id/client_avatar"
         app:layout_constraintTop_toBottomOf="@id/procedure_constraint_layout">
-
-        <!--        <TextView
-                    android:id="@+id/client_text"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/client"
-                    android:textColor="?attr/colorOnSecondary"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/client_value"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />-->
 
         <TextView
             android:id="@+id/client_value"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:text="@string/example_client"
             android:textColor="?attr/colorOnSecondary"
             android:textSize="16sp"
@@ -138,30 +96,15 @@
         android:id="@+id/phone_constraint_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="4dp"
+        android:layout_margin="8dp"
         app:layout_constraintEnd_toStartOf="@id/edit_note"
-
         app:layout_constraintStart_toEndOf="@+id/client_avatar"
         app:layout_constraintTop_toBottomOf="@id/client_constraint_layout">
-
-        <!--        <TextView
-                    android:id="@+id/phone_text"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/phone"
-                    android:textColor="?attr/colorOnSecondary"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/phone_value"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />-->
 
         <TextView
             android:id="@+id/phone_value"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:text="@string/example_phone"
             android:textColor="?attr/colorOnSecondary"
             android:textSize="16sp"
@@ -176,30 +119,15 @@
         android:id="@+id/misc_constraint_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="4dp"
+        android:layout_margin="8dp"
         app:layout_constraintEnd_toStartOf="@id/edit_note"
-
         app:layout_constraintStart_toEndOf="@+id/client_avatar"
         app:layout_constraintTop_toBottomOf="@id/phone_constraint_layout">
-
-        <!--        <TextView
-                    android:id="@+id/misc_text"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/misc"
-                    android:textColor="?attr/colorOnSecondary"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/misc_value"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />-->
 
         <TextView
             android:id="@+id/misc_value"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:text="@string/example_misc"
             android:textColor="?attr/colorOnSecondary"
             android:textSize="16sp"
@@ -212,32 +140,32 @@
 
     <ImageButton
         android:id="@+id/edit_note"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:adjustViewBounds="true"
         android:background="#00000000"
-        android:contentDescription="@string/avatar_description"
+        android:contentDescription="@string/edit_appointment"
         android:cropToPadding="false"
         android:scaleType="fitCenter"
-        android:src="@drawable/ic_baseline_edit_note_24"
-        app:layout_constraintBottom_toTopOf="de"
+        android:src="@drawable/ic_baseline_edit_24"
+        app:layout_constraintBottom_toTopOf="@id/delete_forever"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" /> <!--Edit button-->
+        app:layout_constraintTop_toTopOf="parent" /> <!--Edit appointment image button-->
 
     <ImageButton
         android:id="@+id/delete_forever"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:adjustViewBounds="true"
         android:background="#00000000"
-        android:contentDescription="@string/avatar_description"
+        android:contentDescription="@string/delete_appointment"
         android:cropToPadding="false"
         android:scaleType="fitCenter"
         android:src="@drawable/ic_baseline_delete_forever_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edit_note" />
+        app:layout_constraintTop_toBottomOf="@id/edit_note" /> <!--Delete appointment image button-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
