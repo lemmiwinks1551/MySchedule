@@ -18,11 +18,11 @@ class DateViewHolder internal constructor(itemView: View, onItemListener: DateFr
     var appointmentId: Int? = null
 
     init {
-        appointmentTime = itemView.findViewById(R.id.appointment_time)
-        appointmentProcedure = itemView.findViewById(R.id.appointment_procedure)
-        appointmentClientName = itemView.findViewById(R.id.client_name)
-        appointmentNamePhone = itemView.findViewById(R.id.client_phone)
-        appointmentMisc = itemView.findViewById(R.id.appointment_misc)
+        appointmentTime = itemView.findViewById(R.id.time_value)
+        appointmentProcedure = itemView.findViewById(R.id.procedure_value)
+        appointmentClientName = itemView.findViewById(R.id.client_value)
+        appointmentNamePhone = itemView.findViewById(R.id.phone_value)
+        appointmentMisc = itemView.findViewById(R.id.misc_value)
         this.onItemListener = onItemListener
         itemView.setOnClickListener(this)
     }

@@ -15,7 +15,7 @@
 
 
     <string name="time">Время</string>
-    <string name="procedure">Процедура</string>
+    <string name="procedure">Услуга</string>
     <string name="client">Клиент</string>
     <string name="phone">Телефон</string>
     <string name="misc">Комментарии</string>
@@ -26,7 +26,7 @@
     <string name="example_date">01.01.2022</string>
     <string name="example_time">09:00</string>
     <string name="example_procedure">Наращивание</string>
-    <string name="example_name">Имя клиента</string>
+    <string name="example_client">Имя клиента</string>
     <string name="example_phone">8 800 123–45–67</string>
     <string name="example_misc">…</string>
     <string name="choose_previous_month">Choose previous month</string>
@@ -52,15 +52,6 @@
     <string name="toggle_button_search_name">Имя:</string>
     <string name="toggle_button_search_phone">Телефон:</string>
     <string name="search_client_by_phone">Телефон:</string>
-
-    <!--Day statuses list-->
-    <string name="status_description">Статус дня:</string>
-    <string-array name="day_status">
-        <item>Свободен</item>
-        <item>Есть записи</item>
-        <item>Занят</item>
-        <item>Выходной</item>
-    </string-array>
 
     <!--Support email settings-->
     <string name="support_email">scheduleapp@mail.ru</string>

@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:layout_margin="8dp"
+    android:background="@drawable/calendar_recycler_view_background"
+    android:orientation="vertical">
 
     <ImageButton
         android:id="@+id/client_avatar"
@@ -20,134 +22,222 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
-    <TextView
-        android:id="@+id/COLUMN_START_TEXT"
-        android:layout_width="120dp"
-        android:layout_height="21dp"
-        android:layout_margin="16dp"
-        android:text="@string/time"
-        android:textColor="?attr/colorOnSecondary"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/client_avatar"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/COLUMN_END_TEXT"
-        android:layout_width="120dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:text="@string/procedure"
-        android:textColor="?attr/colorOnSecondary"
-        android:textSize="16sp"
-        app:layout_constraintStart_toEndOf="@+id/client_avatar"
-        app:layout_constraintTop_toBottomOf="@id/COLUMN_START_TEXT" />
-
-    <TextView
-        android:id="@+id/appointment_time"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/start_constraint_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:text="@string/example_time"
-        android:textColor="?attr/colorOnSecondary"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/COLUMN_START_TEXT"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/appointment_procedure"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:text="@string/example_procedure"
-        android:textColor="?attr/colorOnSecondary"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/COLUMN_END_TEXT"
-        app:layout_constraintTop_toBottomOf="@id/appointment_time" />
-
-    <TextView
-        android:id="@+id/COLUMN_NAME_TEXT"
-        android:layout_width="120dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:layout_marginTop="16dp"
-        android:text="@string/client"
-        android:textColor="?attr/colorOnSecondary"
-        android:textSize="16sp"
+        android:layout_margin="4dp"
+        app:layout_constraintEnd_toStartOf="@id/edit_note"
         app:layout_constraintStart_toEndOf="@+id/client_avatar"
-        app:layout_constraintTop_toBottomOf="@id/COLUMN_END_TEXT" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/client_name"
+        <!--        <TextView
+                    android:id="@+id/time_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/time"
+                    android:textColor="?attr/colorOnSecondary"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/time_value"
+                    app:layout_constraintTop_toTopOf="parent" />-->
+
+        <TextView
+            android:id="@+id/time_value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/example_time"
+            android:textColor="?attr/colorOnSecondary"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout> <!--Start time-->
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/procedure_constraint_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:text="@string/name"
-        android:textColor="?attr/colorOnSecondary"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/COLUMN_NAME_TEXT"
-        app:layout_constraintTop_toBottomOf="@+id/appointment_procedure" />
+        android:layout_margin="4dp"
+        app:layout_constraintEnd_toStartOf="@id/edit_note"
 
-    <TextView
-        android:id="@+id/COLUMN_PHONE_NAME"
-        android:layout_width="120dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
-        android:text="@string/phone"
-        android:textColor="?attr/colorOnSecondary"
-        android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@+id/client_avatar"
-        app:layout_constraintTop_toBottomOf="@id/COLUMN_NAME_TEXT" />
+        app:layout_constraintTop_toBottomOf="@id/start_constraint_layout">
 
-    <TextView
-        android:id="@+id/client_phone"
+        <!--        <TextView
+                    android:id="@+id/procedure_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/procedure"
+                    android:textColor="?attr/colorOnSecondary"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/procedure_value"
+                    app:layout_constraintTop_toTopOf="parent" />-->
+
+        <TextView
+            android:id="@+id/procedure_value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/example_procedure"
+            android:textColor="?attr/colorOnSecondary"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout> <!--Procedure-->
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/client_constraint_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:text="@string/example_phone"
-        android:textColor="?attr/colorOnSecondary"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/COLUMN_PHONE_NAME"
-        app:layout_constraintTop_toBottomOf="@id/client_name" />
+        android:layout_margin="4dp"
+        app:layout_constraintEnd_toStartOf="@id/edit_note"
 
-    <TextView
-        android:id="@+id/COLUMN_MISC_NAME"
-        android:layout_width="120dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:text="@string/misc"
-        android:textColor="?attr/colorOnSecondary"
-        android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@+id/client_avatar"
-        app:layout_constraintTop_toBottomOf="@id/COLUMN_PHONE_NAME" />
+        app:layout_constraintTop_toBottomOf="@id/procedure_constraint_layout">
 
-    <TextView
-        android:id="@+id/appointment_misc"
+        <!--        <TextView
+                    android:id="@+id/client_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/client"
+                    android:textColor="?attr/colorOnSecondary"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/client_value"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />-->
+
+        <TextView
+            android:id="@+id/client_value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/example_client"
+            android:textColor="?attr/colorOnSecondary"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout> <!--Client-->
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/phone_constraint_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:text="@string/example_misc"
-        android:textColor="?attr/colorOnSecondary"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/COLUMN_MISC_NAME"
-        app:layout_constraintTop_toBottomOf="@id/client_phone" />
+        android:layout_margin="4dp"
+        app:layout_constraintEnd_toStartOf="@id/edit_note"
 
-    <ImageView
-        android:id="@+id/border_line_appointment_recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="5dp"
+        app:layout_constraintStart_toEndOf="@+id/client_avatar"
+        app:layout_constraintTop_toBottomOf="@id/client_constraint_layout">
+
+        <!--        <TextView
+                    android:id="@+id/phone_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/phone"
+                    android:textColor="?attr/colorOnSecondary"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/phone_value"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />-->
+
+        <TextView
+            android:id="@+id/phone_value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/example_phone"
+            android:textColor="?attr/colorOnSecondary"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout> <!--Phone-->
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/misc_constraint_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        app:layout_constraintEnd_toStartOf="@id/edit_note"
+
+        app:layout_constraintStart_toEndOf="@+id/client_avatar"
+        app:layout_constraintTop_toBottomOf="@id/phone_constraint_layout">
+
+        <!--        <TextView
+                    android:id="@+id/misc_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/misc"
+                    android:textColor="?attr/colorOnSecondary"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/misc_value"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />-->
+
+        <TextView
+            android:id="@+id/misc_value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/example_misc"
+            android:textColor="?attr/colorOnSecondary"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout> <!--Misc-->
+
+    <ImageButton
+        android:id="@+id/edit_note"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_margin="8dp"
-        android:layerType="software"
-        android:src="@drawable/border_line_horizontal"
-        app:layout_constraintTop_toBottomOf="@id/COLUMN_MISC_NAME" />
+        android:adjustViewBounds="true"
+        android:background="#00000000"
+        android:contentDescription="@string/avatar_description"
+        android:cropToPadding="false"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_baseline_edit_note_24"
+        app:layout_constraintBottom_toTopOf="de"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" /> <!--Edit button-->
+
+    <ImageButton
+        android:id="@+id/delete_forever"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_margin="8dp"
+        android:adjustViewBounds="true"
+        android:background="#00000000"
+        android:contentDescription="@string/avatar_description"
+        android:cropToPadding="false"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_baseline_delete_forever_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edit_note" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

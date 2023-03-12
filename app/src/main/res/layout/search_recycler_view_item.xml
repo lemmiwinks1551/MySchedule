@@ -32,7 +32,7 @@
         app:layout_constraintTop_toBottomOf="@id/client_name" />
 
     <TextView
-        android:id="@+id/appointment_time"
+        android:id="@+id/time_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
