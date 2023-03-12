@@ -113,7 +113,8 @@ class DateFragment : Fragment(), DateAdapter.OnItemListener {
         val dateAdapter = DateAdapter(
             appointmentsCount = selectedDate.appointmentCount!!,
             onItemListener = this,
-            dateViewModel = dateViewModel!!
+            dateViewModel = dateViewModel!!,
+            fragmentActivity = requireActivity()
         )
 
         val layoutManager: RecyclerView.LayoutManager =
