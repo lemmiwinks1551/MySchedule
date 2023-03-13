@@ -1,11 +1,12 @@
 package com.example.projectnailsschedule.presentation.date.dateRecyclerView
 
-import android.app.Activity
-import android.content.Context
+import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
+import android.widget.Button
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
@@ -14,7 +15,6 @@ import com.example.projectnailsschedule.domain.models.AppointmentParams
 import com.example.projectnailsschedule.presentation.date.DateFragment
 import com.example.projectnailsschedule.presentation.date.DateViewModel
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 class DateAdapter(
     private var appointmentsCount: Int,
@@ -29,7 +29,6 @@ class DateAdapter(
         return DateViewHolder(view, onItemListener)
     }
 
-    private val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
     private val bindingKeyAppointment = "appointmentParams"
 
     override fun onBindViewHolder(holder: DateViewHolder, position: Int) {
@@ -61,12 +60,32 @@ class DateAdapter(
         }
 
         // set delete image button click listener
-        holder.deleteImageButton?.setOnClickListener{
-            dateViewModel.deleteAppointment(position)
-            notifyItemRemoved(position)
-            appointmentsCount -= 1
+        holder.deleteImageButton?.setOnClickListener {
+
+            val dialog = Dialog(fragmentActivity)
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog.setCancelable(false)
+            dialog.setContentView(R.layout.dialog_ok_cancel)
+
+            // init dialog buttons
+            val okButton: Button? = dialog.findViewById(R.id.ok_delete_button)
+            val cancelButton: Button? = dialog.findViewById(R.id.cancel_delete_button)
+
+            okButton?.setOnClickListener {
+                dateViewModel.deleteAppointment(position)
+                notifyItemRemoved(position)
+                appointmentsCount -= 1
+                dialog.dismiss()
+            }
+
+            cancelButton?.setOnClickListener {
+                dialog.dismiss()
+            }
+
+            dialog.show()
         }
 
+        // set edit image button click listener
         holder.editImageBoolean?.setOnClickListener {
 
             // get information from clicked item

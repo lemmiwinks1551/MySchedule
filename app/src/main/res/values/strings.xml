@@ -67,5 +67,8 @@
     <string name="select_previous_month">select previous month</string>
     <string name="edit_appointment">edit appointment</string>
     <string name="delete_appointment">delete appointment</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Отмена</string>
+    <string name="really_delete_text">Удалить запись?</string>
 
 </resources>
