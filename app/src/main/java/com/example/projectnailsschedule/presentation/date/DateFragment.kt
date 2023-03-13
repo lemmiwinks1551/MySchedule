@@ -1,12 +1,9 @@
 package com.example.projectnailsschedule.presentation.date
 
-import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
-import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
@@ -17,7 +14,6 @@ import com.example.projectnailsschedule.databinding.FragmentDateBinding
 import com.example.projectnailsschedule.domain.models.AppointmentParams
 import com.example.projectnailsschedule.domain.models.DateParams
 import com.example.projectnailsschedule.presentation.date.dateRecyclerView.DateAdapter
-import com.example.projectnailsschedule.presentation.date.dateRecyclerView.DateViewHolder
 import com.example.projectnailsschedule.util.Util
 
 
@@ -33,10 +29,6 @@ class DateFragment : Fragment(), DateAdapter.OnItemListener {
     private var dateParams: DateParams? = null
     private var dateViewModel: DateViewModel? = null
     private var dateRecyclerView: RecyclerView? = null
-
-    // dialog buttons
-    private var deleteButton: Button? = null
-    private var editButton: Button? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -130,6 +122,7 @@ class DateFragment : Fragment(), DateAdapter.OnItemListener {
     }
 
     override fun onItemClick(position: Int) {
+        // not implemented yet
     }
 }
 

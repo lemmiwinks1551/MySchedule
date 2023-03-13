@@ -18,15 +18,17 @@
         android:cropToPadding="false"
         android:scaleType="fitCenter"
         android:src="@drawable/ic_baseline_face_48"
+        app:layout_constraintEnd_toStartOf="@id/appointment_constraint_layout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" /> <!--Client image button-->
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/start_constraint_layout"
+        android:id="@+id/appointment_constraint_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/edit_note_image_button"
         app:layout_constraintStart_toEndOf="@+id/client_avatar"
         app:layout_constraintTop_toTopOf="parent">
@@ -35,108 +37,65 @@
             android:id="@+id/time_value"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_margin="8dp"
             android:text="@string/example_time"
             android:textColor="?attr/colorOnSecondary"
             android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout> <!--Start time-->
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/procedure_constraint_layout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        app:layout_constraintEnd_toStartOf="@id/edit_note_image_button"
-        app:layout_constraintStart_toEndOf="@+id/client_avatar"
-        app:layout_constraintTop_toBottomOf="@id/start_constraint_layout">
 
         <TextView
             android:id="@+id/procedure_value"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_margin="8dp"
             android:text="@string/example_procedure"
             android:textColor="?attr/colorOnSecondary"
             android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout> <!--Procedure-->
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/client_constraint_layout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        app:layout_constraintEnd_toStartOf="@id/edit_note_image_button"
-        app:layout_constraintStart_toEndOf="@+id/client_avatar"
-        app:layout_constraintTop_toBottomOf="@id/procedure_constraint_layout">
+            app:layout_constraintTop_toBottomOf="@id/time_value" />
 
         <TextView
             android:id="@+id/client_value"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_margin="8dp"
             android:text="@string/example_client"
             android:textColor="?attr/colorOnSecondary"
             android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout> <!--Client-->
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/phone_constraint_layout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        app:layout_constraintEnd_toStartOf="@id/edit_note_image_button"
-        app:layout_constraintStart_toEndOf="@+id/client_avatar"
-        app:layout_constraintTop_toBottomOf="@id/client_constraint_layout">
+            app:layout_constraintTop_toBottomOf="@id/procedure_value" />
 
         <TextView
             android:id="@+id/phone_value"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_margin="8dp"
             android:text="@string/example_phone"
             android:textColor="?attr/colorOnSecondary"
             android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout> <!--Phone-->
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/misc_constraint_layout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        app:layout_constraintEnd_toStartOf="@id/edit_note_image_button"
-        app:layout_constraintStart_toEndOf="@+id/client_avatar"
-        app:layout_constraintTop_toBottomOf="@id/phone_constraint_layout">
+            app:layout_constraintTop_toBottomOf="@id/client_value" />
 
         <TextView
             android:id="@+id/misc_value"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_margin="8dp"
             android:text="@string/example_misc"
             android:textColor="?attr/colorOnSecondary"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/phone_value" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout> <!--Misc-->
+    </androidx.constraintlayout.widget.ConstraintLayout> <!--Appointment params-->
 
     <ImageButton
         android:id="@+id/edit_note_image_button"
@@ -149,6 +108,7 @@
         android:cropToPadding="false"
         android:scaleType="fitCenter"
         android:src="@drawable/ic_baseline_edit_24"
+        app:layout_constraintStart_toEndOf="@id/appointment_constraint_layout"
         app:layout_constraintBottom_toTopOf="@id/delete_forever_image_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" /> <!--Edit appointment image button-->
@@ -164,6 +124,7 @@
         android:cropToPadding="false"
         android:scaleType="fitCenter"
         android:src="@drawable/ic_baseline_delete_forever_24"
+        app:layout_constraintStart_toEndOf="@id/appointment_constraint_layout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/edit_note_image_button" /> <!--Delete appointment image button-->
