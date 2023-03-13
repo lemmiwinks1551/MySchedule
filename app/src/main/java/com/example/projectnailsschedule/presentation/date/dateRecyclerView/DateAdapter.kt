@@ -16,6 +16,7 @@ import com.example.projectnailsschedule.presentation.date.DateFragment
 import com.example.projectnailsschedule.presentation.date.DateViewModel
 import java.time.LocalDate
 
+
 class DateAdapter(
     private var appointmentsCount: Int,
     private val onItemListener: DateFragment,
@@ -61,6 +62,8 @@ class DateAdapter(
 
         // set delete image button click listener
         holder.deleteImageButton?.setOnClickListener {
+            // run animation
+            runAnimation(it)
 
             val dialog = Dialog(fragmentActivity)
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -87,6 +90,8 @@ class DateAdapter(
 
         // set edit image button click listener
         holder.editImageBoolean?.setOnClickListener {
+            // run animation
+            runAnimation(it)
 
             // get information from clicked item
             // start fragment with selected data
@@ -109,6 +114,14 @@ class DateAdapter(
         }
 
         dateViewModel.setDateAppointments(dateAppointmentsCursor)
+    }
+
+    private fun runAnimation(view: View) {
+        // run animation
+        view.animate().apply {
+            duration = 1000
+            rotationY(360f)
+        }.start()
     }
 
     override fun getItemCount(): Int {
