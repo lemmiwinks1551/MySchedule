@@ -99,10 +99,10 @@ class ScheduleDbHelper(context: Context?) :
         Log.e(log, String.format("Delete row - success"))
     }
 
-    fun searchAppointments(db: SQLiteDatabase): Cursor {
-        /** Get a row(s) from a database */
+    fun getAllAppointments(db: SQLiteDatabase): Cursor {
+        /** Get all rows from the database */
         val query = "SELECT * FROM $TABLE_NAME WHERE $COLUMN_DELETED = 0 ORDER BY $COLUMN_DATE DESC"
-        Log.e(log, String.format("All datatable fetched"))
+        Log.e(log, String.format("All rows fetched"))
         return db.rawQuery(query, null)
     }
 

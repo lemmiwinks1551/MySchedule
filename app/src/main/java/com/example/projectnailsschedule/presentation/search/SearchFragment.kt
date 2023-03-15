@@ -58,7 +58,7 @@ class SearchFragment : Fragment(), SearchAdapter.OnItemListener {
         initClickListeners()
 
         // load appointments list
-        searchViewModel?.searchAppointment()
+        searchViewModel?.getAllAppointments()
 
         return binding.root
     }
@@ -84,7 +84,7 @@ class SearchFragment : Fragment(), SearchAdapter.OnItemListener {
             }
 
             override fun onQueryTextChange(msg: String): Boolean {
-                searchViewModel?.searchAppointment()
+                searchViewModel?.getAllAppointments()
                 filter(msg)
                 return false
             }
@@ -96,7 +96,9 @@ class SearchFragment : Fragment(), SearchAdapter.OnItemListener {
         val searchAdapter = SearchAdapter(
             appointmentCount = appointmentsList.size,
             searchFragment = this,
-            appointmentsList = appointmentsList
+            appointmentsList = appointmentsList,
+            fragmentActivity = requireActivity(),
+            searchViewModel = searchViewModel!!
         )
 
         val layoutManager: RecyclerView.LayoutManager =

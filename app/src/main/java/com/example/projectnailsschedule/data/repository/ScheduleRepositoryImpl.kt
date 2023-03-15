@@ -48,9 +48,9 @@ class ScheduleRepositoryImpl(context: Context?) : ScheduleRepository {
         )
     }
 
-    override fun searchAppointment (): Cursor {
+    override fun getAllAppointments (): Cursor {
         val db: SQLiteDatabase = scheduleDbHelper.readableDatabase
-        return scheduleDbHelper.searchAppointments(
+        return scheduleDbHelper.getAllAppointments(
             db = db
         )
     }

@@ -38,7 +38,6 @@
             android:text="@string/example_time"
             android:textColor="?attr/colorOnSecondary"
             android:textSize="16sp"
-            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/date_value_search" />
@@ -105,9 +104,9 @@
         android:cropToPadding="false"
         android:scaleType="fitCenter"
         android:src="@drawable/ic_baseline_edit_24"
-        app:layout_constraintStart_toEndOf="@id/appointment_constraint_layout"
         app:layout_constraintBottom_toTopOf="@id/delete_forever_image_button"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/appointment_constraint_layout"
         app:layout_constraintTop_toTopOf="parent" /> <!--Edit appointment image button-->
 
     <ImageButton
@@ -121,9 +120,9 @@
         android:cropToPadding="false"
         android:scaleType="fitCenter"
         android:src="@drawable/ic_baseline_delete_forever_24"
-        app:layout_constraintStart_toEndOf="@id/appointment_constraint_layout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/appointment_constraint_layout"
         app:layout_constraintTop_toBottomOf="@id/edit_note_image_button" /> <!--Delete appointment image button-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

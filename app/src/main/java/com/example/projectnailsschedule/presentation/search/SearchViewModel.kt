@@ -3,29 +3,35 @@ package com.example.projectnailsschedule.presentation.search
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.projectnailsschedule.domain.models.AppointmentParams
-import com.example.projectnailsschedule.domain.usecase.searchUC.SearchAppointmentsUseCase
+import com.example.projectnailsschedule.domain.usecase.dateUC.DeleteAppointmentUseCase
+import com.example.projectnailsschedule.domain.usecase.dateUC.GetDateAppointmentsUseCase
+import com.example.projectnailsschedule.domain.usecase.searchUC.GetAllAppointmentsUseCase
 import java.time.LocalDate
 
 class SearchViewModel(
-    private val searchAppointmentsUseCase: SearchAppointmentsUseCase
+    private val getAllAppointmentsUseCase: GetAllAppointmentsUseCase,
+    private var deleteAppointmentUseCase: DeleteAppointmentUseCase,
+    private var getDateAppointmentsUseCase: GetDateAppointmentsUseCase
+
 ) : ViewModel() {
 
     var appointmentArray = MutableLiveData<MutableList<AppointmentParams>>()
+    var allAppointmentsCursor = getAllAppointmentsUseCase.execute()
 
-    fun searchAppointment() {
+    fun getAllAppointments() {
         // get cursor with data
         appointmentArray.value = mutableListOf()
-        val cursor = searchAppointmentsUseCase.execute()
+        allAppointmentsCursor = getAllAppointmentsUseCase.execute()
 
         // add data to list
-        cursor.moveToPosition(-1)
-        while (cursor.moveToNext()) {
-            val date = cursor.getString(1)
-            val time = cursor.getString(2)
-            val procedure = cursor.getString(3)
-            val name = cursor.getString(4)
-            val phone = cursor.getString(5)
-            val misc = cursor.getString(6)
+        allAppointmentsCursor.moveToPosition(-1)
+        while (allAppointmentsCursor.moveToNext()) {
+            val date = allAppointmentsCursor.getString(1)
+            val time = allAppointmentsCursor.getString(2)
+            val procedure = allAppointmentsCursor.getString(3)
+            val name = allAppointmentsCursor.getString(4)
+            val phone = allAppointmentsCursor.getString(5)
+            val misc = allAppointmentsCursor.getString(6)
 
             val appointmentParams = AppointmentParams(
                 _id = null,
@@ -39,7 +45,16 @@ class SearchViewModel(
             )
             appointmentArray.value?.add(appointmentParams)
         }
-        cursor.close()
         appointmentArray.value = appointmentArray.value
+    }
+
+    fun updateAppointmentsCursor() {
+        // update appointmentCursor
+        allAppointmentsCursor = getAllAppointmentsUseCase.execute()
+    }
+
+    fun deleteAppointment(id: Int) {
+        allAppointmentsCursor.moveToPosition(id)
+        deleteAppointmentUseCase.execute(allAppointmentsCursor.getString(0)!!.toInt())
     }
 }

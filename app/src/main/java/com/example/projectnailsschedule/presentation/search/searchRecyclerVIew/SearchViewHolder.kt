@@ -1,6 +1,7 @@
 package com.example.projectnailsschedule.presentation.search.searchRecyclerVIew
 
 import android.view.View
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
@@ -17,6 +18,9 @@ class SearchViewHolder internal constructor(itemView: View, onItemListener: Sear
     var misc: TextView
     var procedure: TextView
 
+    var editImageBoolean: ImageButton? = null
+    var deleteImageButton: ImageButton? = null
+
     init {
         name = itemView.findViewById(R.id.client_value_search)
         date = itemView.findViewById(R.id.date_value_search)
@@ -24,6 +28,10 @@ class SearchViewHolder internal constructor(itemView: View, onItemListener: Sear
         time = itemView.findViewById(R.id.time_value_search)
         misc = itemView.findViewById(R.id.misc_value_search)
         procedure = itemView.findViewById(R.id.procedure_value_search)
+
+        editImageBoolean = itemView.findViewById(R.id.edit_note_image_button)
+        deleteImageButton = itemView.findViewById(R.id.delete_forever_image_button)
+
         this.onItemListener = onItemListener
         itemView.setOnClickListener(this)
     }
