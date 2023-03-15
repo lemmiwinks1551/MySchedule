@@ -25,11 +25,11 @@ class DateViewHolder internal constructor(itemView: View, onItemListener: DateFr
     var deleteImageButton: ImageButton? = null
 
     init {
-        appointmentTime = itemView.findViewById(R.id.time_value)
-        appointmentProcedure = itemView.findViewById(R.id.procedure_value)
-        appointmentClientName = itemView.findViewById(R.id.client_value)
-        appointmentNamePhone = itemView.findViewById(R.id.phone_value)
-        appointmentMisc = itemView.findViewById(R.id.misc_value)
+        appointmentTime = itemView.findViewById(R.id.time_value_search)
+        appointmentProcedure = itemView.findViewById(R.id.procedure_value_search)
+        appointmentClientName = itemView.findViewById(R.id.client_value_search)
+        appointmentNamePhone = itemView.findViewById(R.id.phone_value_search)
+        appointmentMisc = itemView.findViewById(R.id.misc_value_search)
         editImageBoolean = itemView.findViewById(R.id.edit_note_image_button)
         deleteImageButton = itemView.findViewById(R.id.delete_forever_image_button)
         this.onItemListener = onItemListener

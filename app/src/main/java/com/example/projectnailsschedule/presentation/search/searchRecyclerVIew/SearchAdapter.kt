@@ -29,6 +29,7 @@ internal class SearchAdapter(
         holder.phone.text = appointmentsList[position].phoneNum.toString()
         holder.time.text = appointmentsList[position].startTime.toString()
         holder.misc.text = appointmentsList[position].misc.toString()
+        holder.procedure.text = appointmentsList[position].procedure.toString()
     }
 
     override fun getItemCount(): Int {

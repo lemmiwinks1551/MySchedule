@@ -1,91 +1,129 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/search_list_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
+    android:background="@drawable/calendar_recycler_view_background"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/client_name"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/appointment_constraint_layout"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:text="@string/name"
-        android:textColor="?attr/colorOnSecondary"
-        android:textSize="16sp"
-        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/edit_note_image_button"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/appointment_date"
+        <TextView
+            android:id="@+id/date_value_search"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="@string/example_date"
+            android:textColor="?attr/colorOnSecondary"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/time_value_search"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="@string/example_time"
+            android:textColor="?attr/colorOnSecondary"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/date_value_search" />
+
+        <TextView
+            android:id="@+id/procedure_value_search"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="@string/example_procedure"
+            android:textColor="?attr/colorOnSecondary"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/time_value_search" />
+
+        <TextView
+            android:id="@+id/client_value_search"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="@string/example_client"
+            android:textColor="?attr/colorOnSecondary"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/procedure_value_search" />
+
+        <TextView
+            android:id="@+id/phone_value_search"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="@string/example_phone"
+            android:textColor="?attr/colorOnSecondary"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/client_value_search" />
+
+        <TextView
+            android:id="@+id/misc_value_search"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="@string/example_misc"
+            android:textColor="?attr/colorOnSecondary"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/phone_value_search" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout> <!--Appointment params-->
+
+    <ImageButton
+        android:id="@+id/edit_note_image_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:text="14.10.2022"
-        android:textColor="?attr/colorOnSecondary"
-        android:textSize="16sp"
-        app:layout_constraintStart_toEndOf="@+id/date_text"
-        app:layout_constraintTop_toBottomOf="@id/client_name" />
+        android:adjustViewBounds="true"
+        android:background="#00000000"
+        android:contentDescription="@string/edit_appointment"
+        android:cropToPadding="false"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_baseline_edit_24"
+        app:layout_constraintStart_toEndOf="@id/appointment_constraint_layout"
+        app:layout_constraintBottom_toTopOf="@id/delete_forever_image_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" /> <!--Edit appointment image button-->
 
-    <TextView
-        android:id="@+id/time_value"
+    <ImageButton
+        android:id="@+id/delete_forever_image_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:text="12:00"
-        android:textColor="?attr/colorOnSecondary"
-        android:textSize="16sp"
-        app:layout_constraintStart_toEndOf="@+id/time_text"
-        app:layout_constraintTop_toBottomOf="@id/appointment_date" />
-
-    <TextView
-        android:id="@+id/client_phone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:text="+7 952 590 82 49"
-        android:textColor="?attr/colorOnSecondary"
-        android:textSize="16sp"
-        app:layout_constraintStart_toEndOf="@+id/client_name"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/date_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:text="@string/date"
-        android:textColor="?attr/colorOnSecondary"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/client_name" />
-
-    <TextView
-        android:id="@+id/time_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:text="@string/time_text"
-        android:textColor="?attr/colorOnSecondary"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/date_text" />
-
-    <TextView
-        android:id="@+id/misc_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="20dp"
-        android:text="@string/misc"
-        android:textColor="?attr/colorOnSecondary"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/time_text" />
+        android:adjustViewBounds="true"
+        android:background="#00000000"
+        android:contentDescription="@string/delete_appointment"
+        android:cropToPadding="false"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_baseline_delete_forever_24"
+        app:layout_constraintStart_toEndOf="@id/appointment_constraint_layout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edit_note_image_button" /> <!--Delete appointment image button-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

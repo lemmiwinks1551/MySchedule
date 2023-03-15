@@ -34,7 +34,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/time_value"
+            android:id="@+id/time_value_search"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
@@ -47,7 +47,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/procedure_value"
+            android:id="@+id/procedure_value_search"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
@@ -56,10 +56,10 @@
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/time_value" />
+            app:layout_constraintTop_toBottomOf="@id/time_value_search" />
 
         <TextView
-            android:id="@+id/client_value"
+            android:id="@+id/client_value_search"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
@@ -68,10 +68,10 @@
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/procedure_value" />
+            app:layout_constraintTop_toBottomOf="@id/procedure_value_search" />
 
         <TextView
-            android:id="@+id/phone_value"
+            android:id="@+id/phone_value_search"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
@@ -80,10 +80,10 @@
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/client_value" />
+            app:layout_constraintTop_toBottomOf="@id/client_value_search" />
 
         <TextView
-            android:id="@+id/misc_value"
+            android:id="@+id/misc_value_search"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
@@ -93,7 +93,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/phone_value" />
+            app:layout_constraintTop_toBottomOf="@id/phone_value_search" />
 
     </androidx.constraintlayout.widget.ConstraintLayout> <!--Appointment params-->
 

@@ -15,13 +15,15 @@ class SearchViewHolder internal constructor(itemView: View, onItemListener: Sear
     var phone: TextView
     var time: TextView
     var misc: TextView
+    var procedure: TextView
 
     init {
-        name = itemView.findViewById(R.id.client_name)
-        date = itemView.findViewById(R.id.appointment_date)
-        phone = itemView.findViewById(R.id.client_phone)
-        time = itemView.findViewById(R.id.time_value)
-        misc = itemView.findViewById(R.id.misc_text)
+        name = itemView.findViewById(R.id.client_value_search)
+        date = itemView.findViewById(R.id.date_value_search)
+        phone = itemView.findViewById(R.id.phone_value_search)
+        time = itemView.findViewById(R.id.time_value_search)
+        misc = itemView.findViewById(R.id.misc_value_search)
+        procedure = itemView.findViewById(R.id.procedure_value_search)
         this.onItemListener = onItemListener
         itemView.setOnClickListener(this)
     }
