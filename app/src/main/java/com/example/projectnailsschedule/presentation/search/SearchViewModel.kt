@@ -18,7 +18,7 @@ class SearchViewModel(
         val cursor = searchAppointmentsUseCase.execute()
 
         // add data to list
-        cursor.moveToPosition(-1);
+        cursor.moveToPosition(-1)
         while (cursor.moveToNext()) {
             val date = cursor.getString(1)
             val time = cursor.getString(2)
@@ -34,11 +34,12 @@ class SearchViewModel(
                 startTime = time,
                 procedure = procedure,
                 phoneNum = phone,
-                misc = misc
+                misc = misc,
+                deleted = 0
             )
             appointmentArray.value?.add(appointmentParams)
         }
-        cursor.close();
+        cursor.close()
         appointmentArray.value = appointmentArray.value
     }
 }

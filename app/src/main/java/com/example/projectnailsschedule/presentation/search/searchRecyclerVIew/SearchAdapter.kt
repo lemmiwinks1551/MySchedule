@@ -35,16 +35,6 @@ internal class SearchAdapter(
         return appointmentCount
     }
 
-    // method for filtering our recyclerview items.
-/*    fun filterList(filterlist: ArrayList<AppointmentParams>) {
-        // below line is to add our filtered
-        // list in our course array list.
-        appointmentsList = filterlist
-        // below line is to notify our adapter
-        // as change in recycler view data.
-        notifyDataSetChanged()
-    }*/
-
     interface OnItemListener {
         fun onItemClick(position: Int, dayText: String?)
     }

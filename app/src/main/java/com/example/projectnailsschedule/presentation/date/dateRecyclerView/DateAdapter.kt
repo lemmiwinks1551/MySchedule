@@ -103,7 +103,8 @@ class DateAdapter(
                 startTime = holder.appointmentTime.text.toString(),
                 procedure = holder.appointmentProcedure.text.toString(),
                 phoneNum = holder.appointmentNamePhone.text.toString(),
-                misc = holder.appointmentMisc.text.toString()
+                misc = holder.appointmentMisc.text.toString(),
+                deleted = 0
             )
 
             val bundle = Bundle()

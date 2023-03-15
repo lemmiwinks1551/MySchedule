@@ -17,6 +17,6 @@ class AppointmentParams(
     val startTime: String? = null,
     val procedure: String? = null,
     val phoneNum: String? = null,
-    val misc: String? = null
-) : Parcelable {
-}
+    val misc: String? = null,
+    val deleted: Int
+) : Parcelable

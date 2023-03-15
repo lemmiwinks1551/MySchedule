@@ -81,7 +81,8 @@ class DateFragment : Fragment(), DateAdapter.OnItemListener {
                 startTime = null,
                 procedure = null,
                 phoneNum = null,
-                misc = null
+                misc = null,
+                deleted = 0
             )
             val bundle = Bundle()
             bundle.putParcelable(bindingKeyAppointment, appointmentParams)

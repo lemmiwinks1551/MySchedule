@@ -104,8 +104,9 @@ class AppointmentFragment : Fragment() {
                 startTime = timeEditText.text.toString(),
                 procedure = procedureEditText.text.toString(),
                 phoneNum = phoneEditText.text.toString(),
-                misc = miscEditText.text.toString()
-            )
+                misc = miscEditText.text.toString(),
+                deleted = 0
+                )
             appointmentViewModel?.createAppointment(appointmentParams)
 
             Toast.makeText(context, toastCreated, Toast.LENGTH_LONG).show()
@@ -127,7 +128,8 @@ class AppointmentFragment : Fragment() {
                 startTime = timeEditText.text.toString(),
                 procedure = procedureEditText.text.toString(),
                 phoneNum = phoneEditText.text.toString(),
-                misc = miscEditText.text.toString()
+                misc = miscEditText.text.toString(),
+                deleted = 0
             )
 
             // send to AppointmentViewModel
