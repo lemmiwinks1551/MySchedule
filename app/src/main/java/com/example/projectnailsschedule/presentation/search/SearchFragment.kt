@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.databinding.FragmentSearchBinding
 import com.example.projectnailsschedule.domain.models.AppointmentParams
 import com.example.projectnailsschedule.presentation.search.searchRecyclerVIew.SearchAdapter
+import com.example.projectnailsschedule.util.Util
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 
@@ -29,6 +31,7 @@ class SearchFragment : Fragment(), SearchAdapter.OnItemListener {
 
     private var appointmentArray: MutableList<AppointmentParams> = mutableListOf()
     private var noData = "Данные не найдены"
+    private var prevText = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,6 +88,7 @@ class SearchFragment : Fragment(), SearchAdapter.OnItemListener {
 
             override fun onQueryTextChange(msg: String): Boolean {
                 searchViewModel?.getAllAppointments()
+                prevText = msg
                 filter(msg)
                 return false
             }
@@ -117,10 +121,14 @@ class SearchFragment : Fragment(), SearchAdapter.OnItemListener {
         for (appointmentParams in appointmentArray) {
             // checking if the entered string matched with any appointmentParams of our recycler view.
             with(appointmentParams) {
-                if (appointmentDate.toString().lowercase(locale).contains(text.lowercase(locale)) ||
+                val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
+                if (appointmentDate?.format(formatter).toString().lowercase(locale)
+                        .contains(text.lowercase(locale)) ||
                     clientName.toString().lowercase(locale).contains(text.lowercase(locale)) ||
-                    phoneNum.toString().lowercase(locale).contains(text.lowercase(locale)) ||
+                    phoneNum.toString().lowercase(locale).replace("-", "").replace(" ", "")
+                        .contains(text.lowercase(locale)) ||
                     startTime.toString().lowercase(locale).contains(text.lowercase(locale)) ||
+                    procedure.toString().lowercase(locale).contains(text.lowercase(locale)) ||
                     misc.toString().lowercase(locale).contains(text.lowercase(locale))
                 ) {
                     // if the appointmentParams is matched we are
@@ -141,7 +149,13 @@ class SearchFragment : Fragment(), SearchAdapter.OnItemListener {
     }
 
     override fun onItemClick(position: Int, dayText: String?) {
-        // go into date
+        //
+    }
 
+    override fun onResume() {
+        Util().hideKeyboard(requireActivity())
+        // filter prev text
+        filter(prevText)
+        super.onResume()
     }
 }

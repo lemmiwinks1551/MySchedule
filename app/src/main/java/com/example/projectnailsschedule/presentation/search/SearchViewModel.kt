@@ -10,8 +10,7 @@ import java.time.LocalDate
 
 class SearchViewModel(
     private val getAllAppointmentsUseCase: GetAllAppointmentsUseCase,
-    private var deleteAppointmentUseCase: DeleteAppointmentUseCase,
-    private var getDateAppointmentsUseCase: GetDateAppointmentsUseCase
+    private var deleteAppointmentUseCase: DeleteAppointmentUseCase
 
 ) : ViewModel() {
 
@@ -48,13 +47,13 @@ class SearchViewModel(
         appointmentArray.value = appointmentArray.value
     }
 
-    fun updateAppointmentsCursor() {
-        // update appointmentCursor
-        allAppointmentsCursor = getAllAppointmentsUseCase.execute()
+    fun getAppointmentId(id: Int): Int {
+        allAppointmentsCursor.moveToPosition(id)
+        return allAppointmentsCursor.getString(0)!!.toInt()
     }
 
     fun deleteAppointment(id: Int) {
-        allAppointmentsCursor.moveToPosition(id)
+        getAppointmentId(id)
         deleteAppointmentUseCase.execute(allAppointmentsCursor.getString(0)!!.toInt())
     }
 }

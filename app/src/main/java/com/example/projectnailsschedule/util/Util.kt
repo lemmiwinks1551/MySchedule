@@ -19,25 +19,12 @@ class Util {
 
     val LOG = this::class.simpleName
 
-    fun addZero(digit: String): String {
-        /** Дописывает 0 к однозначным числам */
-        val output: String
-        if (digit.length == 1) {
-            output = "0$digit"
-            Log.e(LOG, "Добавлен 0, возвращаем $output")
-            return output
-        } else {
-            Log.e(LOG, "Добавлять 0 не требуется, возвращаем $digit")
-            return digit
-        }
-    }
-
     @SuppressLint("SimpleDateFormat")
     fun dateConverter(day: String): String {
         /** Получаем день формате d.M.yyyy и конвертируем в формат dd.MM.yyyy */
         val parser = SimpleDateFormat("d.M.yyyy")
         val formatter = SimpleDateFormat("dd.MM.yyyy")
-        return formatter.format(parser.parse(day)).toString()
+        return formatter.format(parser.parse(day)!!).toString()
     }
 
     fun hideKeyboard(activity: Activity) {
@@ -82,7 +69,7 @@ class Util {
         return daysInMonthArray
     }
 
-    fun getWeeksInMonth(date: LocalDate): Int {
+    private fun getWeeksInMonth(date: LocalDate): Int {
         // get weeks in month
         val locale = Locale("ru")
         val weekOfMonthStart = date.withDayOfMonth(1).get(WeekFields.of(locale).weekOfYear())

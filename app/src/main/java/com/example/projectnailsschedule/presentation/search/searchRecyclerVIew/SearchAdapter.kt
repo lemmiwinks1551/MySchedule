@@ -14,6 +14,8 @@ import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.domain.models.AppointmentParams
 import com.example.projectnailsschedule.presentation.search.SearchFragment
 import com.example.projectnailsschedule.presentation.search.SearchViewModel
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 internal class SearchAdapter(
     private var appointmentCount: Int,
@@ -32,16 +34,22 @@ internal class SearchAdapter(
         return SearchViewHolder(view, searchFragment)
     }
 
-    override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
-        // get date appointments
-        val allAppointmentsCursor = searchViewModel.allAppointmentsCursor
+    private val bindingKeyAppointment = "appointmentParams"
 
-        holder.date.text = appointmentsList[position].appointmentDate.toString()
-        holder.time.text = appointmentsList[position].startTime.toString()
-        holder.procedure.text = appointmentsList[position].procedure.toString()
-        holder.name.text = appointmentsList[position].clientName.toString()
-        holder.phone.text = appointmentsList[position].phoneNum.toString()
-        holder.misc.text = appointmentsList[position].misc.toString()
+    override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
+        val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
+        // get date appointments
+        with(holder) {
+            appointmentId = appointmentsList[position]._id
+            appointmentDate = appointmentsList[position].appointmentDate
+
+            date.text = appointmentsList[position].appointmentDate?.format(formatter)
+            time.text = appointmentsList[position].startTime.toString()
+            procedure.text = appointmentsList[position].procedure.toString()
+            name.text = appointmentsList[position].clientName.toString()
+            phone.text = appointmentsList[position].phoneNum.toString()
+            misc.text = appointmentsList[position].misc.toString()
+        }
 
         // set delete image button click listener
         holder.deleteImageButton?.setOnClickListener {
@@ -72,7 +80,7 @@ internal class SearchAdapter(
         }
 
         // set edit image button click listener
-        /*holder.editImageBoolean?.setOnClickListener {
+        holder.editImageBoolean?.setOnClickListener {
             // run animation
             runAnimation(it)
 
@@ -80,24 +88,22 @@ internal class SearchAdapter(
             // start fragment with selected data
 
             val appointmentParams = AppointmentParams(
-                _id = holder.appointmentId,
+                _id = searchViewModel.getAppointmentId(position),
                 appointmentDate = holder.appointmentDate,
-                clientName = holder.appointmentClientName.text.toString(),
-                startTime = holder.appointmentTime.text.toString(),
-                procedure = holder.appointmentProcedure.text.toString(),
-                phoneNum = holder.appointmentNamePhone.text.toString(),
-                misc = holder.appointmentMisc.text.toString(),
+                clientName = holder.name.text.toString(),
+                startTime = holder.time.text.toString(),
+                procedure = holder.procedure.text.toString(),
+                phoneNum = holder.phone.text.toString(),
+                misc = holder.misc.text.toString(),
                 deleted = 0
             )
 
             val bundle = Bundle()
             bundle.putParcelable(bindingKeyAppointment, appointmentParams)
 
-            fragmentActivity.findNavController(R.id.addButton)
-                .navigate(R.id.action_dateFragment_to_appointmentFragment, bundle)
-        }*/
-
-
+            it.findNavController()
+                .navigate(R.id.action_nav_search_to_nav_appointment, bundle)
+        }
     }
 
     private fun runAnimation(view: View) {

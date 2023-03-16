@@ -110,7 +110,7 @@ class DateAdapter(
             val bundle = Bundle()
             bundle.putParcelable(bindingKeyAppointment, appointmentParams)
 
-            fragmentActivity.findNavController(R.id.addButton)
+            it.findNavController()
                 .navigate(R.id.action_dateFragment_to_appointmentFragment, bundle)
         }
 

@@ -30,6 +30,7 @@ class DateViewHolder internal constructor(itemView: View, onItemListener: DateFr
         appointmentClientName = itemView.findViewById(R.id.client_value_search)
         appointmentNamePhone = itemView.findViewById(R.id.phone_value_search)
         appointmentMisc = itemView.findViewById(R.id.misc_value_search)
+
         editImageBoolean = itemView.findViewById(R.id.edit_note_image_button)
         deleteImageButton = itemView.findViewById(R.id.delete_forever_image_button)
         this.onItemListener = onItemListener

@@ -68,8 +68,8 @@
         android:label="@string/search_client"
         tools:layout="@layout/fragment_search" >
         <action
-            android:id="@+id/action_nav_search_to_nav_date"
-            app:destination="@id/nav_date"
+            android:id="@+id/action_nav_search_to_nav_appointment"
+            app:destination="@id/nav_appointment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_enter_anim"

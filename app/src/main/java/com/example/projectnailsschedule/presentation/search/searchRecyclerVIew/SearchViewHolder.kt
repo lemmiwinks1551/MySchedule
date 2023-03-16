@@ -6,11 +6,16 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.presentation.search.SearchFragment
+import java.time.LocalDate
 
 class SearchViewHolder internal constructor(itemView: View, onItemListener: SearchFragment) :
     RecyclerView.ViewHolder(itemView), View.OnClickListener {
 
     private val onItemListener: SearchAdapter.OnItemListener
+
+    var appointmentId: Int? = null
+    var appointmentDate: LocalDate? = null
+
     var name: TextView
     var date: TextView
     var phone: TextView
