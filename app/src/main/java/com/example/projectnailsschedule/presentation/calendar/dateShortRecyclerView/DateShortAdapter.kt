@@ -6,12 +6,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.domain.models.DateParams
+import com.example.projectnailsschedule.presentation.calendar.CalendarFragment
 import com.example.projectnailsschedule.presentation.calendar.CalendarViewModel
 
 internal class DateShortAdapter(
     private val appointmentsCount: Int,
     private val selectedDayParams: DateParams,
-    private val calendarViewModel: CalendarViewModel
+    private val calendarViewModel: CalendarViewModel,
+    private val calendarFragment: CalendarFragment
 ) :
     RecyclerView.Adapter<DateShortViewHolder>() {
 
@@ -19,7 +21,7 @@ internal class DateShortAdapter(
         // Set ViewHolder
         val inflater = LayoutInflater.from(parent.context)
         val view: View = inflater.inflate(R.layout.database_short_recycler_view, parent, false)
-        return DateShortViewHolder(view)
+        return DateShortViewHolder(view, calendarFragment)
     }
 
     override fun onBindViewHolder(holder: DateShortViewHolder, position: Int) {
@@ -40,5 +42,9 @@ internal class DateShortAdapter(
 
     override fun getItemCount(): Int {
         return appointmentsCount
+    }
+
+    interface OnItemListener {
+        fun onItemClickShortDate()
     }
 }

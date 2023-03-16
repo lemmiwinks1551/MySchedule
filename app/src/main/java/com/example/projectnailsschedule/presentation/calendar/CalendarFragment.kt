@@ -28,7 +28,8 @@ import java.time.ZoneId
 import java.util.*
 
 
-class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
+class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener,
+    DateShortAdapter.OnItemListener {
 
     private val log = this::class.simpleName
     private var calendarViewModel: CalendarViewModel? = null
@@ -175,6 +176,25 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         calendarRecyclerView?.scheduleLayoutAnimation()
     }
 
+    private fun inflateShortDateRecyclerView(selectedDateParams: DateParams) {
+        // create adapter for ShortDateRecyclerVIew
+        val dateShortAdapter =
+            DateShortAdapter(
+                selectedDateParams.appointmentCount!!,
+                selectedDateParams,
+                calendarViewModel!!,
+                this
+            )
+
+        // create layoutManager with 1 elements in a row
+        val layoutManager: RecyclerView.LayoutManager =
+            GridLayoutManager(activity, 1)
+
+        // set adapter and layout manager to recycler view
+        shortDataRecyclerView?.layoutManager = layoutManager
+        shortDataRecyclerView?.adapter = dateShortAdapter
+    }
+
     private fun changeMonth(operator: Char) {
         // hide go_into_date button
         addButton?.visibility = View.INVISIBLE
@@ -189,7 +209,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         clicked = false
     }
 
-    override fun onItemClick(position: Int, dayText: String?) {
+    override fun onCalendarClick(position: Int, dayText: String?) {
         // click on day in calendar
         if (!dayText.isNullOrEmpty()) {
             // set button go_into_date and recycler view components visible
@@ -251,24 +271,6 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
         prevHolderPos = position
     }
 
-    private fun inflateShortDateRecyclerView(selectedDateParams: DateParams) {
-        // create adapter for ShortDateRecyclerVIew
-        val dateShortAdapter =
-            DateShortAdapter(
-                selectedDateParams.appointmentCount!!,
-                selectedDateParams,
-                calendarViewModel!!
-            )
-
-        // create layoutManager with 1 elements in a row
-        val layoutManager: RecyclerView.LayoutManager =
-            GridLayoutManager(activity, 1)
-
-        // set adapter and layout manager to recycler view
-        shortDataRecyclerView?.layoutManager = layoutManager
-        shortDataRecyclerView?.adapter = dateShortAdapter
-    }
-
     override fun onResume() {
         Log.e(log, "onResume")
         super.onResume()
@@ -297,5 +299,15 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener {
             appointmentCount = null
         )
         super.onDestroyView()
+    }
+
+    override fun onItemClickShortDate() {
+        // start fragment with chosen date
+        val bundle = Bundle()
+        bundle.putParcelable("dateParams", dateParams)
+        binding.goIntoDate.findNavController().navigate(
+            R.id.action_nav_calendar_to_dateFragment,
+            bundle
+        )
     }
 }

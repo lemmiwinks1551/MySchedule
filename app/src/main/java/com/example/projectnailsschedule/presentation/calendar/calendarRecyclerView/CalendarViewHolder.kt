@@ -10,8 +10,6 @@ import com.example.projectnailsschedule.presentation.calendar.CalendarFragment
 
 class CalendarViewHolder internal constructor(itemView: View, onItemListener: CalendarFragment) :
     RecyclerView.ViewHolder(itemView), View.OnClickListener {
-    // ViewHolder - класс, содержащий ссылки на все View, которые находятся в одном элементе RecyclerView элементы
-    // Через ViewHolder заполняется RecyclerVIew
 
     val date: TextView
     val dateAppointmentsCount: TextView
@@ -27,6 +25,6 @@ class CalendarViewHolder internal constructor(itemView: View, onItemListener: Ca
     }
 
     override fun onClick(view: View) {
-        onItemListener.onItemClick(adapterPosition, date.text as String)
+        onItemListener.onCalendarClick(adapterPosition, date.text as String)
     }
 }
