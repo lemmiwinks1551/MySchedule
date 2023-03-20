@@ -44,7 +44,7 @@ class SettingsFragment : Fragment() {
     }
 
     private fun initAllWidgets() {
-        themeSwitcher = binding.themeSwithcer
+        themeSwitcher = binding.themeSwitcher
     }
 
     private fun initClickListeners() {

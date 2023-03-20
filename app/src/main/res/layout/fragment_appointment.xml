@@ -23,7 +23,6 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:text="@string/add_appointment_title"
-            android:textColor="?attr/colorOnSecondary"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -38,7 +37,6 @@
             android:layout_marginTop="104dp"
             android:padding="8dp"
             android:text="@string/day"
-            android:textColor="?attr/colorOnSecondary"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/title" />
@@ -52,7 +50,6 @@
             android:layout_marginTop="104dp"
             android:padding="8dp"
             android:text="@string/time"
-            android:textColor="?attr/colorOnSecondary"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/appointment_date" />
@@ -64,7 +61,6 @@
             android:layout_margin="16dp"
             android:padding="8dp"
             android:text="@string/procedure"
-            android:textColor="?attr/colorOnSecondary"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/database_appointment_start" />
@@ -76,7 +72,6 @@
             android:layout_margin="16dp"
             android:padding="8dp"
             android:text="@string/client"
-            android:textColor="?attr/colorOnSecondary"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/database_appointment_procedure" />
@@ -88,7 +83,6 @@
             android:layout_margin="16dp"
             android:padding="8dp"
             android:text="@string/phone"
-            android:textColor="?attr/colorOnSecondary"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/client_name" />
@@ -100,7 +94,6 @@
             android:layout_margin="16dp"
             android:padding="8dp"
             android:text="@string/misc"
-            android:textColor="?attr/colorOnSecondary"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/appointment_phone" />
@@ -112,7 +105,6 @@
             android:layout_margin="16dp"
             android:hint="@string/example_date"
             android:padding="8dp"
-            android:textColor="?attr/colorOnSecondary"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/title" />
@@ -124,7 +116,6 @@
             android:layout_margin="16dp"
             android:hint="@string/example_time"
             android:padding="8dp"
-            android:textColor="?attr/colorOnSecondary"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/appointment_date" />
@@ -139,7 +130,6 @@
             android:maxLength="15"
             android:maxLines="1"
             android:padding="8dp"
-            android:textColor="?attr/colorOnSecondary"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/database_appointment_start" />
@@ -154,7 +144,6 @@
             android:maxLength="15"
             android:maxLines="1"
             android:padding="8dp"
-            android:textColor="?attr/colorOnSecondary"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/database_appointment_procedure" />
@@ -168,7 +157,6 @@
             android:inputType="phone"
             android:maxLength="15"
             android:padding="8dp"
-            android:textColor="?attr/colorOnSecondary"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/client_name" />
@@ -184,7 +172,6 @@
             android:maxLength="50"
             android:maxLines="1"
             android:padding="8dp"
-            android:textColor="?attr/colorOnSecondary"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/appointment_phone" />

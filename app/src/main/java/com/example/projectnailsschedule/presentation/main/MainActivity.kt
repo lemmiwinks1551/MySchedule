@@ -55,8 +55,6 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(binding.root)
 
-        setSupportActionBar(binding.appBarMain.toolbar)
-
         // init all widgets
         initWidgets()
 
