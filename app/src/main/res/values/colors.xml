@@ -13,4 +13,11 @@
     <color name="red">#FF6498</color>
     <color name="selected_calendar_cell">#575E3AAF</color>
 
+    <!--    Pink theme  -->
+    <color name="Pink1">#bf4f4e</color>
+    <color name="Pink2">#e186a7</color>
+    <color name="Pink3">#d19fce</color>
+    <color name="Pink4">#d6d2e3</color>
+    <color name="Pink5">#82bdc9</color>
+
 </resources>
