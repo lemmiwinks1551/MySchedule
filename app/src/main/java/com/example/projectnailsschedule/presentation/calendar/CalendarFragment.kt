@@ -241,7 +241,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener,
             holderClicked.cellLayout.setBackgroundColor(
                 ContextCompat.getColor(
                     requireContext(),
-                    R.color.selected_calendar_cell
+                    R.color.Pink3
                 )
             )
             holderPrev?.cellLayout?.setBackgroundResource(R.drawable.calendar_recycler_view_borders)
@@ -260,7 +260,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener,
                 holderClicked.cellLayout.setBackgroundColor(
                     ContextCompat.getColor(
                         requireContext(),
-                        R.color.selected_calendar_cell
+                        R.color.Pink3
                     )
                 )
                 true
