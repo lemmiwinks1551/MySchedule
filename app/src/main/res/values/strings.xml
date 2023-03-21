@@ -18,7 +18,7 @@
     <string name="procedure">Услуга</string>
     <string name="client">Клиент</string>
     <string name="phone">Телефон</string>
-    <string name="misc">Комментарии</string>
+    <string name="misc">Заметки</string>
     <string name="button_edit">Редактировать</string>
     <string name="button_delete">Удалить</string>
     <string name="add_appointment_title">Запись</string>

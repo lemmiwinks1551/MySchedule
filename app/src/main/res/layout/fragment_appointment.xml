@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fragment_appointment"
     android:layout_width="fill_parent"
@@ -8,7 +9,7 @@
     android:focusableInTouchMode="true"
     tools:context=".presentation.appointment.AppointmentFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/fragment_add_row"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,7 +22,6 @@
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
             android:text="@string/add_appointment_title"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -32,9 +32,7 @@
             android:id="@+id/appointment_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="104dp"
+
             android:padding="8dp"
             android:text="@string/day"
             android:textSize="20sp"
@@ -45,9 +43,6 @@
             android:id="@+id/database_appointment_start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="104dp"
             android:padding="8dp"
             android:text="@string/time"
             android:textSize="20sp"
@@ -58,7 +53,7 @@
             android:id="@+id/database_appointment_procedure"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+
             android:padding="8dp"
             android:text="@string/procedure"
             android:textSize="20sp"
@@ -69,7 +64,6 @@
             android:id="@+id/client_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
             android:padding="8dp"
             android:text="@string/client"
             android:textSize="20sp"
@@ -80,7 +74,6 @@
             android:id="@+id/appointment_phone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
             android:padding="8dp"
             android:text="@string/phone"
             android:textSize="20sp"
@@ -91,7 +84,6 @@
             android:id="@+id/appointment_misc"
             android:layout_width="wrap_content"
             android:layout_height="46dp"
-            android:layout_margin="16dp"
             android:padding="8dp"
             android:text="@string/misc"
             android:textSize="20sp"
@@ -99,12 +91,11 @@
             app:layout_constraintTop_toBottomOf="@id/appointment_phone" />
 
         <TextView
+            android:padding="8dp"
             android:id="@+id/day_edit_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
             android:hint="@string/example_date"
-            android:padding="8dp"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/title" />
@@ -113,18 +104,17 @@
             android:id="@+id/time_edit_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+
             android:hint="@string/example_time"
             android:padding="8dp"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/appointment_date" />
+            app:layout_constraintTop_toBottomOf="@+id/day_edit_text" />
 
         <EditText
             android:id="@+id/procedure_edit_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
             android:hint="@string/example_procedure"
             android:inputType="text"
             android:maxLength="15"
@@ -132,13 +122,12 @@
             android:padding="8dp"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/database_appointment_start" />
+            app:layout_constraintTop_toBottomOf="@+id/time_edit_text" />
 
         <EditText
             android:id="@+id/name_edit_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
             android:hint="@string/example_client"
             android:inputType="text"
             android:maxLength="15"
@@ -146,26 +135,24 @@
             android:padding="8dp"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/database_appointment_procedure" />
+            app:layout_constraintTop_toBottomOf="@id/procedure_edit_text" />
 
         <EditText
             android:id="@+id/phone_edit_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
             android:hint="@string/example_phone"
             android:inputType="phone"
             android:maxLength="15"
             android:padding="8dp"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/client_name" />
+            app:layout_constraintTop_toBottomOf="@id/name_edit_text" />
 
         <EditText
             android:id="@+id/misc_edit_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
             android:autofillHints="password"
             android:hint="@string/example_misc"
             android:inputType="text"
@@ -174,7 +161,7 @@
             android:padding="8dp"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/appointment_phone" />
+            app:layout_constraintTop_toBottomOf="@id/phone_edit_text" />
 
         <Button
             android:id="@+id/save_changes_button"

@@ -19,7 +19,7 @@
 
         <!-- The primary branding color for the app. By default, this is the color applied to the
      action bar background. -->
-        <item name="colorPrimary">@color/Pink3</item>
+        <item name="colorPrimary">@color/Pink5</item>
 
         <!--A lighter/darker variant of your primary brand color, used sparingly in theming-->
         <item name="colorPrimaryVariant">@color/Pink2</item>
@@ -34,7 +34,7 @@
         <item name="colorOnSecondary">@color/black</item>
 
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">@color/Pink3</item>
+        <item name="android:statusBarColor">@color/Pink5</item>
 
         <item name="android:textColor">@color/black</item>
 

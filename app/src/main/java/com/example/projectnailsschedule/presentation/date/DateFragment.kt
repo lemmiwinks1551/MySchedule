@@ -41,6 +41,10 @@ class DateFragment : Fragment(), DateAdapter.OnItemListener {
 
         // get dateParams from Bundle
         dateParams = arguments?.getParcelable(bindingKey)
+
+        // set day to app bar
+        // TODO: set date in action bar 
+        activity?.actionBar?.title = "a"
     }
 
     override fun onCreateView(
