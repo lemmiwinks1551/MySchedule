@@ -8,10 +8,11 @@
     tools:context=".presentation.date.DateFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_margin="8dp"
         android:id="@+id/scheduleRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_margin="8dp"
+        android:fadeScrollbars="false"
         android:layoutAnimation="@anim/layout_animation"
         android:scrollbars="vertical"
         android:verticalScrollbarPosition="left"
@@ -20,7 +21,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addButton"

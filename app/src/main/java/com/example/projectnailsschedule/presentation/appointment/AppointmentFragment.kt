@@ -6,7 +6,9 @@ import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnFocusChangeListener
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -17,6 +19,7 @@ import com.example.projectnailsschedule.util.Util
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
+
 
 /** AppointmentFragment View*/
 
@@ -59,6 +62,9 @@ class AppointmentFragment : Fragment() {
         // set current appointmentParams form DateFragment binding object
         setAppointmentCurrentParams()
 
+        // set title text
+        setTitle()
+
         return binding.root
     }
 
@@ -93,6 +99,21 @@ class AppointmentFragment : Fragment() {
         binding.phoneEditText.addTextChangedListener(PhoneNumberFormattingTextWatcher())
     }
 
+
+    private fun setTitle() {
+        val title: TextView = binding.title
+        val titleDate: TextView = binding.titleDate
+
+        if (appointmentParams?._id == null) {
+            // no _id - add new Appointment
+            title.text = String.format("Новая запись")
+        } else {
+            // _id - edit Appointment
+            title.text = String.format("Редактировать запись")
+        }
+        titleDate.text = appointmentParams?.appointmentDate?.format(formatter)
+    }
+
     private fun createAppointment() {
         /** Send params to ViewModel */
 
@@ -106,7 +127,7 @@ class AppointmentFragment : Fragment() {
                 phoneNum = phoneEditText.text.toString(),
                 misc = miscEditText.text.toString(),
                 deleted = 0
-                )
+            )
             appointmentViewModel?.createAppointment(appointmentParams)
 
             Toast.makeText(context, toastCreated, Toast.LENGTH_LONG).show()
