@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
@@ -41,6 +42,30 @@ class DateFragment : Fragment(), DateAdapter.OnItemListener {
 
         // get dateParams from Bundle
         dateParams = arguments?.getParcelable(bindingKey)
+
+        // if no appointments - create new appointment
+        createNewAppointment()
+    }
+
+    private fun createNewAppointment() {
+        // if no appointments - create new appointment
+        if (dateParams?.appointmentCount == 0 ||
+            dateParams?.appointmentCount == null) {
+
+            val appointmentParams = AppointmentParams(
+                _id = null,
+                appointmentDate = dateParams?.date,
+                clientName = null,
+                startTime = null,
+                procedure = null,
+                phoneNum = null,
+                misc = null,
+                deleted = 0
+            )
+            val bundle = Bundle()
+            bundle.putParcelable(bindingKeyAppointment, appointmentParams)
+            findNavController().navigate(R.id.action_dateFragment_to_appointmentFragment, bundle)
+        }
     }
 
     override fun onCreateView(
