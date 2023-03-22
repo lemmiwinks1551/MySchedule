@@ -6,6 +6,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:focusableInTouchMode="true"
+    android:fadeScrollbars="false"
     tools:context=".presentation.appointment.AppointmentFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
