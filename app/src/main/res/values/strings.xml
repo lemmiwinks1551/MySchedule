@@ -3,7 +3,7 @@
     <!--Global-->
     <string name="app_name">Расписание</string>
     <string name="app_full_name">Моё Расписание</string>
-    <string name="app_version">Версия 1.0.2</string>
+    <string name="app_version">Версия 1.0.3</string>
 
     <!--Menu-->
     <string name="nav_header_title">Меню</string>
