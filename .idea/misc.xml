@@ -41,6 +41,7 @@
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.3605" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/drawable/layout_border.xml" value="0.14666666666666667" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/drawable/recycler_view_background_pink.xml" value="0.261" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/drawable/searchable.xml" value="0.262" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/drawable/side_nav_bar.xml" value="0.251" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/drawable/window_background_pink.xml" value="0.25" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/font-v26/main_font.xml" value="0.3958333333333333" />
@@ -73,19 +74,21 @@
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/layout/fragment_date_short.xml" value="0.22" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/layout/fragment_home.xml" value="0.18802083333333333" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/layout/fragment_price.xml" value="0.33" />
-        <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/layout/fragment_search.xml" value="0.33" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/layout/fragment_search.xml" value="0.5" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/layout/fragment_service.xml" value="0.33" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/layout/fragment_settings.xml" value="0.33" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/layout/layout_border.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/layout/nav_header_main.xml" value="0.5" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/layout/search_list_item.xml" value="0.5" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/layout/search_recycler_view_item.xml" value="0.5" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/layout/searchable.xml" value="0.2578125" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/layout/short_date_fragment.xml" value="0.246875" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/layout/simple_spinner_item.xml" value="0.178125" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/menu/activity_main_drawer.xml" value="0.5" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/menu/main.xml" value="0.33" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.22" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/mipmap-hdpi/ic_launcher.xml" value="0.355" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/xml/searchable.xml" value="0.192578125" />
         <entry key="..\:/Users/Admin/AppData/Local/Android/Sdk/platforms/android-32/data/res/layout/auto_complete_list.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Admin/AppData/Local/Android/Sdk/platforms/android-32/data/res/layout/shutdown_dialog.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Admin/AppData/Local/Android/Sdk/platforms/android-32/data/res/layout/simple_list_item_1.xml" value="0.36666666666666664" />
