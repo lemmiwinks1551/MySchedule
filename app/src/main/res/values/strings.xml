@@ -71,5 +71,6 @@
     <string name="cancel">Отмена</string>
     <string name="really_delete_text">Удалить запись?</string>
     <string name="calendar_cell_example">10</string>
+    <string name="fragment_date_title">Список записей</string>
 
 </resources>

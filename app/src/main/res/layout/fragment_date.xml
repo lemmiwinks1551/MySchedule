@@ -5,7 +5,29 @@
     android:id="@+id/fragment_date"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fadeScrollbars="false"
     tools:context=".presentation.date.DateFragment">
+
+    <TextView
+        android:layout_margin="16dp"
+
+        android:id="@+id/fragment_date_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/fragment_date_title"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/fragment_date_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/example_date"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fragment_date_title" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/scheduleRecyclerView"
@@ -16,24 +38,20 @@
         android:layoutAnimation="@anim/layout_animation"
         android:scrollbars="vertical"
         android:verticalScrollbarPosition="left"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:layout_constraintBottom_toTopOf="@id/addButton"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_date_date" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="24dp"
+        android:layout_margin="24dp"
         android:contentDescription="@string/add_appointment_title"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/scheduleRecyclerView"
         app:srcCompat="@android:drawable/ic_input_add" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

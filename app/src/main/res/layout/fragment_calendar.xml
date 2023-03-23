@@ -79,10 +79,10 @@
         app:layout_constraintTop_toBottomOf="@id/month_constraint_layout">
 
         <TextView
-            android:gravity="center"
             android:id="@+id/monday"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="@string/mon"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -91,10 +91,10 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:gravity="center"
             android:id="@+id/tuesday"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="@string/tue"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -103,10 +103,10 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:gravity="center"
             android:id="@+id/wednesday"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="@string/wed"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -115,10 +115,10 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:gravity="center"
             android:id="@+id/thursday"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="@string/thu"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -127,10 +127,10 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:gravity="center"
             android:id="@+id/friday"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="@string/fri"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -139,10 +139,10 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:gravity="center"
             android:id="@+id/saturday"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="@string/sat"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -151,10 +151,10 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:gravity="center"
             android:id="@+id/sunday"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="@string/sun"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -182,8 +182,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="8dp"
-        android:scrollbars="vertical"
         android:fadeScrollbars="false"
+        android:scrollbars="vertical"
         android:verticalScrollbarPosition="left"
         app:layout_constraintBottom_toTopOf="@+id/go_into_date"
         app:layout_constraintEnd_toEndOf="parent"
@@ -191,10 +191,10 @@
         app:layout_constraintTop_toBottomOf="@+id/calendarRecyclerView" /> <!--Short appointment view-->
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:layout_margin="24dp"
         android:id="@+id/go_into_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="24dp"
         android:contentDescription="@string/date_edit"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"

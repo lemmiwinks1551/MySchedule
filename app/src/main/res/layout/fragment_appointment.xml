@@ -20,7 +20,7 @@
         tools:context=".presentation.appointment.AppointmentFragment">
 
         <TextView
-            android:id="@+id/title"
+            android:id="@+id/fragment_appointment_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/add_appointment_title"
@@ -30,13 +30,13 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/title_date"
+            android:id="@+id/fragment_appointment_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/example_date"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/title" />
+            app:layout_constraintTop_toBottomOf="@id/fragment_appointment_title" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/left_constraint_layout"
@@ -45,7 +45,7 @@
             android:layout_marginTop="30sp"
             app:layout_constraintEnd_toStartOf="@+id/right_constraint_layout"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/title_date">
+            app:layout_constraintTop_toBottomOf="@id/fragment_appointment_date">
 
             <TextView
                 android:id="@+id/appointment_date"
@@ -117,7 +117,7 @@
             android:layout_marginTop="30sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/left_constraint_layout"
-            app:layout_constraintTop_toBottomOf="@id/title_date">
+            app:layout_constraintTop_toBottomOf="@id/fragment_appointment_date">
 
             <TextView
                 android:id="@+id/day_edit_text"

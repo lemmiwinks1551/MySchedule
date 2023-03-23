@@ -28,13 +28,14 @@ class AppointmentFragment : Fragment() {
     private val bindingKey = "appointmentParams"
     private val toastCreated = "Запись добавлена"
     private val toastEdited = "Запись изменена"
+    private val newAppointmentText = "Новая запись"
+    private val changeAppointmentText = "Изменить запись"
 
     private var appointmentViewModel: AppointmentViewModel? = null
     private var _binding: FragmentAppointmentBinding? = null
     private val binding get() = _binding!!
 
     private var appointmentParams: AppointmentParams? = null
-    private val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -101,17 +102,17 @@ class AppointmentFragment : Fragment() {
 
 
     private fun setTitle() {
-        val title: TextView = binding.title
-        val titleDate: TextView = binding.titleDate
+        val title: TextView = binding.fragmentAppointmentTitle
+        val titleDate: TextView = binding.fragmentAppointmentDate
 
         if (appointmentParams?._id == null) {
             // no _id - add new Appointment
-            title.text = String.format("Новая запись")
+            title.text = newAppointmentText
         } else {
             // _id - edit Appointment
-            title.text = String.format("Редактировать запись")
+            title.text = changeAppointmentText
         }
-        titleDate.text = appointmentParams?.appointmentDate?.format(formatter)
+        titleDate.text = appointmentParams?.appointmentDate?.format(Util().formatter)
     }
 
     private fun createAppointment() {
@@ -120,7 +121,7 @@ class AppointmentFragment : Fragment() {
         // create appointmentParams object
         with(binding) {
             val appointmentParams = AppointmentParams(
-                appointmentDate = LocalDate.parse(dayEditText.text, formatter),
+                appointmentDate = LocalDate.parse(dayEditText.text, Util().formatter),
                 clientName = nameEditText.text.toString(),
                 startTime = timeEditText.text.toString(),
                 procedure = procedureEditText.text.toString(),
@@ -144,7 +145,7 @@ class AppointmentFragment : Fragment() {
         with(binding) {
             val appointmentParams = AppointmentParams(
                 _id = appointmentParams?._id,
-                appointmentDate = LocalDate.parse(dayEditText.text, formatter),
+                appointmentDate = LocalDate.parse(dayEditText.text, Util().formatter),
                 clientName = nameEditText.text.toString(),
                 startTime = timeEditText.text.toString(),
                 procedure = procedureEditText.text.toString(),
@@ -166,7 +167,7 @@ class AppointmentFragment : Fragment() {
         // set current appointmentParams from DateFragment binding object
 
         with(binding) {
-            dayEditText.text = appointmentParams?.appointmentDate?.format(formatter)
+            dayEditText.text = appointmentParams?.appointmentDate?.format(Util().formatter)
             timeEditText.text = appointmentParams?.startTime
             procedureEditText.setText(appointmentParams?.procedure)
             nameEditText.setText(appointmentParams?.clientName)

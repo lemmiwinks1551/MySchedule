@@ -8,6 +8,7 @@ import android.view.inputmethod.InputMethodManager
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.YearMonth
+import java.time.format.DateTimeFormatter
 import java.time.temporal.WeekFields
 import java.util.*
 
@@ -18,6 +19,7 @@ import java.util.*
 class Util {
 
     val LOG = this::class.simpleName
+    val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
 
     @SuppressLint("SimpleDateFormat")
     fun dateConverter(day: String): String {

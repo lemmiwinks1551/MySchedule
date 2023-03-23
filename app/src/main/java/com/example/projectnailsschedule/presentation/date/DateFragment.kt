@@ -25,6 +25,7 @@ class DateFragment : Fragment(), DateAdapter.OnItemListener {
     private val binding get() = _binding!!
     private val bindingKey = "dateParams"
     private val bindingKeyAppointment = "appointmentParams"
+    private val noAppointmentsTextTitle = "Нет записей"
     private val dateRecyclerViewSpanCount = 1
 
     private var dateParams: DateParams? = null
@@ -42,30 +43,6 @@ class DateFragment : Fragment(), DateAdapter.OnItemListener {
 
         // get dateParams from Bundle
         dateParams = arguments?.getParcelable(bindingKey)
-
-        // if no appointments - create new appointment
-        createNewAppointment()
-    }
-
-    private fun createNewAppointment() {
-        // if no appointments - create new appointment
-        if (dateParams?.appointmentCount == 0 ||
-            dateParams?.appointmentCount == null) {
-
-            val appointmentParams = AppointmentParams(
-                _id = null,
-                appointmentDate = dateParams?.date,
-                clientName = null,
-                startTime = null,
-                procedure = null,
-                phoneNum = null,
-                misc = null,
-                deleted = 0
-            )
-            val bundle = Bundle()
-            bundle.putParcelable(bindingKeyAppointment, appointmentParams)
-            findNavController().navigate(R.id.action_dateFragment_to_appointmentFragment, bundle)
-        }
     }
 
     override fun onCreateView(
@@ -118,9 +95,12 @@ class DateFragment : Fragment(), DateAdapter.OnItemListener {
     private fun setObservers() {
         // dateParams observer
         dateViewModel?.selectedDateParams?.observe(viewLifecycleOwner) {
-            if (it != null) {
+            if (it.appointmentCount != 0) {
                 inflateDateRecyclerView(it)
+            } else {
+                binding.fragmentDateTitle.text = noAppointmentsTextTitle
             }
+            binding.fragmentDateDate.text = it.date?.format(Util().formatter)
         }
     }
 
