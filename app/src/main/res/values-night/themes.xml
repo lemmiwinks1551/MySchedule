@@ -1,10 +1,12 @@
 <resources>
-    <style name="Theme.Pink" parent="Theme.MaterialComponents.DayNight">
+    <style name="Theme.Pink" parent="Theme.MaterialComponents.DayNight.DarkActionBar.Bridge">
 
         <!-- The primary branding color for the app. By default, this is the color applied to the
      action bar background. -->
 
+
         <item name="colorPrimary">@color/Dark1</item>
+        <item name="colorButtonNormal">@color/Dark1</item>
 
         <!--A lighter/darker variant of your primary brand color, used sparingly in theming-->
         <item name="colorPrimaryVariant">@color/Pink2</item>
@@ -20,7 +22,6 @@
 
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/Dark1</item>
-        <item name="actionBarItemBackground">@color/Dark1</item>
 
         <item name="android:textColor">@color/Pink4</item>
         <item name="editTextColor">@color/Pink4</item>
