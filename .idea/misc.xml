@@ -70,7 +70,7 @@
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/layout/fragment_blank.xml" value="0.1" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/layout/fragment_calendar.xml" value="0.33" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/layout/fragment_clients.xml" value="0.33" />
-        <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/layout/fragment_date.xml" value="0.33" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/layout/fragment_date.xml" value="0.25" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/layout/fragment_date_short.xml" value="0.22" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/layout/fragment_home.xml" value="0.18802083333333333" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/layout/fragment_price.xml" value="0.33" />
@@ -84,6 +84,7 @@
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/layout/searchable.xml" value="0.2578125" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/layout/short_date_fragment.xml" value="0.246875" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/layout/simple_spinner_item.xml" value="0.178125" />
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/layout/test.xml" value="0.33" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/menu/activity_main_drawer.xml" value="0.5" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/menu/main.xml" value="0.33" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/ProjectNailsSchedule/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.263" />
