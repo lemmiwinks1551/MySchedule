@@ -21,10 +21,11 @@
     <color name="Pink5">#82bdc9</color>
 
     <!--    Dark theme  -->
-    <color name="Dark1">#3C406C</color>
+    <color name="Dark1">#132438</color>
     <color name="Dark2">#181B33</color>
     <color name="Dark3">#d19fce</color>
     <color name="Dark4">#d6d2e3</color>
     <color name="Dark5">#82bdc9</color>
+    <color name="Dark6">#4D4D4F5E</color>
 
 </resources>

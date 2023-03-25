@@ -9,7 +9,7 @@
         <item name="colorButtonNormal">@color/Dark1</item>
 
         <!--A lighter/darker variant of your primary brand color, used sparingly in theming-->
-        <item name="colorPrimaryVariant">@color/Dark2</item>
+        <item name="colorPrimaryVariant">@color/Dark6</item>
         <!--The color used for elements displayed on top of your primary colors (eg. Text and icons, often white or semi-transparent black depending on accessibility)-->
         <item name="colorOnPrimary">@color/Dark1</item>
 
@@ -30,8 +30,7 @@
         <item name="colorAccent">@color/Dark1</item>
         <item name="android:tint">@color/Dark4</item>
 
-
-        <item name="android:windowBackground">@color/Dark1</item>
+        <item name="android:windowBackground">@drawable/night__1_</item>
         <item name="navigationIconTint">@color/white</item>
 
     </style>
