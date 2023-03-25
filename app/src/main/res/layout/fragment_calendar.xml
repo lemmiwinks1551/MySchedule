@@ -177,6 +177,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/week_days_constraint_layout" /> <!--Calendar-->
 
+    <!--Short appointment view-->
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/shortDataRecyclerView"
         android:layout_width="match_parent"
@@ -188,7 +190,8 @@
         app:layout_constraintBottom_toTopOf="@+id/go_into_date"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/calendarRecyclerView" /> <!--Short appointment view-->
+        app:layout_constraintTop_toBottomOf="@+id/calendarRecyclerView"
+        app:layout_constraintVertical_bias="0.0" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/go_into_date"
@@ -196,7 +199,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="24dp"
         android:contentDescription="@string/date_edit"
-        android:visibility="invisible"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

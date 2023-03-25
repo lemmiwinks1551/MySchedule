@@ -22,7 +22,7 @@
         <item name="colorPrimary">@color/Pink5</item>
 
         <!--A lighter/darker variant of your primary brand color, used sparingly in theming-->
-        <item name="colorPrimaryVariant">@color/Pink2</item>
+        <item name="colorPrimaryVariant">@color/Pink4</item>
         <!--The color used for elements displayed on top of your primary colors (eg. Text and icons, often white or semi-transparent black depending on accessibility)-->
         <item name="colorOnPrimary">@color/white</item>
 
