@@ -4,13 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent">
+    app:layout_constraintTop_toTopOf="parent"
+    android:theme="@style/DialogStyle">
 
     <TextView
-        android:layout_margin="16dp"
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="16dp"
         android:gravity="center"
         android:text="@string/really_delete_text"
         android:textSize="20sp"
@@ -24,7 +25,6 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:text="@string/ok"
-        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/cancel_delete_button"
         app:layout_constraintStart_toStartOf="parent"
@@ -36,7 +36,6 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:text="@string/cancel"
-        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/ok_delete_button"

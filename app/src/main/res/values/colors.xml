@@ -12,6 +12,7 @@
     <color name="yellow">#FFD75E</color>
     <color name="red">#FF6498</color>
     <color name="selected_calendar_cell">#575E3AAF</color>
+    <color name="transparent">#00000000</color>
 
     <!--    Pink theme  -->
     <color name="Pink1">#bf4f4e</color>

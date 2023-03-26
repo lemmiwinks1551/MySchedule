@@ -67,8 +67,9 @@ class DateAdapter(
 
             val dialog = Dialog(fragmentActivity)
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-            dialog.setCancelable(false)
+            dialog.setCancelable(true)
             dialog.setContentView(R.layout.dialog_ok_cancel)
+            dialog.window?.setBackgroundDrawableResource(R.color.transparent)
 
             // init dialog buttons
             val okButton: Button? = dialog.findViewById(R.id.ok_delete_button)
