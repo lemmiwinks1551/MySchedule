@@ -1,5 +1,6 @@
 package com.example.projectnailsschedule.presentation.calendar
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -42,6 +43,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener,
     private var addButton: FloatingActionButton? = null
     private var layout: ConstraintLayout? = null
     private var dateParams: DateParams? = null
+    private var colorResIdSelBackgr: Int = R.color.transparent
 
     // color background click listener
     private var prevHolderPos: Int? = null
@@ -72,6 +74,9 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener,
 
         // inti observers
         initObservers()
+
+        // set background for selected calendar cell
+        initBackgroundColor()
 
         setHasOptionsMenu(true)
         return binding.root
@@ -222,6 +227,20 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener,
         }
     }
 
+    private fun initBackgroundColor(){
+        val nightModeFlags: Int = this.resources.configuration.uiMode and
+                Configuration.UI_MODE_NIGHT_MASK
+
+        when (nightModeFlags) {
+            Configuration.UI_MODE_NIGHT_YES -> {
+                colorResIdSelBackgr = R.color.Dark1
+            }
+            Configuration.UI_MODE_NIGHT_NO -> {
+                colorResIdSelBackgr = R.color.Pink3
+            }
+        }
+    }
+
     private fun setBackgroundColor(position: Int) {
         // set current holder and prev view holder
         val holderClicked: CalendarViewHolder =
@@ -240,7 +259,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener,
             holderClicked.cellLayout.setBackgroundColor(
                 ContextCompat.getColor(
                     requireContext(),
-                    R.color.Pink3
+                    colorResIdSelBackgr
                 )
             )
             holderPrev?.cellLayout?.setBackgroundResource(R.drawable.calendar_recycler_view_borders)
@@ -259,7 +278,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener,
                 holderClicked.cellLayout.setBackgroundColor(
                     ContextCompat.getColor(
                         requireContext(),
-                        R.color.Pink3
+                        colorResIdSelBackgr
                     )
                 )
                 true
