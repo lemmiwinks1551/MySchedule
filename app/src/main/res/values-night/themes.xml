@@ -27,7 +27,7 @@
         <item name="editTextColor">@color/Pink4</item>
 
         <!-- Floating action button color. -->
-        <item name="colorAccent">@color/Dark1</item>
+        <item name="colorAccent">@color/Dark6</item>
         <item name="android:tint">@color/Dark4</item>
 
         <item name="android:windowBackground">@drawable/night_theme_background</item>
