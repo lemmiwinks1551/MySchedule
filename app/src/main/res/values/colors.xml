@@ -19,7 +19,8 @@
     <color name="Pink2">#e186a7</color>
     <color name="Pink3">#d19fce</color>
     <color name="Pink4">#d6d2e3</color>
-    <color name="Pink5">#82bdc9</color>
+    <color name="Pink5">#7fafd5</color>
+    <color name="Pink6">#d0c5d3</color>
 
     <!--    Dark theme  -->
     <color name="Dark1">#132438</color>
@@ -28,5 +29,6 @@
     <color name="Dark4">#d6d2e3</color>
     <color name="Dark5">#82bdc9</color>
     <color name="Dark6">#21324C</color>
+    <color name="Dark7">#284060</color>
 
 </resources>

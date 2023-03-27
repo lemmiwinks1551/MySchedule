@@ -233,10 +233,10 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener,
 
         when (nightModeFlags) {
             Configuration.UI_MODE_NIGHT_YES -> {
-                colorResIdSelBackgr = R.color.Dark1
+                colorResIdSelBackgr = R.color.Dark7
             }
             Configuration.UI_MODE_NIGHT_NO -> {
-                colorResIdSelBackgr = R.color.Pink3
+                colorResIdSelBackgr = R.color.Pink6
             }
         }
     }
