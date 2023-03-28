@@ -3,7 +3,7 @@
     <!--Global-->
     <string name="app_name">Расписание</string>
     <string name="app_full_name">Моё Расписание</string>
-    <string name="app_version">Версия 1.0.2</string>
+    <string name="app_version">Версия 1.0.3</string>
 
     <!--Menu-->
     <string name="nav_header_title">Меню</string>
@@ -15,35 +15,36 @@
 
 
     <string name="time">Время</string>
-    <string name="procedure">Процедура</string>
+    <string name="procedure">Услуга</string>
     <string name="client">Клиент</string>
     <string name="phone">Телефон</string>
-    <string name="misc">Комментарии</string>
+    <string name="misc">Заметки</string>
     <string name="button_edit">Редактировать</string>
     <string name="button_delete">Удалить</string>
-    <string name="add_appointment_title">Добавить запись</string>
+    <string name="add_appointment_title">Запись</string>
     <string name="day">День</string>
     <string name="example_date">01.01.2022</string>
     <string name="example_time">09:00</string>
     <string name="example_procedure">Наращивание</string>
-    <string name="example_name">Имя клиента</string>
+    <string name="example_client">Имя клиента</string>
     <string name="example_phone">8 800 123–45–67</string>
     <string name="example_misc">…</string>
     <string name="choose_previous_month">Choose previous month</string>
     <string name="choose_next_month">Choose next month</string>
-    <string name="monthYearTV_hint">Январь 2022</string>
+    <string name="month_text_view">Январь</string>
+    <string name="year_text_view">2022</string>
     <string name="release_year">2022</string>
 
     <!--Week days-->
-    <string name="mon">Пн.</string>
-    <string name="tue">Вт.</string>
-    <string name="wed">Ср.</string>
-    <string name="thu">Чт.</string>
-    <string name="fri">Пт.</string>
-    <string name="sat">Сб.</string>
-    <string name="sun">Вс.</string>
+    <string name="mon">Пн</string>
+    <string name="tue">Вт</string>
+    <string name="wed">Ср</string>
+    <string name="thu">Чт</string>
+    <string name="fri">Пт</string>
+    <string name="sat">Сб</string>
+    <string name="sun">Вс</string>
 
-    <string name="search">Search</string>
+    <string name="search_hint">Поиск по Расписанию</string>
     <string name="search_client">Поиск</string>
     <string name="name">Имя</string>
     <string name="date">Дата</string>
@@ -52,15 +53,6 @@
     <string name="toggle_button_search_phone">Телефон:</string>
     <string name="search_client_by_phone">Телефон:</string>
 
-    <!--Day statuses list-->
-    <string name="status_description">Статус дня:</string>
-    <string-array name="day_status">
-        <item>Свободен</item>
-        <item>Есть записи</item>
-        <item>Занят</item>
-        <item>Выходной</item>
-    </string-array>
-
     <!--Support email settings-->
     <string name="support_email">scheduleapp@mail.ru</string>
     <string name="support_email_uri">mailto:scheduleapp@mail.ru</string>
@@ -68,5 +60,17 @@
     <string name="support_body">Письмо содержит логи для анализа ошибок.</string>
     <string name="dark_theme_settings_title">Темная тема</string>
     <string name="app_fullname">Мое расписание</string>
+    <string name="save_changes_button">Сохранить</string>
+    <string name="cancel__button">Отмена</string>
+    <string name="avatar_description">clickable client avatar</string>
+    <string name="date_edit">edit date</string>
+    <string name="select_previous_month">select previous month</string>
+    <string name="edit_appointment">edit appointment</string>
+    <string name="delete_appointment">delete appointment</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Отмена</string>
+    <string name="really_delete_text">Удалить запись?</string>
+    <string name="calendar_cell_example">10</string>
+    <string name="fragment_date_title">Список записей</string>
 
 </resources>

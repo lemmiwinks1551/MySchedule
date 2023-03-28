@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/nav_calendar"
-        android:name="com.example.projectnailsschedule.ui.calendar.CalendarFragment"
+        android:name="com.example.projectnailsschedule.presentation.calendar.CalendarFragment"
         android:label="@string/menu_calendar"
         tools:layout="@layout/fragment_calendar">
         <action
@@ -40,36 +40,36 @@
 
     <fragment
         android:id="@+id/nav_clients"
-        android:name="com.example.projectnailsschedule.ui.clients.ClientsFragment"
+        android:name="com.example.projectnailsschedule.presentation.clients.ClientsFragment"
         android:label="@string/menu_clients"
         tools:layout="@layout/fragment_clients" />
 
     <fragment
         android:id="@+id/nav_price"
-        android:name="com.example.projectnailsschedule.ui.price.PriceFragment"
+        android:name="com.example.projectnailsschedule.presentation.price.PriceFragment"
         android:label="@string/menu_service"
         tools:layout="@layout/fragment_price" />
 
     <fragment
         android:id="@+id/nav_settings"
-        android:name="com.example.projectnailsschedule.ui.settings.SettingsFragment"
+        android:name="com.example.projectnailsschedule.presentation.settings.SettingsFragment"
         android:label="@string/menu_settings"
         tools:layout="@layout/fragment_settings" />
 
     <fragment
         android:id="@+id/nav_about"
-        android:name="com.example.projectnailsschedule.ui.about.AboutFragment"
+        android:name="com.example.projectnailsschedule.presentation.about.AboutFragment"
         android:label="@string/menu_about"
         tools:layout="@layout/fragment_about" />
 
     <fragment
         android:id="@+id/nav_search"
-        android:name="com.example.projectnailsschedule.ui.search.SearchFragment"
+        android:name="com.example.projectnailsschedule.presentation.search.SearchFragment"
         android:label="@string/search_client"
         tools:layout="@layout/fragment_search" >
         <action
-            android:id="@+id/action_nav_search_to_nav_date"
-            app:destination="@id/nav_date"
+            android:id="@+id/action_nav_search_to_nav_appointment"
+            app:destination="@id/nav_appointment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_enter_anim"
@@ -78,12 +78,12 @@
 
     <fragment
         android:id="@+id/nav_appointment"
-        android:name="com.example.projectnailsschedule.ui.appointment.AppointmentFragment"
+        android:name="com.example.projectnailsschedule.presentation.appointment.AppointmentFragment"
         tools:layout="@layout/fragment_appointment" />
 
     <fragment
         android:id="@+id/nav_date"
-        android:name="com.example.projectnailsschedule.ui.date.DateFragment"
+        android:name="com.example.projectnailsschedule.presentation.date.DateFragment"
         tools:layout="@layout/fragment_date">
         <action
             android:id="@+id/action_dateFragment_to_appointmentFragment"

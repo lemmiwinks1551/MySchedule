@@ -11,5 +11,24 @@
     <color name="green">#4CAF50</color>
     <color name="yellow">#FFD75E</color>
     <color name="red">#FF6498</color>
+    <color name="selected_calendar_cell">#575E3AAF</color>
+    <color name="transparent">#00000000</color>
+
+    <!--    Pink theme  -->
+    <color name="Pink1">#bf4f4e</color>
+    <color name="Pink2">#e186a7</color>
+    <color name="Pink3">#d19fce</color>
+    <color name="Pink4">#d6d2e3</color>
+    <color name="Pink5">#7fafd5</color>
+    <color name="Pink6">#d0c5d3</color>
+
+    <!--    Dark theme  -->
+    <color name="Dark1">#132438</color>
+    <color name="Dark2">#181B33</color>
+    <color name="Dark3">#d19fce</color>
+    <color name="Dark4">#d6d2e3</color>
+    <color name="Dark5">#82bdc9</color>
+    <color name="Dark6">#21324C</color>
+    <color name="Dark7">#284060</color>
 
 </resources>
