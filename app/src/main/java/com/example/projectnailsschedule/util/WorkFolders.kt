@@ -5,7 +5,7 @@ import android.util.Log
 import java.io.File
 
 /**
- * Класс создает необходимые папки
+ * Create app folders
  * */
 
 class WorkFolders{
@@ -24,7 +24,7 @@ class WorkFolders{
     }
 
     private fun createDbDir() {
-        // Создаем папку, для хранения файлов приложения
+        // Create folder for app documents
         try {
             if (folderPath.mkdirs()) {
                 Log.e(LOG, "Directory $mainFolderName created")

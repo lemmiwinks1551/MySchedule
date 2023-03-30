@@ -19,10 +19,10 @@ class ScheduleDbHelper(context: Context?) :
         var DATABASE_NAME = String.format("${WorkFolders().getFolderPath()}/schedule.db")
 
         // Current bd version
-        private const val VERSION = 26
+        private const val VERSION = 1
 
         // Table name
-        const val TABLE_NAME = "schedule" // название таблицы в бд
+        const val TABLE_NAME = "schedule"
 
         // Columns
         const val COLUMN_ID = "_id"

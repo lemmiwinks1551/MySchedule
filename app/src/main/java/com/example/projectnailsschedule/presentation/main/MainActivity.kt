@@ -39,6 +39,9 @@ class MainActivity : AppCompatActivity() {
         uncaughtExceptionHandler.context = this
         Thread.setDefaultUncaughtExceptionHandler(uncaughtExceptionHandler)
 
+        // Create work folders
+        WorkFolders().run()
+
         super.onCreate(savedInstanceState)
 
         // create ViewModel object with Factory
@@ -70,9 +73,6 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView?.setupWithNavController(navController)
-
-        // Create work folders
-        WorkFolders().run()
     }
 
     private fun initWidgets() {
