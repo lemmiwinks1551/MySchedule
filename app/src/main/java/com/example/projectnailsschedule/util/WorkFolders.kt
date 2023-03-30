@@ -11,7 +11,7 @@ import java.io.File
 class WorkFolders{
 
     private val LOG = this::class.simpleName
-    private val mainFolderName: String = "MySchedule"
+    private val mainFolderName: String = "ClientSchedule"
     private val folderPath = File(
         Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS),
         mainFolderName
