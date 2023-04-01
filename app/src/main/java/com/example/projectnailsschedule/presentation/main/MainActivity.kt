@@ -14,6 +14,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
@@ -28,6 +29,7 @@ import com.example.projectnailsschedule.databinding.ActivityMainBinding
 import com.example.projectnailsschedule.util.UncaughtExceptionHandler
 import com.example.projectnailsschedule.util.WorkFolders
 import com.google.android.material.navigation.NavigationView
+import kotlin.system.exitProcess
 
 
 class MainActivity : AppCompatActivity() {
@@ -41,67 +43,62 @@ class MainActivity : AppCompatActivity() {
     private var drawerLayout: DrawerLayout? = null
     private var navView: NavigationView? = null
 
+    private var permissionGranted = false
+
+    private fun closeApp() {
+        finish()
+        exitProcess(0)
+    }
+
     private fun showInContextUI() {
-        val dlgAlert = AlertDialog.Builder(this)
-        dlgAlert.setTitle("не заработает")
-        dlgAlert.setPositiveButton("Ok"
-        ) { dialog, which ->
-            dialog.dismiss()
-        }
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
     private fun permission() {
-        // Register the permissions callback, which handles the user's response to the
-        // system permissions dialog. Save the return value, an instance of
-        // ActivityResultLauncher. You can use either a val, as shown in this snippet,
-        // or a lateinit var in your onAttach() or onCreate() method.
+
         val requestPermissionLauncher =
             registerForActivityResult(
                 ActivityResultContracts.RequestPermission()
-            ) { isGranted: Boolean ->
-                if (isGranted) {
-                    // Permission is granted. Continue the action or workflow in your
-                    // app.
-                    Log.e("Permission", "Granted")
-                } else {
-                    // Explain to the user that the feature is unavailable because the
-                    // feature requires a permission that the user has denied. At the
-                    // same time, respect the user's decision. Don't link to system
-                    // settings in an effort to convince the user to change their
-                    // decision.
-                    Log.e("Permission", "Not Granted")
-                }
-            }
+            ) { }
 
-        when {ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE
+        when {
+            ContextCompat.checkSelfPermission(
+                this, Manifest.permission.WRITE_EXTERNAL_STORAGE
             ) == PackageManager.PERMISSION_GRANTED -> {
-                // You can use the API that requires the permission.
+                // permission already granted
             }
             shouldShowRequestPermissionRationale(
+                // show request permission dialog
                 Manifest.permission.WRITE_EXTERNAL_STORAGE
             )
             -> {
-                // In an educational UI, explain to the user why your app requires this
-                // permission for a specific feature to behave as expected, and what
-                // features are disabled if it's declined. In this UI, include a
-                // "cancel" or "no thanks" button that lets the user continue
-                // using your app without granting the permission.
+                // if permission already denied
                 showInContextUI()
             }
             else -> {
-                // You can directly ask for the permission.
-                // The registered ActivityResultCallback gets the result of this request.
+                // Ask for the permission.
                 requestPermissionLauncher.launch(
                     Manifest.permission.WRITE_EXTERNAL_STORAGE
                 )
             }
         }
+
     }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        Log.e("asd", "a")
+    }
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        super.onCreate(savedInstanceState)
+
         permission()
 
         // Set uncaught exception handler
@@ -109,9 +106,7 @@ class MainActivity : AppCompatActivity() {
         Thread.setDefaultUncaughtExceptionHandler(uncaughtExceptionHandler)
 
         // Create work folders
-        WorkFolders().run()
-
-        super.onCreate(savedInstanceState)
+         WorkFolders().run()
 
         // create ViewModel object with Factory
         mainViewModel = ViewModelProvider(
