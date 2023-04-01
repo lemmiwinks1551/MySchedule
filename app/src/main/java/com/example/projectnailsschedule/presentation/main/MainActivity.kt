@@ -1,12 +1,10 @@
 package com.example.projectnailsschedule.presentation.main
 
 import android.Manifest
-import android.content.DialogInterface
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.result.contract.ActivityResultContracts
@@ -43,14 +41,24 @@ class MainActivity : AppCompatActivity() {
     private var drawerLayout: DrawerLayout? = null
     private var navView: NavigationView? = null
 
-    private var permissionGranted = false
-
     private fun closeApp() {
         finish()
         exitProcess(0)
     }
 
     private fun showInContextUI() {
+        AlertDialog.Builder(this)
+            .setTitle("Delete entry")
+            .setMessage("Are you sure you want to delete this entry?") // Specifying a listener allows you to take an action before dismissing the dialog.
+            // The dialog is automatically dismissed when a dialog button is clicked.
+            .setPositiveButton(
+                android.R.string.yes
+            ) { dialog, which ->
+                // Continue with delete operation
+            } // A null listener allows the button to dismiss the dialog and take no further action.
+            .setNegativeButton(android.R.string.no, null)
+            .show()
+        closeApp()
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -73,7 +81,9 @@ class MainActivity : AppCompatActivity() {
             )
             -> {
                 // if permission already denied
-                showInContextUI()
+                requestPermissionLauncher.launch(
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                )
             }
             else -> {
                 // Ask for the permission.
@@ -82,7 +92,6 @@ class MainActivity : AppCompatActivity() {
                 )
             }
         }
-
     }
 
     override fun onRequestPermissionsResult(
@@ -91,7 +100,11 @@ class MainActivity : AppCompatActivity() {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        Log.e("asd", "a")
+        if (grantResults[0] == 0) {
+            permissionGranted()
+        } else {
+            closeApp()
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -99,14 +112,24 @@ class MainActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
 
-        permission()
+        if (ActivityCompat.checkSelfPermission(
+                application,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            permission()
+        } else {
+            permissionGranted()
+        }
+    }
 
+    private fun permissionGranted() {
         // Set uncaught exception handler
         uncaughtExceptionHandler.context = this
         Thread.setDefaultUncaughtExceptionHandler(uncaughtExceptionHandler)
 
         // Create work folders
-         WorkFolders().run()
+        WorkFolders().run()
 
         // create ViewModel object with Factory
         mainViewModel = ViewModelProvider(
@@ -121,7 +144,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
-
         // init all widgets
         initWidgets()
 
@@ -137,6 +159,7 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView?.setupWithNavController(navController)
+
     }
 
     private fun initWidgets() {
