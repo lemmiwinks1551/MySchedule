@@ -1,6 +1,7 @@
 package com.example.projectnailsschedule.presentation.main
 
 import android.Manifest
+import android.content.DialogInterface
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.os.Build
@@ -10,6 +11,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
@@ -26,8 +28,6 @@ import com.example.projectnailsschedule.databinding.ActivityMainBinding
 import com.example.projectnailsschedule.util.UncaughtExceptionHandler
 import com.example.projectnailsschedule.util.WorkFolders
 import com.google.android.material.navigation.NavigationView
-import kotlinx.coroutines.delay
-import kotlin.concurrent.thread
 
 
 class MainActivity : AppCompatActivity() {
@@ -42,7 +42,12 @@ class MainActivity : AppCompatActivity() {
     private var navView: NavigationView? = null
 
     private fun showInContextUI() {
-        Log.e("Permission", "showUI")
+        val dlgAlert = AlertDialog.Builder(this)
+        dlgAlert.setTitle("не заработает")
+        dlgAlert.setPositiveButton("Ok"
+        ) { dialog, which ->
+            dialog.dismiss()
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -69,10 +74,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-        when {
-            ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
+        when {ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE
             ) == PackageManager.PERMISSION_GRANTED -> {
                 // You can use the API that requires the permission.
             }
@@ -96,6 +98,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
