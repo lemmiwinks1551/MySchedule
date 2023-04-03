@@ -170,7 +170,7 @@
                 android:gravity="start"
                 android:hint="@string/example_client"
                 android:imeOptions="actionDone"
-                android:inputType="textCapSentences"
+                android:inputType="textCapWords"
                 android:maxLength="15"
                 android:maxLines="1"
                 android:padding="8dp"
