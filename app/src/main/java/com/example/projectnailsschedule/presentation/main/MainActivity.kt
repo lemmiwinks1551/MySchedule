@@ -9,7 +9,6 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.ActivityCompat
@@ -40,6 +39,7 @@ class MainActivity : AppCompatActivity() {
 
     private var drawerLayout: DrawerLayout? = null
     private var navView: NavigationView? = null
+    var versionSDK = Build.VERSION.SDK_INT
 
     private fun closeApp() {
         finish()
@@ -96,14 +96,17 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-
-        if (ActivityCompat.checkSelfPermission(
-                application,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            permission()
-        } else {
+        if (versionSDK < 33){
+            if (ActivityCompat.checkSelfPermission(
+                    application,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                permission()
+            } else {
+                permissionGranted()
+            }
+        } else{
             permissionGranted()
         }
     }
