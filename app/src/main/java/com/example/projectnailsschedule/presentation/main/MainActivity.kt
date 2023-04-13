@@ -5,10 +5,10 @@ import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.ActivityCompat
@@ -26,10 +26,15 @@ import com.example.projectnailsschedule.databinding.ActivityMainBinding
 import com.example.projectnailsschedule.util.UncaughtExceptionHandler
 import com.example.projectnailsschedule.util.WorkFolders
 import com.google.android.material.navigation.NavigationView
+import ru.rustore.sdk.appupdate.manager.factory.RuStoreAppUpdateManagerFactory
+import ru.rustore.sdk.appupdate.model.AppUpdateInfo
+import ru.rustore.sdk.appupdate.model.AppUpdateOptions
+import ru.rustore.sdk.appupdate.model.InstallStatus
 import kotlin.system.exitProcess
 
 
 class MainActivity : AppCompatActivity() {
+    private val log = this::class.simpleName
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     lateinit var binding: ActivityMainBinding
@@ -46,7 +51,6 @@ class MainActivity : AppCompatActivity() {
         exitProcess(0)
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
     private fun permission() {
 
         val requestPermissionLauncher =
@@ -92,11 +96,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-        if (versionSDK < 33){
+        if (versionSDK < 33) {
             if (ActivityCompat.checkSelfPermission(
                     application,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -106,7 +109,7 @@ class MainActivity : AppCompatActivity() {
             } else {
                 permissionGranted()
             }
-        } else{
+        } else {
             permissionGranted()
         }
     }
@@ -147,6 +150,40 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView?.setupWithNavController(navController)
+
+        // check for updates
+        checkForUpdates()
+    }
+
+    private fun checkForUpdates() {
+        val updateManager = RuStoreAppUpdateManagerFactory.create(context = this)
+
+        var appUpdateInfo: AppUpdateInfo? = null
+        updateManager
+            .getAppUpdateInfo()
+            .addOnSuccessListener { info ->
+                appUpdateInfo = info
+                Log.e("checkUpdate", appUpdateInfo!!.updateAvailability.toString())
+
+                updateManager
+                    .startUpdateFlow(appUpdateInfo!!, AppUpdateOptions.Builder().build())
+                    .addOnSuccessListener { resultCode ->
+                        Log.e("checkUpdate", resultCode.toString())
+                    }
+                    .addOnFailureListener { throwable ->
+                        Log.e("checkUpdate", throwable.toString())
+                    }
+            }
+            .addOnFailureListener { throwable ->
+                Log.e("checkUpdate", throwable.message!!)
+            }
+
+        updateManager.registerListener { state ->
+            if (state.installStatus == InstallStatus.DOWNLOADED) {
+                // Update is ready to install
+                Log.e("checkUpdate", "Update is ready to install")
+            }
+        }
 
     }
 
