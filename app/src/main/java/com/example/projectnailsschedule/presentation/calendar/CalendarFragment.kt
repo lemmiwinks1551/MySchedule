@@ -42,7 +42,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener,
     private var shortDataRecyclerView: RecyclerView? = null
     private var addButton: FloatingActionButton? = null
     private var layout: ConstraintLayout? = null
-    private var dateParams: DateParams? = null
+    private var currentDate: DateParams? = null
     private var colorResIdSelBackgr: Int = R.color.transparent
 
     // color background click listener
@@ -97,7 +97,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener,
         binding.goIntoDate.setOnClickListener {
             // start fragment with chosen date
             val bundle = Bundle()
-            bundle.putParcelable("dateParams", dateParams)
+            bundle.putParcelable("dateParams", currentDate)
             binding.goIntoDate.findNavController().navigate(
                 R.id.action_nav_calendar_to_dateFragment,
                 bundle
@@ -106,40 +106,42 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener,
 
         // set click listener on button next_month
         binding.nextMonth.setOnClickListener {
-            changeMonth(operator = '+')
+            changeMonth(operator = true)
         }
 
         // set click listener on button previous_month
         binding.prevMonth.setOnClickListener {
-            changeMonth(operator = '-')
+            changeMonth(operator = false)
         }
     }
 
     private fun initObservers() {
         // set observer for DateParams
-        calendarViewModel?.selectedDateParams?.observe(viewLifecycleOwner) {
-            Log.e(log, it.date.toString())
-            Log.e(log, dateParams?.date.toString())
+        calendarViewModel?.selectedDate?.observe(viewLifecycleOwner) {
+            Log.e(log, "Current date: ${currentDate?.date}")
+            Log.e(log, "Selected date: ${it.date}")
 
             // if year was changed
-            if (it.date!!.year != dateParams?.date?.year) {
+            if (it.date!!.year != currentDate?.date?.year) {
+                // update yearTextView
                 setYearTextView(it!!.date!!.year)
             }
 
             // if month was changed
-            if (it.date!!.monthValue != dateParams?.date?.monthValue) {
+            if (it.date!!.monthValue != currentDate?.date?.monthValue) {
+                // update monthTextView
                 setMonthTextView(it)
                 inflateCalendarRecyclerView(it.date!!)
             }
 
             // if day was changed and has appointments
-            if (it.appointmentCount != null
+             if (it.appointmentCount != null
             ) {
                 inflateShortDateRecyclerView(it)
             }
 
-            // reset local DateParams
-            dateParams = DateParams(
+            // update local DateParams
+            currentDate = DateParams(
                 _id = null,
                 date = it.date,
                 appointmentCount = null
@@ -148,7 +150,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener,
     }
 
     private fun setMonthTextView(selectedDateParams: DateParams) {
-        // set month into textview
+        // update monthTextView
         val date =
             Date.from(selectedDateParams.date?.atStartOfDay(ZoneId.systemDefault())?.toInstant())
         val month =
@@ -157,7 +159,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener,
     }
 
     private fun setYearTextView(yearValue: Int) {
-        // set year into textview
+        // update yearTextView
         yearTextView?.text = yearValue.toString()
     }
 
@@ -199,7 +201,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener,
         shortDataRecyclerView?.adapter = dateShortAdapter
     }
 
-    private fun changeMonth(operator: Char) {
+    private fun changeMonth(operator: Boolean) {
         // hide go_into_date button
         addButton?.visibility = View.INVISIBLE
 
@@ -311,7 +313,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener,
 
     override fun onDestroyView() {
         // reset local DateParams
-        dateParams = DateParams(
+        currentDate = DateParams(
             _id = null,
             date = null,
             appointmentCount = null
@@ -322,7 +324,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener,
     override fun onItemClickShortDate() {
         // start fragment with chosen date
         val bundle = Bundle()
-        bundle.putParcelable("dateParams", dateParams)
+        bundle.putParcelable("dateParams", currentDate)
         binding.goIntoDate.findNavController().navigate(
             R.id.action_nav_calendar_to_dateFragment,
             bundle

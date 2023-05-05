@@ -9,7 +9,7 @@ import com.example.projectnailsschedule.domain.usecase.dateUC.GetDateAppointment
 import com.example.projectnailsschedule.domain.usecase.searchUC.GetAllAppointmentsUseCase
 
 class SearchViewModelFactory(context: Context?) : ViewModelProvider.Factory {
-    private val scheduleRepositoryImpl = ScheduleRepositoryImpl(context = context)
+    private val scheduleRepositoryImpl = ScheduleRepositoryImpl(context = context!!)
 
     private val getAllAppointmentsUseCase =
         GetAllAppointmentsUseCase(scheduleRepository = scheduleRepositoryImpl)

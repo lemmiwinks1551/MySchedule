@@ -3,6 +3,7 @@ package com.example.projectnailsschedule.presentation.date
 import android.database.Cursor
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.projectnailsschedule.domain.models.AppointmentModelDb
 import com.example.projectnailsschedule.domain.models.DateParams
 import com.example.projectnailsschedule.domain.usecase.dateUC.DeleteAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.dateUC.GetDateAppointmentsUseCase
@@ -30,19 +31,19 @@ class DateViewModel(
         selectedDateParams.value = selectedDateParams.value
     }
 
-    fun setDateAppointments(cursor : Cursor) {
+    fun setDateAppointments(cursor : Array<AppointmentModelDb>) {
         // update appointmentCursor
-        dateAppointmentsCursor.value = cursor
-        dateAppointmentsCursor.value = dateAppointmentsCursor.value
+        // dateAppointmentsCursor.value = cursor
+        // dateAppointmentsCursor.value = dateAppointmentsCursor.value
     }
 
 
     private fun getDateAppointmentCount() {
         selectedDateParams.value?.appointmentCount =
-            getDateAppointmentsUseCase.execute(selectedDateParams.value!!).count
+            getDateAppointmentsUseCase.execute(selectedDateParams.value!!).size
     }
 
-    fun getDateAppointments(): Cursor {
+    fun getDateAppointments(): Array<AppointmentModelDb> {
         return getDateAppointmentsUseCase.execute(dateParams = selectedDateParams.value!!)
     }
 

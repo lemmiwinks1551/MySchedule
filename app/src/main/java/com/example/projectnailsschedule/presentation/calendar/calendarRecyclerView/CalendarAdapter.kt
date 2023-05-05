@@ -9,6 +9,10 @@ import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.domain.models.DateParams
 import com.example.projectnailsschedule.presentation.calendar.CalendarFragment
 import com.example.projectnailsschedule.presentation.calendar.CalendarViewModel
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 
 internal class CalendarAdapter(
     private val daysInMonth: ArrayList<String>,
@@ -18,9 +22,7 @@ internal class CalendarAdapter(
     RecyclerView.Adapter<CalendarViewHolder>() {
     private var log = this::class.simpleName
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalendarViewHolder {
-        // Возвращает объект ViewHolder, который будет хранить данные по одному объекту
         val inflater = LayoutInflater.from(parent.context)
         val view: View = inflater.inflate(R.layout.calendar_recycler_view_cell, parent, false)
 
@@ -35,24 +37,24 @@ internal class CalendarAdapter(
 
         // set appointments count
         if (dayInHolder != "") {
-            try {
-                // try to get appointment count from date
-                // can throw exception if day is`t exists in month
-                val appointmentCount: Int
-                val dateParams = DateParams(
-                    date = calendarViewModel.selectedDateParams.value?.date?.withDayOfMonth(
-                        dayInHolder.toInt()
-                    )
+            // try to get appointment count from date
+            // can throw exception if day is`t exists in month
+            val appointmentCount: Int
+            val dateParams = DateParams(
+                date = calendarViewModel.selectedDate.value?.date?.withDayOfMonth(
+                    dayInHolder.toInt()
                 )
-                appointmentCount =
-                    calendarViewModel.getCursorAppointments(dateParams = dateParams).count
+            )
 
-                if (appointmentCount > 0) {
-                    // if appointments exists
-                    holder.dateAppointmentsCount.text = appointmentCount.toString()
-                }
-            } catch (e: Exception) {
-                Log.e(log, e.toString())
+            // get date appointment count
+            appointmentCount =
+                calendarViewModel.getArrayAppointments(dateParams = dateParams).size
+
+            Log.e(log, "$dateParams")
+
+            if (appointmentCount > 0) {
+                // if appointments exists
+                holder.dateAppointmentsCount.text = appointmentCount.toString()
             }
         }
     }

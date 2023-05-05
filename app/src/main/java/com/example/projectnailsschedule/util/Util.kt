@@ -29,6 +29,13 @@ class Util {
         return formatter.format(parser.parse(day)!!).toString()
     }
 
+    fun dateConverterNew(day: String): String {
+        /** Получаем день формате d.M.yyyy и конвертируем в формат dd.MM.yyyy */
+        val parser = SimpleDateFormat("yyyy-MM-dd")
+        val formatter = SimpleDateFormat("dd.MM.yyyy")
+        return formatter.format(parser.parse(day)!!).toString()
+    }
+
     fun hideKeyboard(activity: Activity) {
         val imm: InputMethodManager =
             activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager

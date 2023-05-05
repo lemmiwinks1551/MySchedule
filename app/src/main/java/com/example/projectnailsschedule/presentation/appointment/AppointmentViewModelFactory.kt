@@ -14,7 +14,7 @@ class AppointmentViewModelFactory(context: Context?) : ViewModelProvider.Factory
      * @param modelClass a `Class` whose instance is requested
      * @return a newly created ViewModel
      */
-    private val scheduleRepositoryImpl = ScheduleRepositoryImpl(context = context)
+    private val scheduleRepositoryImpl = ScheduleRepositoryImpl(context = context!!)
 
     private val saveAppointmentUseCase =
         SaveAppointmentUseCase(scheduleRepository = scheduleRepositoryImpl)

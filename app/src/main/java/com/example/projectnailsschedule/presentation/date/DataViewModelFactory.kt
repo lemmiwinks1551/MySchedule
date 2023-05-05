@@ -12,7 +12,7 @@ import com.example.projectnailsschedule.domain.usecase.dateUC.GetDateAppointment
 
 class DataViewModelFactory(context: Context?) : ViewModelProvider.Factory {
 
-    private val scheduleRepositoryImpl = ScheduleRepositoryImpl(context = context)
+    private val scheduleRepositoryImpl = ScheduleRepositoryImpl(context = context!!)
 
     private var deleteAppointmentUseCase =
         DeleteAppointmentUseCase(scheduleRepository = scheduleRepositoryImpl)

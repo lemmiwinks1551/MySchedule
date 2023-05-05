@@ -14,7 +14,6 @@ import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.domain.models.AppointmentParams
 import com.example.projectnailsschedule.presentation.date.DateFragment
 import com.example.projectnailsschedule.presentation.date.DateViewModel
-import java.time.LocalDate
 
 
 class DateAdapter(
@@ -34,31 +33,31 @@ class DateAdapter(
 
     override fun onBindViewHolder(holder: DateViewHolder, position: Int) {
         // get date appointments
-        val dateAppointmentsCursor = dateViewModel.getDateAppointments()
+        val dateAppointmentsArray = dateViewModel.getDateAppointments()
 
         // inflate view holder if data exists
-        if (dateAppointmentsCursor.moveToPosition(position)) {
-            // Set id in holder
-            holder.appointmentId = dateAppointmentsCursor.getInt(0)
 
-            // Set date in holder
-            holder.appointmentDate = LocalDate.parse(dateAppointmentsCursor.getString(1))
+        // Set id in holder
+        holder.appointmentId = dateAppointmentsArray[position]._id
 
-            // Set time in holder
-            holder.appointmentTime.text = dateAppointmentsCursor.getString(2)
+        // Set date in holder
+        // holder.appointmentDate = LocalDate.parse(dateAppointmentsCursor.getString(1))
 
-            // Set procedure in holder
-            holder.appointmentProcedure.text = dateAppointmentsCursor.getString(3)
+        // Set time in holder
+        // holder.appointmentTime.text = dateAppointmentsCursor.getString(2)
 
-            // Set client name in holder
-            holder.appointmentClientName.text = dateAppointmentsCursor.getString(4)
+        // Set procedure in holder
+        // holder.appointmentProcedure.text = dateAppointmentsCursor.getString(3)
 
-            // Set client phone in holder
-            holder.appointmentNamePhone.text = dateAppointmentsCursor.getString(5)
+        // Set client name in holder
+        // holder.appointmentClientName.text = dateAppointmentsCursor.getString(4)
 
-            // Set misc in holder
-            holder.appointmentMisc.text = dateAppointmentsCursor.getString(6)
-        }
+        // Set client phone in holder
+        // holder.appointmentNamePhone.text = dateAppointmentsCursor.getString(5)
+
+        // Set misc in holder
+        // holder.appointmentMisc.text = dateAppointmentsCursor.getString(6)
+
 
         // set delete image button click listener
         holder.deleteImageButton?.setOnClickListener {
@@ -115,7 +114,7 @@ class DateAdapter(
                 .navigate(R.id.action_dateFragment_to_appointmentFragment, bundle)
         }
 
-        dateViewModel.setDateAppointments(dateAppointmentsCursor)
+        // dateViewModel.setDateAppointments(dateAppointmentsArray)
     }
 
     private fun runAnimation(view: View) {

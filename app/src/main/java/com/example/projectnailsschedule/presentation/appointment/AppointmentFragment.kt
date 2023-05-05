@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.projectnailsschedule.databinding.FragmentAppointmentBinding
+import com.example.projectnailsschedule.domain.models.AppointmentModelDb
 import com.example.projectnailsschedule.domain.models.AppointmentParams
 import com.example.projectnailsschedule.util.Util
 import java.time.LocalDate
@@ -129,7 +130,17 @@ class AppointmentFragment : Fragment() {
                 misc = miscEditText.text.toString(),
                 deleted = 0
             )
-            appointmentViewModel?.createAppointment(appointmentParams)
+            val appointmentModelDb = AppointmentModelDb(
+                _id = null,
+                date = dayEditText.text.toString(),
+                name = nameEditText.text.toString(),
+                time = timeEditText.text.toString(),
+                procedure = procedureEditText.text.toString(),
+                phone = phoneEditText.text.toString(),
+                notes = miscEditText.text.toString(),
+                deleted = false
+            )
+            appointmentViewModel?.createAppointment(appointmentModelDb)
 
             Toast.makeText(context, toastCreated, Toast.LENGTH_LONG).show()
         }
@@ -143,7 +154,7 @@ class AppointmentFragment : Fragment() {
 
         // create appointmentParams object
         with(binding) {
-            val appointmentParams = AppointmentParams(
+/*            val appointmentParams = AppointmentParams(
                 _id = appointmentParams?._id,
                 appointmentDate = LocalDate.parse(dayEditText.text, Util().formatter),
                 clientName = nameEditText.text.toString(),
@@ -152,10 +163,21 @@ class AppointmentFragment : Fragment() {
                 phoneNum = phoneEditText.text.toString(),
                 misc = miscEditText.text.toString(),
                 deleted = 0
+            )*/
+
+            val appointmentModelDb = AppointmentModelDb(
+                _id = appointmentParams?._id,
+                date = dayEditText.text.toString(),
+                name = nameEditText.text.toString(),
+                time = timeEditText.text.toString(),
+                procedure = procedureEditText.text.toString(),
+                phone = phoneEditText.text.toString(),
+                notes = miscEditText.text.toString(),
+                deleted = false
             )
 
             // send to AppointmentViewModel
-            appointmentViewModel?.editAppointment(appointmentParams)
+            appointmentViewModel?.editAppointment(appointmentModelDb)
 
             Toast.makeText(context, toastEdited, Toast.LENGTH_LONG).show()
 
