@@ -66,7 +66,7 @@ internal class SearchAdapter(
             val cancelButton: Button? = dialog.findViewById(R.id.cancel_delete_button)
 
             okButton?.setOnClickListener {
-                searchViewModel.deleteAppointment(position)
+                searchViewModel.deleteAppointment(holder.appointmentModelDb!!)
                 notifyItemRemoved(position)
                 appointmentCount -= 1
                 dialog.dismiss()

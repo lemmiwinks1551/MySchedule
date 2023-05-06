@@ -38,23 +38,32 @@ class ScheduleRepositoryImpl(context: Context) : ScheduleRepository {
     }
 
     override fun getDateAppointments(dateParams: DateParams): Array<AppointmentModelDb> {
+        // TODO: Add coroutines
+
         var arrayOfAppointmentModelDbs = arrayOf<AppointmentModelDb>()
 
-        Thread {
+        val thread = Thread {
             val dateToCheck = Util().dateConverterNew(dateParams.date.toString())
+            dateParams.appointmentCount = dbRoom.getDao().getDateAppointments(dateToCheck).size
             arrayOfAppointmentModelDbs = dbRoom.getDao().getDateAppointments(dateToCheck)
-            Log.e(log, "$dateToCheck : ${arrayOfAppointmentModelDbs.size}")
-        }.start()
+            Log.e(log, "$dateParams")
+        }
+        thread.start()
+        thread.join() // wait for
 
         return arrayOfAppointmentModelDbs
     }
 
-    override fun deleteAppointment(id: Int) {
-        val db: SQLiteDatabase = scheduleDbHelper.writableDatabase
+    override fun deleteAppointment(appointmentModelDb: AppointmentModelDb) {
+    /*        val db: SQLiteDatabase = scheduleDbHelper.writableDatabase
         scheduleDbHelper.deleteAppointment(
             currentId = id,
             db = db
-        )
+        )*/
+        Thread{
+            dbRoom.getDao().delete(appointmentModelDb)
+            Log.e(log, "$appointmentModelDb deleted")
+        }.start()
     }
 
     override fun getAllAppointments(): Cursor {

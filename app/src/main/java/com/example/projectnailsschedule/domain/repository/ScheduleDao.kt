@@ -1,9 +1,6 @@
 package com.example.projectnailsschedule.domain.repository
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
 import kotlinx.coroutines.flow.Flow
 
@@ -20,4 +17,7 @@ interface ScheduleDao {
 
     @Query("SELECT * FROM schedule WHERE date = :date")
     fun getDateAppointments(date: String): Array<AppointmentModelDb>
+
+    @Delete
+    fun delete(appointmentModelDb: AppointmentModelDb)
 }

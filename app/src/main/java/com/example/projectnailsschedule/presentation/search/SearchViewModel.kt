@@ -2,6 +2,7 @@ package com.example.projectnailsschedule.presentation.search
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.projectnailsschedule.domain.models.AppointmentModelDb
 import com.example.projectnailsschedule.domain.models.AppointmentParams
 import com.example.projectnailsschedule.domain.usecase.dateUC.DeleteAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.dateUC.GetDateAppointmentsUseCase
@@ -52,8 +53,7 @@ class SearchViewModel(
         return allAppointmentsCursor.getString(0)!!.toInt()
     }
 
-    fun deleteAppointment(id: Int) {
-        getAppointmentId(id)
-        deleteAppointmentUseCase.execute(allAppointmentsCursor.getString(0)!!.toInt())
+    fun deleteAppointment(appointmentModelDb: AppointmentModelDb) {
+        deleteAppointmentUseCase.execute(appointmentModelDb)
     }
 }

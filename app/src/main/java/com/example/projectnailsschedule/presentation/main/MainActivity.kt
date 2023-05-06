@@ -120,7 +120,7 @@ class MainActivity : AppCompatActivity() {
         Thread.setDefaultUncaughtExceptionHandler(uncaughtExceptionHandler)
 
         // Create work folders
-        WorkFolders().run()
+        // WorkFolders().run()
 
         // create ViewModel object with Factory
         mainViewModel = ViewModelProvider(

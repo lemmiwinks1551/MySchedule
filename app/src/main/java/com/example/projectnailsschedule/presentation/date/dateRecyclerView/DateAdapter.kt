@@ -2,6 +2,7 @@ package com.example.projectnailsschedule.presentation.date.dateRecyclerView
 
 import android.app.Dialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,13 +16,14 @@ import com.example.projectnailsschedule.domain.models.AppointmentParams
 import com.example.projectnailsschedule.presentation.date.DateFragment
 import com.example.projectnailsschedule.presentation.date.DateViewModel
 
-
 class DateAdapter(
     private var appointmentsCount: Int,
     private val onItemListener: DateFragment,
     private val dateViewModel: DateViewModel,
     private val fragmentActivity: FragmentActivity
 ) : RecyclerView.Adapter<DateViewHolder>() {
+
+    val log = this::class.simpleName
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DateViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -34,11 +36,8 @@ class DateAdapter(
     override fun onBindViewHolder(holder: DateViewHolder, position: Int) {
         // get date appointments
         val dateAppointmentsArray = dateViewModel.getDateAppointments()
-
+        holder.appointmentModelDb = dateAppointmentsArray[position]
         // inflate view holder if data exists
-
-        // Set id in holder
-        holder.appointmentId = dateAppointmentsArray[position]._id
 
         // Set date in holder
         // holder.appointmentDate = LocalDate.parse(dateAppointmentsCursor.getString(1))
@@ -55,9 +54,8 @@ class DateAdapter(
         // Set client phone in holder
         // holder.appointmentNamePhone.text = dateAppointmentsCursor.getString(5)
 
-        // Set misc in holder
+        // Set notes in holder
         // holder.appointmentMisc.text = dateAppointmentsCursor.getString(6)
-
 
         // set delete image button click listener
         holder.deleteImageButton?.setOnClickListener {
@@ -75,7 +73,8 @@ class DateAdapter(
             val cancelButton: Button? = dialog.findViewById(R.id.cancel_delete_button)
 
             okButton?.setOnClickListener {
-                dateViewModel.deleteAppointment(position)
+                Log.e(log, holder.appointmentModelDb.toString())
+                dateViewModel.deleteAppointment(holder.appointmentModelDb!!)
                 notifyItemRemoved(position)
                 appointmentsCount -= 1
                 dialog.dismiss()

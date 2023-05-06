@@ -37,8 +37,7 @@ internal class CalendarAdapter(
 
         // set appointments count
         if (dayInHolder != "") {
-            // try to get appointment count from date
-            // can throw exception if day is`t exists in month
+            // get appointment count from date
             val appointmentCount: Int
             val dateParams = DateParams(
                 date = calendarViewModel.selectedDate.value?.date?.withDayOfMonth(

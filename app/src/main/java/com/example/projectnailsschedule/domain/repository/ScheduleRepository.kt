@@ -13,7 +13,7 @@ interface ScheduleRepository {
 
     fun getDateAppointments(dateParams: DateParams) : Array<AppointmentModelDb>
 
-    fun deleteAppointment(id: Int)
+    fun deleteAppointment(appointmentModelDb: AppointmentModelDb)
 
     fun getAllAppointments() : Cursor
 }

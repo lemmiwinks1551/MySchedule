@@ -47,9 +47,8 @@ class DateViewModel(
         return getDateAppointmentsUseCase.execute(dateParams = selectedDateParams.value!!)
     }
 
-    fun deleteAppointment(id: Int) {
-        dateAppointmentsCursor.value?.moveToPosition(id)
-        deleteAppointmentUseCase.execute(dateAppointmentsCursor.value?.getString(0)!!.toInt())
+    fun deleteAppointment(appointmentModelDb: AppointmentModelDb) {
+        deleteAppointmentUseCase.execute(appointmentModelDb)
         updateDateParams()
     }
 }

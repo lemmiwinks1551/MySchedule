@@ -42,10 +42,10 @@ data class AppointmentModelDb(
 ) : Parcelable {
 
     override fun toString(): String {
-        return "Appointment " +
-                "${this._id} ${this.date} " +
-                "${this.name} ${this.time} " +
-                "${this.procedure} ${this.phone} " +
-                "${this.notes} ${this.deleted}"
+        return "Appointment (" +
+                "id = ${this._id}, date = ${this.date}, " +
+                "name = ${this.name}, time = ${this.time}, " +
+                "procedure = ${this.procedure}, phone = ${this.phone}, " +
+                "notes = ${this.notes}, deleted = ${this.deleted})"
     }
 }
