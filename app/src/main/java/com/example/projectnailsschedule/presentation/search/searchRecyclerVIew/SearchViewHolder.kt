@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
 import com.example.projectnailsschedule.presentation.search.SearchFragment
-import java.time.LocalDate
 
 class SearchViewHolder internal constructor(itemView: View, onItemListener: SearchFragment) :
     RecyclerView.ViewHolder(itemView), View.OnClickListener {
@@ -15,14 +14,14 @@ class SearchViewHolder internal constructor(itemView: View, onItemListener: Sear
     private val onItemListener: SearchAdapter.OnItemListener
 
     var appointmentId: Int? = null
-    var appointmentDate: LocalDate? = null
+    var appointmentDate: String? = null
     var appointmentModelDb: AppointmentModelDb? = null
 
     var name: TextView
     var date: TextView
     var phone: TextView
     var time: TextView
-    var misc: TextView
+    var notes: TextView
     var procedure: TextView
 
     var editImageBoolean: ImageButton? = null
@@ -33,7 +32,7 @@ class SearchViewHolder internal constructor(itemView: View, onItemListener: Sear
         date = itemView.findViewById(R.id.date_value_search)
         phone = itemView.findViewById(R.id.phone_value_search)
         time = itemView.findViewById(R.id.time_value_search)
-        misc = itemView.findViewById(R.id.misc_value_search)
+        notes = itemView.findViewById(R.id.misc_value_search)
         procedure = itemView.findViewById(R.id.procedure_value_search)
 
         editImageBoolean = itemView.findViewById(R.id.edit_note_image_button)

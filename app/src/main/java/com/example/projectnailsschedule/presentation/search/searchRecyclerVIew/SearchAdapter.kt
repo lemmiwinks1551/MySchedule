@@ -11,16 +11,16 @@ import androidx.fragment.app.FragmentActivity
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
+import com.example.projectnailsschedule.domain.models.AppointmentModelDb
 import com.example.projectnailsschedule.domain.models.AppointmentParams
 import com.example.projectnailsschedule.presentation.search.SearchFragment
 import com.example.projectnailsschedule.presentation.search.SearchViewModel
 import java.time.format.DateTimeFormatter
-import java.util.*
 
 internal class SearchAdapter(
     private var appointmentCount: Int,
     private val searchFragment: SearchFragment,
-    private var appointmentsList: MutableList<AppointmentParams>,
+    private var appointmentsList: List<AppointmentModelDb>,
     private val fragmentActivity: FragmentActivity,
     private val searchViewModel: SearchViewModel
 ) :
@@ -37,18 +37,19 @@ internal class SearchAdapter(
     private val bindingKeyAppointment = "appointmentParams"
 
     override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
-        val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
+        val appointmentModelDb = appointmentsList[position]
         // get date appointments
         with(holder) {
+            this.appointmentModelDb = appointmentModelDb
             appointmentId = appointmentsList[position]._id
-            appointmentDate = appointmentsList[position].appointmentDate
+            appointmentDate = appointmentModelDb.date
 
-            date.text = appointmentsList[position].appointmentDate?.format(formatter)
-            time.text = appointmentsList[position].startTime.toString()
-            procedure.text = appointmentsList[position].procedure.toString()
-            name.text = appointmentsList[position].clientName.toString()
-            phone.text = appointmentsList[position].phoneNum.toString()
-            misc.text = appointmentsList[position].misc.toString()
+            date.text = appointmentModelDb.date
+            time.text = appointmentModelDb.time
+            procedure.text = appointmentModelDb.procedure
+            name.text = appointmentModelDb.name
+            phone.text = appointmentModelDb.phone
+            notes.text = appointmentModelDb.notes
         }
 
         // set delete image button click listener
@@ -87,15 +88,15 @@ internal class SearchAdapter(
             // get information from clicked item
             // start fragment with selected data
 
-            val appointmentParams = AppointmentParams(
-                _id = searchViewModel.getAppointmentId(position),
-                appointmentDate = holder.appointmentDate,
-                clientName = holder.name.text.toString(),
-                startTime = holder.time.text.toString(),
+            val appointmentParams = AppointmentModelDb(
+                _id = holder.appointmentId,
+                date = holder.appointmentDate,
+                name = holder.name.text.toString(),
+                time = holder.time.text.toString(),
                 procedure = holder.procedure.text.toString(),
-                phoneNum = holder.phone.text.toString(),
-                misc = holder.misc.text.toString(),
-                deleted = 0
+                phone = holder.phone.text.toString(),
+                notes = holder.notes.text.toString(),
+                deleted = false
             )
 
             val bundle = Bundle()

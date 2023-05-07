@@ -8,15 +8,17 @@ import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.projectnailsschedule.data.storage.ScheduleDb
 import com.example.projectnailsschedule.databinding.FragmentSearchBinding
+import com.example.projectnailsschedule.domain.models.AppointmentModelDb
 import com.example.projectnailsschedule.domain.models.AppointmentParams
 import com.example.projectnailsschedule.presentation.search.searchRecyclerVIew.SearchAdapter
 import com.example.projectnailsschedule.util.Util
 import java.time.format.DateTimeFormatter
 import java.util.*
-
 
 class SearchFragment : Fragment(), SearchAdapter.OnItemListener {
 
@@ -32,6 +34,8 @@ class SearchFragment : Fragment(), SearchAdapter.OnItemListener {
     private var appointmentArray: MutableList<AppointmentParams> = mutableListOf()
     private var noData = "Данные не найдены"
     private var prevText = ""
+
+    private var scheduleDb: ScheduleDb? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,14 +59,17 @@ class SearchFragment : Fragment(), SearchAdapter.OnItemListener {
         initWidgets()
 
         // init observers
-        initObservers()
+        // initObservers()
 
         // init click listeners
-        initClickListeners()
+        // initClickListeners()
 
         // load appointments list
-        searchViewModel?.getAllAppointments()
-
+        // searchViewModel?.getAllAppointments()
+        scheduleDb = ScheduleDb.getDb(requireContext())
+        scheduleDb!!.getDao().selectAll().asLiveData().observe(viewLifecycleOwner) {
+            inflateSearchRecyclerVIew(it)
+        }
         return binding.root
     }
 
@@ -72,14 +79,14 @@ class SearchFragment : Fragment(), SearchAdapter.OnItemListener {
         searchRecyclerView = binding.searchRecyclerView
     }
 
-    private fun initObservers() {
+    /*    private fun initObservers() {
         searchViewModel?.appointmentArray?.observe(viewLifecycleOwner) {
             appointmentArray = it
             inflateSearchRecyclerVIew(appointmentArray)
         }
-    }
+    }*/
 
-    private fun initClickListeners() {
+    /*private fun initClickListeners() {
         stringSearchTextView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
             android.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(p0: String?): Boolean {
@@ -93,9 +100,9 @@ class SearchFragment : Fragment(), SearchAdapter.OnItemListener {
                 return false
             }
         })
-    }
+    }*/
 
-    private fun inflateSearchRecyclerVIew(appointmentsList: MutableList<AppointmentParams>) {
+    private fun inflateSearchRecyclerVIew(appointmentsList: List<AppointmentModelDb>) {
         // create adapter
         val searchAdapter = SearchAdapter(
             appointmentCount = appointmentsList.size,
@@ -112,7 +119,7 @@ class SearchFragment : Fragment(), SearchAdapter.OnItemListener {
         searchRecyclerView?.adapter = searchAdapter
     }
 
-    private fun filter(text: String) {
+    /*private fun filter(text: String) {
         // creating a new array list to filter our data.
         val appointmentsListFiltered: ArrayList<AppointmentParams> = ArrayList()
         val locale = Locale("ru")
@@ -146,16 +153,16 @@ class SearchFragment : Fragment(), SearchAdapter.OnItemListener {
             // list to recycler view
             inflateSearchRecyclerVIew(appointmentsListFiltered)
         }
-    }
+    }*/
 
     override fun onItemClick(position: Int, dayText: String?) {
         //
     }
 
-    override fun onResume() {
+/*    override fun onResume() {
         Util().hideKeyboard(requireActivity())
         // filter prev text
         filter(prevText)
         super.onResume()
-    }
+    }*/
 }
