@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
+import com.example.projectnailsschedule.domain.models.AppointmentModelDb
 import com.example.projectnailsschedule.domain.models.AppointmentParams
 import com.example.projectnailsschedule.presentation.date.DateFragment
 import com.example.projectnailsschedule.presentation.date.DateViewModel
@@ -36,26 +37,30 @@ class DateAdapter(
     override fun onBindViewHolder(holder: DateViewHolder, position: Int) {
         // get date appointments
         val dateAppointmentsArray = dateViewModel.getDateAppointments()
-        holder.appointmentModelDb = dateAppointmentsArray[position]
-        // inflate view holder if data exists
+
+        // declare current day appointments
+        val dateAppointment = dateAppointmentsArray[position]
+
+        // set day appointments into recycler view holder
+        holder.appointmentModelDb = dateAppointment
 
         // Set date in holder
-        // holder.appointmentDate = LocalDate.parse(dateAppointmentsCursor.getString(1))
+        holder.appointmentDate = dateAppointment.date
 
         // Set time in holder
-        // holder.appointmentTime.text = dateAppointmentsCursor.getString(2)
+        holder.appointmentTime.text = dateAppointment.time
 
         // Set procedure in holder
-        // holder.appointmentProcedure.text = dateAppointmentsCursor.getString(3)
+        holder.appointmentProcedure.text = dateAppointment.procedure
 
         // Set client name in holder
-        // holder.appointmentClientName.text = dateAppointmentsCursor.getString(4)
+        holder.appointmentClientName.text = dateAppointment.name
 
         // Set client phone in holder
-        // holder.appointmentNamePhone.text = dateAppointmentsCursor.getString(5)
+        holder.appointmentClientPhone.text = dateAppointment.phone
 
         // Set notes in holder
-        // holder.appointmentMisc.text = dateAppointmentsCursor.getString(6)
+        holder.appointmentNotes.text = dateAppointment.notes
 
         // set delete image button click listener
         holder.deleteImageButton?.setOnClickListener {
@@ -95,15 +100,15 @@ class DateAdapter(
             // get information from clicked item
             // start fragment with selected data
 
-            val appointmentParams = AppointmentParams(
+            val appointmentParams = AppointmentModelDb(
                 _id = holder.appointmentId,
-                appointmentDate = holder.appointmentDate,
-                clientName = holder.appointmentClientName.text.toString(),
-                startTime = holder.appointmentTime.text.toString(),
+                date = holder.appointmentDate,
+                name = holder.appointmentClientName.text.toString(),
+                time = holder.appointmentTime.text.toString(),
                 procedure = holder.appointmentProcedure.text.toString(),
-                phoneNum = holder.appointmentNamePhone.text.toString(),
-                misc = holder.appointmentMisc.text.toString(),
-                deleted = 0
+                phone = holder.appointmentClientPhone.text.toString(),
+                notes = holder.appointmentNotes.text.toString(),
+                deleted = false
             )
 
             val bundle = Bundle()

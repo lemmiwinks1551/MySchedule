@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.OnFocusChangeListener
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
@@ -21,8 +20,7 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
 
-
-/** AppointmentFragment View*/
+/** AppointmentFragment View */
 
 class AppointmentFragment : Fragment() {
     val log = this::class.simpleName
@@ -36,7 +34,7 @@ class AppointmentFragment : Fragment() {
     private var _binding: FragmentAppointmentBinding? = null
     private val binding get() = _binding!!
 
-    private var appointmentParams: AppointmentParams? = null
+    private var appointmentParams: AppointmentModelDb? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -113,7 +111,7 @@ class AppointmentFragment : Fragment() {
             // _id - edit Appointment
             title.text = changeAppointmentText
         }
-        titleDate.text = appointmentParams?.appointmentDate?.format(Util().formatter)
+        titleDate.text = appointmentParams?.date
     }
 
     private fun createAppointment() {
@@ -127,7 +125,7 @@ class AppointmentFragment : Fragment() {
                 startTime = timeEditText.text.toString(),
                 procedure = procedureEditText.text.toString(),
                 phoneNum = phoneEditText.text.toString(),
-                misc = miscEditText.text.toString(),
+                misc = notesEditText.text.toString(),
                 deleted = 0
             )
             val appointmentModelDb = AppointmentModelDb(
@@ -137,7 +135,7 @@ class AppointmentFragment : Fragment() {
                 time = timeEditText.text.toString(),
                 procedure = procedureEditText.text.toString(),
                 phone = phoneEditText.text.toString(),
-                notes = miscEditText.text.toString(),
+                notes = notesEditText.text.toString(),
                 deleted = false
             )
             appointmentViewModel?.createAppointment(appointmentModelDb)
@@ -172,7 +170,7 @@ class AppointmentFragment : Fragment() {
                 time = timeEditText.text.toString(),
                 procedure = procedureEditText.text.toString(),
                 phone = phoneEditText.text.toString(),
-                notes = miscEditText.text.toString(),
+                notes = notesEditText.text.toString(),
                 deleted = false
             )
 
@@ -189,12 +187,12 @@ class AppointmentFragment : Fragment() {
         // set current appointmentParams from DateFragment binding object
 
         with(binding) {
-            dayEditText.text = appointmentParams?.appointmentDate?.format(Util().formatter)
-            timeEditText.text = appointmentParams?.startTime
+            dayEditText.text = appointmentParams?.date
+            timeEditText.text = appointmentParams?.time
             procedureEditText.setText(appointmentParams?.procedure)
-            nameEditText.setText(appointmentParams?.clientName)
-            phoneEditText.setText(appointmentParams?.phoneNum)
-            miscEditText.setText(appointmentParams?.misc)
+            nameEditText.setText(appointmentParams?.name)
+            phoneEditText.setText(appointmentParams?.phone)
+            notesEditText.setText(appointmentParams?.notes)
         }
     }
 

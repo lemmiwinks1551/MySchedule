@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentDateBinding
+import com.example.projectnailsschedule.domain.models.AppointmentModelDb
 import com.example.projectnailsschedule.domain.models.AppointmentParams
 import com.example.projectnailsschedule.domain.models.DateParams
 import com.example.projectnailsschedule.presentation.date.dateRecyclerView.DateAdapter
@@ -76,15 +77,15 @@ class DateFragment : Fragment(), DateAdapter.OnItemListener {
     private fun initClickListeners() {
         // add new appointment
         binding.addButton.setOnClickListener {
-            val appointmentParams = AppointmentParams(
+            val appointmentParams = AppointmentModelDb(
                 _id = null,
-                appointmentDate = dateParams?.date,
-                clientName = null,
-                startTime = null,
+                date = Util().dateConverterNew(dateParams?.date.toString()),
+                name = null,
+                time = null,
                 procedure = null,
-                phoneNum = null,
-                misc = null,
-                deleted = 0
+                phone = null,
+                notes = null,
+                deleted = false
             )
             val bundle = Bundle()
             bundle.putParcelable(bindingKeyAppointment, appointmentParams)

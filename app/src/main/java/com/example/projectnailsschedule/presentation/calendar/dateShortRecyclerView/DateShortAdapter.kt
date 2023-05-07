@@ -26,10 +26,12 @@ internal class DateShortAdapter(
 
     override fun onBindViewHolder(holder: DateShortViewHolder, position: Int) {
 
-        val cursor = calendarViewModel.getArrayAppointments(selectedDayParams)
-
+        val selectedDayParams = calendarViewModel.getArrayAppointments(selectedDayParams)
+        val currentDayAppointments = selectedDayParams[position]
         // Set time in holder
-        holder.starTime.text = cursor[position].toString()
+        holder.clientName.text = currentDayAppointments.name
+        holder.time.text = currentDayAppointments.time
+        holder.procedure.text = currentDayAppointments.procedure
 
     }
 

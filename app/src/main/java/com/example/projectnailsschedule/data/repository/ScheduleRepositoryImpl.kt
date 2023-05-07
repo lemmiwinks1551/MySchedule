@@ -55,11 +55,6 @@ class ScheduleRepositoryImpl(context: Context) : ScheduleRepository {
     }
 
     override fun deleteAppointment(appointmentModelDb: AppointmentModelDb) {
-    /*        val db: SQLiteDatabase = scheduleDbHelper.writableDatabase
-        scheduleDbHelper.deleteAppointment(
-            currentId = id,
-            db = db
-        )*/
         Thread{
             dbRoom.getDao().delete(appointmentModelDb)
             Log.e(log, "$appointmentModelDb deleted")
