@@ -8,12 +8,6 @@ import com.example.projectnailsschedule.domain.usecase.appointmentUC.EditAppoint
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.SaveAppointmentUseCase
 
 class AppointmentViewModelFactory(context: Context?) : ViewModelProvider.Factory {
-    /**
-     * Creates a new instance of the given `Class`.
-     *
-     * @param modelClass a `Class` whose instance is requested
-     * @return a newly created ViewModel
-     */
     private val scheduleRepositoryImpl = ScheduleRepositoryImpl(context = context!!)
 
     private val saveAppointmentUseCase =

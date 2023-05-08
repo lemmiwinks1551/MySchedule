@@ -119,15 +119,6 @@ class AppointmentFragment : Fragment() {
 
         // create appointmentParams object
         with(binding) {
-            val appointmentParams = AppointmentParams(
-                appointmentDate = LocalDate.parse(dayEditText.text, Util().formatter),
-                clientName = nameEditText.text.toString(),
-                startTime = timeEditText.text.toString(),
-                procedure = procedureEditText.text.toString(),
-                phoneNum = phoneEditText.text.toString(),
-                misc = notesEditText.text.toString(),
-                deleted = 0
-            )
             val appointmentModelDb = AppointmentModelDb(
                 _id = null,
                 date = dayEditText.text.toString(),

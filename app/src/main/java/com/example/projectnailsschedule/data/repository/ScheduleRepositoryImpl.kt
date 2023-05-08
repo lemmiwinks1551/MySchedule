@@ -21,18 +21,22 @@ class ScheduleRepositoryImpl(context: Context) : ScheduleRepository {
 
     override fun saveAppointment(appointmentModelDb: AppointmentModelDb): Boolean {
         // Save appointment in database
-        Thread {
+        val thread = Thread {
             dbRoom.getDao().insert(appointmentModelDb)
-        }.start()
+        }
+        thread.start()
+        thread.join()
         Log.e(log, "Appointment $appointmentModelDb saved")
         return true
     }
 
     override fun updateAppointment(appointmentModelDb: AppointmentModelDb): Boolean {
         // Edit appointment in database
-        Thread {
+        val thread = Thread {
             dbRoom.getDao().update(appointmentModelDb)
-        }.start()
+        }
+        thread.start()
+        thread.join()
         Log.e(log, "Appointment $appointmentModelDb updated")
         return true
     }
@@ -55,10 +59,12 @@ class ScheduleRepositoryImpl(context: Context) : ScheduleRepository {
     }
 
     override fun deleteAppointment(appointmentModelDb: AppointmentModelDb) {
-        Thread{
+        val thread = Thread {
             dbRoom.getDao().delete(appointmentModelDb)
-            Log.e(log, "$appointmentModelDb deleted")
-        }.start()
+        }
+        thread.start()
+        thread.join()
+        Log.e(log, "$appointmentModelDb deleted")
     }
 
     override fun getAllAppointments(): Cursor {
