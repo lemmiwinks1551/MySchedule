@@ -101,7 +101,7 @@ class DateAdapter(
             // start fragment with selected data
 
             val appointmentParams = AppointmentModelDb(
-                _id = holder.appointmentId,
+                _id = holder.appointmentModelDb!!._id,
                 date = holder.appointmentDate,
                 name = holder.appointmentClientName.text.toString(),
                 time = holder.appointmentTime.text.toString(),

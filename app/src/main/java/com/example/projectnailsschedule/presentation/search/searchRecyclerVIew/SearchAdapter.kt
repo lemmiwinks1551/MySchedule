@@ -38,6 +38,11 @@ internal class SearchAdapter(
 
     override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
         val appointmentModelDb = appointmentsList[position]
+
+        // declare current day appointments
+        val dateAppointment = appointmentsList[position]
+        holder.appointmentModelDb = dateAppointment
+
         // get date appointments
         with(holder) {
             this.appointmentModelDb = appointmentModelDb
@@ -89,7 +94,7 @@ internal class SearchAdapter(
             // start fragment with selected data
 
             val appointmentParams = AppointmentModelDb(
-                _id = holder.appointmentId,
+                _id = holder.appointmentModelDb!!._id,
                 date = holder.appointmentDate,
                 name = holder.name.text.toString(),
                 time = holder.time.text.toString(),

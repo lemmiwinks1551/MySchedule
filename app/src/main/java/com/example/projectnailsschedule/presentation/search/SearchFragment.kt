@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.data.storage.ScheduleDb
 import com.example.projectnailsschedule.databinding.FragmentSearchBinding
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
-import com.example.projectnailsschedule.domain.models.AppointmentParams
 import com.example.projectnailsschedule.presentation.search.searchRecyclerVIew.SearchAdapter
 import com.example.projectnailsschedule.util.Util
 import java.time.format.DateTimeFormatter
@@ -31,8 +30,8 @@ class SearchFragment : Fragment(), SearchAdapter.OnItemListener {
     private var searchRecyclerView: RecyclerView? = null
     private var searchViewModel: SearchViewModel? = null
 
-    private var appointmentArray: MutableList<AppointmentParams> = mutableListOf()
-    private var noData = "Данные не найдены"
+    private var appointmentArray: MutableList<AppointmentModelDb> = mutableListOf()
+    private var noDataToast = "Данные не найдены"
     private var prevText = ""
 
     private var scheduleDb: ScheduleDb? = null
@@ -59,14 +58,14 @@ class SearchFragment : Fragment(), SearchAdapter.OnItemListener {
         initWidgets()
 
         // init observers
-        // initObservers()
+        initObservers()
 
         // init click listeners
-        // initClickListeners()
+        initClickListeners()
 
         // load appointments list
-        // searchViewModel?.getAllAppointments()
         scheduleDb = ScheduleDb.getDb(requireContext())
+
         scheduleDb!!.getDao().selectAll().asLiveData().observe(viewLifecycleOwner) {
             inflateSearchRecyclerVIew(it)
         }
@@ -74,33 +73,15 @@ class SearchFragment : Fragment(), SearchAdapter.OnItemListener {
     }
 
     private fun initWidgets() {
-        // init widgets
         stringSearchTextView = binding.searchView
         searchRecyclerView = binding.searchRecyclerView
     }
 
-    /*    private fun initObservers() {
-        searchViewModel?.appointmentArray?.observe(viewLifecycleOwner) {
-            appointmentArray = it
-            inflateSearchRecyclerVIew(appointmentArray)
-        }
-    }*/
+    private fun initObservers() {
+    }
 
-    /*private fun initClickListeners() {
-        stringSearchTextView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
-            android.widget.SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(p0: String?): Boolean {
-                return false
-            }
-
-            override fun onQueryTextChange(msg: String): Boolean {
-                searchViewModel?.getAllAppointments()
-                prevText = msg
-                filter(msg)
-                return false
-            }
-        })
-    }*/
+    private fun initClickListeners() {
+    }
 
     private fun inflateSearchRecyclerVIew(appointmentsList: List<AppointmentModelDb>) {
         // create adapter
@@ -119,50 +100,7 @@ class SearchFragment : Fragment(), SearchAdapter.OnItemListener {
         searchRecyclerView?.adapter = searchAdapter
     }
 
-    /*private fun filter(text: String) {
-        // creating a new array list to filter our data.
-        val appointmentsListFiltered: ArrayList<AppointmentParams> = ArrayList()
-        val locale = Locale("ru")
-
-        // running a for loop to compare elements.
-        for (appointmentParams in appointmentArray) {
-            // checking if the entered string matched with any appointmentParams of our recycler view.
-            with(appointmentParams) {
-                val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
-                if (appointmentDate?.format(formatter).toString().lowercase(locale)
-                        .contains(text.lowercase(locale)) ||
-                    clientName.toString().lowercase(locale).contains(text.lowercase(locale)) ||
-                    phoneNum.toString().lowercase(locale).replace("-", "").replace(" ", "")
-                        .contains(text.lowercase(locale)) ||
-                    startTime.toString().lowercase(locale).contains(text.lowercase(locale)) ||
-                    procedure.toString().lowercase(locale).contains(text.lowercase(locale)) ||
-                    misc.toString().lowercase(locale).contains(text.lowercase(locale))
-                ) {
-                    // if the appointmentParams is matched we are
-                    // adding it to our filtered list.
-                    appointmentsListFiltered.add(appointmentParams)
-                }
-            }
-        }
-        if (appointmentsListFiltered.isEmpty()) {
-            // if no item is added in filtered list we are
-            // displaying a toast message as no data found.
-            Toast.makeText(context, noData, Toast.LENGTH_SHORT).show()
-        } else {
-            // at last we are passing that filtered
-            // list to recycler view
-            inflateSearchRecyclerVIew(appointmentsListFiltered)
-        }
-    }*/
-
     override fun onItemClick(position: Int, dayText: String?) {
         //
     }
-
-/*    override fun onResume() {
-        Util().hideKeyboard(requireActivity())
-        // filter prev text
-        filter(prevText)
-        super.onResume()
-    }*/
 }
