@@ -1,20 +1,25 @@
 package com.example.projectnailsschedule.presentation.search
 
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import com.example.projectnailsschedule.data.storage.ScheduleDb
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
-import com.example.projectnailsschedule.domain.models.AppointmentParams
 import com.example.projectnailsschedule.domain.usecase.dateUC.DeleteAppointmentUseCase
-import com.example.projectnailsschedule.domain.usecase.dateUC.GetDateAppointmentsUseCase
-import com.example.projectnailsschedule.domain.usecase.searchUC.GetAllAppointmentsUseCase
-import java.time.LocalDate
 
 class SearchViewModel(
-    private val getAllAppointmentsUseCase: GetAllAppointmentsUseCase,
     private var deleteAppointmentUseCase: DeleteAppointmentUseCase
 ) : ViewModel() {
 
+    var scheduleDb: ScheduleDb? = null
+
+    fun searchDatabase(searchQuery: String): LiveData<List<AppointmentModelDb>>? {
+        return scheduleDb?.getDao()?.searchDatabase(searchQuery)?.asLiveData()
+    }
+
+    fun getAllAppointments() : LiveData<List<AppointmentModelDb>>? {
+        return scheduleDb?.getDao()?.selectAll()?.asLiveData()
+    }
 
     fun deleteAppointment(appointmentModelDb: AppointmentModelDb) {
         deleteAppointmentUseCase.execute(appointmentModelDb)

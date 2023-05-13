@@ -20,4 +20,13 @@ interface ScheduleDao {
 
     @Delete
     fun delete(appointmentModelDb: AppointmentModelDb)
+
+    @Query("SELECT * FROM schedule WHERE " +
+            "date LIKE :searchQuery OR " +
+            "name LIKE :searchQuery OR " +
+            "time LIKE :searchQuery OR " +
+            "procedure LIKE :searchQuery OR " +
+            "phone LIKE :searchQuery OR " +
+            "notes LIKE :searchQuery")
+    fun searchDatabase(searchQuery: String): Flow<List<AppointmentModelDb>>
 }

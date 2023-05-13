@@ -22,7 +22,6 @@ class SearchViewModelFactory(context: Context?) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return SearchViewModel(
-            getAllAppointmentsUseCase = getAllAppointmentsUseCase,
             deleteAppointmentUseCase = deleteAppointmentUseCase
         ) as T
     }
