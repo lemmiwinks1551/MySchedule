@@ -164,7 +164,6 @@ class MainActivity : AppCompatActivity() {
             .addOnSuccessListener { info ->
                 appUpdateInfo = info
                 Log.e("checkUpdate", appUpdateInfo!!.updateAvailability.toString())
-
                 updateManager
                     .startUpdateFlow(appUpdateInfo!!, AppUpdateOptions.Builder().build())
                     .addOnSuccessListener { resultCode ->
