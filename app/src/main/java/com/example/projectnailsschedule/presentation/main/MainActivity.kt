@@ -1,18 +1,12 @@
 package com.example.projectnailsschedule.presentation.main
 
-import android.Manifest
-import android.content.pm.PackageManager
 import android.content.res.Configuration
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -24,14 +18,11 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.ActivityMainBinding
 import com.example.projectnailsschedule.util.UncaughtExceptionHandler
-import com.example.projectnailsschedule.util.WorkFolders
 import com.google.android.material.navigation.NavigationView
 import ru.rustore.sdk.appupdate.manager.factory.RuStoreAppUpdateManagerFactory
 import ru.rustore.sdk.appupdate.model.AppUpdateInfo
 import ru.rustore.sdk.appupdate.model.AppUpdateOptions
 import ru.rustore.sdk.appupdate.model.InstallStatus
-import kotlin.system.exitProcess
-
 
 class MainActivity : AppCompatActivity() {
     private val log = this::class.simpleName
@@ -44,83 +35,13 @@ class MainActivity : AppCompatActivity() {
 
     private var drawerLayout: DrawerLayout? = null
     private var navView: NavigationView? = null
-    var versionSDK = Build.VERSION.SDK_INT
-
-    private fun closeApp() {
-        finish()
-        exitProcess(0)
-    }
-
-    private fun permission() {
-
-        val requestPermissionLauncher =
-            registerForActivityResult(
-                ActivityResultContracts.RequestPermission()
-            ) { }
-
-        when {
-            ContextCompat.checkSelfPermission(
-                this, Manifest.permission.WRITE_EXTERNAL_STORAGE
-            ) == PackageManager.PERMISSION_GRANTED -> {
-                // permission already granted
-            }
-            shouldShowRequestPermissionRationale(
-                // show request permission dialog
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
-            )
-            -> {
-                // if permission already denied
-                requestPermissionLauncher.launch(
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-                )
-            }
-            else -> {
-                // Ask for the permission.
-                requestPermissionLauncher.launch(
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-                )
-            }
-        }
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (grantResults[0] == 0) {
-            permissionGranted()
-        } else {
-            closeApp()
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-        if (versionSDK < 33) {
-            if (ActivityCompat.checkSelfPermission(
-                    application,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                permission()
-            } else {
-                permissionGranted()
-            }
-        } else {
-            permissionGranted()
-        }
-    }
-
-    private fun permissionGranted() {
         // Set uncaught exception handler
         uncaughtExceptionHandler.context = this
         Thread.setDefaultUncaughtExceptionHandler(uncaughtExceptionHandler)
-
-        // Create work folders
-        // WorkFolders().run()
 
         // create ViewModel object with Factory
         mainViewModel = ViewModelProvider(
@@ -159,6 +80,7 @@ class MainActivity : AppCompatActivity() {
         val updateManager = RuStoreAppUpdateManagerFactory.create(context = this)
 
         var appUpdateInfo: AppUpdateInfo? = null
+
         updateManager
             .getAppUpdateInfo()
             .addOnSuccessListener { info ->
@@ -181,9 +103,13 @@ class MainActivity : AppCompatActivity() {
             if (state.installStatus == InstallStatus.DOWNLOADED) {
                 // Update is ready to install
                 Log.e("checkUpdate", "Update is ready to install")
+                updateManager
+                    .completeUpdate()
+                    .addOnFailureListener { throwable ->
+                        Log.e("checkUpdate", throwable.message!!)
+                    }
             }
         }
-
     }
 
     private fun initWidgets() {
