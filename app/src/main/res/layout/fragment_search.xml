@@ -2,12 +2,12 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_search"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".presentation.search.SearchFragment">
 
     <androidx.appcompat.widget.SearchView
-        app:searchIcon="@android:drawable/ic_menu_search"
         android:id="@+id/search_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,7 +18,18 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:queryHint="@string/search_hint" />
+        app:queryHint="@string/search_hint"
+        app:searchIcon="@android:drawable/ic_menu_search" />
+
+    <TextView
+        android:id="@+id/appointments_count_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/search_recycler_view"
+        app:layout_constraintEnd_toEndOf="@+id/search_recycler_view"
+        app:layout_constraintTop_toBottomOf="@+id/search_view" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/search_recycler_view"

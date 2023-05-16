@@ -27,7 +27,6 @@ internal class SearchAdapter(
     RecyclerView.Adapter<SearchViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
-        // Возвращает объект ViewHolder, который будет хранить данные по одному объекту
         val inflater = LayoutInflater.from(parent.context)
         val view: View = inflater.inflate(R.layout.search_recycler_view_item, parent, false)
 
@@ -42,6 +41,7 @@ internal class SearchAdapter(
         // declare current day appointments
         val dateAppointment = appointmentsList[position]
         holder.appointmentModelDb = dateAppointment
+        holder.position = position
 
         // get date appointments
         with(holder) {
@@ -58,10 +58,9 @@ internal class SearchAdapter(
         }
 
         // set delete image button click listener
-        holder.deleteImageButton?.setOnClickListener {
+            /*        holder.deleteImageButton?.setOnClickListener {
             // run animation
             runAnimation(it)
-
             val dialog = Dialog(fragmentActivity)
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
             dialog.setCancelable(false)
@@ -72,7 +71,9 @@ internal class SearchAdapter(
             val cancelButton: Button? = dialog.findViewById(R.id.cancel_delete_button)
 
             okButton?.setOnClickListener {
-                searchViewModel.deleteAppointment(holder.appointmentModelDb!!)
+                val appointmentToDelete = holder.appointmentModelDb!!
+
+                searchViewModel.deleteAppointment(appointmentToDelete)
                 notifyItemRemoved(position)
                 appointmentCount -= 1
                 dialog.dismiss()
@@ -81,7 +82,6 @@ internal class SearchAdapter(
             cancelButton?.setOnClickListener {
                 dialog.dismiss()
             }
-
             dialog.show()
         }
 
@@ -109,7 +109,7 @@ internal class SearchAdapter(
 
             it.findNavController()
                 .navigate(R.id.action_nav_search_to_nav_appointment, bundle)
-        }
+        }*/
     }
 
     private fun runAnimation(view: View) {
@@ -121,6 +121,9 @@ internal class SearchAdapter(
     }
 
     override fun getItemCount(): Int {
+        // set current appointment count
+        searchViewModel.appointmentCount.value = appointmentCount
+        searchViewModel.getAllAppointments()
         return appointmentCount
     }
 

@@ -89,6 +89,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout> <!--Appointment params-->
 
     <ImageButton
+        android:visibility="invisible"
         android:id="@+id/edit_note_image_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -105,6 +106,7 @@
         app:layout_constraintTop_toTopOf="parent" /> <!--Edit appointment image button-->
 
     <ImageButton
+        android:visibility="invisible"
         android:id="@+id/delete_forever_image_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

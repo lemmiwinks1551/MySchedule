@@ -16,6 +16,7 @@ class SearchViewHolder internal constructor(itemView: View, onItemListener: Sear
     var appointmentId: Int? = null
     var appointmentDate: String? = null
     var appointmentModelDb: AppointmentModelDb? = null
+    var position: Int? = null
 
     var name: TextView
     var date: TextView

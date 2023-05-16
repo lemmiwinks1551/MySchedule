@@ -29,6 +29,11 @@ class Util {
         return formatter.format(parser.parse(day)!!).toString()
     }
 
+    fun convertStrToLocalDate(date: String) : LocalDate {
+        val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
+        return LocalDate.parse(date, formatter)
+    }
+
     fun dateConverterNew(day: String): String {
         /** Получаем день формате d.M.yyyy и конвертируем в формат dd.MM.yyyy */
         val parser = SimpleDateFormat("yyyy-MM-dd")
