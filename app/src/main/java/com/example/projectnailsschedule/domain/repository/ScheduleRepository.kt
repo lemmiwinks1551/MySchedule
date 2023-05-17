@@ -1,8 +1,6 @@
 package com.example.projectnailsschedule.domain.repository
 
-import android.database.Cursor
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
-import com.example.projectnailsschedule.domain.models.AppointmentParams
 import com.example.projectnailsschedule.domain.models.DateParams
 
 interface ScheduleRepository {
@@ -14,6 +12,4 @@ interface ScheduleRepository {
     fun getDateAppointments(dateParams: DateParams) : Array<AppointmentModelDb>
 
     fun deleteAppointment(appointmentModelDb: AppointmentModelDb)
-
-    fun getAllAppointments() : Cursor
 }

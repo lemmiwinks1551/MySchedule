@@ -3,7 +3,6 @@ package com.example.projectnailsschedule.presentation.appointment
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
-import com.example.projectnailsschedule.domain.models.AppointmentParams
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.EditAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.SaveAppointmentUseCase
 

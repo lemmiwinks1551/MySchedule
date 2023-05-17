@@ -1,21 +1,14 @@
 package com.example.projectnailsschedule.presentation.search.searchRecyclerVIew
 
-import android.app.Dialog
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
-import android.widget.Button
 import androidx.fragment.app.FragmentActivity
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
-import com.example.projectnailsschedule.domain.models.AppointmentParams
 import com.example.projectnailsschedule.presentation.search.SearchFragment
 import com.example.projectnailsschedule.presentation.search.SearchViewModel
-import java.time.format.DateTimeFormatter
 
 internal class SearchAdapter(
     private var appointmentCount: Int,

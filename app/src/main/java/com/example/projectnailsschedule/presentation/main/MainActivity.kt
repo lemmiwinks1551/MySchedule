@@ -40,7 +40,6 @@ class MainActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
         // Set uncaught exception handler
-        uncaughtExceptionHandler.context = this
         Thread.setDefaultUncaughtExceptionHandler(uncaughtExceptionHandler)
 
         // create ViewModel object with Factory

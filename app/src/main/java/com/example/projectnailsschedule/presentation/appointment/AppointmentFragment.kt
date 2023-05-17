@@ -14,10 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.projectnailsschedule.databinding.FragmentAppointmentBinding
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
-import com.example.projectnailsschedule.domain.models.AppointmentParams
 import com.example.projectnailsschedule.util.Util
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 /** AppointmentFragment View */

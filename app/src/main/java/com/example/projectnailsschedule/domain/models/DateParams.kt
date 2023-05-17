@@ -5,8 +5,8 @@ import kotlinx.parcelize.Parcelize
 import java.time.LocalDate
 
 /***
- * Class model for date
- * information about appointment
+ * Class model for
+ * information about date appointment
  * */
 
 @Parcelize

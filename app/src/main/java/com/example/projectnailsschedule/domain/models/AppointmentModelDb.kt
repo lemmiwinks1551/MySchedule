@@ -9,7 +9,7 @@ import java.time.LocalDate
 import java.time.LocalTime
 
 /***
- * Class model for getting and saving
+ * Class model for
  * information about appointment
  * */
 
