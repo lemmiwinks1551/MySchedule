@@ -1,15 +1,11 @@
 package com.example.projectnailsschedule.presentation.about
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.projectnailsschedule.BuildConfig
 
 class AboutViewModel : ViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "Скоро здесь будет много интересного!"
-    }
-    val text: LiveData<String> = _text
+    val text: String= "Версия ${BuildConfig.VERSION_NAME}"
 
     fun sendDevMail() {
         // TODO: not yet implemented 
