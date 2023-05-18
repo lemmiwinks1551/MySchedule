@@ -22,8 +22,4 @@ class SearchViewModel(
     fun getAllAppointments() : LiveData<List<AppointmentModelDb>>? {
         return scheduleDb?.getDao()?.selectAll()?.asLiveData()
     }
-
-    fun deleteAppointment(appointmentModelDb: AppointmentModelDb) {
-        deleteAppointmentUseCase.execute(appointmentModelDb)
-    }
 }

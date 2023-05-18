@@ -9,8 +9,6 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
@@ -20,7 +18,6 @@ import com.example.projectnailsschedule.domain.models.AppointmentModelDb
 import com.example.projectnailsschedule.domain.models.DateParams
 import com.example.projectnailsschedule.presentation.search.searchRecyclerVIew.SearchAdapter
 import com.example.projectnailsschedule.util.Util
-import java.time.LocalDate
 
 class SearchFragment : Fragment(), SearchAdapter.OnItemListener {
 
@@ -99,7 +96,6 @@ class SearchFragment : Fragment(), SearchAdapter.OnItemListener {
             appointmentCount = appointmentsList.size,
             searchFragment = this,
             appointmentsList = appointmentsList,
-            fragmentActivity = requireActivity(),
             searchViewModel = searchViewModel!!
         )
 

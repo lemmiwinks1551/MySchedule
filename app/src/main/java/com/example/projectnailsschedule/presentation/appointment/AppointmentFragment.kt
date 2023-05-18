@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -128,7 +129,12 @@ class AppointmentFragment : Fragment() {
             )
             appointmentViewModel?.createAppointment(appointmentModelDb)
 
-            Toast.makeText(context, toastCreated, Toast.LENGTH_LONG).show()
+            val toast: Toast = Toast.makeText(
+                context,
+                "${appointmentModelDb.date}\n${toastCreated}",
+                Toast.LENGTH_LONG
+            )
+            toast.show()
         }
 
         // Return to previous screen

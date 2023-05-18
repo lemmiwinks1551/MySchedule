@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.projectnailsschedule.data.repository.ScheduleRepositoryImpl
-import com.example.projectnailsschedule.domain.usecase.appointmentUC.EditAppointmentUseCase
+import com.example.projectnailsschedule.domain.usecase.appointmentUC.UpdateAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.SaveAppointmentUseCase
 
 class AppointmentViewModelFactory(context: Context?) : ViewModelProvider.Factory {
@@ -13,7 +13,7 @@ class AppointmentViewModelFactory(context: Context?) : ViewModelProvider.Factory
     private val saveAppointmentUseCase =
         SaveAppointmentUseCase(scheduleRepository = scheduleRepositoryImpl)
     private val editAppointmentUseCase =
-        EditAppointmentUseCase(scheduleRepository = scheduleRepositoryImpl)
+        UpdateAppointmentUseCase(scheduleRepository = scheduleRepositoryImpl)
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return AppointmentViewModel(

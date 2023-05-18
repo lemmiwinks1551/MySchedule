@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.presentation.calendar.CalendarFragment
 
-
 class CalendarViewHolder internal constructor(itemView: View, onItemListener: CalendarFragment) :
     RecyclerView.ViewHolder(itemView), View.OnClickListener {
 

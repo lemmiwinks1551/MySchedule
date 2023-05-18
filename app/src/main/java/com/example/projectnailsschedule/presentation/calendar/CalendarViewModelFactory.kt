@@ -7,8 +7,6 @@ import com.example.projectnailsschedule.data.repository.ScheduleRepositoryImpl
 import com.example.projectnailsschedule.domain.usecase.calendarUC.LoadShortDateUseCase
 import com.example.projectnailsschedule.domain.usecase.dateUC.GetDateAppointmentsUseCase
 
-/** Create Factory for Calendar Fragment with UseCases */
-
 class CalendarViewModelFactory(context: Context?) : ViewModelProvider.Factory {
 
     private val scheduleRepositoryImpl = ScheduleRepositoryImpl(context = context!!)
