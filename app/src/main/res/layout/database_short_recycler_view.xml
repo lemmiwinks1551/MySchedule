@@ -1,23 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_marginTop="2dp"
+    android:layout_marginBottom="2dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/recycler_view_background_pink">
+
     <TableRow>
 
         <TextView
             android:id="@+id/appointment_number"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.5"
+            android:layout_margin="4dp"
+            android:layout_weight="0.3"
             android:text="@string/number"
             android:textSize="16sp"
             android:textStyle="bold" />
 
         <TextView
-            android:textAlignment="textStart"
             android:id="@+id/appointment_start_short"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_margin="4dp"
             android:layout_weight="0.5"
             android:text="@string/time"
             android:textSize="16sp" />
@@ -26,6 +31,7 @@
             android:id="@+id/appointment_name_short"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_margin="4dp"
             android:layout_weight="1"
             android:text="@string/client"
             android:textSize="16sp" />
@@ -34,6 +40,7 @@
             android:id="@+id/appointment_procedure_short"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_margin="4dp"
             android:layout_weight="1"
             android:text="@string/procedure"
             android:textSize="16sp" />

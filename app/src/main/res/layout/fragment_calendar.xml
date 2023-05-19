@@ -178,10 +178,10 @@
         app:layout_constraintTop_toBottomOf="@id/week_days_constraint_layout" /> <!--Calendar-->
 
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_margin="8dp"
         android:id="@+id/shortDataRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_margin="8dp"
         android:fadeScrollbars="false"
         android:scrollbars="vertical"
         android:verticalScrollbarPosition="left"
@@ -204,10 +204,10 @@
         app:srcCompat="@android:drawable/ic_input_add" />
 
     <TableLayout
-        android:layout_margin="8dp"
         android:id="@+id/headers_short_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="8dp"
         app:layout_constraintBottom_toTopOf="@+id/shortDataRecyclerView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -217,38 +217,43 @@
 
             <TextView
                 android:id="@+id/appointment_number"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:layout_weight="0.3"
                 android:text="@string/number"
-                android:layout_weight="1"
                 android:textSize="16sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/appointment_start_short"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_margin="4dp"
+                android:layout_weight="0.5"
                 android:text="@string/time"
-                android:textSize="16sp"/>
+                android:textAlignment="textStart"
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/appointment_name_short"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_margin="4dp"
                 android:layout_weight="1"
                 android:text="@string/client"
-                android:textSize="16sp"/>
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/appointment_procedure_short"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_margin="4dp"
                 android:layout_weight="1"
                 android:text="@string/procedure"
-                android:textSize="16sp"/>
-
+                android:textSize="16sp" />
         </TableRow>
+
 
     </TableLayout> <!--ShortViewTable-->
 
