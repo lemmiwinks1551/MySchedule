@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:layout_marginTop="2dp"
     android:layout_marginBottom="2dp"
-    android:layout_height="wrap_content"
     android:background="@drawable/recycler_view_background_pink">
 
     <TableRow>
 
         <TextView
-            android:maxLines="1"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="4dp"
             android:id="@+id/appointment_number"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_margin="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
             android:layout_weight="0.3"
+            android:gravity="center_vertical"
             android:text="@string/number"
             android:textSize="16sp"
             android:textStyle="bold" />
@@ -27,27 +27,27 @@
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             android:layout_weight="0.5"
+            android:gravity="center_vertical"
             android:text="@string/time"
-            android:textSize="16sp"
-            android:maxLines="1"/>
+            android:textSize="16sp" />
 
         <TextView
-            android:maxLines="1"
             android:id="@+id/appointment_name_short"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             android:layout_weight="1"
+            android:gravity="center_vertical"
             android:text="@string/client"
             android:textSize="16sp" />
 
         <TextView
-            android:maxLines="1"
             android:id="@+id/appointment_procedure_short"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             android:layout_weight="1"
+            android:gravity="center_vertical"
             android:text="@string/procedure"
             android:textSize="16sp" />
     </TableRow>
