@@ -89,7 +89,7 @@ class MainActivity : AppCompatActivity() {
         // rateApp()
 
         // show banner
-        banner()
+        // banner()
     }
 
     private fun banner() {
