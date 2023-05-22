@@ -19,6 +19,8 @@ import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.ActivityMainBinding
 import com.example.projectnailsschedule.util.UncaughtExceptionHandler
 import com.google.android.material.navigation.NavigationView
+import com.my.target.ads.MyTargetView
+import com.my.target.common.MyTargetManager
 import ru.rustore.sdk.appupdate.manager.factory.RuStoreAppUpdateManagerFactory
 import ru.rustore.sdk.appupdate.model.AppUpdateInfo
 import ru.rustore.sdk.appupdate.model.AppUpdateOptions
@@ -38,6 +40,8 @@ class MainActivity : AppCompatActivity() {
 
     private var drawerLayout: DrawerLayout? = null
     private var navView: NavigationView? = null
+
+    private var adView: MyTargetView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -79,6 +83,18 @@ class MainActivity : AppCompatActivity() {
 
         // rate app
         // rateApp()
+    }
+
+    private fun banner() {
+        val bannerSlotId = 1284152
+        // Включение режима отладки
+        MyTargetManager.setDebugMode(true)
+
+        // Создаем экземпляр MyTargetView
+        adView = MyTargetView(this)
+
+        // Задаём id слота
+        adView!!.setSlotId(bannerSlotId)
     }
 
     private fun rateApp() {
