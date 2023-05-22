@@ -23,6 +23,9 @@ import ru.rustore.sdk.appupdate.manager.factory.RuStoreAppUpdateManagerFactory
 import ru.rustore.sdk.appupdate.model.AppUpdateInfo
 import ru.rustore.sdk.appupdate.model.AppUpdateOptions
 import ru.rustore.sdk.appupdate.model.InstallStatus
+import ru.rustore.sdk.core.tasks.OnCompleteListener
+import ru.vk.store.sdk.review.RuStoreReviewManagerFactory
+import ru.vk.store.sdk.review.model.ReviewInfo
 
 class MainActivity : AppCompatActivity() {
     private val log = this::class.simpleName
@@ -73,6 +76,34 @@ class MainActivity : AppCompatActivity() {
 
         // check for updates
         checkForUpdates()
+
+        // rate app
+        // rateApp()
+    }
+
+    private fun rateApp() {
+        // Для работы с оценками необходимо создать RuStoreReviewManager с помощью RuStoreReviewManagerFactory:
+        val manager = RuStoreReviewManagerFactory.create(this)
+
+        // Вызовите requestReviewFlow() заранее перед вызовом launchReviewFlow(reviewInfo),
+        // чтобы подготовить необходимую информацию для отображения экрана.
+        // ReviewInfo имеет свой срок жизни — около пяти минут.
+        manager.requestReviewFlow().addOnCompleteListener(object : OnCompleteListener<ReviewInfo> {
+            override fun onFailure(throwable: Throwable) {
+                // Handle error
+                // Если получен ответ onFailure, то не рекомендуем самостоятельно отображать ошибку пользователю,
+                // так как пользователь не запускал данный процесс.
+            }
+
+            override fun onSuccess(result: ReviewInfo) {
+                // Save reviewInfo
+                // Если получен ответ onSuccess, то необходимо локально сохранить ReviewInfo,
+                // для последующего вызова launchReviewFlow(reviewInfo).
+            }
+        })
+
+        // Для запуска формы запроса оценки и отзыва о приложении у пользователя вызовите метод launchReviewFlow(reviewInfo),
+        // используя ранее полученный ReviewInfo.
     }
 
     private fun checkForUpdates() {
