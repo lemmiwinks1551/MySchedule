@@ -20,9 +20,11 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.ActivityMainBinding
 import com.example.projectnailsschedule.util.UncaughtExceptionHandler
+import com.google.android.gms.ads.identifier.AdvertisingIdClient
 import com.google.android.material.navigation.NavigationView
 import com.my.target.ads.MyTargetView
 import com.my.target.ads.MyTargetView.MyTargetViewListener
+import com.my.target.common.MyTargetConfig
 import com.my.target.common.MyTargetManager
 import ru.rustore.sdk.appupdate.manager.factory.RuStoreAppUpdateManagerFactory
 import ru.rustore.sdk.appupdate.model.AppUpdateInfo
@@ -31,6 +33,7 @@ import ru.rustore.sdk.appupdate.model.InstallStatus
 import ru.rustore.sdk.core.tasks.OnCompleteListener
 import ru.vk.store.sdk.review.RuStoreReviewManagerFactory
 import ru.vk.store.sdk.review.model.ReviewInfo
+
 
 class MainActivity : AppCompatActivity() {
     private val log = this::class.simpleName
@@ -89,7 +92,11 @@ class MainActivity : AppCompatActivity() {
         // rateApp()
 
         // show banner
-        // banner()
+        Thread {
+            val id = AdvertisingIdClient.getAdvertisingIdInfo(this)
+            Log.e(log, id.toString())
+        }.start()
+        banner()
     }
 
     private fun banner() {
@@ -120,10 +127,16 @@ class MainActivity : AppCompatActivity() {
 
             override fun onNoAd(reason: String, myTargetView: MyTargetView) {
                 Log.e(log, "onNoAd")
+                val myTargetConfig = MyTargetConfig.Builder()
+                    .withTestDevices("adcdfa09-d8d3-47bc-b581-f88c8f7b5151")
+                    .build()
+                MyTargetManager.setSdkConfig(myTargetConfig)
             }
+
             override fun onShow(myTargetView: MyTargetView) {
                 Log.e(log, "onShow")
             }
+
             override fun onClick(myTargetView: MyTargetView) {
                 Log.e(log, "onClick")
             }
