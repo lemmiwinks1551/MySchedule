@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.ViewGroup
+import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.drawerlayout.widget.DrawerLayout
@@ -20,6 +22,7 @@ import com.example.projectnailsschedule.databinding.ActivityMainBinding
 import com.example.projectnailsschedule.util.UncaughtExceptionHandler
 import com.google.android.material.navigation.NavigationView
 import com.my.target.ads.MyTargetView
+import com.my.target.ads.MyTargetView.MyTargetViewListener
 import com.my.target.common.MyTargetManager
 import ru.rustore.sdk.appupdate.manager.factory.RuStoreAppUpdateManagerFactory
 import ru.rustore.sdk.appupdate.model.AppUpdateInfo
@@ -33,7 +36,7 @@ class MainActivity : AppCompatActivity() {
     private val log = this::class.simpleName
 
     private lateinit var appBarConfiguration: AppBarConfiguration
-    lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
     private val uncaughtExceptionHandler = UncaughtExceptionHandler()
     private var mainViewModel: MainViewModel? = null
@@ -46,6 +49,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
+
         // Set uncaught exception handler
         Thread.setDefaultUncaughtExceptionHandler(uncaughtExceptionHandler)
 
@@ -83,6 +87,9 @@ class MainActivity : AppCompatActivity() {
 
         // rate app
         // rateApp()
+
+        // show banner
+        banner()
     }
 
     private fun banner() {
@@ -95,6 +102,35 @@ class MainActivity : AppCompatActivity() {
 
         // Задаём id слота
         adView!!.setSlotId(bannerSlotId)
+
+        // Устанавливаем LayoutParams
+        val adViewLayoutParams = RelativeLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        adViewLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
+        adView!!.layoutParams = adViewLayoutParams
+
+        // Устанавливаем слушатель событий
+        adView!!.listener = object : MyTargetViewListener {
+            override fun onLoad(myTargetView: MyTargetView) {
+                // Данные успешно загружены, запускаем показ объявлений
+                binding.root.addView(adView)
+            }
+
+            override fun onNoAd(reason: String, myTargetView: MyTargetView) {
+                Log.e(log, "onNoAd")
+            }
+            override fun onShow(myTargetView: MyTargetView) {
+                Log.e(log, "onShow")
+            }
+            override fun onClick(myTargetView: MyTargetView) {
+                Log.e(log, "onClick")
+            }
+        }
+
+        // Запускаем загрузку данных
+        adView!!.load()
     }
 
     private fun rateApp() {
