@@ -20,12 +20,11 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.ActivityMainBinding
 import com.example.projectnailsschedule.util.UncaughtExceptionHandler
-import com.google.android.gms.ads.identifier.AdvertisingIdClient
 import com.google.android.material.navigation.NavigationView
+import com.my.target.ads.InterstitialAd
+import com.my.target.ads.InterstitialAd.InterstitialAdListener
 import com.my.target.ads.MyTargetView
 import com.my.target.ads.MyTargetView.MyTargetViewListener
-import com.my.target.common.MyTargetConfig
-import com.my.target.common.MyTargetManager
 import ru.rustore.sdk.appupdate.manager.factory.RuStoreAppUpdateManagerFactory
 import ru.rustore.sdk.appupdate.model.AppUpdateInfo
 import ru.rustore.sdk.appupdate.model.AppUpdateOptions
@@ -33,7 +32,6 @@ import ru.rustore.sdk.appupdate.model.InstallStatus
 import ru.rustore.sdk.core.tasks.OnCompleteListener
 import ru.vk.store.sdk.review.RuStoreReviewManagerFactory
 import ru.vk.store.sdk.review.model.ReviewInfo
-
 
 class MainActivity : AppCompatActivity() {
     private val log = this::class.simpleName
@@ -47,7 +45,12 @@ class MainActivity : AppCompatActivity() {
     private var drawerLayout: DrawerLayout? = null
     private var navView: NavigationView? = null
 
+    // Banner
     private var adView: MyTargetView? = null
+    private var adViewLayoutParams: RelativeLayout.LayoutParams? = null
+
+    // InterstitialAd
+    private var ad: InterstitialAd? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -90,53 +93,39 @@ class MainActivity : AppCompatActivity() {
 
         // rate app
         // rateApp()
-
-        // show banner
-        Thread {
-            val id = AdvertisingIdClient.getAdvertisingIdInfo(this)
-            Log.e(log, id.toString())
-        }.start()
-        banner()
     }
 
     private fun banner() {
-        val bannerSlotId = 1284152
+        val slotId = 1284152
         // Включение режима отладки
-        MyTargetManager.setDebugMode(true)
+        // MyTargetManager.setDebugMode(true)
 
         // Создаем экземпляр MyTargetView
         adView = MyTargetView(this)
 
         // Задаём id слота
-        adView!!.setSlotId(bannerSlotId)
+        adView!!.setSlotId(slotId)
 
         // Устанавливаем LayoutParams
-        val adViewLayoutParams = RelativeLayout.LayoutParams(
+        adViewLayoutParams = RelativeLayout.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
-        adViewLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
         adView!!.layoutParams = adViewLayoutParams
 
         // Устанавливаем слушатель событий
         adView!!.listener = object : MyTargetViewListener {
             override fun onLoad(myTargetView: MyTargetView) {
                 // Данные успешно загружены, запускаем показ объявлений
+                Log.e(log, "onLoad")
                 binding.root.addView(adView)
             }
-
             override fun onNoAd(reason: String, myTargetView: MyTargetView) {
                 Log.e(log, "onNoAd")
-                val myTargetConfig = MyTargetConfig.Builder()
-                    .withTestDevices("adcdfa09-d8d3-47bc-b581-f88c8f7b5151")
-                    .build()
-                MyTargetManager.setSdkConfig(myTargetConfig)
             }
-
             override fun onShow(myTargetView: MyTargetView) {
                 Log.e(log, "onShow")
             }
-
             override fun onClick(myTargetView: MyTargetView) {
                 Log.e(log, "onClick")
             }
@@ -144,6 +133,31 @@ class MainActivity : AppCompatActivity() {
 
         // Запускаем загрузку данных
         adView!!.load()
+    }
+
+    private fun interstitialAd() {
+        val slotId = 1285135
+
+        // Создаем экземпляр InterstitialAd
+        ad = InterstitialAd(slotId, this)
+
+        // Устанавливаем слушатель событий
+        ad!!.setListener(object : InterstitialAdListener {
+            override fun onLoad(ad: InterstitialAd) {
+                // Запускаем показ в отдельном Activity
+                ad.show()
+            }
+            override fun onNoAd(reason: String, ad: InterstitialAd) {
+                Log.e(log, "onNoAd")
+            }
+            override fun onClick(ad: InterstitialAd) {}
+            override fun onDisplay(ad: InterstitialAd) {}
+            override fun onDismiss(ad: InterstitialAd) {}
+            override fun onVideoCompleted(ad: InterstitialAd) {}
+        })
+
+        // Запускаем загрузку данных
+        ad!!.load()
     }
 
     private fun rateApp() {
@@ -211,6 +225,12 @@ class MainActivity : AppCompatActivity() {
         drawerLayout = binding.drawerLayout
         navView = binding.navView
         navController = findNavController(R.id.nav_host_fragment_content_main)
+
+        // show banner
+        // banner()
+
+        // show banner
+        interstitialAd()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -253,5 +273,13 @@ class MainActivity : AppCompatActivity() {
             R.id.search -> navController.navigate(R.id.nav_search)
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (adView != null) {
+            adView!!.destroy()
+            super.onDestroy()
+        }
     }
 }
