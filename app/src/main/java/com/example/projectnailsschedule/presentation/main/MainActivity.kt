@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
     private var adViewLayoutParams: RelativeLayout.LayoutParams? = null
 
     // InterstitialAd
-    private var ad: InterstitialAd? = null
+    private var interstitialAd: InterstitialAd? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -139,10 +139,10 @@ class MainActivity : AppCompatActivity() {
         val slotId = 1285135
 
         // Создаем экземпляр InterstitialAd
-        ad = InterstitialAd(slotId, this)
+        interstitialAd = InterstitialAd(slotId, this)
 
         // Устанавливаем слушатель событий
-        ad!!.setListener(object : InterstitialAdListener {
+        interstitialAd!!.setListener(object : InterstitialAdListener {
             override fun onLoad(ad: InterstitialAd) {
                 // Запускаем показ в отдельном Activity
                 ad.show()
@@ -157,7 +157,7 @@ class MainActivity : AppCompatActivity() {
         })
 
         // Запускаем загрузку данных
-        ad!!.load()
+        interstitialAd!!.load()
     }
 
     private fun rateApp() {
@@ -226,10 +226,7 @@ class MainActivity : AppCompatActivity() {
         navView = binding.navView
         navController = findNavController(R.id.nav_host_fragment_content_main)
 
-        // show banner
-        // banner()
-
-        // show banner
+        // show advertising
         interstitialAd()
     }
 
