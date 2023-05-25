@@ -31,7 +31,7 @@ class CalendarViewModel(
         return loadShortDateUseCase.execute(dateParams)
     }
 
-    fun getDateAppointmentCount() {
+    private fun getDateAppointmentCount() {
         // get appointments count form selectedDate
         selectedDate.value?.appointmentCount =
             getDateAppointmentsUseCase.execute(selectedDate.value!!).size

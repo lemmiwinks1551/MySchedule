@@ -13,8 +13,6 @@ class SearchViewModelFactory(context: Context?) : ViewModelProvider.Factory {
         DeleteAppointmentUseCase(scheduleRepository = scheduleRepositoryImpl)
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return SearchViewModel(
-            deleteAppointmentUseCase = deleteAppointmentUseCase
-        ) as T
+        return SearchViewModel() as T
     }
 }

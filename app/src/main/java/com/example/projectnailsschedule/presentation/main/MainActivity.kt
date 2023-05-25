@@ -2,11 +2,8 @@ package com.example.projectnailsschedule.presentation.main
 
 import android.content.res.Configuration
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.ViewGroup
-import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.drawerlayout.widget.DrawerLayout
@@ -20,18 +17,10 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.ActivityMainBinding
 import com.example.projectnailsschedule.util.UncaughtExceptionHandler
+import com.example.projectnailsschedule.util.rustore.RuStoreAd
+import com.example.projectnailsschedule.util.rustore.RuStoreReview
+import com.example.projectnailsschedule.util.rustore.RuStoreUpdate
 import com.google.android.material.navigation.NavigationView
-import com.my.target.ads.InterstitialAd
-import com.my.target.ads.InterstitialAd.InterstitialAdListener
-import com.my.target.ads.MyTargetView
-import com.my.target.ads.MyTargetView.MyTargetViewListener
-import ru.rustore.sdk.appupdate.manager.factory.RuStoreAppUpdateManagerFactory
-import ru.rustore.sdk.appupdate.model.AppUpdateInfo
-import ru.rustore.sdk.appupdate.model.AppUpdateOptions
-import ru.rustore.sdk.appupdate.model.InstallStatus
-import ru.rustore.sdk.core.tasks.OnCompleteListener
-import ru.vk.store.sdk.review.RuStoreReviewManagerFactory
-import ru.vk.store.sdk.review.model.ReviewInfo
 
 class MainActivity : AppCompatActivity() {
     private val log = this::class.simpleName
@@ -44,13 +33,6 @@ class MainActivity : AppCompatActivity() {
 
     private var drawerLayout: DrawerLayout? = null
     private var navView: NavigationView? = null
-
-    // Banner
-    private var adView: MyTargetView? = null
-    private var adViewLayoutParams: RelativeLayout.LayoutParams? = null
-
-    // InterstitialAd
-    private var interstitialAd: InterstitialAd? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -72,6 +54,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
+
         // init all widgets
         initWidgets()
 
@@ -89,145 +72,19 @@ class MainActivity : AppCompatActivity() {
         navView?.setupWithNavController(navController)
 
         // check for updates
-        checkForUpdates()
+        RuStoreUpdate(this).checkForUpdates()
 
-        // rate app
-        // rateApp()
-    }
+        // start advertising
+        RuStoreAd(this, binding).interstitialAd()
 
-    private fun banner() {
-        val slotId = 1284152
-        // Включение режима отладки
-        // MyTargetManager.setDebugMode(true)
-
-        // Создаем экземпляр MyTargetView
-        adView = MyTargetView(this)
-
-        // Задаём id слота
-        adView!!.setSlotId(slotId)
-
-        // Устанавливаем LayoutParams
-        adViewLayoutParams = RelativeLayout.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        )
-        adView!!.layoutParams = adViewLayoutParams
-
-        // Устанавливаем слушатель событий
-        adView!!.listener = object : MyTargetViewListener {
-            override fun onLoad(myTargetView: MyTargetView) {
-                // Данные успешно загружены, запускаем показ объявлений
-                Log.e(log, "onLoad")
-                binding.root.addView(adView)
-            }
-            override fun onNoAd(reason: String, myTargetView: MyTargetView) {
-                Log.e(log, "onNoAd")
-            }
-            override fun onShow(myTargetView: MyTargetView) {
-                Log.e(log, "onShow")
-            }
-            override fun onClick(myTargetView: MyTargetView) {
-                Log.e(log, "onClick")
-            }
-        }
-
-        // Запускаем загрузку данных
-        adView!!.load()
-    }
-
-    private fun interstitialAd() {
-        val slotId = 1285135
-
-        // Создаем экземпляр InterstitialAd
-        interstitialAd = InterstitialAd(slotId, this)
-
-        // Устанавливаем слушатель событий
-        interstitialAd!!.setListener(object : InterstitialAdListener {
-            override fun onLoad(ad: InterstitialAd) {
-                // Запускаем показ в отдельном Activity
-                ad.show()
-            }
-            override fun onNoAd(reason: String, ad: InterstitialAd) {
-                Log.e(log, "onNoAd")
-            }
-            override fun onClick(ad: InterstitialAd) {}
-            override fun onDisplay(ad: InterstitialAd) {}
-            override fun onDismiss(ad: InterstitialAd) {}
-            override fun onVideoCompleted(ad: InterstitialAd) {}
-        })
-
-        // Запускаем загрузку данных
-        interstitialAd!!.load()
-    }
-
-    private fun rateApp() {
-        // Для работы с оценками необходимо создать RuStoreReviewManager с помощью RuStoreReviewManagerFactory:
-        val manager = RuStoreReviewManagerFactory.create(this)
-
-        // Вызовите requestReviewFlow() заранее перед вызовом launchReviewFlow(reviewInfo),
-        // чтобы подготовить необходимую информацию для отображения экрана.
-        // ReviewInfo имеет свой срок жизни — около пяти минут.
-        manager.requestReviewFlow().addOnCompleteListener(object : OnCompleteListener<ReviewInfo> {
-            override fun onFailure(throwable: Throwable) {
-                // Handle error
-                // Если получен ответ onFailure, то не рекомендуем самостоятельно отображать ошибку пользователю,
-                // так как пользователь не запускал данный процесс.
-            }
-
-            override fun onSuccess(result: ReviewInfo) {
-                // Save reviewInfo
-                // Если получен ответ onSuccess, то необходимо локально сохранить ReviewInfo,
-                // для последующего вызова launchReviewFlow(reviewInfo).
-            }
-        })
-
-        // Для запуска формы запроса оценки и отзыва о приложении у пользователя вызовите метод launchReviewFlow(reviewInfo),
-        // используя ранее полученный ReviewInfo.
-    }
-
-    private fun checkForUpdates() {
-        val updateManager = RuStoreAppUpdateManagerFactory.create(context = this)
-
-        var appUpdateInfo: AppUpdateInfo? = null
-
-        updateManager
-            .getAppUpdateInfo()
-            .addOnSuccessListener { info ->
-                appUpdateInfo = info
-                Log.e("checkUpdate", appUpdateInfo!!.updateAvailability.toString())
-                updateManager
-                    .startUpdateFlow(appUpdateInfo!!, AppUpdateOptions.Builder().build())
-                    .addOnSuccessListener { resultCode ->
-                        Log.e("checkUpdate", resultCode.toString())
-                    }
-                    .addOnFailureListener { throwable ->
-                        Log.e("checkUpdate", throwable.toString())
-                    }
-            }
-            .addOnFailureListener { throwable ->
-                Log.e("checkUpdate", throwable.message!!)
-            }
-
-        updateManager.registerListener { state ->
-            if (state.installStatus == InstallStatus.DOWNLOADED) {
-                // Update is ready to install
-                Log.e("checkUpdate", "Update is ready to install")
-                updateManager
-                    .completeUpdate()
-                    .addOnFailureListener { throwable ->
-                        Log.e("checkUpdate", throwable.message!!)
-                    }
-            }
-        }
+        // request user's review
+        RuStoreReview(this).rateApp()
     }
 
     private fun initWidgets() {
         drawerLayout = binding.drawerLayout
         navView = binding.navView
         navController = findNavController(R.id.nav_host_fragment_content_main)
-
-        // show advertising
-        interstitialAd()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -274,9 +131,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        if (adView != null) {
-            adView!!.destroy()
-            super.onDestroy()
-        }
+        RuStoreAd(this, binding).destroyAd()
     }
 }

@@ -2,11 +2,15 @@ package com.example.projectnailsschedule.data.repository
 
 import android.content.Context
 import android.util.Log
+import androidx.lifecycle.asLiveData
 import com.example.projectnailsschedule.data.storage.ScheduleDb
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
 import com.example.projectnailsschedule.domain.models.DateParams
 import com.example.projectnailsschedule.domain.repository.ScheduleRepository
 import com.example.projectnailsschedule.util.Util
+import kotlinx.coroutines.flow.flatMapConcat
+import kotlinx.coroutines.flow.toCollection
+import kotlinx.coroutines.flow.toList
 
 class ScheduleRepositoryImpl(context: Context) : ScheduleRepository {
     private var dbRoom = ScheduleDb.getDb(context)
@@ -46,7 +50,7 @@ class ScheduleRepositoryImpl(context: Context) : ScheduleRepository {
             Log.e(log, "$dateParams")
         }
         thread.start()
-        thread.join() // wait for
+        thread.join()
 
         return arrayOfAppointmentModelDbs
     }
@@ -58,5 +62,16 @@ class ScheduleRepositoryImpl(context: Context) : ScheduleRepository {
         thread.start()
         thread.join()
         Log.e(log, "$appointmentModelDb deleted")
+    }
+
+    override fun getAllAppointments(): List<AppointmentModelDb> {
+        var arrayOfAppointmentModelDbs = listOf<AppointmentModelDb>()
+        val thread = Thread {
+            arrayOfAppointmentModelDbs = dbRoom.getDao().selectAllList()
+        }
+        thread.start()
+        thread.join()
+
+        return arrayOfAppointmentModelDbs
     }
 }

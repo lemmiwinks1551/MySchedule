@@ -6,11 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import com.example.projectnailsschedule.data.storage.ScheduleDb
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
-import com.example.projectnailsschedule.domain.usecase.dateUC.DeleteAppointmentUseCase
 
-class SearchViewModel(
-    private var deleteAppointmentUseCase: DeleteAppointmentUseCase
-) : ViewModel() {
+class SearchViewModel : ViewModel() {
 
     var scheduleDb: ScheduleDb? = null
     val appointmentCount: MutableLiveData<Int> = MutableLiveData()

@@ -12,6 +12,9 @@ interface ScheduleDao {
     @Query("SELECT * FROM schedule")
     fun selectAll(): Flow<List<AppointmentModelDb>>
 
+    @Query("SELECT * FROM schedule")
+    fun selectAllList(): List<AppointmentModelDb>
+
     @Update
     fun update(appointmentModelDb: AppointmentModelDb)
 

@@ -12,4 +12,6 @@ interface ScheduleRepository {
     fun getDateAppointments(dateParams: DateParams) : Array<AppointmentModelDb>
 
     fun deleteAppointment(appointmentModelDb: AppointmentModelDb)
+
+    fun getAllAppointments(): List<AppointmentModelDb>
 }
