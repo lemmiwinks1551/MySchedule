@@ -2,6 +2,8 @@ package com.example.projectnailsschedule.presentation.main
 
 import android.content.res.Configuration
 import android.os.Bundle
+import android.provider.Settings
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -16,11 +18,14 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.ActivityMainBinding
+import com.example.projectnailsschedule.domain.models.FirebaseModel
 import com.example.projectnailsschedule.util.UncaughtExceptionHandler
 import com.example.projectnailsschedule.util.rustore.RuStoreAd
 import com.example.projectnailsschedule.util.rustore.RuStoreReview
 import com.example.projectnailsschedule.util.rustore.RuStoreUpdate
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 
 class MainActivity : AppCompatActivity() {
     private val log = this::class.simpleName
@@ -79,6 +84,16 @@ class MainActivity : AppCompatActivity() {
 
         // request user's review
         RuStoreReview(this).rateApp()
+
+        // insert metrics
+        try {
+            Thread{
+                insertMetrics("start app")
+            }.start()
+        } catch (e: Exception) {
+            Log.e(log, e.message.toString())
+        }
+
     }
 
     private fun initWidgets() {
@@ -130,7 +145,20 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         RuStoreAd(this, binding).destroyAd()
+        super.onDestroy()
+    }
+
+    private fun insertMetrics(event: String) {
+        val key = "scheduleDbMetrics"
+        val firebaseRef: DatabaseReference = FirebaseDatabase.getInstance().getReference(key)
+
+        val id = firebaseRef.key
+        val userId = Settings.Secure.getString(this.contentResolver, Settings.Secure.ANDROID_ID)
+
+        val firebaseModel = FirebaseModel(id, userId, event)
+        firebaseRef.push().setValue(firebaseModel)
+
+        Log.e(log, "$firebaseModel inserted")
     }
 }
