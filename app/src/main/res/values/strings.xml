@@ -17,10 +17,11 @@
     <string name="procedure">Услуга</string>
     <string name="client">Клиент</string>
     <string name="phone">Телефон</string>
-    <string name="misc">Заметки</string>
+    <string name="notes">Заметки</string>
     <string name="button_edit">Редактировать</string>
     <string name="button_delete">Удалить</string>
     <string name="add_appointment_title">Запись</string>
+    <string name="add_client_title">Клиент</string>
     <string name="day">День</string>
     <string name="example_date">01.01.2022</string>
     <string name="example_time">09:00</string>

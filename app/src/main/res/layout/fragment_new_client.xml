@@ -7,23 +7,23 @@
     android:layout_height="fill_parent"
     android:fadeScrollbars="false"
     android:focusableInTouchMode="true"
-    tools:context=".presentation.appointment.AppointmentFragment">
+    tools:context=".presentation.clients.ClientsFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/fragment_add_row"
+        android:id="@+id/client_status"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:clickable="true"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        tools:context=".presentation.appointment.AppointmentFragment">
+        tools:context=".presentation.clients.ClientsFragment">
 
         <TextView
             android:id="@+id/fragment_appointment_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/add_appointment_title"
+            android:text="@string/add_client_title"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -33,7 +33,7 @@
             android:id="@+id/fragment_appointment_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/example_date"
+            android:text="Добавление/изменение клиента в базе"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/fragment_appointment_title" />
@@ -48,48 +48,17 @@
             app:layout_constraintTop_toBottomOf="@id/fragment_appointment_date">
 
             <TextView
-                android:id="@+id/appointment_date"
+                android:id="@+id/client_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
-                android:text="@string/day"
+                android:text="@string/name"
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/database_appointment_start"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:text="@string/time"
-                android:textSize="20sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/appointment_date" />
-
-            <TextView
-                android:id="@+id/database_appointment_procedure"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-                android:padding="8dp"
-                android:text="@string/procedure"
-                android:textSize="20sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/database_appointment_start" />
-
-            <TextView
-                android:id="@+id/client_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:text="@string/client"
-                android:textSize="20sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/database_appointment_procedure" />
-
-            <TextView
-                android:id="@+id/appointment_phone"
+                android:id="@+id/client_phone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
@@ -99,14 +68,14 @@
                 app:layout_constraintTop_toBottomOf="@id/client_name" />
 
             <TextView
-                android:id="@+id/appointment_misc"
+                android:id="@+id/client_notes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
                 android:text="@string/notes"
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/appointment_phone" />
+                app:layout_constraintTop_toBottomOf="@id/client_phone" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -119,51 +88,8 @@
             app:layout_constraintStart_toEndOf="@id/left_constraint_layout"
             app:layout_constraintTop_toBottomOf="@id/fragment_appointment_date">
 
-            <TextView
-                android:id="@+id/day_edit_text"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:gravity="start"
-                android:hint="@string/example_date"
-                android:padding="8dp"
-                android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/time_edit_text"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:gravity="start"
-                android:hint="@string/example_time"
-                android:padding="8dp"
-                android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/day_edit_text" />
-
             <EditText
-                android:id="@+id/procedure_edit_text"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:autofillHints=""
-                android:background="@null"
-                android:gravity="start"
-                android:hint="@string/example_procedure"
-                android:imeOptions="actionDone"
-                android:inputType="textCapSentences"
-                android:maxLength="15"
-                android:maxLines="1"
-                android:padding="8dp"
-                android:singleLine="true"
-                android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/time_edit_text" />
-
-            <EditText
-                android:id="@+id/name_edit_text"
+                android:id="@+id/client_name_edit_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="@null"
@@ -177,11 +103,10 @@
                 android:singleLine="true"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/procedure_edit_text" />
+                app:layout_constraintStart_toStartOf="parent" />
 
             <EditText
-                android:id="@+id/phone_edit_text"
+                android:id="@+id/client_phone_edit_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:autofillHints="phone"
@@ -196,10 +121,10 @@
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/name_edit_text" />
+                app:layout_constraintTop_toBottomOf="@id/client_name_edit_text" />
 
             <EditText
-                android:id="@+id/notes_edit_text"
+                android:id="@+id/client_notes_edit_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:autofillHints="password"
@@ -217,10 +142,9 @@
                 android:shadowColor="@color/black"
                 android:singleLine="true"
                 android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/phone_edit_text" />
+                app:layout_constraintTop_toBottomOf="@id/client_phone_edit_text" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
