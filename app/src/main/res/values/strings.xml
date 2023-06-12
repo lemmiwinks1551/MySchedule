@@ -44,7 +44,8 @@
     <string name="sat">Сб</string>
     <string name="sun">Вс</string>
 
-    <string name="search_hint">Поиск по Расписанию</string>
+    <string name="appointments_search_hint">Поиск по Расписанию</string>
+    <string name="clients_search_hint">Поиск по Клиентам</string>
     <string name="search_client">Поиск</string>
     <string name="name">Имя</string>
     <string name="date">Дата</string>

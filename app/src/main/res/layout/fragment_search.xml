@@ -18,7 +18,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:queryHint="@string/search_hint"
+        app:queryHint="@string/appointments_search_hint"
         app:searchIcon="@android:drawable/ic_menu_search" />
 
     <TextView
