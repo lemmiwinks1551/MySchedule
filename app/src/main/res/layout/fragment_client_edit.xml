@@ -7,7 +7,7 @@
     android:layout_height="fill_parent"
     android:fadeScrollbars="false"
     android:focusableInTouchMode="true"
-    tools:context=".presentation.clients.ClientsFragment">
+    tools:context=".presentation.editClient.ClientEditFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/client_status"
@@ -17,7 +17,7 @@
         android:clickable="true"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        tools:context=".presentation.clients.ClientsFragment">
+        tools:context=".presentation.editClient.ClientEditFragment">
 
         <TextView
             android:id="@+id/fragment_appointment_title"
@@ -103,7 +103,8 @@
                 android:singleLine="true"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
 
             <EditText
                 android:id="@+id/client_phone_edit_text"
