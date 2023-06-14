@@ -70,14 +70,14 @@ class ClientEditFragment : Fragment() {
 
             val toast: Toast = Toast.makeText(
                 context,
-                "${clientModelDb.name}\n${"создан."}",
+                "Клиент ${clientModelDb.name}\n${"создан."}",
                 Toast.LENGTH_LONG
             )
             toast.show()
-        }
 
-        // Return to previous screen
-        findNavController().popBackStack()
+            // Return to previous screen
+            findNavController().popBackStack()
+        }
 
         cancelButton?.setOnClickListener {
             // Return to previous screen
