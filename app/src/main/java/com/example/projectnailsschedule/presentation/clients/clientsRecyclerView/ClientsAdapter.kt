@@ -34,6 +34,8 @@ class ClientsAdapter(
     }
 
     override fun onBindViewHolder(holder: ClientsViewHolder, position: Int) {
-        TODO("Not yet implemented")
+        holder.name.text = clientsList[position].name.toString()
+        holder.phone.text = clientsList[position].phone.toString()
+        holder.notes.text = clientsList[position].notes.toString()
     }
 }

@@ -68,7 +68,7 @@ class AppointmentFragment : Fragment() {
 
     private fun setClickListeners() {
         // Set ClickListener on save_changes_button
-        binding.saveChangesButton.setOnClickListener {
+        binding.saveButton.setOnClickListener {
             if (appointmentParams?._id == null) {
                 // no _id - add new Appointment
                 createAppointment()

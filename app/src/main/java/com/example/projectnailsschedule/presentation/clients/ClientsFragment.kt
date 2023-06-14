@@ -7,8 +7,12 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.projectnailsschedule.R
+import com.example.projectnailsschedule.data.storage.ClientsDb
+import com.example.projectnailsschedule.data.storage.ScheduleDb
 import com.example.projectnailsschedule.databinding.FragmentClientsBinding
 import com.example.projectnailsschedule.domain.models.ClientModelDb
 import com.example.projectnailsschedule.presentation.clients.clientsRecyclerView.ClientsAdapter
@@ -54,6 +58,7 @@ class ClientsFragment : Fragment() {
     }
 
     private fun initClickListeners() {
+        // search panel listener
         clientsSearchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
             android.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -69,6 +74,13 @@ class ClientsFragment : Fragment() {
                 return false
             }
         })
+
+        // add new client
+        binding.addButton.setOnClickListener {
+            binding.addButton.findNavController().navigate(
+                R.id.action_nav_clients_to_nav_client_edit_fragment
+            )
+        }
     }
 
     private fun inflateClientsRecyclerView(clientsList: List<ClientModelDb>) {
