@@ -46,7 +46,6 @@ class SearchFragment : Fragment(), SearchAdapter.OnItemListener {
     ): View {
 
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
-        searchViewModel?.scheduleDb = ScheduleDb.getDb(requireContext())
 
         // init widgets
         initWidgets()
@@ -82,7 +81,7 @@ class SearchFragment : Fragment(), SearchAdapter.OnItemListener {
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 val searchQuery = "%$newText%"
-                searchViewModel!!.searchDatabase(searchQuery)?.observe(viewLifecycleOwner) { list ->
+                searchViewModel!!.searchDatabase(searchQuery).observe(viewLifecycleOwner) { list ->
                     inflateSearchRecyclerVIew(list)
                 }
                 return false

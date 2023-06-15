@@ -6,22 +6,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.projectnailsschedule.databinding.FragmentClientEditBinding
 import com.example.projectnailsschedule.domain.models.ClientModelDb
-import com.example.projectnailsschedule.presentation.clients.ClientsViewModel
-import com.example.projectnailsschedule.presentation.clients.clientsRecyclerView.ClientsViewModelFactory
 
 class ClientEditFragment : Fragment() {
 
     private var _binding: FragmentClientEditBinding? = null
     private val binding get() = _binding!!
 
-    private var clintEditViewModel: ClientEditViewModel? = null
+    private var clientEditViewModel: ClientEditViewModel? = null
 
     private var nameEditText: EditText? = null
     private var phoneEditText: EditText? = null
@@ -35,7 +32,7 @@ class ClientEditFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        clintEditViewModel = ViewModelProvider(
+        clientEditViewModel = ViewModelProvider(
             this,
             ClientEditViewModelFactory(context)
         )[ClientEditViewModel::class.java]
@@ -66,7 +63,7 @@ class ClientEditFragment : Fragment() {
                 phone = phoneEditText?.text.toString(),
                 notes = notesTEditText?.text.toString()
             )
-            clintEditViewModel?.saveClient(clientModelDb)
+            clientEditViewModel?.saveClient(clientModelDb)
 
             val toast: Toast = Toast.makeText(
                 context,

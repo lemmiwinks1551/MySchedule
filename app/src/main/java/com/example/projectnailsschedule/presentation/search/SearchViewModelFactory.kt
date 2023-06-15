@@ -6,13 +6,13 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.projectnailsschedule.data.repository.ScheduleRepositoryImpl
 import com.example.projectnailsschedule.domain.usecase.dateUC.DeleteAppointmentUseCase
 
-class SearchViewModelFactory(context: Context?) : ViewModelProvider.Factory {
+class SearchViewModelFactory(private val context: Context?) : ViewModelProvider.Factory {
     private val scheduleRepositoryImpl = ScheduleRepositoryImpl(context = context!!)
 
     private var deleteAppointmentUseCase =
         DeleteAppointmentUseCase(scheduleRepository = scheduleRepositoryImpl)
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return SearchViewModel() as T
+        return SearchViewModel(context = context!!) as T
     }
 }

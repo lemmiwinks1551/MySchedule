@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -28,6 +29,7 @@ class ClientsFragment : Fragment() {
     private var clientsSearchView: SearchView? = null
     private var searchClientsRecyclerView: RecyclerView? = null
     private var addButton: FloatingActionButton? = null
+    private var clientsCountTextView :TextView? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,6 +47,9 @@ class ClientsFragment : Fragment() {
         // init widgets
         initWidgets()
 
+        // init observers\
+        initObservers()
+
         // initClickListeners
         initClickListeners()
 
@@ -55,6 +60,13 @@ class ClientsFragment : Fragment() {
         clientsSearchView = binding.clientsSearchView
         searchClientsRecyclerView = binding.clientsRecyclerView
         addButton = binding.addButton
+        clientsCountTextView = binding.clientsCountTextView
+    }
+
+    private fun initObservers() {
+        clientsViewModel!!.clientsCount.observe(viewLifecycleOwner) {
+            clientsCountTextView?.text = getString(R.string.appointments_count, it)
+        }
     }
 
     private fun initClickListeners() {
