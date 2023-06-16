@@ -31,7 +31,7 @@ class ClientsFragment : Fragment() {
     private var clientsSearchView: SearchView? = null
     private var searchClientsRV: RecyclerView? = null
     private var addButton: FloatingActionButton? = null
-    private var clientsCountTextView :TextView? = null
+    private var clientsCountTextView: TextView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,7 +73,6 @@ class ClientsFragment : Fragment() {
     }
 
     private fun initObservers() {
-
     }
 
     private fun initClickListeners() {
@@ -119,7 +118,7 @@ class ClientsFragment : Fragment() {
     }
 
     private fun swipeToDelete() {
-        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT){
+        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
             override fun onMove(
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder,
@@ -142,20 +141,23 @@ class ClientsFragment : Fragment() {
                 clientsRVAdapter?.notifyItemRemoved(position)
 
                 // display Snackbar
-                Snackbar.make(searchClientsRV!!, "Deleted " + deleteClientModelDb.name, Snackbar.LENGTH_LONG)
+                Snackbar.make(
+                    searchClientsRV!!,
+                    "Deleted " + deleteClientModelDb.name,
+                    Snackbar.LENGTH_LONG
+                )
                     .setAction(
-                        "Undo",
-                        View.OnClickListener {
-                            // adding on click listener to our action of snack bar.
-                            // below line is to add our item to array list with a position.
-                            clientsViewModel?.saveClient(deleteClientModelDb)
+                        "Undo"
+                    ) {
+                        // adding on click listener to our action of snack bar.
+                        // below line is to add our item to array list with a position.
+                        clientsViewModel?.saveClient(deleteClientModelDb)
 
-                            // below line is to notify item is
-                            // added to our adapter class.
+                        // below line is to notify item is
+                        // added to our adapter class.
 
-                            // clear search bar
-                            clientsRVAdapter?.notifyDataSetChanged()
-                        }).show()
+                        clientsRVAdapter?.notifyDataSetChanged()
+                    }.show()
             }
         }).attachToRecyclerView(searchClientsRV)
     }

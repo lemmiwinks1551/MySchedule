@@ -15,8 +15,6 @@ class ClientsViewModel(
     private val saveClientUseCase: SaveClientUseCase
 ) : ViewModel() {
 
-    val clientsCount: MutableLiveData<Int> = MutableLiveData()
-
     fun searchDatabase(searchQuery: String): LiveData<List<ClientModelDb>> {
         return searchClientUseCase.execute(searchQuery)
     }
