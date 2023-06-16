@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -20,6 +21,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 
 class ClientsFragment : Fragment() {
+    val log = this::class.simpleName
 
     private var _binding: FragmentClientsBinding? = null
     private val binding get() = _binding!!
@@ -100,13 +102,14 @@ class ClientsFragment : Fragment() {
                 R.id.action_nav_clients_to_nav_client_edit_fragment
             )
         }
+
+
     }
 
     private fun inflateClientsRecyclerView(clientsList: List<ClientModelDb>) {
         // create adapter
         clientsRVAdapter = ClientsAdapter(
             clientsCount = clientsList.size,
-            clientsFragment = this,
             clientsList = clientsList
         )
 
@@ -115,6 +118,17 @@ class ClientsFragment : Fragment() {
 
         searchClientsRV?.layoutManager = layoutManager
         searchClientsRV?.adapter = clientsRVAdapter
+
+        // set clickListener on clientsRV
+        clientsRVAdapter?.setOnItemClickListener(object : ClientsAdapter.OnItemClickListener {
+            override fun onItemClick(position: Int) {
+                Toast.makeText(
+                    requireContext(),
+                    clientsList?.get(position)?.name.toString(),
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        })
     }
 
     private fun swipeToDelete() {

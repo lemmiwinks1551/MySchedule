@@ -135,5 +135,4 @@ class DateAdapter(
     interface OnItemListener {
         fun onItemClick(position: Int)
     }
-
 }
