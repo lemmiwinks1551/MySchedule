@@ -15,10 +15,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentClientsBinding
 import com.example.projectnailsschedule.domain.models.ClientModelDb
-import com.example.projectnailsschedule.presentation.appointment.AppointmentViewModel
-import com.example.projectnailsschedule.presentation.appointment.AppointmentViewModelFactory
 import com.example.projectnailsschedule.presentation.clients.clientsRecyclerView.ClientsAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 
 class ClientsFragment : Fragment() {
 
@@ -27,10 +26,10 @@ class ClientsFragment : Fragment() {
     private var clientsViewModel: ClientsViewModel? = null
 
     private var clientsList: List<ClientModelDb>? = null
-    private var clientsAdapter: ClientsAdapter? = null
+    private var clientsRVAdapter: ClientsAdapter? = null
 
     private var clientsSearchView: SearchView? = null
-    private var searchClientsRecyclerView: RecyclerView? = null
+    private var searchClientsRV: RecyclerView? = null
     private var addButton: FloatingActionButton? = null
     private var clientsCountTextView :TextView? = null
 
@@ -68,7 +67,7 @@ class ClientsFragment : Fragment() {
 
     private fun initWidgets() {
         clientsSearchView = binding.clientsSearchView
-        searchClientsRecyclerView = binding.clientsRecyclerView
+        searchClientsRV = binding.clientsRecyclerView
         addButton = binding.addButton
         clientsCountTextView = binding.clientsCountTextView
     }
@@ -106,7 +105,7 @@ class ClientsFragment : Fragment() {
 
     private fun inflateClientsRecyclerView(clientsList: List<ClientModelDb>) {
         // create adapter
-        clientsAdapter = ClientsAdapter(
+        clientsRVAdapter = ClientsAdapter(
             clientsCount = clientsList.size,
             clientsFragment = this,
             clientsList = clientsList
@@ -115,8 +114,8 @@ class ClientsFragment : Fragment() {
         val layoutManager: RecyclerView.LayoutManager =
             GridLayoutManager(activity, 1)
 
-        searchClientsRecyclerView?.layoutManager = layoutManager
-        searchClientsRecyclerView?.adapter = clientsAdapter
+        searchClientsRV?.layoutManager = layoutManager
+        searchClientsRV?.adapter = clientsRVAdapter
     }
 
     private fun swipeToDelete() {
@@ -137,9 +136,28 @@ class ClientsFragment : Fragment() {
                 val deleteClientModelDb: ClientModelDb = clientsList!![viewHolder.adapterPosition]
                 val position = viewHolder.adapterPosition
 
-            }
+                // delete client from Db
+                clientsViewModel?.deleteClient(deleteClientModelDb)
 
-        })
+                clientsRVAdapter?.notifyItemRemoved(position)
+
+                // display Snackbar
+                Snackbar.make(searchClientsRV!!, "Deleted " + deleteClientModelDb.name, Snackbar.LENGTH_LONG)
+                    .setAction(
+                        "Undo",
+                        View.OnClickListener {
+                            // adding on click listener to our action of snack bar.
+                            // below line is to add our item to array list with a position.
+                            clientsViewModel?.saveClient(deleteClientModelDb)
+
+                            // below line is to notify item is
+                            // added to our adapter class.
+
+                            // clear search bar
+                            clientsRVAdapter?.notifyDataSetChanged()
+                        }).show()
+            }
+        }).attachToRecyclerView(searchClientsRV)
     }
 
     override fun onResume() {

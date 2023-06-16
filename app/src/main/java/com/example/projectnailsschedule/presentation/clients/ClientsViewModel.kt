@@ -6,11 +6,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import com.example.projectnailsschedule.domain.models.ClientModelDb
 import com.example.projectnailsschedule.domain.usecase.clientsUC.DeleteClientUseCase
+import com.example.projectnailsschedule.domain.usecase.clientsUC.SaveClientUseCase
 import com.example.projectnailsschedule.domain.usecase.clientsUC.SearchClientUseCase
 
 class ClientsViewModel(
     private val searchClientUseCase: SearchClientUseCase,
-    private val deleteClientUseCase: DeleteClientUseCase
+    private val deleteClientUseCase: DeleteClientUseCase,
+    private val saveClientUseCase: SaveClientUseCase
 ) : ViewModel() {
 
     val clientsCount: MutableLiveData<Int> = MutableLiveData()
@@ -19,7 +21,11 @@ class ClientsViewModel(
         return searchClientUseCase.execute(searchQuery)
     }
 
-/*    fun getAllClients(): LiveData<List<ClientModelDb>> {
-        return clientsDb.getDao().selectAllFlow().asLiveData()
-    }*/
+    fun deleteClient(clientModelDb: ClientModelDb) {
+        deleteClientUseCase.execute(clientModelDb)
+    }
+
+    fun saveClient(clientModelDb: ClientModelDb) {
+        saveClientUseCase.execute(clientModelDb)
+    }
 }
