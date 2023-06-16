@@ -2,6 +2,8 @@ package com.example.projectnailsschedule.data.repository
 
 import android.content.Context
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.asLiveData
 import com.example.projectnailsschedule.data.storage.ClientsDb
 import com.example.projectnailsschedule.domain.models.ClientModelDb
 import com.example.projectnailsschedule.domain.repository.ClientsRepository
@@ -33,14 +35,18 @@ class ClientRepositoryImpl(context: Context) : ClientsRepository {
     }
 
     override fun getAllClients(): List<ClientModelDb> {
-        var arrayOfAppointmentModelDbs = listOf<ClientModelDb>()
+        var arrayOfClientsModelDbs = listOf<ClientModelDb>()
         val thread = Thread {
-            arrayOfAppointmentModelDbs = dbRoom.getDao().selectAllList()
+            arrayOfClientsModelDbs = dbRoom.getDao().selectAllList()
         }
         thread.start()
         thread.join()
 
-        return arrayOfAppointmentModelDbs
+        return arrayOfClientsModelDbs
+    }
+
+    override fun searchClient(searchQuery: String): LiveData<List<ClientModelDb>> {
+        return dbRoom.getDao().searchDatabase(searchQuery).asLiveData()
     }
 
     override fun deleteClient(clientModelDb: ClientModelDb) {

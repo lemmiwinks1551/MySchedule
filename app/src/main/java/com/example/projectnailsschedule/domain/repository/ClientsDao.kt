@@ -10,7 +10,7 @@ interface ClientsDao {
     fun insert(clientModelDb: ClientModelDb)
 
     @Query("SELECT * FROM clients")
-    fun selectAll(): Flow<List<ClientModelDb>>
+    fun selectAllFlow(): Flow<List<ClientModelDb>>
 
     @Update
     fun update(clientModelDb: ClientModelDb)

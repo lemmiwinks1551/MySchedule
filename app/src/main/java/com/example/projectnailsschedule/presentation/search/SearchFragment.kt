@@ -106,7 +106,6 @@ class SearchFragment : Fragment(), SearchAdapter.OnItemListener {
     }
 
     override fun onItemClick(position: Int, dayText: String?) {
-
         val date = DateParams(
             _id = null,
             date = Util().convertStrToLocalDate(dayText!!),

@@ -97,7 +97,6 @@ class AppointmentFragment : Fragment() {
         binding.phoneEditText.addTextChangedListener(PhoneNumberFormattingTextWatcher())
     }
 
-
     private fun setTitle() {
         val title: TextView = binding.fragmentAppointmentTitle
         val titleDate: TextView = binding.fragmentAppointmentDate

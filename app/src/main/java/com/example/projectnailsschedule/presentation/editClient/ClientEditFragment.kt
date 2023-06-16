@@ -34,7 +34,7 @@ class ClientEditFragment : Fragment() {
 
         clientEditViewModel = ViewModelProvider(
             this,
-            ClientEditViewModelFactory(context)
+            ClientsEditViewModelFactory(context)
         )[ClientEditViewModel::class.java]
 
         _binding = FragmentClientEditBinding.inflate(inflater, container, false)

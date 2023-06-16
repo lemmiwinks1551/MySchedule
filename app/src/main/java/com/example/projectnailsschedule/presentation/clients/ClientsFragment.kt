@@ -10,14 +10,14 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
-import com.example.projectnailsschedule.data.storage.ClientsDb
-import com.example.projectnailsschedule.data.storage.ScheduleDb
 import com.example.projectnailsschedule.databinding.FragmentClientsBinding
 import com.example.projectnailsschedule.domain.models.ClientModelDb
+import com.example.projectnailsschedule.presentation.appointment.AppointmentViewModel
+import com.example.projectnailsschedule.presentation.appointment.AppointmentViewModelFactory
 import com.example.projectnailsschedule.presentation.clients.clientsRecyclerView.ClientsAdapter
-import com.example.projectnailsschedule.presentation.clients.clientsRecyclerView.ClientsViewModelFactory
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class ClientsFragment : Fragment() {
@@ -26,10 +26,22 @@ class ClientsFragment : Fragment() {
     private val binding get() = _binding!!
     private var clientsViewModel: ClientsViewModel? = null
 
+    private var clientsList: List<ClientModelDb>? = null
+    private var clientsAdapter: ClientsAdapter? = null
+
     private var clientsSearchView: SearchView? = null
     private var searchClientsRecyclerView: RecyclerView? = null
     private var addButton: FloatingActionButton? = null
     private var clientsCountTextView :TextView? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        clientsViewModel = ViewModelProvider(
+            this,
+            ClientsViewModelFactory(context)
+        )[ClientsViewModel::class.java]
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,18 +49,16 @@ class ClientsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        clientsViewModel = ViewModelProvider(
-            this,
-            ClientsViewModelFactory(context)
-        )[ClientsViewModel::class.java]
-
         _binding = FragmentClientsBinding.inflate(inflater, container, false)
 
         // init widgets
         initWidgets()
 
-        // init observers\
+        // init observers
         initObservers()
+
+        // swipe to delete
+        swipeToDelete()
 
         // initClickListeners
         initClickListeners()
@@ -64,9 +74,7 @@ class ClientsFragment : Fragment() {
     }
 
     private fun initObservers() {
-        clientsViewModel!!.clientsCount.observe(viewLifecycleOwner) {
-            clientsCountTextView?.text = getString(R.string.appointments_count, it)
-        }
+
     }
 
     private fun initClickListeners() {
@@ -80,7 +88,8 @@ class ClientsFragment : Fragment() {
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 val searchQuery = "%$newText%"
-                clientsViewModel!!.searchDatabase(searchQuery)?.observe(viewLifecycleOwner) { list ->
+                clientsViewModel!!.searchDatabase(searchQuery).observe(viewLifecycleOwner) { list ->
+                    clientsList = list
                     inflateClientsRecyclerView(list)
                 }
                 return false
@@ -97,11 +106,10 @@ class ClientsFragment : Fragment() {
 
     private fun inflateClientsRecyclerView(clientsList: List<ClientModelDb>) {
         // create adapter
-        val clientsAdapter = ClientsAdapter(
+        clientsAdapter = ClientsAdapter(
             clientsCount = clientsList.size,
             clientsFragment = this,
-            clientsList = clientsList,
-            clientsViewModel = clientsViewModel!!
+            clientsList = clientsList
         )
 
         val layoutManager: RecyclerView.LayoutManager =
@@ -109,6 +117,39 @@ class ClientsFragment : Fragment() {
 
         searchClientsRecyclerView?.layoutManager = layoutManager
         searchClientsRecyclerView?.adapter = clientsAdapter
+    }
+
+    private fun swipeToDelete() {
+        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT){
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                // this method is called
+                // when the item is moved.
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                // this method is called when we swipe our item to right direction.
+                // on below line we are getting the item at a particular position.
+                val deleteClientModelDb: ClientModelDb = clientsList!![viewHolder.adapterPosition]
+                val position = viewHolder.adapterPosition
+
+            }
+
+        })
+    }
+
+    override fun onResume() {
+        clientsSearchView?.setQuery("", true) // clear search bar
+        super.onResume()
+    }
+
+    override fun onPause() {
+        clientsSearchView?.setQuery("", true) // clear search bar
+        super.onPause()
     }
 
     override fun onDestroyView() {
