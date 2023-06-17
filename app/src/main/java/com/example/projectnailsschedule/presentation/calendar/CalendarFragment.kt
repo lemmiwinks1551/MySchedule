@@ -318,6 +318,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener,
             date = null,
             appointmentCount = null
         )
+        _binding = null
         super.onDestroyView()
     }
 

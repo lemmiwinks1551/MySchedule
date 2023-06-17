@@ -30,7 +30,7 @@ class ClientRepositoryImpl(context: Context) : ClientsRepository {
         }
         thread.start()
         thread.join()
-        Log.e(log, "Appointment $clientModelDb updated")
+        Log.e(log, "Client $clientModelDb updated")
         return true
     }
 

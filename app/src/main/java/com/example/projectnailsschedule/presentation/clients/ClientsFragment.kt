@@ -10,6 +10,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -34,6 +35,8 @@ class ClientsFragment : Fragment() {
     private var searchClientsRV: RecyclerView? = null
     private var addButton: FloatingActionButton? = null
     private var clientsCountTextView: TextView? = null
+
+    private var bindingKeyClientEdit = "editClient"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -102,8 +105,6 @@ class ClientsFragment : Fragment() {
                 R.id.action_nav_clients_to_nav_client_edit_fragment
             )
         }
-
-
     }
 
     private fun inflateClientsRecyclerView(clientsList: List<ClientModelDb>) {
@@ -122,11 +123,17 @@ class ClientsFragment : Fragment() {
         // set clickListener on clientsRV
         clientsRVAdapter?.setOnItemClickListener(object : ClientsAdapter.OnItemClickListener {
             override fun onItemClick(position: Int) {
-                Toast.makeText(
-                    requireContext(),
-                    clientsList?.get(position)?.name.toString(),
-                    Toast.LENGTH_LONG
-                ).show()
+                // edit selected client
+                val bundle = Bundle()
+                val clientModelDb = ClientModelDb(
+                    _id = clientsList[position]._id,
+                    name = clientsList[position].name,
+                    phone = clientsList[position].phone,
+                    notes = clientsList[position].notes
+                )
+                val navController = findNavController()
+                bundle.putParcelable(bindingKeyClientEdit, clientModelDb)
+                navController.navigate(R.id.action_nav_clients_to_nav_client_edit_fragment, bundle)
             }
         })
     }
@@ -154,7 +161,7 @@ class ClientsFragment : Fragment() {
 
                 clientsRVAdapter?.notifyItemRemoved(position)
 
-                // display Snackbar
+                // show Snackbar
                 Snackbar.make(
                     searchClientsRV!!,
                     "Deleted " + deleteClientModelDb.name,

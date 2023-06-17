@@ -64,4 +64,9 @@ class SettingsFragment : Fragment() {
     private fun setThemeSwitcher() {
         themeSwitcher?.isChecked = settingsViewModel?.darkThemeOn == true
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

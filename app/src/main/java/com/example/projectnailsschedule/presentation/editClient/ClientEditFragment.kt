@@ -1,6 +1,7 @@
 package com.example.projectnailsschedule.presentation.editClient
 
 import android.os.Bundle
+import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,12 +14,16 @@ import androidx.navigation.fragment.findNavController
 import com.example.projectnailsschedule.databinding.FragmentClientEditBinding
 import com.example.projectnailsschedule.domain.models.ClientModelDb
 
+
 class ClientEditFragment : Fragment() {
 
     private var _binding: FragmentClientEditBinding? = null
     private val binding get() = _binding!!
 
     private var clientEditViewModel: ClientEditViewModel? = null
+
+    private var clientToEdit: ClientModelDb? = null
+    private var bindingKeyClientEdit = "editClient"
 
     private var nameEditText: EditText? = null
     private var phoneEditText: EditText? = null
@@ -45,6 +50,12 @@ class ClientEditFragment : Fragment() {
         // init clickListeners
         initClickListeners()
 
+        // get bindingKeyClientEdit from arguments
+        if (arguments != null) {
+            clientToEdit = arguments?.getParcelable(bindingKeyClientEdit)
+            setFields()
+        }
+
         return binding.root
     }
 
@@ -56,14 +67,32 @@ class ClientEditFragment : Fragment() {
         cancelButton = binding.cancelButton
     }
 
+    private fun setFields() {
+        // set fields into EditViews
+        val editableName: Editable = nameEditText!!.editableText
+        editableName.insert(nameEditText!!.selectionStart, clientToEdit!!.name)
+
+        val editablePhone: Editable = phoneEditText!!.editableText
+        editablePhone.insert(phoneEditText!!.selectionStart, clientToEdit!!.phone)
+
+        val editableNotes: Editable = notesTEditText!!.editableText
+        editableNotes.insert(notesTEditText!!.selectionStart, clientToEdit!!.notes)
+    }
+
     private fun initClickListeners() {
         saveButton!!.setOnClickListener {
             val clientModelDb = ClientModelDb(
+                _id = clientToEdit?._id,
                 name = nameEditText?.text.toString(),
                 phone = phoneEditText?.text.toString(),
                 notes = notesTEditText?.text.toString()
             )
-            clientEditViewModel?.saveClient(clientModelDb)
+
+            if (clientToEdit != null) {
+                clientEditViewModel?.updateClient(clientModelDb)
+            } else {
+                clientEditViewModel?.saveClient(clientModelDb)
+            }
 
             val toast: Toast = Toast.makeText(
                 context,

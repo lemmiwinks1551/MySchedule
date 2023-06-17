@@ -129,5 +129,10 @@ class DateFragment : Fragment(), DateAdapter.OnItemListener {
     override fun onItemClick(position: Int) {
         // not implemented yet
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }
 

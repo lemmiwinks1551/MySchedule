@@ -214,4 +214,9 @@ class AppointmentFragment : Fragment() {
         )
         mTimePicker.show()
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

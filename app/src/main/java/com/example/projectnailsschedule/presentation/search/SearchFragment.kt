@@ -129,4 +129,9 @@ class SearchFragment : Fragment(), SearchAdapter.OnItemListener {
         searchTextView?.setQuery("", true) // clear search bar
         super.onPause()
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

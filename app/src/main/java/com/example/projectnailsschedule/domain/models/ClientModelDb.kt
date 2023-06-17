@@ -1,14 +1,17 @@
 package com.example.projectnailsschedule.domain.models
 
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.parcelize.Parcelize
 
 /***
  * Class model for
  * information about client
  * */
 
+@Parcelize
 @Entity(tableName = "clients")
 data class ClientModelDb(
     @PrimaryKey(autoGenerate = true)
@@ -22,7 +25,7 @@ data class ClientModelDb(
 
     @ColumnInfo(name = "notes")
     val notes: String? = null
-) {
+) : Parcelable {
     override fun toString(): String {
         return "Client № ${this._id}, name = ${this.name}, " +
                 "phone = ${this.phone}, notes = ${this.notes}"
