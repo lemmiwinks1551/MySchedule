@@ -8,17 +8,19 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentAppointmentBinding
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
 import com.example.projectnailsschedule.util.Util
 import java.util.*
 
-/** AppointmentFragment View */
+/** AppointmentFragment */
 
 class AppointmentFragment : Fragment() {
     val log = this::class.simpleName
@@ -66,6 +68,7 @@ class AppointmentFragment : Fragment() {
         return binding.root
     }
 
+
     private fun setClickListeners() {
         // Set ClickListener on save_changes_button
         binding.saveButton.setOnClickListener {
@@ -95,6 +98,11 @@ class AppointmentFragment : Fragment() {
 
         // set phone input format on phone_edit_text
         binding.phoneEditText.addTextChangedListener(PhoneNumberFormattingTextWatcher())
+
+        binding.selectClientButton.setOnClickListener {
+            val navController = findNavController()
+            navController.navigate(R.id.action_nav_appointment_to_selectClient, null)
+        }
     }
 
     private fun setTitle() {

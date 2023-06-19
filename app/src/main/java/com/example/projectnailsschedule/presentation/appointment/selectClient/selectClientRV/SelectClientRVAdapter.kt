@@ -1,4 +1,4 @@
-package com.example.projectnailsschedule.presentation.clients.clientsRecyclerView
+package com.example.projectnailsschedule.presentation.appointment.selectClient.selectClientRV
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,10 +7,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.domain.models.ClientModelDb
 
-class ClientsAdapter(
+class SelectClientRVAdapter(
     private var clientsCount: Int,
     private var clientsList: List<ClientModelDb>
-) : RecyclerView.Adapter<ClientsViewHolder>(
+) : RecyclerView.Adapter<SelectClientRVViewHolder>(
 ) {
 
     private lateinit var mListener: OnItemClickListener
@@ -24,19 +24,20 @@ class ClientsAdapter(
         mListener = listener
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ClientsViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SelectClientRVViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val view: View = inflater.inflate(R.layout.client_recycler_view_item, parent, false)
 
-        return ClientsViewHolder(view, mListener)
+        return SelectClientRVViewHolder(view, mListener)
     }
+
 
     override fun getItemCount(): Int {
         // set current appointment count
         return clientsCount
     }
 
-    override fun onBindViewHolder(holder: ClientsViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: SelectClientRVViewHolder, position: Int) {
         holder.name.text = clientsList[position].name.toString()
         holder.phone.text = clientsList[position].phone.toString()
         holder.notes.text = clientsList[position].notes.toString()
