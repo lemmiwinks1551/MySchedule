@@ -145,8 +145,7 @@ class ClientsFragment : Fragment() {
                 viewHolder: RecyclerView.ViewHolder,
                 target: RecyclerView.ViewHolder
             ): Boolean {
-                // this method is called
-                // when the item is moved.
+                // this method is called when the item is moved.
                 return false
             }
 
@@ -160,6 +159,7 @@ class ClientsFragment : Fragment() {
                 clientsViewModel?.deleteClient(deleteClientModelDb)
 
                 clientsRVAdapter?.notifyItemRemoved(position)
+                clientsSearchView?.setQuery(null, true) // clear search bar
 
                 // show Snackbar
                 Snackbar.make(
@@ -184,12 +184,12 @@ class ClientsFragment : Fragment() {
     }
 
     override fun onResume() {
-        clientsSearchView?.setQuery("", true) // clear search bar
+        clientsSearchView?.setQuery(null, true) // clear search bar
         super.onResume()
     }
 
     override fun onPause() {
-        clientsSearchView?.setQuery("", true) // clear search bar
+        clientsSearchView?.setQuery(null, true) // clear search bar
         super.onPause()
     }
 
