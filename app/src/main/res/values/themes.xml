@@ -63,4 +63,9 @@
 
         <item name="colorButtonNormal">@color/Pink6</item>
     </style>
+
+    <style name="FullScreenDialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
 </resources>

@@ -17,6 +17,8 @@ import androidx.navigation.fragment.findNavController
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentAppointmentBinding
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
+import com.example.projectnailsschedule.domain.models.ClientModelDb
+import com.example.projectnailsschedule.presentation.appointment.selectClient.SelectClientFragment
 import com.example.projectnailsschedule.util.Util
 import java.util.*
 
@@ -68,6 +70,15 @@ class AppointmentFragment : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<ClientModelDb>("client")?.observe(viewLifecycleOwner) { result ->
+            // здесь обрабатываем результат
+            binding.nameEditText.setText(result.name)
+            binding.phoneEditText.setText(result.phone)
+        }
+    }
 
     private fun setClickListeners() {
         // Set ClickListener on save_changes_button
@@ -100,8 +111,8 @@ class AppointmentFragment : Fragment() {
         binding.phoneEditText.addTextChangedListener(PhoneNumberFormattingTextWatcher())
 
         binding.selectClientButton.setOnClickListener {
-            val navController = findNavController()
-            navController.navigate(R.id.action_nav_appointment_to_selectClient, null)
+            val dialogFragment = SelectClientFragment()
+            dialogFragment.show(parentFragmentManager, "SelectClientFragment")
         }
     }
 

@@ -5,19 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
-import androidx.fragment.app.Fragment
+import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
-import com.example.projectnailsschedule.databinding.FragmentAppointmentBinding
 import com.example.projectnailsschedule.databinding.FragmentSelectClientBinding
 import com.example.projectnailsschedule.domain.models.ClientModelDb
 import com.example.projectnailsschedule.presentation.appointment.selectClient.selectClientRV.SelectClientRVAdapter
-import com.example.projectnailsschedule.presentation.clients.clientsRecyclerView.ClientsAdapter
 
-class SelectClientFragment : Fragment() {
+class SelectClientFragment : DialogFragment() {
     val log = this::class.simpleName
 
     private var selectClientViewModel: SelectClientViewModel? = null
@@ -28,8 +26,6 @@ class SelectClientFragment : Fragment() {
 
     private val binding get() = _binding!!
 
-    private val bindingKeyClientEdit = "selectedClient"
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -38,6 +34,16 @@ class SelectClientFragment : Fragment() {
             this,
             SelectClientViewModelFactory(context)
         )[SelectClientViewModel::class.java]
+
+        setStyle(STYLE_NORMAL, R.style.FullScreenDialog);
+    }
+
+    override fun onStart() {
+        super.onStart()
+        dialog?.window?.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT
+        )
     }
 
     override fun onCreateView(
@@ -98,17 +104,16 @@ class SelectClientFragment : Fragment() {
         selectClientRVAdapter.setOnItemClickListener(object :
             SelectClientRVAdapter.OnItemClickListener {
             override fun onItemClick(position: Int) {
-                // edit selected client
-                val bundle = Bundle()
+                // client selected
                 val clientModelDb = ClientModelDb(
                     _id = clientsList[position]._id,
                     name = clientsList[position].name,
                     phone = clientsList[position].phone,
                     notes = clientsList[position].notes
                 )
-                val navController = findNavController()
-                bundle.putParcelable(bindingKeyClientEdit, clientModelDb)
-                navController.navigate(R.id.action_selectClient_to_nav_appointment, bundle)
+
+                findNavController().currentBackStackEntry?.savedStateHandle?.set("client", clientModelDb)
+                dismiss() // закрыть диалоговое окно после передачи данных
             }
         })
     }
