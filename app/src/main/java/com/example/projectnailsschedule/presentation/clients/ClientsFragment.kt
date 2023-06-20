@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -164,11 +163,12 @@ class ClientsFragment : Fragment() {
                 // show Snackbar
                 Snackbar.make(
                     searchClientsRV!!,
-                    "Deleted " + deleteClientModelDb.name,
+                    "Удалено " + deleteClientModelDb.name,
                     Snackbar.LENGTH_LONG
-                )
+                ).setBackgroundTint(resources.getColor(R.color.red))
+                    .setActionTextColor(resources.getColor(R.color.black))
                     .setAction(
-                        "Undo"
+                        "Отмена"
                     ) {
                         // adding on click listener to our action of snack bar.
                         // below line is to add our item to array list with a position.
