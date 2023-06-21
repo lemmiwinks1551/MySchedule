@@ -1,11 +1,13 @@
 package com.example.projectnailsschedule.presentation.clients
 
+import android.graphics.Canvas
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.widget.SearchView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
@@ -138,7 +140,7 @@ class ClientsFragment : Fragment() {
     }
 
     private fun swipeToDelete() {
-        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
             override fun onMove(
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder,
@@ -149,7 +151,7 @@ class ClientsFragment : Fragment() {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                // this method is called when we swipe our item to right direction.
+                // this method is called when we swipe our item to left direction.
                 // on below line we are getting the item at a particular position.
                 val deleteClientModelDb: ClientModelDb = clientsList!![viewHolder.adapterPosition]
                 val position = viewHolder.adapterPosition
@@ -163,10 +165,11 @@ class ClientsFragment : Fragment() {
                 // show Snackbar
                 Snackbar.make(
                     searchClientsRV!!,
-                    "Удалено " + deleteClientModelDb.name,
-                    Snackbar.LENGTH_LONG
-                ).setBackgroundTint(resources.getColor(R.color.red))
+                    "Удален клиент: " + deleteClientModelDb.name,
+                    Snackbar.LENGTH_INDEFINITE
+                ).setBackgroundTint(resources.getColor(R.color.yellow))
                     .setActionTextColor(resources.getColor(R.color.black))
+                    .setTextColor(resources.getColor(R.color.black))
                     .setAction(
                         "Отмена"
                     ) {
@@ -180,9 +183,31 @@ class ClientsFragment : Fragment() {
                         clientsRVAdapter?.notifyDataSetChanged()
                     }.show()
             }
+
+            override fun onChildDraw(c: Canvas, recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean
+            ) {
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive
+                )
+
+                if (dX < 0) {
+                    val icon = ContextCompat.getDrawable(requireContext(), R.drawable.swipe_to_delete)!!
+                    val itemWidth = viewHolder.itemView.bottom - viewHolder.itemView.top
+
+                    val iconMargin = (viewHolder.itemView.bottom - viewHolder.itemView.top - icon.intrinsicHeight) / 2
+                    val iconTop = viewHolder.itemView.top + iconMargin
+                    val iconBottom = iconTop + icon.intrinsicHeight
+
+                    val iconRight = viewHolder.itemView.right - iconMargin
+                    val iconLeft = iconRight - icon.intrinsicWidth
+
+                    icon.setBounds(iconLeft, iconTop, iconRight, iconBottom)
+                    icon.draw(c)
+                } else {
+
+                }
+            }
         }).attachToRecyclerView(searchClientsRV)
     }
-
     override fun onResume() {
         clientsSearchView?.setQuery(null, true) // clear search bar
         super.onResume()
