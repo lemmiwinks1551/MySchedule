@@ -26,6 +26,7 @@ import com.example.projectnailsschedule.util.rustore.RuStoreUpdate
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import java.time.LocalDateTime
 
 class MainActivity : AppCompatActivity() {
     private val log = this::class.simpleName
@@ -154,9 +155,10 @@ class MainActivity : AppCompatActivity() {
         val firebaseRef: DatabaseReference = FirebaseDatabase.getInstance().getReference(key)
 
         val id = firebaseRef.key
-        val userId = Settings.Secure.getString(this.contentResolver, Settings.Secure.ANDROID_ID)
+        val userId = null
+        val time = LocalDateTime.now()
 
-        val firebaseModel = FirebaseModel(id, userId, event)
+        val firebaseModel = FirebaseModel(id, userId, time, event)
         firebaseRef.push().setValue(firebaseModel)
 
         Log.e(log, "$firebaseModel inserted")
