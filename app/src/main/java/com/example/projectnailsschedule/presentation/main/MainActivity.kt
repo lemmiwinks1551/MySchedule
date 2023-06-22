@@ -25,7 +25,6 @@ import com.example.projectnailsschedule.util.rustore.RuStoreUpdate
 import com.google.android.material.navigation.NavigationView
 import java.time.LocalDateTime
 
-
 class MainActivity : AppCompatActivity() {
     private val log = this::class.simpleName
 
