@@ -2,8 +2,6 @@ package com.example.projectnailsschedule.presentation.main
 
 import android.content.res.Configuration
 import android.os.Bundle
-import android.provider.Settings
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -19,14 +17,14 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.ActivityMainBinding
 import com.example.projectnailsschedule.domain.models.FirebaseModel
+import com.example.projectnailsschedule.util.FirebaseMetrics
 import com.example.projectnailsschedule.util.UncaughtExceptionHandler
 import com.example.projectnailsschedule.util.rustore.RuStoreAd
 import com.example.projectnailsschedule.util.rustore.RuStoreReview
 import com.example.projectnailsschedule.util.rustore.RuStoreUpdate
 import com.google.android.material.navigation.NavigationView
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
 import java.time.LocalDateTime
+
 
 class MainActivity : AppCompatActivity() {
     private val log = this::class.simpleName
@@ -87,14 +85,11 @@ class MainActivity : AppCompatActivity() {
         RuStoreReview(this).rateApp()
 
         // insert metrics
-        try {
-            Thread{
-                insertMetrics("start app")
-            }.start()
-        } catch (e: Exception) {
-            Log.e(log, e.message.toString())
-        }
-
+        val firebaseModel = FirebaseModel(
+            time = LocalDateTime.now(),
+            event = "Start"
+        )
+        FirebaseMetrics().insertMetrics(firebaseModel)
     }
 
     private fun initWidgets() {
@@ -148,19 +143,5 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         RuStoreAd(this, binding).destroyAd()
         super.onDestroy()
-    }
-
-    private fun insertMetrics(event: String) {
-        val key = "scheduleDbMetrics"
-        val firebaseRef: DatabaseReference = FirebaseDatabase.getInstance().getReference(key)
-
-        val id = firebaseRef.key
-        val userId = null
-        val time = LocalDateTime.now()
-
-        val firebaseModel = FirebaseModel(id, userId, time, event)
-        firebaseRef.push().setValue(firebaseModel)
-
-        Log.e(log, "$firebaseModel inserted")
     }
 }
