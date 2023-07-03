@@ -1,5 +1,8 @@
 package com.example.projectnailsschedule.presentation.appointment.selectClient.selectClientRV
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +12,8 @@ import com.example.projectnailsschedule.domain.models.ClientModelDb
 
 class SelectClientRVAdapter(
     private var clientsCount: Int,
-    private var clientsList: List<ClientModelDb>
+    private var clientsList: List<ClientModelDb>,
+    private var context: Context
 ) : RecyclerView.Adapter<SelectClientRVViewHolder>(
 ) {
 
@@ -41,5 +45,11 @@ class SelectClientRVAdapter(
         holder.name.text = clientsList[position].name.toString()
         holder.phone.text = clientsList[position].phone.toString()
         holder.notes.text = clientsList[position].notes.toString()
+
+        holder.callClientButton.setOnClickListener {
+            val phone = clientsList[position].phone.toString()
+            val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phone"))
+            context.startActivity(intent)
+        }
     }
 }

@@ -2,6 +2,8 @@ package com.example.projectnailsschedule.presentation.appointment
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.view.Gravity
@@ -109,6 +111,13 @@ class AppointmentFragment : Fragment() {
 
         // set phone input format on phone_edit_text
         binding.phoneEditText.addTextChangedListener(PhoneNumberFormattingTextWatcher())
+
+        // set phone as hyperlink
+        binding.callClientButton.setOnClickListener {
+            val phone = binding.phoneEditText.text.toString()
+            val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phone"))
+            startActivity(intent)
+        }
 
         binding.selectClientButton.setOnClickListener {
             val dialogFragment = SelectClientFragment()

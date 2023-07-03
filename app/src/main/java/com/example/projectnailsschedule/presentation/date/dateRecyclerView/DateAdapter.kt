@@ -1,6 +1,9 @@
 package com.example.projectnailsschedule.presentation.date.dateRecyclerView
 
 import android.app.Dialog
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -20,7 +23,8 @@ class DateAdapter(
     private var appointmentsCount: Int,
     private val onItemListener: DateFragment,
     private val dateViewModel: DateViewModel,
-    private val fragmentActivity: FragmentActivity
+    private val fragmentActivity: FragmentActivity,
+    private val context: Context
 ) : RecyclerView.Adapter<DateViewHolder>() {
 
     val log = this::class.simpleName
@@ -118,6 +122,12 @@ class DateAdapter(
         }
 
         // dateViewModel.setDateAppointments(dateAppointmentsArray)
+
+        holder.callClientButton.setOnClickListener {
+            val phone = dateAppointment.phone
+            val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phone"))
+            context.startActivity(intent)
+        }
     }
 
     private fun runAnimation(view: View) {

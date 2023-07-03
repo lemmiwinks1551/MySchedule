@@ -24,6 +24,6 @@ interface ClientsDao {
     @Query("SELECT * FROM clients WHERE " +
             "name LIKE :searchQuery OR " +
             "phone LIKE :searchQuery OR " +
-            "notes LIKE :searchQuery")
+            "notes LIKE :searchQuery order by name")
     fun searchDatabase(searchQuery: String): Flow<List<ClientModelDb>>
 }

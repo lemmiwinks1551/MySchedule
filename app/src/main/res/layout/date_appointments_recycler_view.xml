@@ -33,13 +33,22 @@
         app:layout_constraintStart_toEndOf="@+id/client_avatar"
         app:layout_constraintTop_toTopOf="parent">
 
+        <ImageButton
+            android:id="@+id/call_client_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_call_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/phone_value_search"
+            app:layout_constraintTop_toBottomOf="@id/client_value_search" />
+
         <TextView
             android:id="@+id/time_value_search"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:text="@string/example_time"
-            android:textSize="16sp"
+            android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -51,7 +60,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:text="@string/example_procedure"
-            android:textSize="16sp"
+            android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/time_value_search" />
@@ -62,7 +71,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:text="@string/example_client"
-            android:textSize="16sp"
+            android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/procedure_value_search" />
@@ -72,9 +81,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
+            android:layout_marginStart="8dp"
             android:text="@string/example_phone"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/client_value_search" />
 
@@ -84,7 +93,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:text="@string/example_misc"
-            android:textSize="16sp"
+            android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

@@ -112,7 +112,8 @@ class ClientsFragment : Fragment() {
         // create adapter
         clientsRVAdapter = ClientsAdapter(
             clientsCount = clientsList.size,
-            clientsList = clientsList
+            clientsList = clientsList,
+            context = requireContext()
         )
 
         val layoutManager: RecyclerView.LayoutManager =
@@ -166,7 +167,7 @@ class ClientsFragment : Fragment() {
                 Snackbar.make(
                     searchClientsRV!!,
                     "Удален клиент: " + deleteClientModelDb.name,
-                    Snackbar.LENGTH_INDEFINITE
+                    Snackbar.LENGTH_LONG
                 ).setBackgroundTint(resources.getColor(R.color.yellow))
                     .setActionTextColor(resources.getColor(R.color.black))
                     .setTextColor(resources.getColor(R.color.black))
@@ -208,6 +209,7 @@ class ClientsFragment : Fragment() {
             }
         }).attachToRecyclerView(searchClientsRV)
     }
+
     override fun onResume() {
         clientsSearchView?.setQuery(null, true) // clear search bar
         super.onResume()
