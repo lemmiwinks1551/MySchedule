@@ -39,7 +39,6 @@
             android:layout_height="wrap_content"
             android:src="@drawable/baseline_call_24"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/phone_value_search"
             app:layout_constraintTop_toBottomOf="@id/client_value_search" />
 
         <TextView
@@ -84,6 +83,7 @@
             android:layout_marginStart="8dp"
             android:text="@string/example_phone"
             android:textSize="20sp"
+            app:layout_constraintEnd_toStartOf="@+id/call_client_button"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/client_value_search" />
 
@@ -98,7 +98,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/phone_value_search" />
-
+я
     </androidx.constraintlayout.widget.ConstraintLayout> <!--Appointment params-->
 
     <ImageButton
