@@ -104,17 +104,18 @@ class DateFragment : Fragment(), DateAdapter.OnItemClickListener {
     private fun setObservers() {
         // dateParams observer
         dateViewModel?.selectedDateParams?.observe(viewLifecycleOwner) {
-            if (it.appointmentCount != 0) {
-                appointmentList = dateViewModel!!.getDateAppointments().toList()
-                inflateDateRecyclerView(it)
-            } else {
+            appointmentList = dateViewModel!!.getDateAppointments().toList()
+            if (it.appointmentCount == 0) {
                 binding.fragmentDateTitle.text = noAppointmentsTextTitle
+            } else {
+                binding.fragmentDateTitle.text = "Всего записей: ${it.appointmentCount}"
             }
             binding.fragmentDateDate.text = it.date?.format(Util().formatter)
+            inflateAppointmentsRV(it)
         }
     }
 
-    private fun inflateDateRecyclerView(selectedDate: DateParams) {
+    private fun inflateAppointmentsRV(selectedDate: DateParams) {
         // create adapter
         appointmentsRvAdapter = DateAdapter(
             appointmentsCount = selectedDate.appointmentCount!!,
@@ -197,7 +198,6 @@ class DateFragment : Fragment(), DateAdapter.OnItemClickListener {
                         // below line is to notify item is
                         // added to our adapter class.
                         appointmentsRvAdapter?.notifyDataSetChanged()
-                        dateViewModel?.updateDateParams()
                     }.show()
             }
 

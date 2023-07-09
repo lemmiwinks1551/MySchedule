@@ -26,6 +26,7 @@ class DateViewModel(
 
     fun saveAppointment(appointmentModelDb: AppointmentModelDb) {
         saveAppointmentUseCase.execute(appointmentModelDb)
+        updateDateParams()
     }
 
     fun updateDateParams() {
@@ -37,6 +38,7 @@ class DateViewModel(
     private fun getDateAppointmentCount() {
         selectedDateParams.value?.appointmentCount =
             getDateAppointmentsUseCase.execute(selectedDateParams.value!!).size
+        selectedDateParams.value = selectedDateParams.value
     }
 
     fun getDateAppointments(): Array<AppointmentModelDb> {
