@@ -8,10 +8,12 @@ import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
 import com.example.projectnailsschedule.presentation.date.DateFragment
 
-class DateViewHolder internal constructor(itemView: View, onItemListener: DateFragment) :
-    RecyclerView.ViewHolder(itemView), View.OnClickListener {
+class DateViewHolder internal constructor(
+    itemView: View,
+    listener: DateAdapter.OnItemClickListener
+) :
+    RecyclerView.ViewHolder(itemView) {
 
-    private val onItemListener: DateAdapter.OnItemListener
     var appointmentId: Int? = null
     var appointmentDate: String? = null
     var appointmentModelDb: AppointmentModelDb? = null
@@ -36,14 +38,11 @@ class DateViewHolder internal constructor(itemView: View, onItemListener: DateFr
 
         editImageBoolean = itemView.findViewById(R.id.edit_note_image_button)
         deleteImageButton = itemView.findViewById(R.id.delete_forever_image_button)
-        this.onItemListener = onItemListener
 
         callClientButton = itemView.findViewById(R.id.call_client_button)
 
-        itemView.setOnClickListener(this)
-    }
-
-    override fun onClick(p0: View?) {
-        onItemListener.onItemClick(adapterPosition)
+        itemView.setOnClickListener {
+            listener.onItemClick(adapterPosition)
+        }
     }
 }

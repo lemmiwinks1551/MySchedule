@@ -16,6 +16,7 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
+import com.example.projectnailsschedule.presentation.clients.clientsRecyclerView.ClientsAdapter
 import com.example.projectnailsschedule.presentation.date.DateFragment
 import com.example.projectnailsschedule.presentation.date.DateViewModel
 
@@ -29,10 +30,20 @@ class DateAdapter(
 
     val log = this::class.simpleName
 
+    private lateinit var mListener: OnItemClickListener
+
+    interface OnItemClickListener {
+        fun onItemClick(position: Int)
+    }
+
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+        mListener = listener
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DateViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val view: View = inflater.inflate(R.layout.date_appointments_recycler_view, parent, false)
-        return DateViewHolder(view, onItemListener)
+        return DateViewHolder(view, mListener)
     }
 
     private val bindingKeyAppointment = "appointmentParams"
@@ -142,7 +153,4 @@ class DateAdapter(
         return appointmentsCount
     }
 
-    interface OnItemListener {
-        fun onItemClick(position: Int)
-    }
 }

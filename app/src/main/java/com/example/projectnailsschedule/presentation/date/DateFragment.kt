@@ -7,17 +7,19 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentDateBinding
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
+import com.example.projectnailsschedule.domain.models.ClientModelDb
 import com.example.projectnailsschedule.domain.models.DateParams
+import com.example.projectnailsschedule.presentation.clients.clientsRecyclerView.ClientsAdapter
 import com.example.projectnailsschedule.presentation.date.dateRecyclerView.DateAdapter
 import com.example.projectnailsschedule.util.Util
 
-
-class DateFragment : Fragment(), DateAdapter.OnItemListener {
+class DateFragment : Fragment(), DateAdapter.OnItemClickListener {
     val log = this::class.simpleName
 
     private var _binding: FragmentDateBinding? = null
@@ -26,6 +28,9 @@ class DateFragment : Fragment(), DateAdapter.OnItemListener {
     private val bindingKeyAppointment = "appointmentParams"
     private val noAppointmentsTextTitle = "Нет записей"
     private val dateRecyclerViewSpanCount = 1
+
+    private var appointmentList: List<AppointmentModelDb>? = null
+    private var dateAdapter: DateAdapter? = null
 
     private var dateParams: DateParams? = null
     private var dateViewModel: DateViewModel? = null
@@ -96,6 +101,7 @@ class DateFragment : Fragment(), DateAdapter.OnItemListener {
         dateViewModel?.selectedDateParams?.observe(viewLifecycleOwner) {
             if (it.appointmentCount != 0) {
                 inflateDateRecyclerView(it)
+                appointmentList = dateViewModel!!.getDateAppointments().toList()
             } else {
                 binding.fragmentDateTitle.text = noAppointmentsTextTitle
             }
@@ -105,7 +111,7 @@ class DateFragment : Fragment(), DateAdapter.OnItemListener {
 
     private fun inflateDateRecyclerView(selectedDate: DateParams) {
         // create adapter
-        val dateAdapter = DateAdapter(
+        dateAdapter = DateAdapter(
             appointmentsCount = selectedDate.appointmentCount!!,
             onItemListener = this,
             dateViewModel = dateViewModel!!,
@@ -119,6 +125,27 @@ class DateFragment : Fragment(), DateAdapter.OnItemListener {
         dateRecyclerView?.layoutManager = layoutManager
         dateRecyclerView?.adapter = dateAdapter
         dateRecyclerView?.scheduleLayoutAnimation()
+
+        // set clickListener on dateRV
+        dateAdapter!!.setOnItemClickListener(object : DateAdapter.OnItemClickListener {
+            override fun onItemClick(position: Int) {
+                // edit selected appointment
+                val bundle = Bundle()
+                val appointmentModelDb = AppointmentModelDb(
+                    _id = appointmentList?.get(position)?._id,
+                    date = appointmentList?.get(position)?.date,
+                    name = appointmentList?.get(position)?.name,
+                    time = appointmentList?.get(position)?.time,
+                    procedure = appointmentList?.get(position)?.procedure,
+                    phone = appointmentList?.get(position)?.phone,
+                    notes = appointmentList?.get(position)?.notes,
+                    deleted = appointmentList?.get(position)!!.deleted
+                )
+                val navController = findNavController()
+                bundle.putParcelable(bindingKeyAppointment, appointmentModelDb)
+                navController.navigate(R.id.action_dateFragment_to_appointmentFragment, bundle)
+            }
+        })
     }
 
     override fun onResume() {
