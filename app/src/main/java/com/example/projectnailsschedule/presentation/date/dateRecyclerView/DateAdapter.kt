@@ -1,30 +1,18 @@
 package com.example.projectnailsschedule.presentation.date.dateRecyclerView
 
-import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
-import android.widget.Button
-import androidx.fragment.app.FragmentActivity
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
-import com.example.projectnailsschedule.presentation.clients.clientsRecyclerView.ClientsAdapter
-import com.example.projectnailsschedule.presentation.date.DateFragment
-import com.example.projectnailsschedule.presentation.date.DateViewModel
 
 class DateAdapter(
     private var appointmentsCount: Int,
-    private val onItemListener: DateFragment,
-    private val dateViewModel: DateViewModel,
-    private val fragmentActivity: FragmentActivity,
+    private var appointmentsList: List<AppointmentModelDb>,
     private val context: Context
 ) : RecyclerView.Adapter<DateViewHolder>() {
 
@@ -46,111 +34,36 @@ class DateAdapter(
         return DateViewHolder(view, mListener)
     }
 
-    private val bindingKeyAppointment = "appointmentParams"
-
     override fun onBindViewHolder(holder: DateViewHolder, position: Int) {
-        // get date appointments
-        val dateAppointmentsArray = dateViewModel.getDateAppointments()
+        with(holder) {
+            // set date in holder
+            appointmentDate = appointmentsList[position].date
 
-        // declare current day appointments
-        val dateAppointment = dateAppointmentsArray[position]
+            // set time in holder
+            appointmentTime.text = appointmentsList[position].time
 
-        // set day appointments into recycler view holder
-        holder.appointmentModelDb = dateAppointment
+            // set procedure in holder
+            appointmentProcedure.text = appointmentsList[position].procedure
 
-        // Set date in holder
-        holder.appointmentDate = dateAppointment.date
+            // set client name in holder
+            appointmentClientName.text = appointmentsList[position].name
 
-        // Set time in holder
-        holder.appointmentTime.text = dateAppointment.time
+            // set client phone in holder
+            appointmentClientPhone.text = appointmentsList[position].phone
 
-        // Set procedure in holder
-        holder.appointmentProcedure.text = dateAppointment.procedure
+            // set notes in holder
+            appointmentNotes.text = appointmentsList[position].notes
 
-        // Set client name in holder
-        holder.appointmentClientName.text = dateAppointment.name
-
-        // Set client phone in holder
-        holder.appointmentClientPhone.text = dateAppointment.phone
-
-        // Set notes in holder
-        holder.appointmentNotes.text = dateAppointment.notes
-
-        // set delete image button click listener
-        holder.deleteImageButton?.setOnClickListener {
-            // run animation
-            runAnimation(it)
-
-            val dialog = Dialog(fragmentActivity)
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-            dialog.setCancelable(true)
-            dialog.setContentView(R.layout.dialog_ok_cancel)
-            dialog.window?.setBackgroundDrawableResource(R.color.transparent)
-
-            // init dialog buttons
-            val okButton: Button? = dialog.findViewById(R.id.ok_delete_button)
-            val cancelButton: Button? = dialog.findViewById(R.id.cancel_delete_button)
-
-            okButton?.setOnClickListener {
-                Log.e(log, holder.appointmentModelDb.toString())
-                dateViewModel.deleteAppointment(holder.appointmentModelDb!!)
-                notifyItemRemoved(position)
-                appointmentsCount -= 1
-                dialog.dismiss()
+            // set callClient click listener
+            holder.callClientButton.setOnClickListener {
+                val phone = appointmentsList[position].phone
+                val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phone"))
+                context.startActivity(intent)
             }
-
-            cancelButton?.setOnClickListener {
-                dialog.dismiss()
-            }
-
-            dialog.show()
         }
-
-        // set edit image button click listener
-        holder.editImageBoolean?.setOnClickListener {
-            // run animation
-            runAnimation(it)
-
-            // get information from clicked item
-            // start fragment with selected data
-
-            val appointmentParams = AppointmentModelDb(
-                _id = holder.appointmentModelDb!!._id,
-                date = holder.appointmentDate,
-                name = holder.appointmentClientName.text.toString(),
-                time = holder.appointmentTime.text.toString(),
-                procedure = holder.appointmentProcedure.text.toString(),
-                phone = holder.appointmentClientPhone.text.toString(),
-                notes = holder.appointmentNotes.text.toString(),
-                deleted = false
-            )
-
-            val bundle = Bundle()
-            bundle.putParcelable(bindingKeyAppointment, appointmentParams)
-
-            it.findNavController()
-                .navigate(R.id.action_dateFragment_to_appointmentFragment, bundle)
-        }
-
-        // dateViewModel.setDateAppointments(dateAppointmentsArray)
-
-        holder.callClientButton.setOnClickListener {
-            val phone = dateAppointment.phone
-            val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phone"))
-            context.startActivity(intent)
-        }
-    }
-
-    private fun runAnimation(view: View) {
-        // run animation
-        view.animate().apply {
-            duration = 1000
-            rotationY(360f)
-        }.start()
     }
 
     override fun getItemCount(): Int {
         return appointmentsCount
     }
-
 }

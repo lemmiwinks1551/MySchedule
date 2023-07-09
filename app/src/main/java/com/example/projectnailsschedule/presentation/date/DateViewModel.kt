@@ -4,12 +4,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
 import com.example.projectnailsschedule.domain.models.DateParams
+import com.example.projectnailsschedule.domain.usecase.appointmentUC.SaveAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.dateUC.DeleteAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.dateUC.GetDateAppointmentsUseCase
 
 class DateViewModel(
     private var deleteAppointmentUseCase: DeleteAppointmentUseCase,
-    private var getDateAppointmentsUseCase: GetDateAppointmentsUseCase
+    private var getDateAppointmentsUseCase: GetDateAppointmentsUseCase,
+    private var saveAppointmentUseCase: SaveAppointmentUseCase
     ) : ViewModel() {
 
     val log = this::class.simpleName
@@ -22,8 +24,12 @@ class DateViewModel(
             )
         )
 
+    fun saveAppointment(appointmentModelDb: AppointmentModelDb) {
+        saveAppointmentUseCase.execute(appointmentModelDb)
+    }
+
     fun updateDateParams() {
-        // set day status and appointmentsCount
+        // set day and appointmentsCount
         getDateAppointmentCount()
         selectedDateParams.value = selectedDateParams.value
     }

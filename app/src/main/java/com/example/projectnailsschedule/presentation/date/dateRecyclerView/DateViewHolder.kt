@@ -14,18 +14,13 @@ class DateViewHolder internal constructor(
 ) :
     RecyclerView.ViewHolder(itemView) {
 
-    var appointmentId: Int? = null
     var appointmentDate: String? = null
-    var appointmentModelDb: AppointmentModelDb? = null
 
     val appointmentTime: TextView
     val appointmentProcedure: TextView
     val appointmentClientName: TextView
     val appointmentClientPhone: TextView
     val appointmentNotes: TextView
-
-    var editImageBoolean: ImageButton? = null
-    var deleteImageButton: ImageButton? = null
 
     var callClientButton: ImageButton
 
@@ -35,9 +30,6 @@ class DateViewHolder internal constructor(
         appointmentClientName = itemView.findViewById(R.id.client_value_search)
         appointmentClientPhone = itemView.findViewById(R.id.phone_value_search)
         appointmentNotes = itemView.findViewById(R.id.misc_value_search)
-
-        editImageBoolean = itemView.findViewById(R.id.edit_note_image_button)
-        deleteImageButton = itemView.findViewById(R.id.delete_forever_image_button)
 
         callClientButton = itemView.findViewById(R.id.call_client_button)
 

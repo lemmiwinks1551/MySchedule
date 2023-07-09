@@ -29,7 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/edit_note_image_button"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/client_avatar"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -98,39 +98,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/phone_value_search" />
-я
+
     </androidx.constraintlayout.widget.ConstraintLayout> <!--Appointment params-->
-
-    <ImageButton
-        android:id="@+id/edit_note_image_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:adjustViewBounds="true"
-        android:background="#00000000"
-        android:contentDescription="@string/edit_appointment"
-        android:cropToPadding="false"
-        android:scaleType="fitCenter"
-        android:src="@drawable/ic_baseline_edit_note_36"
-        app:layout_constraintStart_toEndOf="@id/appointment_constraint_layout"
-        app:layout_constraintBottom_toTopOf="@id/delete_forever_image_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" /> <!--Edit appointment image button-->
-
-    <ImageButton
-        android:id="@+id/delete_forever_image_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:adjustViewBounds="true"
-        android:background="#00000000"
-        android:contentDescription="@string/delete_appointment"
-        android:cropToPadding="false"
-        android:scaleType="fitCenter"
-        android:src="@drawable/ic_baseline_delete_sweep_36"
-        app:layout_constraintStart_toEndOf="@id/appointment_constraint_layout"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edit_note_image_button" /> <!--Delete appointment image button-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

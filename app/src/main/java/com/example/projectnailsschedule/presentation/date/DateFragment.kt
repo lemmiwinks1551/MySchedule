@@ -1,23 +1,25 @@
 package com.example.projectnailsschedule.presentation.date
 
+import android.graphics.Canvas
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentDateBinding
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
-import com.example.projectnailsschedule.domain.models.ClientModelDb
 import com.example.projectnailsschedule.domain.models.DateParams
-import com.example.projectnailsschedule.presentation.clients.clientsRecyclerView.ClientsAdapter
 import com.example.projectnailsschedule.presentation.date.dateRecyclerView.DateAdapter
 import com.example.projectnailsschedule.util.Util
+import com.google.android.material.snackbar.Snackbar
 
 class DateFragment : Fragment(), DateAdapter.OnItemClickListener {
     val log = this::class.simpleName
@@ -30,11 +32,11 @@ class DateFragment : Fragment(), DateAdapter.OnItemClickListener {
     private val dateRecyclerViewSpanCount = 1
 
     private var appointmentList: List<AppointmentModelDb>? = null
-    private var dateAdapter: DateAdapter? = null
+    private var appointmentsRvAdapter: DateAdapter? = null
 
     private var dateParams: DateParams? = null
     private var dateViewModel: DateViewModel? = null
-    private var dateRecyclerView: RecyclerView? = null
+    private var appointmentsRv: RecyclerView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,7 +44,7 @@ class DateFragment : Fragment(), DateAdapter.OnItemClickListener {
         // create ViewModel object with Factory
         dateViewModel = ViewModelProvider(
             this,
-            DataViewModelFactory(context)
+            DateViewModelFactory(context)
         )[DateViewModel::class.java]
 
         // get dateParams from Bundle
@@ -64,17 +66,20 @@ class DateFragment : Fragment(), DateAdapter.OnItemClickListener {
         // set current date in viewModel
         dateViewModel!!.selectedDateParams.value = dateParams
 
-        // get status and appointments from date
+        // get and appointments from date
         dateViewModel?.updateDateParams()
 
         // set observers
         setObservers()
 
+        // swipe to delete
+        swipeToDelete()
+
         return binding.root
     }
 
     private fun initWidgets() {
-        dateRecyclerView = binding.scheduleRecyclerView
+        appointmentsRv = binding.scheduleRecyclerView
     }
 
     private fun initClickListeners() {
@@ -100,8 +105,8 @@ class DateFragment : Fragment(), DateAdapter.OnItemClickListener {
         // dateParams observer
         dateViewModel?.selectedDateParams?.observe(viewLifecycleOwner) {
             if (it.appointmentCount != 0) {
-                inflateDateRecyclerView(it)
                 appointmentList = dateViewModel!!.getDateAppointments().toList()
+                inflateDateRecyclerView(it)
             } else {
                 binding.fragmentDateTitle.text = noAppointmentsTextTitle
             }
@@ -111,23 +116,21 @@ class DateFragment : Fragment(), DateAdapter.OnItemClickListener {
 
     private fun inflateDateRecyclerView(selectedDate: DateParams) {
         // create adapter
-        dateAdapter = DateAdapter(
+        appointmentsRvAdapter = DateAdapter(
             appointmentsCount = selectedDate.appointmentCount!!,
-            onItemListener = this,
-            dateViewModel = dateViewModel!!,
-            fragmentActivity = requireActivity(),
+            appointmentsList = appointmentList!!,
             context = requireContext()
         )
 
         val layoutManager: RecyclerView.LayoutManager =
             GridLayoutManager(activity, dateRecyclerViewSpanCount)
 
-        dateRecyclerView?.layoutManager = layoutManager
-        dateRecyclerView?.adapter = dateAdapter
-        dateRecyclerView?.scheduleLayoutAnimation()
+        appointmentsRv?.layoutManager = layoutManager
+        appointmentsRv?.adapter = appointmentsRvAdapter
+        appointmentsRv?.scheduleLayoutAnimation()
 
         // set clickListener on dateRV
-        dateAdapter!!.setOnItemClickListener(object : DateAdapter.OnItemClickListener {
+        appointmentsRvAdapter!!.setOnItemClickListener(object : DateAdapter.OnItemClickListener {
             override fun onItemClick(position: Int) {
                 // edit selected appointment
                 val bundle = Bundle()
@@ -152,6 +155,75 @@ class DateFragment : Fragment(), DateAdapter.OnItemClickListener {
         super.onResume()
         // hide keyboard
         Util().hideKeyboard(requireActivity())
+    }
+
+    private fun swipeToDelete() {
+        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                // this method is called when the item is moved.
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                // this method is called when we swipe our item to left direction.
+                // on below line we are getting the item at a particular position.
+                val deleteAppointmentModelDb: AppointmentModelDb = appointmentList!![viewHolder.adapterPosition]
+                val position = viewHolder.adapterPosition
+
+                // delete client from Db
+                dateViewModel?.deleteAppointment(deleteAppointmentModelDb)
+
+                appointmentsRvAdapter?.notifyItemRemoved(position)
+
+                // show Snackbar
+                Snackbar.make(
+                    appointmentsRv!!,
+                    "Удалена запись: " + deleteAppointmentModelDb.name,
+                    Snackbar.LENGTH_LONG
+                ).setBackgroundTint(resources.getColor(R.color.yellow))
+                    .setActionTextColor(resources.getColor(R.color.black))
+                    .setTextColor(resources.getColor(R.color.black))
+                    .setAction(
+                        "Отмена"
+                    ) {
+                        // adding on click listener to our action of snack bar.
+                        // below line is to add our item to array list with a position.
+                        dateViewModel?.saveAppointment(deleteAppointmentModelDb)
+
+                        // below line is to notify item is
+                        // added to our adapter class.
+                        appointmentsRvAdapter?.notifyDataSetChanged()
+                        dateViewModel?.updateDateParams()
+                    }.show()
+            }
+
+            override fun onChildDraw(c: Canvas, recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean
+            ) {
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive
+                )
+
+                if (dX < 0) {
+                    val icon = ContextCompat.getDrawable(requireContext(), R.drawable.swipe_to_delete)!!
+                    val itemWidth = viewHolder.itemView.bottom - viewHolder.itemView.top
+
+                    val iconMargin = (viewHolder.itemView.bottom - viewHolder.itemView.top - icon.intrinsicHeight) / 2
+                    val iconTop = viewHolder.itemView.top + iconMargin
+                    val iconBottom = iconTop + icon.intrinsicHeight
+
+                    val iconRight = viewHolder.itemView.right - iconMargin
+                    val iconLeft = iconRight - icon.intrinsicWidth
+
+                    icon.setBounds(iconLeft, iconTop, iconRight, iconBottom)
+                    icon.draw(c)
+                } else {
+
+                }
+            }
+        }).attachToRecyclerView(appointmentsRv)
     }
 
     override fun onItemClick(position: Int) {

@@ -36,7 +36,7 @@ class ClientsAdapter(
     }
 
     override fun getItemCount(): Int {
-        // set current appointment count
+        // set current clients count
         return clientsCount
     }
 
