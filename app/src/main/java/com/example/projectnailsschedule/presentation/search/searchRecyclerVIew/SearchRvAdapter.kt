@@ -1,27 +1,41 @@
 package com.example.projectnailsschedule.presentation.search.searchRecyclerVIew
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
-import com.example.projectnailsschedule.presentation.search.SearchFragment
 import com.example.projectnailsschedule.presentation.search.SearchViewModel
 
-internal class SearchAdapter(
+internal class SearchRvAdapter(
     private var appointmentCount: Int,
-    private val searchFragment: SearchFragment,
     private var appointmentsList: List<AppointmentModelDb>,
-    private val searchViewModel: SearchViewModel
+    private val searchViewModel: SearchViewModel,
+    private val context: Context
 ) :
-    RecyclerView.Adapter<SearchViewHolder>() {
+    RecyclerView.Adapter<SearchViewHolder>()
+{
+    val log = this::class.simpleName
+
+    private lateinit var mListener: OnItemClickListener
+
+    interface OnItemClickListener {
+        fun onItemClick(position: Int)
+    }
+
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+        mListener = listener
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val view: View = inflater.inflate(R.layout.search_recycler_view_item, parent, false)
 
-        return SearchViewHolder(view, searchFragment)
+        return SearchViewHolder(view, mListener)
     }
 
     override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
@@ -45,16 +59,18 @@ internal class SearchAdapter(
             phone.text = appointmentModelDb.phone
             notes.text = appointmentModelDb.notes
         }
+
+        holder.callClientButton.setOnClickListener {
+            val phone = appointmentsList[position].phone.toString()
+            val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phone"))
+            context.startActivity(intent)
+        }
     }
 
     override fun getItemCount(): Int {
         // set current appointment count
-        searchViewModel.appointmentCount.value = appointmentCount
-        searchViewModel.getAllAppointments()
+        searchViewModel.appointmentsTotalCount.value = appointmentCount
+        searchViewModel.getAllAppointmentsLiveData()
         return appointmentCount
-    }
-
-    interface OnItemListener {
-        fun onItemClick(position: Int, dayText: String?)
     }
 }

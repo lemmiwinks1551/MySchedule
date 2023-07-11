@@ -4,8 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    android:orientation="vertical"
-    android:background="@drawable/recycler_view_background_pink">
+    android:background="@drawable/recycler_view_background_pink"
+    android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/appointment_constraint_layout"
@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/edit_note_image_button"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:text="@string/example_date"
-            android:textSize="16sp"
+            android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -35,8 +35,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:text="@string/example_time"
+            android:textSize="20sp"
             android:textStyle="bold"
-            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/date_value_search" />
@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:text="@string/example_procedure"
-            android:textSize="16sp"
+            android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/time_value_search" />
@@ -57,9 +57,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
+            android:layout_marginTop="8dp"
             android:text="@string/example_client"
-            android:textSize="16sp"
+            android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/procedure_value_search" />
 
@@ -69,8 +71,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:text="@string/example_phone"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toStartOf="@id/call_client_button"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/client_value_search" />
 
@@ -80,46 +82,21 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:text="@string/example_misc"
-            android:textSize="16sp"
+            android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/phone_value_search" />
 
+        <ImageButton
+            android:id="@+id/call_client_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_call_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/phone_value_search"
+            app:layout_constraintTop_toBottomOf="@id/client_value_search"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout> <!--Appointment params-->
-
-    <ImageButton
-        android:visibility="invisible"
-        android:id="@+id/edit_note_image_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:adjustViewBounds="true"
-        android:background="#00000000"
-        android:contentDescription="@string/edit_appointment"
-        android:cropToPadding="false"
-        android:scaleType="fitCenter"
-        android:src="@drawable/ic_baseline_edit_note_36"
-        app:layout_constraintBottom_toTopOf="@id/delete_forever_image_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/appointment_constraint_layout"
-        app:layout_constraintTop_toTopOf="parent" /> <!--Edit appointment image button-->
-
-    <ImageButton
-        android:visibility="invisible"
-        android:id="@+id/delete_forever_image_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:adjustViewBounds="true"
-        android:background="#00000000"
-        android:contentDescription="@string/delete_appointment"
-        android:cropToPadding="false"
-        android:scaleType="fitCenter"
-        android:src="@drawable/ic_baseline_delete_sweep_36"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/appointment_constraint_layout"
-        app:layout_constraintTop_toBottomOf="@id/edit_note_image_button" /> <!--Delete appointment image button-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

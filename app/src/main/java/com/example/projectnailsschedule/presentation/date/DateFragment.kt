@@ -21,7 +21,7 @@ import com.example.projectnailsschedule.presentation.date.dateRecyclerView.DateA
 import com.example.projectnailsschedule.util.Util
 import com.google.android.material.snackbar.Snackbar
 
-class DateFragment : Fragment(), DateAdapter.OnItemClickListener {
+class DateFragment : Fragment() {
     val log = this::class.simpleName
 
     private var _binding: FragmentDateBinding? = null
@@ -224,10 +224,6 @@ class DateFragment : Fragment(), DateAdapter.OnItemClickListener {
                 }
             }
         }).attachToRecyclerView(appointmentsRv)
-    }
-
-    override fun onItemClick(position: Int) {
-        // not implemented yet
     }
 
     override fun onDestroyView() {

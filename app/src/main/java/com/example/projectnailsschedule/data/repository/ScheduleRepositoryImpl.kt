@@ -2,24 +2,22 @@ package com.example.projectnailsschedule.data.repository
 
 import android.content.Context
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
 import com.example.projectnailsschedule.data.storage.ScheduleDb
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
 import com.example.projectnailsschedule.domain.models.DateParams
 import com.example.projectnailsschedule.domain.repository.ScheduleRepository
 import com.example.projectnailsschedule.util.Util
-import kotlinx.coroutines.flow.flatMapConcat
-import kotlinx.coroutines.flow.toCollection
-import kotlinx.coroutines.flow.toList
 
 class ScheduleRepositoryImpl(context: Context) : ScheduleRepository {
-    private var dbRoom = ScheduleDb.getDb(context)
+    private var scheduleDb = ScheduleDb.getDb(context)
     private var log = this::class.simpleName
 
     override fun saveAppointment(appointmentModelDb: AppointmentModelDb): Boolean {
         // Save appointment in database
         val thread = Thread {
-            dbRoom.getDao().insert(appointmentModelDb)
+            scheduleDb.getDao().insert(appointmentModelDb)
         }
         thread.start()
         thread.join()
@@ -30,7 +28,7 @@ class ScheduleRepositoryImpl(context: Context) : ScheduleRepository {
     override fun updateAppointment(appointmentModelDb: AppointmentModelDb): Boolean {
         // Edit appointment in database
         val thread = Thread {
-            dbRoom.getDao().update(appointmentModelDb)
+            scheduleDb.getDao().update(appointmentModelDb)
         }
         thread.start()
         thread.join()
@@ -45,8 +43,8 @@ class ScheduleRepositoryImpl(context: Context) : ScheduleRepository {
 
         val thread = Thread {
             val dateToCheck = Util().dateConverterNew(dateParams.date.toString())
-            dateParams.appointmentCount = dbRoom.getDao().getDateAppointments(dateToCheck).size
-            arrayOfAppointmentModelDbs = dbRoom.getDao().getDateAppointments(dateToCheck)
+            dateParams.appointmentCount = scheduleDb.getDao().getDateAppointments(dateToCheck).size
+            arrayOfAppointmentModelDbs = scheduleDb.getDao().getDateAppointments(dateToCheck)
             Log.e(log, "$dateParams")
         }
         thread.start()
@@ -57,7 +55,7 @@ class ScheduleRepositoryImpl(context: Context) : ScheduleRepository {
 
     override fun deleteAppointment(appointmentModelDb: AppointmentModelDb) {
         val thread = Thread {
-            dbRoom.getDao().delete(appointmentModelDb)
+            scheduleDb.getDao().delete(appointmentModelDb)
         }
         thread.start()
         thread.join()
@@ -67,11 +65,19 @@ class ScheduleRepositoryImpl(context: Context) : ScheduleRepository {
     override fun getAllAppointments(): List<AppointmentModelDb> {
         var arrayOfAppointmentModelDbs = listOf<AppointmentModelDb>()
         val thread = Thread {
-            arrayOfAppointmentModelDbs = dbRoom.getDao().selectAllList()
+            arrayOfAppointmentModelDbs = scheduleDb.getDao().selectAllList()
         }
         thread.start()
         thread.join()
 
         return arrayOfAppointmentModelDbs
+    }
+
+    override fun getAllAppointmentsLiveData(): LiveData<List<AppointmentModelDb>> {
+        return scheduleDb.getDao().selectAll().asLiveData()
+    }
+
+    override fun searchAppointment(searchQuery: String): LiveData<List<AppointmentModelDb>> {
+        return scheduleDb.getDao().searchDatabase(searchQuery).asLiveData()
     }
 }

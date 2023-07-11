@@ -8,10 +8,11 @@ import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
 import com.example.projectnailsschedule.presentation.search.SearchFragment
 
-class SearchViewHolder internal constructor(itemView: View, onItemListener: SearchFragment) :
-    RecyclerView.ViewHolder(itemView), View.OnClickListener {
-
-    private val onItemListener: SearchAdapter.OnItemListener
+class SearchViewHolder internal constructor(
+    itemView: View,
+    listener: SearchRvAdapter.OnItemClickListener
+) :
+    RecyclerView.ViewHolder(itemView) {
 
     var appointmentId: Int? = null
     var appointmentDate: String? = null
@@ -24,9 +25,7 @@ class SearchViewHolder internal constructor(itemView: View, onItemListener: Sear
     var time: TextView
     var notes: TextView
     var procedure: TextView
-
-    var editImageBoolean: ImageButton? = null
-    var deleteImageButton: ImageButton? = null
+    var callClientButton: ImageButton
 
     init {
         name = itemView.findViewById(R.id.client_value_search)
@@ -35,15 +34,10 @@ class SearchViewHolder internal constructor(itemView: View, onItemListener: Sear
         time = itemView.findViewById(R.id.time_value_search)
         notes = itemView.findViewById(R.id.misc_value_search)
         procedure = itemView.findViewById(R.id.procedure_value_search)
+        callClientButton = itemView.findViewById(R.id.call_client_button)
 
-        editImageBoolean = itemView.findViewById(R.id.edit_note_image_button)
-        deleteImageButton = itemView.findViewById(R.id.delete_forever_image_button)
-
-        this.onItemListener = onItemListener
-        itemView.setOnClickListener(this)
-    }
-
-    override fun onClick(p0: View?) {
-        onItemListener.onItemClick(adapterPosition, date.text as String)
+        itemView.setOnClickListener {
+            listener.onItemClick(adapterPosition)
+        }
     }
 }

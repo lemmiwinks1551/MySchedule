@@ -1,33 +1,38 @@
 package com.example.projectnailsschedule.presentation.search
 
+import android.graphics.Canvas
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.widget.SearchView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
-import com.example.projectnailsschedule.data.storage.ScheduleDb
 import com.example.projectnailsschedule.databinding.FragmentSearchBinding
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
-import com.example.projectnailsschedule.domain.models.DateParams
-import com.example.projectnailsschedule.presentation.search.searchRecyclerVIew.SearchAdapter
-import com.example.projectnailsschedule.util.Util
+import com.example.projectnailsschedule.presentation.search.searchRecyclerVIew.SearchRvAdapter
+import com.google.android.material.snackbar.Snackbar
 
-class SearchFragment : Fragment(), SearchAdapter.OnItemListener {
-
+class SearchFragment : Fragment() {
     private val log = this::class.simpleName
+
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
     private var searchTextView: SearchView? = null
     private var searchRecyclerView: RecyclerView? = null
     private var searchViewModel: SearchViewModel? = null
     private var appointmentCount: TextView? = null
+    private val bindingKeyAppointment = "appointmentParams"
+
+    private var appointmentList: List<AppointmentModelDb>? = null
+    private var searchRvAdapter: SearchRvAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,6 +61,8 @@ class SearchFragment : Fragment(), SearchAdapter.OnItemListener {
         // init click listeners
         initClickListeners()
 
+        swipeToDelete()
+
         return binding.root
     }
 
@@ -66,7 +73,7 @@ class SearchFragment : Fragment(), SearchAdapter.OnItemListener {
     }
 
     private fun initObservers() {
-        searchViewModel!!.appointmentCount.observe(viewLifecycleOwner) {
+        searchViewModel!!.appointmentsTotalCount.observe(viewLifecycleOwner) {
             appointmentCount?.text = getString(R.string.appointments_count, it)
         }
     }
@@ -83,6 +90,7 @@ class SearchFragment : Fragment(), SearchAdapter.OnItemListener {
                 val searchQuery = "%$newText%"
                 searchViewModel!!.searchDatabase(searchQuery).observe(viewLifecycleOwner) { list ->
                     inflateSearchRecyclerVIew(list)
+                    appointmentList = list
                 }
                 return false
             }
@@ -91,33 +99,117 @@ class SearchFragment : Fragment(), SearchAdapter.OnItemListener {
 
     private fun inflateSearchRecyclerVIew(appointmentsList: List<AppointmentModelDb>) {
         // create adapter
-        val searchAdapter = SearchAdapter(
+        searchRvAdapter = SearchRvAdapter(
             appointmentCount = appointmentsList.size,
-            searchFragment = this,
             appointmentsList = appointmentsList,
-            searchViewModel = searchViewModel!!
+            searchViewModel = searchViewModel!!,
+            context = requireContext()
         )
 
         val layoutManager: RecyclerView.LayoutManager =
             GridLayoutManager(activity, 1)
 
         searchRecyclerView?.layoutManager = layoutManager
-        searchRecyclerView?.adapter = searchAdapter
+        searchRecyclerView?.adapter = searchRvAdapter
+
+        searchRvAdapter!!.setOnItemClickListener(object : SearchRvAdapter.OnItemClickListener {
+            override fun onItemClick(position: Int) {
+                // edit selected appointment
+                val bundle = Bundle()
+                val appointmentModelDb = AppointmentModelDb(
+                    _id = appointmentList?.get(position)?._id,
+                    date = appointmentList?.get(position)?.date,
+                    name = appointmentList?.get(position)?.name,
+                    time = appointmentList?.get(position)?.time,
+                    procedure = appointmentList?.get(position)?.procedure,
+                    phone = appointmentList?.get(position)?.phone,
+                    notes = appointmentList?.get(position)?.notes,
+                    deleted = appointmentList?.get(position)!!.deleted
+                )
+                val navController = findNavController()
+                bundle.putParcelable(bindingKeyAppointment, appointmentModelDb)
+                navController.navigate(R.id.action_nav_search_to_nav_appointment, bundle)
+            }
+        })
     }
 
-    override fun onItemClick(position: Int, dayText: String?) {
-        val date = DateParams(
-            _id = null,
-            date = Util().convertStrToLocalDate(dayText!!),
-            appointmentCount = null
-        )
+    private fun swipeToDelete() {
+        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                // this method is called when the item is moved.
+                return false
+            }
 
-        val bundle = Bundle()
-        bundle.putParcelable("dateParams", date)
-        requireActivity().findNavController(R.id.appointments_count_text_view).navigate(
-            R.id.action_nav_search_to_nav_date,
-            bundle
-        )
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                // this method is called when we swipe our item to left direction.
+                // on below line we are getting the item at a particular position.
+                val deleteAppointmentModelDb: AppointmentModelDb =
+                    appointmentList!![viewHolder.adapterPosition]
+                val position = viewHolder.adapterPosition
+
+                // delete client from Db
+                searchViewModel?.deleteAppointment(deleteAppointmentModelDb)
+
+                searchRvAdapter?.notifyItemRemoved(position)
+
+                // show Snackbar
+                Snackbar.make(
+                    searchRecyclerView!!,
+                    "Удалена запись: " + deleteAppointmentModelDb.name,
+                    Snackbar.LENGTH_LONG
+                ).setBackgroundTint(resources.getColor(R.color.yellow))
+                    .setActionTextColor(resources.getColor(R.color.black))
+                    .setTextColor(resources.getColor(R.color.black))
+                    .setAction(
+                        "Отмена"
+                    ) {
+                        // adding on click listener to our action of snack bar.
+                        // below line is to add our item to array list with a position.
+                        searchViewModel?.saveAppointment(deleteAppointmentModelDb)
+
+                        // below line is to notify item is
+                        // added to our adapter class.
+                        searchRvAdapter?.notifyDataSetChanged()
+                    }.show()
+            }
+
+            override fun onChildDraw(
+                c: Canvas,
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                dX: Float,
+                dY: Float,
+                actionState: Int,
+                isCurrentlyActive: Boolean
+            ) {
+                super.onChildDraw(
+                    c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive
+                )
+
+                if (dX < 0) {
+                    val icon =
+                        ContextCompat.getDrawable(requireContext(), R.drawable.swipe_to_delete)!!
+                    val itemWidth = viewHolder.itemView.bottom - viewHolder.itemView.top
+
+                    val iconMargin =
+                        (viewHolder.itemView.bottom - viewHolder.itemView.top - icon.intrinsicHeight) / 2
+                    val iconTop = viewHolder.itemView.top + iconMargin
+                    val iconBottom = iconTop + icon.intrinsicHeight
+
+                    val iconRight = viewHolder.itemView.right - iconMargin
+                    val iconLeft = iconRight - icon.intrinsicWidth
+
+                    icon.setBounds(iconLeft, iconTop, iconRight, iconBottom)
+                    icon.draw(c)
+                } else {
+
+                }
+            }
+        }).attachToRecyclerView(searchRecyclerView)
     }
 
     override fun onResume() {

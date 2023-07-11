@@ -1,26 +1,39 @@
 package com.example.projectnailsschedule.presentation.search
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
-import com.example.projectnailsschedule.data.storage.ClientsDb
-import com.example.projectnailsschedule.data.storage.ScheduleDb
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
+import com.example.projectnailsschedule.domain.usecase.appointmentUC.GetAllAppointmentsUseCase
+import com.example.projectnailsschedule.domain.usecase.appointmentUC.SaveAppointmentUseCase
+import com.example.projectnailsschedule.domain.usecase.dateUC.DeleteAppointmentUseCase
+import com.example.projectnailsschedule.domain.usecase.searchUC.GetAllAppointmentsLiveDataUseCase
+import com.example.projectnailsschedule.domain.usecase.searchUC.SearchAppointmentUseCase
 
 class SearchViewModel(
-    context: Context
-) : ViewModel() {
+    private var saveAppointmentUseCase: SaveAppointmentUseCase,
+    private var deleteAppointmentUseCase: DeleteAppointmentUseCase,
+    private var searchAppointmentUseCase: SearchAppointmentUseCase,
+    private var getAllAppointmentsUseCase: GetAllAppointmentsUseCase,
+    private var getAllAppointmentsLiveDataUseCase: GetAllAppointmentsLiveDataUseCase
+    ) : ViewModel() {
 
-    var scheduleDb = ScheduleDb.getDb(context)
-    val appointmentCount: MutableLiveData<Int> = MutableLiveData()
+    var appointmentsTotalCount = MutableLiveData<Int>()
 
     fun searchDatabase(searchQuery: String): LiveData<List<AppointmentModelDb>> {
-        return scheduleDb.getDao().searchDatabase(searchQuery).asLiveData()
+        return searchAppointmentUseCase.execute(searchQuery)
     }
 
-    fun getAllAppointments() : LiveData<List<AppointmentModelDb>> {
-        return scheduleDb.getDao().selectAll().asLiveData()
+    fun getAllAppointmentsLiveData() : LiveData<List<AppointmentModelDb>> {
+        getAllAppointmentsLiveDataUseCase.execute().value?.size
+        return getAllAppointmentsLiveDataUseCase.execute()
+    }
+
+    fun deleteAppointment(appointmentModelDb: AppointmentModelDb) {
+        deleteAppointmentUseCase.execute(appointmentModelDb)
+    }
+
+    fun saveAppointment(appointmentModelDb: AppointmentModelDb) {
+        saveAppointmentUseCase.execute(appointmentModelDb)
     }
 }
