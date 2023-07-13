@@ -191,7 +191,7 @@ class ClientsFragment : Fragment() {
                 )
 
                 if (dX < 0) {
-                    val icon = ContextCompat.getDrawable(requireContext(), R.drawable.swipe_to_delete)!!
+                    val icon = ContextCompat.getDrawable(requireContext(), R.drawable.baseline_delete_24)!!
                     val itemWidth = viewHolder.itemView.bottom - viewHolder.itemView.top
 
                     val iconMargin = (viewHolder.itemView.bottom - viewHolder.itemView.top - icon.intrinsicHeight) / 2

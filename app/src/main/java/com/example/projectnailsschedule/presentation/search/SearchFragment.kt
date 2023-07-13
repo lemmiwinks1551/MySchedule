@@ -1,7 +1,11 @@
 package com.example.projectnailsschedule.presentation.search
 
 import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -70,6 +74,7 @@ class SearchFragment : Fragment() {
         searchTextView = binding.searchView
         searchRecyclerView = binding.searchRecyclerView
         appointmentCount = binding.appointmentsCountTextView
+
     }
 
     private fun initObservers() {
@@ -177,37 +182,38 @@ class SearchFragment : Fragment() {
                     }.show()
             }
 
-            override fun onChildDraw(
-                c: Canvas,
-                recyclerView: RecyclerView,
-                viewHolder: RecyclerView.ViewHolder,
-                dX: Float,
-                dY: Float,
-                actionState: Int,
-                isCurrentlyActive: Boolean
+            override fun onChildDraw(c: Canvas, recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean
             ) {
-                super.onChildDraw(
-                    c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive
-                )
+                val deleteIcon: Drawable? =
+                    ContextCompat.getDrawable(requireContext(), R.drawable.baseline_delete_24)!!
 
-                if (dX < 0) {
-                    val icon =
-                        ContextCompat.getDrawable(requireContext(), R.drawable.swipe_to_delete)!!
-                    val itemWidth = viewHolder.itemView.bottom - viewHolder.itemView.top
+                val itemView = viewHolder.itemView
+                val iconMarginVertical = (viewHolder.itemView.height - deleteIcon!!.intrinsicHeight) / 2
 
-                    val iconMargin =
-                        (viewHolder.itemView.bottom - viewHolder.itemView.top - icon.intrinsicHeight) / 2
-                    val iconTop = viewHolder.itemView.top + iconMargin
-                    val iconBottom = iconTop + icon.intrinsicHeight
+                val colorDrawableBackground = ColorDrawable(Color.parseColor("#ffcce6"))
 
-                    val iconRight = viewHolder.itemView.right - iconMargin
-                    val iconLeft = iconRight - icon.intrinsicWidth
+                val left = itemView.right - deleteIcon.intrinsicWidth - deleteIcon.intrinsicWidth // 882
+                val right = itemView.right - deleteIcon.intrinsicWidth // 1014
+                val top = itemView.top + iconMarginVertical
+                val bottom = itemView.bottom - iconMarginVertical
 
-                    icon.setBounds(iconLeft, iconTop, iconRight, iconBottom)
-                    icon.draw(c)
-                } else {
+                colorDrawableBackground.setBounds(itemView.right + dX.toInt(), itemView.top, itemView.right, itemView.bottom)
+                deleteIcon.setBounds(left, top, right, bottom)
 
-                }
+                deleteIcon.level = 0
+
+                colorDrawableBackground.draw(c)
+                c.save()
+
+                if (dX > 0)
+                    c.clipRect(itemView.left, itemView.top, dX.toInt(), itemView.bottom)
+                else
+                    c.clipRect(itemView.right + dX.toInt(), itemView.top, itemView.right, itemView.bottom)
+
+                deleteIcon.draw(c)
+                c.restore()
+
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
             }
         }).attachToRecyclerView(searchRecyclerView)
     }
