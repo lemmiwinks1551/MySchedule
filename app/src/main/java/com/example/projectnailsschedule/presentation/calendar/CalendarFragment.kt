@@ -308,6 +308,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener,
     override fun onPrepareOptionsMenu(menu: Menu) {
         // set search button visible
         menu.findItem(R.id.search).isVisible = true
+        menu.findItem(R.id.full_month_view).isVisible = true
         super.onPrepareOptionsMenu(menu)
     }
 

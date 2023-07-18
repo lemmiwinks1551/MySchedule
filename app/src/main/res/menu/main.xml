@@ -2,9 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:visible="false"
         android:id="@+id/search"
         android:icon="@android:drawable/ic_menu_search"
         android:title="@string/appointments_search_hint"
+        android:visible="false"
         app:showAsAction="always" />
+
+    <item
+        android:id="@+id/full_month_view"
+        android:icon="@android:drawable/ic_menu_month"
+        android:title="@string/appointments_full_month_view"
+        android:visible="false"
+        app:showAsAction="ifRoom" />
+
 </menu>
