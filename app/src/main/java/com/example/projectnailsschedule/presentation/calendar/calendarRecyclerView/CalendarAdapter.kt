@@ -9,10 +9,7 @@ import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.domain.models.DateParams
 import com.example.projectnailsschedule.presentation.calendar.CalendarFragment
 import com.example.projectnailsschedule.presentation.calendar.CalendarViewModel
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
+import java.time.LocalDate
 
 internal class CalendarAdapter(
     private val daysInMonth: ArrayList<String>,
@@ -54,6 +51,14 @@ internal class CalendarAdapter(
             if (appointmentCount > 0) {
                 // if appointments exists
                 holder.dateAppointmentsCount.text = appointmentCount.toString()
+            }
+
+            // if day is today set custom frame
+            if (dayInHolder == LocalDate.now().dayOfMonth.toString() &&
+                dateParams.date!!.month == LocalDate.now().month &&
+                dateParams.date!!.year == LocalDate.now().year
+            ) {
+                holder.cellLayout.setBackgroundResource(R.drawable.calendar_recycler_view_borders_today)
             }
         }
     }

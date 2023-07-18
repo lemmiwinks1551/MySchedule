@@ -204,6 +204,10 @@ class DateFragment : Fragment() {
                     }.show()
             }
 
+            override fun getSwipeEscapeVelocity(defaultValue: Float): Float {
+                return super.getSwipeEscapeVelocity(defaultValue) * 10
+            }
+
             override fun onChildDraw(c: Canvas, recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean
             ) {
                 val deleteIcon: Drawable? =
