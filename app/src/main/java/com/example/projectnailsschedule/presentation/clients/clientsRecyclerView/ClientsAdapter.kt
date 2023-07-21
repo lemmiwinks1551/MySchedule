@@ -30,7 +30,7 @@ class ClientsAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ClientsViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val view: View = inflater.inflate(R.layout.client_recycler_view_item, parent, false)
+        val view: View = inflater.inflate(R.layout.client_rv_item, parent, false)
 
         return ClientsViewHolder(view, mListener)
     }

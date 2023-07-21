@@ -80,4 +80,8 @@ class ScheduleRepositoryImpl(context: Context) : ScheduleRepository {
     override fun searchAppointment(searchQuery: String): LiveData<List<AppointmentModelDb>> {
         return scheduleDb.getDao().searchDatabase(searchQuery).asLiveData()
     }
+
+    override fun getMonthAppointments(dateMonth: String): LiveData<List<AppointmentModelDb>> {
+        return scheduleDb.getDao().getMonthAppointments(dateMonth).asLiveData()
+    }
 }

@@ -135,6 +135,7 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.search -> navController.navigate(R.id.nav_search)
+            R.id.full_month_view -> navController.navigate(R.id.fullMonthViewFragment)
         }
         return super.onOptionsItemSelected(item)
     }

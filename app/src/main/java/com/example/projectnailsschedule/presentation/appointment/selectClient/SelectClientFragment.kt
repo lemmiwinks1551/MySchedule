@@ -35,7 +35,7 @@ class SelectClientFragment : DialogFragment() {
             SelectClientViewModelFactory(context)
         )[SelectClientViewModel::class.java]
 
-        setStyle(STYLE_NORMAL, R.style.FullScreenDialog);
+        setStyle(STYLE_NORMAL, R.style.FullScreenDialog)
     }
 
     override fun onStart() {

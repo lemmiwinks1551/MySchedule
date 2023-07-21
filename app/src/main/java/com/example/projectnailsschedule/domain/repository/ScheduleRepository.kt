@@ -10,7 +10,7 @@ interface ScheduleRepository {
 
     fun updateAppointment(appointmentModelDb: AppointmentModelDb): Boolean
 
-    fun getDateAppointments(dateParams: DateParams) : Array<AppointmentModelDb>
+    fun getDateAppointments(dateParams: DateParams): Array<AppointmentModelDb>
 
     fun deleteAppointment(appointmentModelDb: AppointmentModelDb)
 
@@ -19,4 +19,6 @@ interface ScheduleRepository {
     fun getAllAppointmentsLiveData(): LiveData<List<AppointmentModelDb>>
 
     fun searchAppointment(searchQuery: String): LiveData<List<AppointmentModelDb>>
+
+    fun getMonthAppointments(dateMonth: String): LiveData<List<AppointmentModelDb>>
 }

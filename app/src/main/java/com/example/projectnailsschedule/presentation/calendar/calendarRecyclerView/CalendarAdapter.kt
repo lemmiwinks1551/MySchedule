@@ -21,7 +21,7 @@ internal class CalendarAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalendarViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val view: View = inflater.inflate(R.layout.calendar_recycler_view_cell, parent, false)
+        val view: View = inflater.inflate(R.layout.calendar_rv_item, parent, false)
 
         return CalendarViewHolder(view, calendarFragment)
     }

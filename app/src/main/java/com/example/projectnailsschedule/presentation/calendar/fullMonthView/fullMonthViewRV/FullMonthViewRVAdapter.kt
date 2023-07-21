@@ -1,4 +1,4 @@
-package com.example.projectnailsschedule.presentation.date.dateRecyclerView
+package com.example.projectnailsschedule.presentation.calendar.fullMonthView.fullMonthViewRV
 
 import android.content.Context
 import android.content.Intent
@@ -9,12 +9,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
+import com.example.projectnailsschedule.presentation.date.dateRecyclerView.DateAdapter
 
-class DateAdapter(
+class FullMonthViewRVAdapter(
     private var appointmentsCount: Int,
     private var appointmentsList: List<AppointmentModelDb>,
     private val context: Context
-) : RecyclerView.Adapter<DateViewHolder>() {
+) : RecyclerView.Adapter<FullMonthViewRVViewHolder>(
+) {
 
     val log = this::class.simpleName
 
@@ -28,17 +30,18 @@ class DateAdapter(
         mListener = listener
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DateViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FullMonthViewRVViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val view: View = inflater.inflate(R.layout.date_appointments_rv_item, parent, false)
-        return DateViewHolder(view, mListener)
+        return FullMonthViewRVViewHolder(view, mListener)
     }
 
-    override fun onBindViewHolder(holder: DateViewHolder, position: Int) {
-        with(holder) {
-            // set date in holder
-            appointmentDate = appointmentsList[position].date
+    override fun getItemCount(): Int {
+        return appointmentsCount
+    }
 
+    override fun onBindViewHolder(holder: FullMonthViewRVViewHolder, position: Int) {
+        with(holder) {
             // set time in holder
             appointmentTime.text = appointmentsList[position].time
 
@@ -61,9 +64,5 @@ class DateAdapter(
                 context.startActivity(intent)
             }
         }
-    }
-
-    override fun getItemCount(): Int {
-        return appointmentsCount
     }
 }

@@ -21,6 +21,9 @@ interface ScheduleDao {
     @Query("SELECT * FROM schedule WHERE date = :date")
     fun getDateAppointments(date: String): Array<AppointmentModelDb>
 
+    @Query("SELECT * FROM schedule WHERE date LIKE :dateMonth")
+    fun getMonthAppointments(dateMonth: String): Flow<List<AppointmentModelDb>>
+
     @Delete
     fun delete(appointmentModelDb: AppointmentModelDb)
 

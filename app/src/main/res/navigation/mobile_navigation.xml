@@ -36,6 +36,9 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_enter_anim"
             app:popExitAnim="@anim/nav_default_exit_anim" />
+        <action
+            android:id="@+id/action_nav_calendar_to_fullMonthViewFragment"
+            app:destination="@id/fullMonthViewFragment" />
     </fragment>
 
     <fragment
@@ -116,6 +119,14 @@
         tools:layout="@layout/fragment_select_client" >
         <action
             android:id="@+id/action_selectClient_to_nav_appointment"
+            app:destination="@id/nav_appointment" />
+    </fragment>
+    <fragment
+        android:id="@+id/fullMonthViewFragment"
+        android:name="com.example.projectnailsschedule.presentation.calendar.fullMonthView.FullMonthViewFragment"
+        android:label="FullMonthViewFragment" >
+        <action
+            android:id="@+id/action_fullMonthViewFragment_to_nav_appointment"
             app:destination="@id/nav_appointment" />
     </fragment>
 </navigation>

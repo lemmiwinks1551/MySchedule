@@ -8,7 +8,7 @@ import com.example.projectnailsschedule.domain.usecase.appointmentUC.GetAllAppoi
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.SaveAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.dateUC.DeleteAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.searchUC.GetAllAppointmentsLiveDataUseCase
-import com.example.projectnailsschedule.domain.usecase.searchUC.SearchAppointmentUseCase
+import com.example.projectnailsschedule.domain.usecase.searchUC.SearchAppointmentUC
 
 class SearchViewModelFactory(context: Context?) : ViewModelProvider.Factory {
     private val scheduleRepositoryImpl = ScheduleRepositoryImpl(context = context!!)
@@ -19,8 +19,8 @@ class SearchViewModelFactory(context: Context?) : ViewModelProvider.Factory {
     private var saveAppointmentsUseCase =
         SaveAppointmentUseCase(scheduleRepository = scheduleRepositoryImpl)
 
-    private var searchAppointmentUseCase =
-        SearchAppointmentUseCase(scheduleRepository = scheduleRepositoryImpl)
+    private var searchAppointmentUC =
+        SearchAppointmentUC(scheduleRepository = scheduleRepositoryImpl)
 
     private var getAllAppointmentsUseCase =
         GetAllAppointmentsUseCase(scheduleRepository = scheduleRepositoryImpl)
@@ -32,8 +32,7 @@ class SearchViewModelFactory(context: Context?) : ViewModelProvider.Factory {
         return SearchViewModel(
             saveAppointmentUseCase = saveAppointmentsUseCase,
             deleteAppointmentUseCase = deleteAppointmentUseCase,
-            searchAppointmentUseCase = searchAppointmentUseCase,
-            getAllAppointmentsUseCase = getAllAppointmentsUseCase,
+            searchAppointmentUC = searchAppointmentUC,
             getAllAppointmentsLiveDataUseCase = getAllAppointmentsLiveDataUseCase
         ) as T
     }

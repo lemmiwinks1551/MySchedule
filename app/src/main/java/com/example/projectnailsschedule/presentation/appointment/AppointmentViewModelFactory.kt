@@ -12,6 +12,7 @@ class AppointmentViewModelFactory(context: Context?) : ViewModelProvider.Factory
 
     private val saveAppointmentUseCase =
         SaveAppointmentUseCase(scheduleRepository = scheduleRepositoryImpl)
+
     private val editAppointmentUseCase =
         UpdateAppointmentUseCase(scheduleRepository = scheduleRepositoryImpl)
 
