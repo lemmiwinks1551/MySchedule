@@ -81,7 +81,13 @@ class ScheduleRepositoryImpl(context: Context) : ScheduleRepository {
         return scheduleDb.getDao().searchDatabase(searchQuery).asLiveData()
     }
 
-    override fun getMonthAppointments(dateMonth: String): LiveData<List<AppointmentModelDb>> {
-        return scheduleDb.getDao().getMonthAppointments(dateMonth).asLiveData()
+    override fun getMonthAppointments(dateMonth: String): List<AppointmentModelDb> {
+        var output: List<AppointmentModelDb>? = null
+        val thread = Thread {
+            output = scheduleDb.getDao().getMonthAppointments(dateMonth)
+        }
+        thread.start()
+        thread.join()
+        return output!!
     }
 }
