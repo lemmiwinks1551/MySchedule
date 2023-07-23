@@ -32,7 +32,7 @@ class FullMonthViewRVAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FullMonthViewRVViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val view: View = inflater.inflate(R.layout.date_appointments_rv_item, parent, false)
+        val view: View = inflater.inflate(R.layout.appointments_month_view_rv_item, parent, false)
         return FullMonthViewRVViewHolder(view, mListener)
     }
 
@@ -42,6 +42,9 @@ class FullMonthViewRVAdapter(
 
     override fun onBindViewHolder(holder: FullMonthViewRVViewHolder, position: Int) {
         with(holder) {
+            // set date
+            appointmentDate.text = appointmentsList[position].date
+
             // set time in holder
             appointmentTime.text = appointmentsList[position].time
 

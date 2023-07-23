@@ -11,6 +11,7 @@ class FullMonthViewRVViewHolder internal constructor(
     listener: FullMonthViewRVAdapter.OnItemClickListener
 ) : RecyclerView.ViewHolder(itemView) {
 
+    val appointmentDate: TextView
     val appointmentTime: TextView
     val appointmentProcedure: TextView
     val appointmentClientName: TextView
@@ -20,6 +21,7 @@ class FullMonthViewRVViewHolder internal constructor(
     var callClientButton: ImageButton
 
     init {
+        appointmentDate = itemView.findViewById(R.id.date_value_search)
         appointmentTime = itemView.findViewById(R.id.time_value_search)
         appointmentProcedure = itemView.findViewById(R.id.procedure_value_search)
         appointmentClientName = itemView.findViewById(R.id.client_value_search)
