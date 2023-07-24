@@ -20,5 +20,5 @@ interface ScheduleRepository {
 
     fun searchAppointment(searchQuery: String): LiveData<List<AppointmentModelDb>>
 
-    fun getMonthAppointments(dateMonth: String): List<AppointmentModelDb>
+    fun getMonthAppointments(dateMonth: String): MutableList<AppointmentModelDb>
 }

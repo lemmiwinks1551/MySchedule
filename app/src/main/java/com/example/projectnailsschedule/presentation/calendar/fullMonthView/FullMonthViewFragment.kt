@@ -25,7 +25,6 @@ import com.example.projectnailsschedule.util.Util
 import com.google.android.material.snackbar.Snackbar
 import java.text.SimpleDateFormat
 import java.time.ZoneId
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 class FullMonthViewFragment : Fragment() {
@@ -42,7 +41,7 @@ class FullMonthViewFragment : Fragment() {
     private var monthTextView: TextView? = null
     private var yearTextView: TextView? = null
 
-    private var appointmentList: List<AppointmentModelDb>? = null
+    private var appointmentList: MutableList<AppointmentModelDb>? = null
     private val dateRecyclerViewSpanCount = 1
     private val bindingKeyAppointment = "appointmentParams"
     private var dateMonthQuery: String? = null
@@ -211,7 +210,36 @@ class FullMonthViewFragment : Fragment() {
         }).attachToRecyclerView(fullMonthAppointmentsRV)
     }
 
-    private fun inflateAppointmentsRV(appointmentsList: List<AppointmentModelDb>) {
+    private fun inflateAppointmentsRV(appointmentsList: MutableList<AppointmentModelDb>) {
+        // add days without appointments
+        val daysInMonth = fullMonthViewVM!!.selectedMonth.value!!.lengthOfMonth()
+        val newList = mutableListOf<AppointmentModelDb>()
+        for (day in 1..daysInMonth) {
+            var dayFound = false
+            var dateToCheck = String.format("$day" + dateMonthQuery!!.replace("%", ""))
+            dateToCheck = Util().dateConverter(dateToCheck)
+
+            for (app in appointmentsList) {
+                if (app.date.toString().contains(dateToCheck)) {
+                    dayFound = true
+                    break
+                }
+            }
+
+            if (dayFound) {
+                continue
+            }
+
+            val emptyAppointment = AppointmentModelDb(date = dateToCheck, deleted = false)
+            if (!newList.contains(emptyAppointment)) {
+                newList.add(emptyAppointment)
+            }
+
+        }
+
+        appointmentsList.plusAssign(newList)
+        appointmentsList.sortBy { it.date }
+
         // create adapter
         appointmentsRVAdapter = FullMonthViewRVAdapter(
             appointmentsCount = appointmentsList.size,
@@ -260,8 +288,12 @@ class FullMonthViewFragment : Fragment() {
 
     private fun setMonthAndYear() {
         // set month name
-        val date = Date.from(fullMonthViewVM!!.selectedMonth.value!!.atStartOfDay(ZoneId.systemDefault())?.toInstant())
-        val month = SimpleDateFormat("LLLL", Locale("ru")).format(date).replaceFirstChar { it.uppercase() }
+        val date = Date.from(
+            fullMonthViewVM!!.selectedMonth.value!!.atStartOfDay(ZoneId.systemDefault())
+                ?.toInstant()
+        )
+        val month =
+            SimpleDateFormat("LLLL", Locale("ru")).format(date).replaceFirstChar { it.uppercase() }
 
         monthTextView!!.text = month
         yearTextView!!.text = fullMonthViewVM!!.selectedMonth.value!!.year.toString()

@@ -22,7 +22,7 @@ interface ScheduleDao {
     fun getDateAppointments(date: String): Array<AppointmentModelDb>
 
     @Query("SELECT * FROM schedule WHERE date LIKE :dateMonth ORDER BY date")
-    fun getMonthAppointments(dateMonth: String): List<AppointmentModelDb>
+    fun getMonthAppointments(dateMonth: String): MutableList<AppointmentModelDb>
 
     @Delete
     fun delete(appointmentModelDb: AppointmentModelDb)

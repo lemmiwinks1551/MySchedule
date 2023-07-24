@@ -43,28 +43,39 @@ class FullMonthViewRVAdapter(
     override fun onBindViewHolder(holder: FullMonthViewRVViewHolder, position: Int) {
         with(holder) {
             // set date
-            appointmentDate.text = appointmentsList[position].date
+            appointmentDate.text = appointmentsList[position].date!!.dropLast(8)
 
-            // set time in holder
-            appointmentTime.text = appointmentsList[position].time
+            if (appointmentsList[position]._id != null) {
+                // interface
+                holder.noDataTextView.visibility = View.GONE
+                holder.callClientButton.visibility = View.VISIBLE
+                holder.appointmentConstraintLayout.visibility = View.VISIBLE
 
-            // set procedure in holder
-            appointmentProcedure.text = appointmentsList[position].procedure
+                // set time in holder
+                appointmentTime.text = appointmentsList[position].time
 
-            // set client name in holder
-            appointmentClientName.text = appointmentsList[position].name
+                // set procedure in holder
+                appointmentProcedure.text = appointmentsList[position].procedure
 
-            // set client phone in holder
-            appointmentClientPhone.text = appointmentsList[position].phone
+                // set client name in holder
+                appointmentClientName.text = appointmentsList[position].name
 
-            // set notes in holder
-            appointmentNotes.text = appointmentsList[position].notes
+                // set client phone in holder
+                appointmentClientPhone.text = appointmentsList[position].phone
 
-            // set callClient click listener
-            holder.callClientButton.setOnClickListener {
-                val phone = appointmentsList[position].phone
-                val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phone"))
-                context.startActivity(intent)
+                // set notes in holder
+                appointmentNotes.text = appointmentsList[position].notes
+
+                // set callClient click listener
+                holder.callClientButton.setOnClickListener {
+                    val phone = appointmentsList[position].phone
+                    val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phone"))
+                    context.startActivity(intent)
+                }
+            } else {
+                holder.noDataTextView.visibility = View.VISIBLE
+                holder.callClientButton.visibility = View.GONE
+                holder.appointmentConstraintLayout.visibility = View.INVISIBLE
             }
         }
     }

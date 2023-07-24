@@ -31,7 +31,7 @@ class FullMonthViewViewModel(
         selectedMonth.value = selectedMonth.value // update appointments
     }
 
-    fun getMonthAppointments(dateMonth: String): List<AppointmentModelDb> {
+    fun getMonthAppointments(dateMonth: String): MutableList<AppointmentModelDb> {
         return getMonthAppointmentsUseCase.execute(dateMonth)
     }
 
