@@ -36,14 +36,18 @@ class FullMonthViewRVAdapter(
         holder.date.text = list[position].day
         holder.weekDayName.text = list[position].weekDay
 
-        holder.childRv.setHasFixedSize(true)
-        holder.childRv.layoutManager = GridLayoutManager(holder.itemView.context, 1)
+        if (list[position].appointmentsList.isEmpty()) {
+            holder.noAppointmentsText.visibility = View.VISIBLE
+            holder.childRv.visibility = View.GONE
+        } else {
+            holder.noAppointmentsText.visibility = View.GONE
+            holder.childRv.visibility = View.VISIBLE
 
-        val fullMonthChildAdapter = FullMonthChildAdapter(parentItem.appointmentsList)
-        holder.childRv.adapter = fullMonthChildAdapter
-    }
+            holder.childRv.setHasFixedSize(true)
+            holder.childRv.layoutManager = GridLayoutManager(holder.itemView.context, 1)
 
-    private fun expand(switch: Boolean) {
-
+            val fullMonthChildAdapter = FullMonthChildAdapter(parentItem.appointmentsList)
+            holder.childRv.adapter = fullMonthChildAdapter
+        }
     }
 }

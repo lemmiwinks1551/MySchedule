@@ -18,21 +18,21 @@
 
     <ImageButton
         android:id="@+id/collapse_button"
-        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
         android:src="@drawable/baseline_keyboard_double_arrow_up_24"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
-        android:visibility="gone"
         android:id="@+id/phone_call_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
         android:src="@drawable/baseline_call_24"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/child_procedure_value" />
 
@@ -48,13 +48,13 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:visibility="gone"
         android:id="@+id/child_procedure_value"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
         android:text="@string/example_procedure"
         android:textSize="20sp"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/child_time_value" />
 
@@ -70,24 +70,24 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:visibility="gone"
         android:id="@+id/child_phone_value"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
         android:text="@string/example_phone"
         android:textSize="20sp"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/child_procedure_value" />
 
     <TextView
-        android:visibility="gone"
         android:id="@+id/child_misc_value"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
         android:text="@string/example_misc"
         android:textSize="20sp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

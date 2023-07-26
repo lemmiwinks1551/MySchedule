@@ -14,10 +14,13 @@ class FullMonthViewRVViewHolder internal constructor(
     val date: TextView
     val weekDayName: TextView
     val childRv: RecyclerView
+    val noAppointmentsText: TextView
 
     init {
         date = itemView.findViewById(R.id.date_text_view)
         weekDayName = itemView.findViewById(R.id.week_day_name_text_view)
         childRv = itemView.findViewById(R.id.child_rv)
+        noAppointmentsText = itemView.findViewById(R.id.no_appointments_text)
+
     }
 }

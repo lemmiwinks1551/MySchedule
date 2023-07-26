@@ -227,9 +227,7 @@ class FullMonthViewFragment : Fragment() {
         }
 
         // create adapter
-        val fullMonthViewRVAdapter = FullMonthViewRVAdapter(
-            list
-        )
+        val fullMonthViewRVAdapter = FullMonthViewRVAdapter(list)
 
         val layoutManager: RecyclerView.LayoutManager =
             GridLayoutManager(activity, 1)

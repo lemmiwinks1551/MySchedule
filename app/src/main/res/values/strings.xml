@@ -81,5 +81,6 @@
     <string name="client_select_title">Выберите клиента из списка</string>
     <string name="single_date_example">10</string>
     <string name="no_data_example">Нет записей</string>
+    <string name="no_appointments_text">Нет записей</string>
 
 </resources>
