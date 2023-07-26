@@ -2,15 +2,16 @@ package com.example.projectnailsschedule.util
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeParseException
 import java.time.temporal.WeekFields
 import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * Вспомогательный класс, выполняющий коенвертации даты
@@ -78,11 +79,47 @@ class Util {
         return daysInMonthArray
     }
 
+    fun getArrayFromMonth2(selectedDate: LocalDate) : ArrayList<String> {
+        val arrayList = ArrayList<String>()
+        for (i in 1..selectedDate.lengthOfMonth()) {
+            arrayList.add(i.toString())
+        }
+        return arrayList
+    }
+
     private fun getWeeksInMonth(date: LocalDate): Int {
         // get weeks in month
         val locale = Locale("ru")
         val weekOfMonthStart = date.withDayOfMonth(1).get(WeekFields.of(locale).weekOfYear())
         val weekOfMonthEnd = date.withDayOfMonth(date.lengthOfMonth()).get(WeekFields.of(locale).weekOfYear())
         return weekOfMonthEnd - weekOfMonthStart + 1
+    }
+
+    fun convertStringToLocalDate(dateString: String): LocalDate? {
+        val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
+        return try {
+            LocalDate.parse(dateString, formatter)
+        } catch (e: DateTimeParseException) {
+            null
+        }
+    }
+
+    fun getDayOfWeek(date: String): String {
+        val sdf = SimpleDateFormat("dd.MM.yyyy", Locale("ru"))
+        val calendar = GregorianCalendar.getInstance()
+        calendar.time = sdf.parse(date)
+
+        val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
+
+        return when (dayOfWeek) {
+            Calendar.MONDAY -> "Пн."
+            Calendar.TUESDAY -> "Вт."
+            Calendar.WEDNESDAY -> "Ср."
+            Calendar.THURSDAY -> "Чт."
+            Calendar.FRIDAY -> "Пт."
+            Calendar.SATURDAY -> "Сб."
+            Calendar.SUNDAY -> "Вс."
+            else -> throw IllegalArgumentException("Некорректный день недели")
+        }
     }
 }

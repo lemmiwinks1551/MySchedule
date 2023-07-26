@@ -1,29 +1,23 @@
 package com.example.projectnailsschedule.presentation.calendar.fullMonthView
 
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentFullMonthViewBinding
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
+import com.example.projectnailsschedule.domain.models.DateParams
+import com.example.projectnailsschedule.domain.models.DateWeekAppModel
 import com.example.projectnailsschedule.presentation.calendar.fullMonthView.fullMonthViewRV.FullMonthViewRVAdapter
 import com.example.projectnailsschedule.util.Util
-import com.google.android.material.snackbar.Snackbar
 import java.text.SimpleDateFormat
+import java.time.LocalDate
 import java.time.ZoneId
 import java.util.*
 
@@ -42,6 +36,8 @@ class FullMonthViewFragment : Fragment() {
     private var yearTextView: TextView? = null
 
     private var appointmentList: MutableList<AppointmentModelDb>? = null
+    private var datesList: MutableList<DateParams>? = null
+
     private val dateRecyclerViewSpanCount = 1
     private val bindingKeyAppointment = "appointmentParams"
     private var dateMonthQuery: String? = null
@@ -68,7 +64,7 @@ class FullMonthViewFragment : Fragment() {
 
         setObservers()
 
-        swipeToDelete()
+        // swipeToDelete()
 
         initClickListeners()
 
@@ -85,20 +81,12 @@ class FullMonthViewFragment : Fragment() {
 
     private fun setObservers() {
         fullMonthViewVM!!.selectedMonth.observe(viewLifecycleOwner) { selectedMonth ->
-            dateMonthQuery = "%${Util().dateConverterNew(selectedMonth.toString()).drop(2)}%"
-            appointmentList = fullMonthViewVM!!.getMonthAppointments(dateMonthQuery!!)
-            if (appointmentList!!.isNotEmpty()) {
-                fullMonthAppointmentsRV!!.visibility = View.VISIBLE
-                inflateAppointmentsRV(appointmentList!!)
-
-            } else {
-                fullMonthAppointmentsRV!!.visibility = View.GONE
-            }
+            inflateCalendarRecyclerView(selectedMonth)
             setMonthAndYear() // update year and month in text view
         }
     }
 
-    private fun swipeToDelete() {
+/*    private fun swipeToDelete() {
         ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
             override fun onMove(
                 recyclerView: RecyclerView,
@@ -208,73 +196,46 @@ class FullMonthViewFragment : Fragment() {
                 )
             }
         }).attachToRecyclerView(fullMonthAppointmentsRV)
-    }
+    }*/
 
-    private fun inflateAppointmentsRV(appointmentsList: MutableList<AppointmentModelDb>) {
-        // add days without appointments
-        val daysInMonth = fullMonthViewVM!!.selectedMonth.value!!.lengthOfMonth()
-        val newList = mutableListOf<AppointmentModelDb>()
-        for (day in 1..daysInMonth) {
-            var dayFound = false
-            var dateToCheck = String.format("$day" + dateMonthQuery!!.replace("%", ""))
-            dateToCheck = Util().dateConverter(dateToCheck)
+    private fun inflateCalendarRecyclerView(selectedDate: LocalDate) {
+        // get array of days from selected month
 
-            for (app in appointmentsList) {
-                if (app.date.toString().contains(dateToCheck)) {
-                    dayFound = true
-                    break
-                }
-            }
+        val daysInMonth: ArrayList<String> = Util().getArrayFromMonth2(selectedDate)
 
-            if (dayFound) {
-                continue
-            }
+        val list = mutableListOf<DateWeekAppModel>()
 
-            val emptyAppointment = AppointmentModelDb(date = dateToCheck, deleted = false)
-            if (!newList.contains(emptyAppointment)) {
-                newList.add(emptyAppointment)
-            }
+        for (i in 1..selectedDate.lengthOfMonth()) {
 
+            val dateFormat =
+                Util().dateConverterNew(fullMonthViewVM!!.selectedMonth.value.toString())
+            var date = dateFormat.drop(2)
+            date = daysInMonth[i - 1] + date
+            date = Util().dateConverter(date)
+
+            val localDate = Util().convertStringToLocalDate(date)
+
+            val dateParams = DateParams(_id = null, date = localDate, appointmentCount = null)
+
+            val addToList = DateWeekAppModel(
+                day = daysInMonth[i - 1],
+                weekDay = Util().getDayOfWeek(date),
+                appointmentsList = fullMonthViewVM!!.getDateAppointments(dateParams)
+            )
+
+            list.add(addToList)
         }
 
-        appointmentsList.plusAssign(newList)
-        appointmentsList.sortBy { it.date }
-
         // create adapter
-        appointmentsRVAdapter = FullMonthViewRVAdapter(
-            appointmentsCount = appointmentsList.size,
-            appointmentsList = appointmentsList,
-            context = requireContext()
+        val fullMonthViewRVAdapter = FullMonthViewRVAdapter(
+            list
         )
 
         val layoutManager: RecyclerView.LayoutManager =
-            GridLayoutManager(activity, dateRecyclerViewSpanCount)
+            GridLayoutManager(activity, 1)
 
         fullMonthAppointmentsRV?.layoutManager = layoutManager
-        fullMonthAppointmentsRV?.adapter = appointmentsRVAdapter
-        fullMonthAppointmentsRV?.scheduleLayoutAnimation()
-
-        // set clickListener on dateRV
-        appointmentsRVAdapter!!.setOnItemClickListener(object :
-            FullMonthViewRVAdapter.OnItemClickListener {
-            override fun onItemClick(position: Int) {
-                // edit selected appointment
-                val bundle = Bundle()
-                val appointmentModelDb = AppointmentModelDb(
-                    _id = appointmentList?.get(position)?._id,
-                    date = appointmentList?.get(position)?.date,
-                    name = appointmentList?.get(position)?.name,
-                    time = appointmentList?.get(position)?.time,
-                    procedure = appointmentList?.get(position)?.procedure,
-                    phone = appointmentList?.get(position)?.phone,
-                    notes = appointmentList?.get(position)?.notes,
-                    deleted = appointmentList?.get(position)!!.deleted
-                )
-                val navController = findNavController()
-                bundle.putParcelable(bindingKeyAppointment, appointmentModelDb)
-                navController.navigate(R.id.action_fullMonthViewFragment_to_nav_appointment, bundle)
-            }
-        })
+        fullMonthAppointmentsRV?.adapter = fullMonthViewRVAdapter
     }
 
     private fun initClickListeners() {

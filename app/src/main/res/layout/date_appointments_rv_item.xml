@@ -18,13 +18,13 @@
         android:cropToPadding="false"
         android:scaleType="fitCenter"
         android:src="@drawable/ic_baseline_account_box_36"
-        app:layout_constraintEnd_toStartOf="@id/appointment_constraint_layout"
+        app:layout_constraintEnd_toStartOf="@id/appointment_cl"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" /> <!--Client image button-->
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/appointment_constraint_layout"
+        android:id="@+id/appointment_cl"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"

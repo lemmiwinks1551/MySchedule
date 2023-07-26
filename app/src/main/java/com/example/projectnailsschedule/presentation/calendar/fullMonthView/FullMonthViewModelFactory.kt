@@ -21,11 +21,15 @@ class FullMonthViewModelFactory(context: Context?) : ViewModelProvider.Factory {
     private val saveAppointmentUseCase =
         SaveAppointmentUseCase(scheduleRepository = scheduleRepositoryImpl)
 
+    private val getDateAppointmentsUseCase =
+        GetDateAppointmentsUseCase(scheduleRepository = scheduleRepositoryImpl)
+
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return FullMonthViewViewModel(
             deleteAppointmentUseCase = deleteAppointmentUseCase,
             getMonthAppointmentsUseCase = getMonthAppointments,
-            saveAppointmentUseCase = saveAppointmentUseCase
+            saveAppointmentUseCase = saveAppointmentUseCase,
+            getDateAppointmentsUseCase = getDateAppointmentsUseCase
         ) as T
     }
 }

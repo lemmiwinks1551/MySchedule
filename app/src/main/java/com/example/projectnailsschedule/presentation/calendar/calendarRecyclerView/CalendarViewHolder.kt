@@ -17,7 +17,7 @@ class CalendarViewHolder internal constructor(itemView: View, onItemListener: Ca
 
     init {
         date = itemView.findViewById(R.id.date_cell)
-        dateAppointmentsCount = itemView.findViewById(R.id.date_appointments)
+        dateAppointmentsCount = itemView.findViewById(R.id.date_appointments_text_view)
         this.onItemListener = onItemListener
         itemView.setOnClickListener(this)
         cellLayout = itemView.findViewById(R.id.calendarRecyclerViewCell)

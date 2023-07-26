@@ -8,7 +8,7 @@
     android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/appointment_constraint_layout"
+        android:id="@+id/appointment_cl"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"

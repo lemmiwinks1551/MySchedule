@@ -1,82 +1,49 @@
 package com.example.projectnailsschedule.presentation.calendar.fullMonthView.fullMonthViewRV
 
-import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
-import com.example.projectnailsschedule.domain.models.AppointmentModelDb
-import com.example.projectnailsschedule.presentation.date.dateRecyclerView.DateAdapter
+import com.example.projectnailsschedule.domain.models.DateParams
+import com.example.projectnailsschedule.domain.models.DateWeekAppModel
+import com.example.projectnailsschedule.presentation.calendar.fullMonthView.FullMonthViewViewModel
+import com.example.projectnailsschedule.presentation.calendar.fullMonthView.fullMonthChildRv.FullMonthChildAdapter
+import com.example.projectnailsschedule.util.Util
+import java.time.LocalDate
 
 class FullMonthViewRVAdapter(
-    private var appointmentsCount: Int,
-    private var appointmentsList: List<AppointmentModelDb>,
-    private val context: Context
+    private val list: MutableList<DateWeekAppModel>
 ) : RecyclerView.Adapter<FullMonthViewRVViewHolder>(
 ) {
-
     val log = this::class.simpleName
-
-    private lateinit var mListener: OnItemClickListener
-
-    interface OnItemClickListener {
-        fun onItemClick(position: Int)
-    }
-
-    fun setOnItemClickListener(listener: OnItemClickListener) {
-        mListener = listener
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FullMonthViewRVViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val view: View = inflater.inflate(R.layout.appointments_month_view_rv_item, parent, false)
-        return FullMonthViewRVViewHolder(view, mListener)
+        val view: View =
+            inflater.inflate(R.layout.appointments_month_view_rv_parent_item, parent, false)
+        return FullMonthViewRVViewHolder(view)
     }
 
     override fun getItemCount(): Int {
-        return appointmentsCount
+        return list.size
     }
 
     override fun onBindViewHolder(holder: FullMonthViewRVViewHolder, position: Int) {
-        with(holder) {
-            // set date
-            appointmentDate.text = appointmentsList[position].date!!.dropLast(8)
 
-            if (appointmentsList[position]._id != null) {
-                // interface
-                holder.noDataTextView.visibility = View.GONE
-                holder.callClientButton.visibility = View.VISIBLE
-                holder.appointmentConstraintLayout.visibility = View.VISIBLE
+        val parentItem = list[position]
+        holder.date.text = list[position].day
+        holder.weekDayName.text = list[position].weekDay
 
-                // set time in holder
-                appointmentTime.text = appointmentsList[position].time
+        holder.childRv.setHasFixedSize(true)
+        holder.childRv.layoutManager = GridLayoutManager(holder.itemView.context, 1)
 
-                // set procedure in holder
-                appointmentProcedure.text = appointmentsList[position].procedure
+        val fullMonthChildAdapter = FullMonthChildAdapter(parentItem.appointmentsList)
+        holder.childRv.adapter = fullMonthChildAdapter
+    }
 
-                // set client name in holder
-                appointmentClientName.text = appointmentsList[position].name
+    private fun expand(switch: Boolean) {
 
-                // set client phone in holder
-                appointmentClientPhone.text = appointmentsList[position].phone
-
-                // set notes in holder
-                appointmentNotes.text = appointmentsList[position].notes
-
-                // set callClient click listener
-                holder.callClientButton.setOnClickListener {
-                    val phone = appointmentsList[position].phone
-                    val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phone"))
-                    context.startActivity(intent)
-                }
-            } else {
-                holder.noDataTextView.visibility = View.VISIBLE
-                holder.callClientButton.visibility = View.GONE
-                holder.appointmentConstraintLayout.visibility = View.INVISIBLE
-            }
-        }
     }
 }
