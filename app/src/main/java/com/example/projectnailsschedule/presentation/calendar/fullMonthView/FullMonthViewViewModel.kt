@@ -15,7 +15,6 @@ class FullMonthViewViewModel(
     private var getMonthAppointmentsUseCase: GetMonthAppointmentsUC,
     private var saveAppointmentUseCase: SaveAppointmentUseCase,
     private var getDateAppointmentsUseCase: GetDateAppointmentsUseCase
-
 ) : ViewModel() {
 
     val log = this::class.simpleName
@@ -27,20 +26,18 @@ class FullMonthViewViewModel(
 
     fun deleteAppointment(appointmentModelDb: AppointmentModelDb) {
         deleteAppointmentUseCase.execute(appointmentModelDb)
-        selectedMonth.value = selectedMonth.value // update appointments
     }
 
     fun saveAppointment(appointmentModelDb: AppointmentModelDb) {
         saveAppointmentUseCase.execute(appointmentModelDb)
-        selectedMonth.value = selectedMonth.value // update appointments
     }
 
     fun getMonthAppointments(dateMonth: String): MutableList<AppointmentModelDb> {
         return getMonthAppointmentsUseCase.execute(dateMonth)
     }
 
-    fun getDateAppointments(dateParams: DateParams): Array<AppointmentModelDb> {
-        return getDateAppointmentsUseCase.execute(dateParams)
+    fun getDateAppointments(dateParams: DateParams): MutableList<AppointmentModelDb> {
+        return getDateAppointmentsUseCase.execute(dateParams).toMutableList()
     }
 
     fun changeMonth(operator: Boolean) {

@@ -5,11 +5,14 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
+import com.example.projectnailsschedule.domain.models.AppointmentModelDb
+import com.example.projectnailsschedule.presentation.search.searchRecyclerVIew.SearchRvAdapter
 
 class FullMonthChildViewHolder internal constructor(
     itemView: View
 ) : RecyclerView.ViewHolder(itemView) {
 
+    var appointmentModelDb: AppointmentModelDb? = null
     val appointmentTime: TextView
     val appointmentProcedure: TextView
     val appointmentClientName: TextView
@@ -28,7 +31,6 @@ class FullMonthChildViewHolder internal constructor(
         appointmentNotes = itemView.findViewById(R.id.child_misc_value)
 
         phoneCallButton = itemView.findViewById(R.id.phone_call_button)
-
         expandButton = itemView.findViewById(R.id.expand_button)
         collapseButton = itemView.findViewById(R.id.collapse_button)
     }
