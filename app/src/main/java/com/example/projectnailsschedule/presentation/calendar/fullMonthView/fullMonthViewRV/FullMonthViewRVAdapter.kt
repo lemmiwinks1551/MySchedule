@@ -5,6 +5,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,8 +20,9 @@ import com.example.projectnailsschedule.domain.models.DateWeekAppModel
 import com.example.projectnailsschedule.presentation.calendar.fullMonthView.FullMonthViewViewModel
 import com.example.projectnailsschedule.presentation.calendar.fullMonthView.fullMonthChildRv.FullMonthChildAdapter
 import com.example.projectnailsschedule.presentation.calendar.fullMonthView.fullMonthChildRv.FullMonthChildViewHolder
+import com.example.projectnailsschedule.util.Util
 import com.google.android.material.snackbar.Snackbar
-
+import java.time.LocalDate
 
 class FullMonthViewRVAdapter(
     private val monthDatesList: MutableList<DateWeekAppModel>,
@@ -31,6 +33,7 @@ class FullMonthViewRVAdapter(
 ) {
     lateinit var fullMonthChildAdapter: FullMonthChildAdapter
     lateinit var view: View
+    private val bindingKeyAppointment = "appointmentParams"
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FullMonthViewRVViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -47,6 +50,9 @@ class FullMonthViewRVAdapter(
         // set date and week day
         fillDateTv(holder)
 
+        // init clickListener
+        initClickListener(holder)
+
         if (monthDatesList[position].appointmentsList.isEmpty()) {
             // if no appointments in current date
             fillNoAppointmentsTv(holder)
@@ -60,15 +66,21 @@ class FullMonthViewRVAdapter(
     private fun fillDateTv(holder: FullMonthViewRVViewHolder) {
         // set values into date and weekName text views
         with(holder) {
-            holder.date.text = monthDatesList[position].day
+            holder.date.text = monthDatesList[position].date.dayOfMonth.toString()
             holder.weekDayName.text = monthDatesList[position].weekDay
+
+            // if day is today set custom frame
+            if (monthDatesList[position].date == LocalDate.now()) {
+                holder.dateCl.setBackgroundResource(R.drawable.calendar_recycler_view_borders_today)
+            } else {
+                holder.dateCl.setBackgroundColor(context.resources.getColor(R.color.transparent))
+            }
         }
     }
 
     private fun fillNoAppointmentsTv(holder: FullMonthViewRVViewHolder) {
         // fill views if no appointments
         with(holder) {
-            noAppointmentsText.visibility = View.VISIBLE
             childRv.visibility = View.GONE
         }
     }
@@ -76,7 +88,6 @@ class FullMonthViewRVAdapter(
     private fun fillAppointmentsExistsTv(holder: FullMonthViewRVViewHolder) {
         // fill text views if appointments exists
         with(holder) {
-            noAppointmentsText.visibility = View.GONE
             childRv.visibility = View.VISIBLE
         }
     }
@@ -218,5 +229,19 @@ class FullMonthViewRVAdapter(
                 )
             }
         }).attachToRecyclerView(holder.childRv)
+    }
+
+    private fun initClickListener(holder: FullMonthViewRVViewHolder) {
+        // create new appointment button
+        with(holder) {
+            addAppointmentFab.setOnClickListener {
+                val bundle = Bundle()
+                val newAppointment = AppointmentModelDb(date = Util().dateConverterNew(
+                    monthDatesList[position].date.toString()), deleted = false)
+
+                bundle.putParcelable(bindingKeyAppointment, newAppointment)
+                navController.navigate(R.id.action_fullMonthViewFragment_to_nav_appointment, bundle)
+            }
+        }
     }
 }

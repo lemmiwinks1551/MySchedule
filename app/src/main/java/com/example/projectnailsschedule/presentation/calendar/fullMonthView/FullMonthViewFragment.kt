@@ -11,12 +11,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentFullMonthViewBinding
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
 import com.example.projectnailsschedule.domain.models.DateParams
 import com.example.projectnailsschedule.domain.models.DateWeekAppModel
-import com.example.projectnailsschedule.presentation.calendar.fullMonthView.fullMonthChildRv.FullMonthChildAdapter
 import com.example.projectnailsschedule.presentation.calendar.fullMonthView.fullMonthViewRV.FullMonthViewRVAdapter
 import com.example.projectnailsschedule.util.Util
 import java.text.SimpleDateFormat
@@ -109,7 +107,7 @@ class FullMonthViewFragment : Fragment() {
             val dateParams = DateParams(_id = null, date = localDate, appointmentCount = null)
 
             val addToList = DateWeekAppModel(
-                day = daysInMonth[i - 1],
+                date = dateParams.date!!,
                 weekDay = Util().getDayOfWeek(date),
                 appointmentsList = fullMonthViewVM!!.getDateAppointments(dateParams)
             )

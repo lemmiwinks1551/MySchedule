@@ -2,8 +2,10 @@ package com.example.projectnailsschedule.util
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.text.BoringLayout
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import com.example.projectnailsschedule.R
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.YearMonth
@@ -122,4 +124,5 @@ class Util {
             else -> throw IllegalArgumentException("Некорректный день недели")
         }
     }
+
 }
