@@ -112,7 +112,8 @@ class FullMonthViewRVAdapter(
                 // on below line we are getting the item at a particular position.
                 val position = viewHolder.adapterPosition
 
-                val deleteAppointmentModelDb: AppointmentModelDb = (viewHolder as FullMonthChildViewHolder).appointmentModelDb!!
+                val deleteAppointmentModelDb: AppointmentModelDb =
+                    (viewHolder as FullMonthChildViewHolder).appointmentModelDb!!
 
                 // delete client from Db
                 fullMonthViewViewModel.deleteAppointment(deleteAppointmentModelDb)
@@ -120,6 +121,9 @@ class FullMonthViewRVAdapter(
 
                 holder.childRv.adapter!!.notifyDataSetChanged()
                 fullMonthChildAdapter.notifyDataSetChanged()
+                if (parentItem.appointmentsList.isEmpty()) {
+                    fillNoAppointmentsTv(holder)
+                }
                 // show Snackbar
                 Snackbar.make(
                     holder.childRv,
@@ -142,6 +146,10 @@ class FullMonthViewRVAdapter(
 
                         holder.childRv.adapter!!.notifyDataSetChanged()
                         fullMonthChildAdapter.notifyDataSetChanged()
+
+                        if (parentItem.appointmentsList.isNotEmpty()) {
+                            fillAppointmentsExistsTv(holder)
+                        }
                     }.show()
             }
 
