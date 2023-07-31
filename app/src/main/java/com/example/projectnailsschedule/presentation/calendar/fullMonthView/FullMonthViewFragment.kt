@@ -10,9 +10,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.SmoothScroller
 import com.example.projectnailsschedule.databinding.FragmentFullMonthViewBinding
-import com.example.projectnailsschedule.domain.models.AppointmentModelDb
 import com.example.projectnailsschedule.domain.models.DateParams
 import com.example.projectnailsschedule.domain.models.DateWeekAppModel
 import com.example.projectnailsschedule.presentation.calendar.fullMonthView.fullMonthViewRV.FullMonthViewRVAdapter
@@ -21,6 +22,7 @@ import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.ZoneId
 import java.util.*
+
 
 class FullMonthViewFragment : Fragment() {
     val log = this::class.simpleName
@@ -36,12 +38,6 @@ class FullMonthViewFragment : Fragment() {
     private var monthTextView: TextView? = null
     private var yearTextView: TextView? = null
 
-    private var appointmentList: MutableList<AppointmentModelDb>? = null
-    private var datesList: MutableList<DateParams>? = null
-
-    private val dateRecyclerViewSpanCount = 1
-    private val bindingKeyAppointment = "appointmentParams"
-    private var dateMonthQuery: String? = null
     private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -124,6 +120,18 @@ class FullMonthViewFragment : Fragment() {
 
         fullMonthAppointmentsRV?.layoutManager = layoutManager
         fullMonthAppointmentsRV?.adapter = fullMonthViewRVAdapter
+
+        // scroll to previous position
+        fullMonthAppointmentsRV?.post {
+            val oldPosition = fullMonthViewVM!!.oldPosition
+            val smoothScroller: SmoothScroller = object : LinearSmoothScroller(context) {
+                override fun getVerticalSnapPreference(): Int {
+                    return SNAP_TO_START
+                }
+            }
+            smoothScroller.targetPosition = oldPosition;
+            layoutManager.startSmoothScroll(smoothScroller);
+        }
     }
 
     private fun initClickListeners() {

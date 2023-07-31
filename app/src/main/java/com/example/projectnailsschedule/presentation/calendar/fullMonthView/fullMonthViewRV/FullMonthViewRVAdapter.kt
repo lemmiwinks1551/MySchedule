@@ -122,6 +122,7 @@ class FullMonthViewRVAdapter(
                 // this method is called when we swipe our item to left direction.
                 // on below line we are getting the item at a particular position.
                 val position = viewHolder.adapterPosition
+                fullMonthViewViewModel.oldPosition = holder.adapterPosition
 
                 val deleteAppointmentModelDb: AppointmentModelDb =
                     (viewHolder as FullMonthChildViewHolder).appointmentModelDb!!
@@ -238,6 +239,7 @@ class FullMonthViewRVAdapter(
                 val bundle = Bundle()
                 val newAppointment = AppointmentModelDb(date = Util().dateConverterNew(
                     monthDatesList[position].date.toString()), deleted = false)
+                fullMonthViewViewModel.oldPosition = holder.adapterPosition
 
                 bundle.putParcelable(bindingKeyAppointment, newAppointment)
                 navController.navigate(R.id.action_fullMonthViewFragment_to_nav_appointment, bundle)

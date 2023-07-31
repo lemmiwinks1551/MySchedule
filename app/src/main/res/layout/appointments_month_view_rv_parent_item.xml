@@ -13,15 +13,17 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/rv_and_fab_cl"
+        app:layout_constraintHorizontal_weight="0.15"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/date_text_view"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
-            android:gravity="right"
+            android:gravity="center_horizontal"
             android:text="@string/single_date_example"
             android:textSize="30sp"
             android:textStyle="bold"
@@ -43,24 +45,40 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/child_rv"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/rv_and_fab_cl"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toTopOf="@id/month_view_add_appointment_fab"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/date_cl"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/month_view_add_appointment_fab"
-        android:layout_width="wrap_content"
+        android:layout_margin="4dp"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/date_cl"
-        app:layout_constraintTop_toBottomOf="@id/child_rv"
-        app:srcCompat="@android:drawable/ic_input_add" />
+        app:layout_constraintHorizontal_weight="0.8"
+        app:layout_constraintStart_toEndOf="@id/date_cl"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/child_rv"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="4dp"
+            app:layout_constraintBottom_toTopOf="@id/month_view_add_appointment_fab"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/month_view_add_appointment_fab"
+            android:layout_width="wrap_content"
+            android:layout_margin="4dp"
+            app:fabSize="mini"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/child_rv"
+            app:srcCompat="@android:drawable/ic_input_add" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
