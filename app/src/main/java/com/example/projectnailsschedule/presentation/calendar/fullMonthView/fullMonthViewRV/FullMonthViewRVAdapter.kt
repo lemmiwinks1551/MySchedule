@@ -105,10 +105,10 @@ class FullMonthViewRVAdapter(
             childRv.adapter = fullMonthChildAdapter
         }
 
-        swipeToDelete(holder, parentItem)
+        swipeToDelete(holder)
     }
 
-    private fun swipeToDelete(holder: FullMonthViewRVViewHolder, parentItem: DateWeekAppModel) {
+    private fun swipeToDelete(holder: FullMonthViewRVViewHolder) {
         ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
             override fun onMove(
                 recyclerView: RecyclerView,
@@ -120,9 +120,9 @@ class FullMonthViewRVAdapter(
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                // this method is called when we swipe our item to left direction.
-                // on below line we are getting the item at a particular position.
-                val position = viewHolder.adapterPosition
+
+                val childPosition = viewHolder.adapterPosition
+                val parentPosition = holder.adapterPosition
 
                 val deleteAppointmentModelDb: AppointmentModelDb =
                     (viewHolder as FullMonthChildViewHolder).appointmentModelDb!!
@@ -135,12 +135,14 @@ class FullMonthViewRVAdapter(
                     deleteAppointmentModelDb
                 )
 
-                if (parentItem.appointmentsList.isEmpty()) {
-                    fillNoAppointmentsTv(holder)
-                }
+                // update child rv
+                fullMonthChildAdapter.notifyItemRemoved(childPosition)
 
-                fullMonthChildAdapter.notifyDataSetChanged() // update child rv
-                this@FullMonthViewRVAdapter.notifyDataSetChanged() // update parent rv
+                // update parent rv
+                this@FullMonthViewRVAdapter.notifyItemRangeChanged(
+                    parentPosition,
+                    this@FullMonthViewRVAdapter.itemCount - parentPosition
+                )
 
                 // show Snackbar
                 Snackbar.make(
@@ -158,16 +160,20 @@ class FullMonthViewRVAdapter(
 
                         // restore appointment in child list
                         (holder.childRv.adapter as FullMonthChildAdapter).appointmentsList.add(
-                            position,
+                            childPosition,
                             deleteAppointmentModelDb
                         )
 
-                        if (parentItem.appointmentsList.isNotEmpty()) {
-                            fillAppointmentsExistsTv(holder)
-                        }
+                        this@FullMonthViewRVAdapter.
 
-                        fullMonthChildAdapter.notifyDataSetChanged()
-                        this@FullMonthViewRVAdapter.notifyDataSetChanged()
+                        // update child rv
+                        fullMonthChildAdapter.notifyItemRemoved(childPosition)
+
+                        // update parent rv
+                        this@FullMonthViewRVAdapter.notifyItemRangeChanged(
+                            parentPosition,
+                            this@FullMonthViewRVAdapter.itemCount - parentPosition
+                        )
 
                         Toast.makeText(
                             context,
