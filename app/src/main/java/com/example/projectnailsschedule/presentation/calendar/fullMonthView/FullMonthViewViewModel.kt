@@ -21,7 +21,6 @@ class FullMonthViewViewModel(
     val selectedMonth = MutableLiveData<LocalDate>()
     var oldPosition: Int = 0
 
-
     init {
         selectedMonth.value = LocalDate.now()
     }

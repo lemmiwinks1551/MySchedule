@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.projectnailsschedule.databinding.FragmentAboutBinding
+import com.example.projectnailsschedule.util.Util
 
 class AboutFragment : Fragment() {
 
@@ -29,6 +30,10 @@ class AboutFragment : Fragment() {
         initWidgets()
 
         setVersionTextView()
+
+        /** for test only !!!
+         * add fake appointments */
+        Util().addTestData(requireContext())
 
         return binding.root
     }

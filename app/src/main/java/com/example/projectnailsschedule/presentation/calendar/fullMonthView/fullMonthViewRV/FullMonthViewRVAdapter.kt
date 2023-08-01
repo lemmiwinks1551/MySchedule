@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -59,7 +60,7 @@ class FullMonthViewRVAdapter(
         } else {
             // if appointments exists in current date
             fillAppointmentsExistsTv(holder)
-            initChildRv(holder, position)
+            inflateChildRv(holder, position)
         }
     }
 
@@ -92,7 +93,7 @@ class FullMonthViewRVAdapter(
         }
     }
 
-    private fun initChildRv(holder: FullMonthViewRVViewHolder, position: Int) {
+    private fun inflateChildRv(holder: FullMonthViewRVViewHolder, position: Int) {
         val parentItem = monthDatesList[position]
 
         with(holder) {
@@ -122,24 +123,32 @@ class FullMonthViewRVAdapter(
                 // this method is called when we swipe our item to left direction.
                 // on below line we are getting the item at a particular position.
                 val position = viewHolder.adapterPosition
-                fullMonthViewViewModel.oldPosition = holder.adapterPosition
 
                 val deleteAppointmentModelDb: AppointmentModelDb =
                     (viewHolder as FullMonthChildViewHolder).appointmentModelDb!!
 
                 // delete client from Db
                 fullMonthViewViewModel.deleteAppointment(deleteAppointmentModelDb)
-                parentItem.appointmentsList.remove(deleteAppointmentModelDb)
 
-                holder.childRv.adapter!!.notifyDataSetChanged()
-                fullMonthChildAdapter.notifyDataSetChanged()
+                // delete client from list in parent rv
+                //parentItem.appointmentsList.remove(deleteAppointmentModelDb)
+
+                // delete in child rv
+                (holder.childRv.adapter as FullMonthChildAdapter).appointmentsList.remove(
+                    deleteAppointmentModelDb
+                )
+
                 if (parentItem.appointmentsList.isEmpty()) {
                     fillNoAppointmentsTv(holder)
                 }
+
+                fullMonthChildAdapter.notifyDataSetChanged()
+                this@FullMonthViewRVAdapter.notifyDataSetChanged()
+
                 // show Snackbar
                 Snackbar.make(
                     holder.childRv,
-                    "Удалена запись: " + deleteAppointmentModelDb.name,
+                    "Запись ${deleteAppointmentModelDb.name} ${deleteAppointmentModelDb.date} удалена",
                     Snackbar.LENGTH_LONG
                 ).setBackgroundTint(Color.parseColor("#ffff00"))
                     .setActionTextColor(Color.parseColor("#003300"))
@@ -147,21 +156,27 @@ class FullMonthViewRVAdapter(
                     .setAction(
                         "Отмена"
                     ) {
-                        // adding on click listener to our action of snack bar.
-                        // below line is to add our item to array list with a position.
+                        // restore appointment in Db
                         fullMonthViewViewModel.saveAppointment(deleteAppointmentModelDb)
-                        //fullMonthChildAdapter.appointmentsList.add(position, deleteAppointmentModelDb)
 
-                        // below line is to notify item is
-                        // added to our adapter class.
-                        parentItem.appointmentsList.add(position, deleteAppointmentModelDb)
-
-                        holder.childRv.adapter!!.notifyDataSetChanged()
-                        fullMonthChildAdapter.notifyDataSetChanged()
+                        // restore appointment in child list
+                        (holder.childRv.adapter as FullMonthChildAdapter).appointmentsList.add(
+                            position,
+                            deleteAppointmentModelDb
+                        )
 
                         if (parentItem.appointmentsList.isNotEmpty()) {
                             fillAppointmentsExistsTv(holder)
                         }
+
+                        fullMonthChildAdapter.notifyDataSetChanged()
+                        this@FullMonthViewRVAdapter.notifyDataSetChanged()
+
+                        Toast.makeText(
+                            context,
+                            "Запись ${deleteAppointmentModelDb.name} ${deleteAppointmentModelDb.date} восстановлена",
+                            Toast.LENGTH_LONG
+                        ).show()
                     }.show()
             }
 
@@ -237,8 +252,13 @@ class FullMonthViewRVAdapter(
         with(holder) {
             addAppointmentFab.setOnClickListener {
                 val bundle = Bundle()
-                val newAppointment = AppointmentModelDb(date = Util().dateConverterNew(
-                    monthDatesList[position].date.toString()), deleted = false)
+                val newAppointment = AppointmentModelDb(
+                    date = Util().dateConverterNew(
+                        monthDatesList[adapterPosition].date.toString()
+                    ), deleted = false
+                )
+
+                // set old position to scroll
                 fullMonthViewViewModel.oldPosition = holder.adapterPosition
 
                 bundle.putParcelable(bindingKeyAppointment, newAppointment)

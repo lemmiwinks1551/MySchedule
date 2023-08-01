@@ -23,7 +23,6 @@ import java.time.LocalDate
 import java.time.ZoneId
 import java.util.*
 
-
 class FullMonthViewFragment : Fragment() {
     val log = this::class.simpleName
 
@@ -31,7 +30,6 @@ class FullMonthViewFragment : Fragment() {
 
     private var _binding: FragmentFullMonthViewBinding? = null
     private var fullMonthAppointmentsRV: RecyclerView? = null
-    private var appointmentsRVAdapter: FullMonthViewRVAdapter? = null
 
     private var prevMonthButton: ImageButton? = null
     private var nextMonthButton: ImageButton? = null
@@ -129,9 +127,11 @@ class FullMonthViewFragment : Fragment() {
                     return SNAP_TO_START
                 }
             }
-            smoothScroller.targetPosition = oldPosition;
-            layoutManager.startSmoothScroll(smoothScroller);
+            smoothScroller.targetPosition = oldPosition
+            layoutManager.startSmoothScroll(smoothScroller)
         }
+
+
     }
 
     private fun initClickListeners() {

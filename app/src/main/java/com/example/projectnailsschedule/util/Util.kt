@@ -2,10 +2,16 @@ package com.example.projectnailsschedule.util
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.text.BoringLayout
+import android.content.Context
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import com.example.projectnailsschedule.R
+import com.example.projectnailsschedule.data.repository.ScheduleRepositoryImpl
+import com.example.projectnailsschedule.data.storage.ScheduleDb
+import com.example.projectnailsschedule.domain.models.AppointmentModelDb
+import com.example.projectnailsschedule.domain.usecase.appointmentUC.SaveAppointmentUseCase
+import com.example.projectnailsschedule.presentation.appointment.AppointmentViewModel
+import com.example.projectnailsschedule.presentation.main.MainActivity
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.YearMonth
@@ -16,13 +22,13 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 /**
- * Вспомогательный класс, выполняющий коенвертации даты
+ * Вспомогательный класс
  * */
 
-class Util {
+class Util() {
 
-    val LOG = this::class.simpleName
-    val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
+    val log = this::class.simpleName
+    val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
 
     @SuppressLint("SimpleDateFormat")
     fun dateConverter(day: String): String {
@@ -81,7 +87,7 @@ class Util {
         return daysInMonthArray
     }
 
-    fun getArrayFromMonth2(selectedDate: LocalDate) : ArrayList<String> {
+    fun getArrayFromMonth2(selectedDate: LocalDate): ArrayList<String> {
         val arrayList = ArrayList<String>()
         for (i in 1..selectedDate.lengthOfMonth()) {
             arrayList.add(i.toString())
@@ -93,7 +99,8 @@ class Util {
         // get weeks in month
         val locale = Locale("ru")
         val weekOfMonthStart = date.withDayOfMonth(1).get(WeekFields.of(locale).weekOfYear())
-        val weekOfMonthEnd = date.withDayOfMonth(date.lengthOfMonth()).get(WeekFields.of(locale).weekOfYear())
+        val weekOfMonthEnd =
+            date.withDayOfMonth(date.lengthOfMonth()).get(WeekFields.of(locale).weekOfYear())
         return weekOfMonthEnd - weekOfMonthStart + 1
     }
 
@@ -125,4 +132,75 @@ class Util {
         }
     }
 
+    fun addTestData(context: Context) {
+        val currentMonth = LocalDate.now()
+        for (i in 1..currentMonth.lengthOfMonth()) {
+            val appointmentModelDb = AppointmentModelDb(
+                _id = null,
+                date = dateConverterNew(LocalDate.now().withDayOfMonth(i).toString()),
+                name = generateRandomName(),
+                time = "00:00",
+                procedure = generateRandomProcedure(),
+                phone = generateRandomRussianPhoneNumber(),
+                notes = "Заметка",
+                deleted = false
+            )
+            saveAppointment(appointmentModelDb, context)
+        }
+    }
+
+    private fun generateRandomName(): String {
+        val names = listOf(
+            "Alice",
+            "Bob",
+            "Charlie",
+            "David",
+            "Emma",
+            "Frank",
+            "Grace",
+            "Henry",
+            "Ivy",
+            "Jack"
+        )
+
+        val randomIndex = (names.indices).random()
+        return names[randomIndex]
+    }
+
+    private fun generateRandomProcedure(): String {
+        val names = listOf(
+            "Маникюр",
+            "Педикюр",
+            "Маникюр + покрытие гель-лаком",
+            "Укрепление ногтей гелем",
+            "Восстановление ногтей",
+            "Наращивание ногтей",
+            "Дизайн ногтей",
+            "SPA-процедура для рук и ногтей"
+        )
+
+        val randomIndex = (names.indices).random()
+        return names[randomIndex]
+    }
+
+    private fun generateRandomRussianPhoneNumber(): String {
+        val prefix = "8"
+        val randomNumbers = (100_000..999_999).random()
+        val randomPart1 = (100..999).random()
+        val randomPart2 = (10..99).random()
+        val randomPart3 = (10..99).random()
+        return "$prefix$randomNumbers$randomPart1$randomPart2$randomPart3"
+    }
+
+    private fun saveAppointment(appointmentModelDb: AppointmentModelDb, context: Context): Boolean {
+        // Save appointment in database
+        val scheduleDb = ScheduleDb.getDb(context = context)
+        val thread = Thread {
+            scheduleDb.getDao().insert(appointmentModelDb)
+        }
+        thread.start()
+        thread.join()
+        Log.e(log, "Appointment $appointmentModelDb saved")
+        return true
+    }
 }
