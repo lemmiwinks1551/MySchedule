@@ -130,9 +130,6 @@ class FullMonthViewRVAdapter(
                 // delete client from Db
                 fullMonthViewViewModel.deleteAppointment(deleteAppointmentModelDb)
 
-                // delete client from list in parent rv
-                //parentItem.appointmentsList.remove(deleteAppointmentModelDb)
-
                 // delete in child rv
                 (holder.childRv.adapter as FullMonthChildAdapter).appointmentsList.remove(
                     deleteAppointmentModelDb
@@ -142,8 +139,8 @@ class FullMonthViewRVAdapter(
                     fillNoAppointmentsTv(holder)
                 }
 
-                fullMonthChildAdapter.notifyDataSetChanged()
-                this@FullMonthViewRVAdapter.notifyDataSetChanged()
+                fullMonthChildAdapter.notifyDataSetChanged() // update child rv
+                this@FullMonthViewRVAdapter.notifyDataSetChanged() // update parent rv
 
                 // show Snackbar
                 Snackbar.make(
