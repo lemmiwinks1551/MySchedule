@@ -164,8 +164,6 @@ class FullMonthViewRVAdapter(
                             deleteAppointmentModelDb
                         )
 
-                        this@FullMonthViewRVAdapter.
-
                         // update child rv
                         fullMonthChildAdapter.notifyItemRemoved(childPosition)
 

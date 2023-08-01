@@ -59,8 +59,6 @@ class FullMonthViewFragment : Fragment() {
 
         setObservers()
 
-        // swipeToDelete()
-
         initClickListeners()
 
         return binding.root
@@ -120,7 +118,7 @@ class FullMonthViewFragment : Fragment() {
         fullMonthAppointmentsRV?.adapter = fullMonthViewRVAdapter
 
         // scroll to previous position
-        fullMonthAppointmentsRV?.post {
+/*        fullMonthAppointmentsRV?.post {
             val oldPosition = fullMonthViewVM!!.oldPosition
             val smoothScroller: SmoothScroller = object : LinearSmoothScroller(context) {
                 override fun getVerticalSnapPreference(): Int {
@@ -129,9 +127,7 @@ class FullMonthViewFragment : Fragment() {
             }
             smoothScroller.targetPosition = oldPosition
             layoutManager.startSmoothScroll(smoothScroller)
-        }
-
-
+        }*/
     }
 
     private fun initClickListeners() {
