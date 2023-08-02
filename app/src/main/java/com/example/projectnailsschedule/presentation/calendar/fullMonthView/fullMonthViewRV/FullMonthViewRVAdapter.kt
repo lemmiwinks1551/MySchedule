@@ -152,7 +152,7 @@ class FullMonthViewRVAdapter(
                 Snackbar.make(
                     holder.childRv,
                     "Запись ${deleteAppointmentModelDb.name} ${deleteAppointmentModelDb.date} удалена",
-                    Snackbar.LENGTH_INDEFINITE
+                    Snackbar.LENGTH_LONG
                 ).setBackgroundTint(Color.parseColor("#ffff00"))
                     .setActionTextColor(Color.parseColor("#003300"))
                     .setTextColor(Color.parseColor("#003300"))

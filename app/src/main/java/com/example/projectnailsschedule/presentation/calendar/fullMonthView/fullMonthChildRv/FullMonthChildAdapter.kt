@@ -114,5 +114,4 @@ class FullMonthChildAdapter(
             navController.navigate(R.id.action_fullMonthViewFragment_to_nav_appointment, bundle)
         }
     }
-
 }
