@@ -17,7 +17,6 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.ActivityMainBinding
 import com.example.projectnailsschedule.domain.models.FirebaseModel
-import com.example.projectnailsschedule.util.FirebaseMetrics
 import com.example.projectnailsschedule.util.UncaughtExceptionHandler
 import com.example.projectnailsschedule.util.rustore.RuStoreAd
 import com.example.projectnailsschedule.util.rustore.RuStoreReview
@@ -88,7 +87,7 @@ class MainActivity : AppCompatActivity() {
             time = LocalDateTime.now(),
             event = "Start"
         )
-        FirebaseMetrics().insertMetrics(firebaseModel)
+        //FirebaseMetrics().insertMetrics(firebaseModel) CAUSE OF CRASH!!!
     }
 
     private fun initWidgets() {
