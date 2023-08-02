@@ -33,7 +33,7 @@ class AboutFragment : Fragment() {
 
         /** for test only !!!
          * add fake appointments */
-        Util().addTestData(requireContext())
+        // Util().addTestData(requireContext())
 
         return binding.root
     }
