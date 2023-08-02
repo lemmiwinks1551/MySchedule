@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import androidx.recyclerview.widget.RecyclerView.SmoothScroller
 import com.example.projectnailsschedule.databinding.FragmentFullMonthViewBinding
 import com.example.projectnailsschedule.domain.models.DateParams
@@ -35,6 +36,7 @@ class FullMonthViewFragment : Fragment() {
     private var nextMonthButton: ImageButton? = null
     private var monthTextView: TextView? = null
     private var yearTextView: TextView? = null
+    lateinit var layoutManager: LayoutManager
 
     private val binding get() = _binding!!
 
@@ -111,23 +113,10 @@ class FullMonthViewFragment : Fragment() {
         val fullMonthViewRVAdapter =
             FullMonthViewRVAdapter(list, requireContext(), findNavController(), fullMonthViewVM!!)
 
-        val layoutManager: RecyclerView.LayoutManager =
-            GridLayoutManager(activity, 1)
+        layoutManager = GridLayoutManager(activity, 1)
 
         fullMonthAppointmentsRV?.layoutManager = layoutManager
         fullMonthAppointmentsRV?.adapter = fullMonthViewRVAdapter
-
-        // scroll to previous position
-/*        fullMonthAppointmentsRV?.post {
-            val oldPosition = fullMonthViewVM!!.oldPosition
-            val smoothScroller: SmoothScroller = object : LinearSmoothScroller(context) {
-                override fun getVerticalSnapPreference(): Int {
-                    return SNAP_TO_START
-                }
-            }
-            smoothScroller.targetPosition = oldPosition
-            layoutManager.startSmoothScroll(smoothScroller)
-        }*/
     }
 
     private fun initClickListeners() {
@@ -150,5 +139,20 @@ class FullMonthViewFragment : Fragment() {
 
         monthTextView!!.text = month
         yearTextView!!.text = fullMonthViewVM!!.selectedMonth.value!!.year.toString()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // scroll to previous position
+        fullMonthAppointmentsRV?.post {
+            val oldPosition = fullMonthViewVM!!.oldPosition
+            val smoothScroller: SmoothScroller = object : LinearSmoothScroller(context) {
+                override fun getVerticalSnapPreference(): Int {
+                    return SNAP_TO_START
+                }
+            }
+            smoothScroller.targetPosition = oldPosition
+            layoutManager.startSmoothScroll(smoothScroller)
+        }
     }
 }

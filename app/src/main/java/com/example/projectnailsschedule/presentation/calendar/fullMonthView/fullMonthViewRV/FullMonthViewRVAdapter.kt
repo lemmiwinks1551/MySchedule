@@ -128,6 +128,7 @@ class FullMonthViewRVAdapter(
                 val deleteAppointmentModelDb: AppointmentModelDb =
                     (viewHolder as FullMonthChildViewHolder).appointmentModelDb!!
 
+                // save position to restore if need
                 val posToRestore = (holder.childRv.adapter as FullMonthChildAdapter)
 
                 // delete client from Db
@@ -255,6 +256,7 @@ class FullMonthViewRVAdapter(
         // create new appointment button
         with(holder) {
             addAppointmentFab.setOnClickListener {
+                fullMonthViewViewModel.oldPosition = adapterPosition
                 val bundle = Bundle()
                 val newAppointment = AppointmentModelDb(
                     date = Util().dateConverterNew(
