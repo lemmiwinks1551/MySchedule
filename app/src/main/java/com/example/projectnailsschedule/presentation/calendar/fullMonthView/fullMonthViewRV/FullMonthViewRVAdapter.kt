@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -127,6 +128,8 @@ class FullMonthViewRVAdapter(
                 val deleteAppointmentModelDb: AppointmentModelDb =
                     (viewHolder as FullMonthChildViewHolder).appointmentModelDb!!
 
+                val posToRestore = (holder.childRv.adapter as FullMonthChildAdapter)
+
                 // delete client from Db
                 fullMonthViewViewModel.deleteAppointment(deleteAppointmentModelDb)
 
@@ -159,13 +162,13 @@ class FullMonthViewRVAdapter(
                         fullMonthViewViewModel.saveAppointment(deleteAppointmentModelDb)
 
                         // restore appointment in child list
-                        (holder.childRv.adapter as FullMonthChildAdapter).appointmentsList.add(
+                        posToRestore.appointmentsList.add(
                             childPosition,
                             deleteAppointmentModelDb
                         )
 
                         // update child rv
-                        fullMonthChildAdapter.notifyItemRemoved(childPosition)
+                        fullMonthChildAdapter.notifyItemChanged(childPosition)
 
                         // update parent rv
                         this@FullMonthViewRVAdapter.notifyItemRangeChanged(
