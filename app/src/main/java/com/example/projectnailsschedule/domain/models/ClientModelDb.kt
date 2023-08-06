@@ -23,6 +23,18 @@ data class ClientModelDb(
     @ColumnInfo(name = "phone")
     val phone: String? = null,
 
+    @ColumnInfo(name = "telegram")
+    val telegram: String? = null,
+
+    @ColumnInfo(name = "instagram")
+    val instagram: String? = null,
+
+    @ColumnInfo(name = "vk")
+    val vk: String? = null,
+
+    @ColumnInfo(name = "whatsapp")
+    val whatsapp: String? = null,
+
     @ColumnInfo(name = "notes")
     val notes: String? = null
 ) : Parcelable {

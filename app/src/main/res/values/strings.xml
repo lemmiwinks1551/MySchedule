@@ -83,4 +83,10 @@
     <string name="no_data_example">Нет записей</string>
     <string name="no_appointments_text">Нет записей</string>
 
+    // soc
+    <string name="vk_text">VK</string>
+    <string name="telegram_text">Telegram</string>
+    <string name="instagram_text">Instagram</string>
+    <string name="whatsapp_text">Whatsapp</string>
+
 </resources>
