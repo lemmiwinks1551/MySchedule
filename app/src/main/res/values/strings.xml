@@ -88,5 +88,9 @@
     <string name="telegram_text">Telegram</string>
     <string name="instagram_text">Instagram</string>
     <string name="whatsapp_text">Whatsapp</string>
+    <string name="vk_link_hint">Ссылка Вконтакте</string>
+    <string name="telegram_link_hint">Ссылка Telegram</string>
+    <string name="instagram_link_hint">Ссылка Instagram</string>
+    <string name="whatsapp_link_hint">Ссылка Whatsapp</string>
 
 </resources>

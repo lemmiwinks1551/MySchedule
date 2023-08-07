@@ -58,6 +58,46 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                android:id="@+id/client_vk_link_tw"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="@string/vk_text"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/client_phone" />
+
+            <TextView
+                android:id="@+id/client_telegram_link_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="@string/telegram_text"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/client_vk_link_tw" />
+
+            <TextView
+                android:id="@+id/client_instagram_link_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="@string/instagram_text"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/client_telegram_link_tv" />
+
+            <TextView
+                android:id="@+id/client_whatsapp_link_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="@string/whatsapp_text"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/client_instagram_link_tv" />
+
+            <TextView
                 android:id="@+id/client_phone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -75,7 +115,7 @@
                 android:text="@string/notes"
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/client_phone" />
+                app:layout_constraintTop_toBottomOf="@id/client_whatsapp_link_tv" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -104,15 +144,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
 
-            <ImageButton
-                android:id="@+id/call_client_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/baseline_call_24"
-                app:layout_constraintTop_toBottomOf="@id/client_name_edit_text"
-                app:layout_constraintStart_toEndOf="@id/client_phone_edit_text"
-                app:layout_constraintEnd_toEndOf="parent"/>
-
             <EditText
                 android:id="@+id/client_phone_edit_text"
                 android:layout_width="0dp"
@@ -127,9 +158,73 @@
                 android:padding="8dp"
                 android:singleLine="true"
                 android:textSize="20sp"
-                app:layout_constraintEnd_toStartOf="@id/call_client_button"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/client_name_edit_text" />
+
+            <EditText
+                android:id="@+id/client_vk_link_et"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:gravity="start"
+                android:hint="@string/vk_link_hint"
+                android:imeOptions="actionDone"
+                android:inputType="textCapWords"
+                android:padding="8dp"
+                android:singleLine="true"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/client_phone_edit_text"/>
+
+            <EditText
+                android:id="@+id/client_telegram_link_et"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:gravity="start"
+                android:hint="@string/telegram_link_hint"
+                android:imeOptions="actionDone"
+                android:inputType="textCapWords"
+                android:padding="8dp"
+                android:singleLine="true"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/client_vk_link_et"/>
+
+            <EditText
+                android:id="@+id/client_instagram_link_et"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:gravity="start"
+                android:hint="@string/instagram_link_hint"
+                android:imeOptions="actionDone"
+                android:inputType="textCapWords"
+                android:padding="8dp"
+                android:singleLine="true"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/client_telegram_link_et"/>
+
+            <EditText
+                android:id="@+id/client_whatsapp_link_et"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:gravity="start"
+                android:hint="@string/whatsapp_link_hint"
+                android:imeOptions="actionDone"
+                android:inputType="textCapWords"
+                android:padding="8dp"
+                android:singleLine="true"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/client_instagram_link_et"/>
 
             <EditText
                 android:id="@+id/client_notes_edit_text"
@@ -147,7 +242,7 @@
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/client_phone_edit_text" />
+                app:layout_constraintTop_toBottomOf="@id/client_whatsapp_link_et" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -170,7 +265,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/save_button"
-            app:layout_constraintTop_toBottomOf="@+id/right_constraint_layout" />
+            app:layout_constraintTop_toBottomOf="@+id/left_constraint_layout" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

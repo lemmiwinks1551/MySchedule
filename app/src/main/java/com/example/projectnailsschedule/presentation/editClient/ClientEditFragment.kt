@@ -1,7 +1,5 @@
 package com.example.projectnailsschedule.presentation.editClient
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.text.Editable
@@ -22,16 +20,21 @@ class ClientEditFragment : Fragment() {
     private var _binding: FragmentClientEditBinding? = null
     private val binding get() = _binding!!
 
-    private var clientEditViewModel: ClientEditViewModel? = null
+    lateinit var clientEditViewModel: ClientEditViewModel
 
     private var clientToEdit: ClientModelDb? = null
     private var bindingKeyClientEdit = "editClient"
 
-    private var nameEditText: EditText? = null
-    private var phoneEditText: EditText? = null
-    private var notesTEditText: EditText? = null
-    private var saveButton: Button? = null
-    private var cancelButton: Button? = null
+    lateinit var nameEt: EditText
+    lateinit var phoneEt: EditText
+    private lateinit var vkEditText: EditText
+    private lateinit var telegramEt: EditText
+    private lateinit var instagramEt: EditText
+    private lateinit var whatsappEt: EditText
+    lateinit var notesEt: EditText
+
+    lateinit var saveButton: Button
+    lateinit var cancelButton: Button
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -62,38 +65,59 @@ class ClientEditFragment : Fragment() {
     }
 
     private fun initWidgets() {
-        nameEditText = binding.clientNameEditText
-        phoneEditText = binding.clientPhoneEditText
-        notesTEditText = binding.clientNotesEditText
+        nameEt = binding.clientNameEditText
+        phoneEt = binding.clientPhoneEditText
+        vkEditText = binding.clientVkLinkEt
+        telegramEt = binding.clientTelegramLinkEt
+        instagramEt = binding.clientInstagramLinkEt
+        whatsappEt = binding.clientWhatsappLinkEt
+        notesEt = binding.clientNotesEditText
+
         saveButton = binding.saveButton
         cancelButton = binding.cancelButton
     }
 
     private fun setFields() {
         // set fields into EditViews
-        val editableName: Editable = nameEditText!!.editableText
-        editableName.insert(nameEditText!!.selectionStart, clientToEdit!!.name)
+        val editableName: Editable = nameEt.editableText
+        editableName.insert(nameEt.selectionStart, clientToEdit!!.name)
 
-        val editablePhone: Editable = phoneEditText!!.editableText
-        editablePhone.insert(phoneEditText!!.selectionStart, clientToEdit!!.phone)
+        val editablePhone: Editable = phoneEt.editableText
+        editablePhone.insert(phoneEt.selectionStart, clientToEdit!!.phone)
 
-        val editableNotes: Editable = notesTEditText!!.editableText
-        editableNotes.insert(notesTEditText!!.selectionStart, clientToEdit!!.notes)
+        val editableVk: Editable = vkEditText.editableText
+        editableVk.insert(vkEditText.selectionStart, clientToEdit!!.vk)
+
+        val editableTelegram: Editable = telegramEt.editableText
+        editableTelegram.insert(telegramEt.selectionStart, clientToEdit!!.telegram)
+
+        val editableInstagram: Editable = instagramEt.editableText
+        editableInstagram.insert(instagramEt.selectionStart, clientToEdit!!.instagram)
+
+        val editableWhatsapp: Editable = whatsappEt.editableText
+        editableWhatsapp.insert(whatsappEt.selectionStart, clientToEdit!!.whatsapp)
+
+        val editableNotes: Editable = notesEt.editableText
+        editableNotes.insert(notesEt.selectionStart, clientToEdit!!.notes)
     }
 
     private fun setClickListeners() {
-        saveButton!!.setOnClickListener {
+        saveButton.setOnClickListener {
             val clientModelDb = ClientModelDb(
                 _id = clientToEdit?._id,
-                name = nameEditText?.text.toString(),
-                phone = phoneEditText?.text.toString(),
-                notes = notesTEditText?.text.toString()
+                name = nameEt.text.toString(),
+                phone = phoneEt.text.toString(),
+                vk = vkEditText.text.toString(),
+                telegram = telegramEt.text.toString(),
+                instagram = instagramEt.text.toString(),
+                whatsapp = whatsappEt.text.toString(),
+                notes = notesEt.text.toString()
             )
 
             if (clientToEdit != null) {
-                clientEditViewModel?.updateClient(clientModelDb)
+                clientEditViewModel.updateClient(clientModelDb)
             } else {
-                clientEditViewModel?.saveClient(clientModelDb)
+                clientEditViewModel.saveClient(clientModelDb)
             }
 
             val toast: Toast = Toast.makeText(
@@ -107,19 +131,13 @@ class ClientEditFragment : Fragment() {
             findNavController().popBackStack()
         }
 
-        cancelButton?.setOnClickListener {
+        cancelButton.setOnClickListener {
             // Return to previous screen
             findNavController().popBackStack()
         }
 
         // set phone input format on phone_edit_text
         binding.clientPhoneEditText.addTextChangedListener(PhoneNumberFormattingTextWatcher())
-
-        binding.callClientButton.setOnClickListener {
-            val phone = binding.clientPhoneEditText.text.toString()
-            val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phone"))
-            startActivity(intent)
-        }
     }
 
     override fun onDestroyView() {

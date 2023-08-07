@@ -41,14 +41,29 @@ class ClientsAdapter(
     }
 
     override fun onBindViewHolder(holder: ClientsViewHolder, position: Int) {
-        holder.name.text = clientsList[position].name.toString()
-        holder.phone.text = clientsList[position].phone.toString()
-        holder.notes.text = clientsList[position].notes.toString()
+        setTextViews(holder)
+        setClickListeners(holder)
+    }
 
-        holder.callClientButton.setOnClickListener {
-            val phone = clientsList[position].phone.toString()
-            val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phone"))
-            context.startActivity(intent)
+    private fun setTextViews(holder: ClientsViewHolder) {
+        with(clientsList[holder.adapterPosition]) {
+            holder.name.text = name
+            holder.phone.text = phone
+            holder.vk.text = vk
+            holder.telegram.text = telegram
+            holder.instagram.text = instagram
+            holder.whatsapp.text = whatsapp
+            holder.notes.text = notes
+        }
+    }
+
+    private fun setClickListeners(holder: ClientsViewHolder) {
+        with(holder) {
+            callClientButton.setOnClickListener {
+                val phone = clientsList[adapterPosition].phone.toString()
+                val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phone"))
+                context.startActivity(intent)
+            }
         }
     }
 }
