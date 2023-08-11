@@ -18,6 +18,10 @@ class DateViewHolder internal constructor(
     val appointmentProcedure: TextView
     val appointmentClientName: TextView
     val appointmentClientPhone: TextView
+    val appointmentClientVk: TextView
+    val appointmentClientTelegram: TextView
+    val appointmentClientInstagram: TextView
+    val appointmentClientWhatsapp: TextView
     val appointmentNotes: TextView
 
     var callClientButton: ImageButton
@@ -27,7 +31,11 @@ class DateViewHolder internal constructor(
         appointmentProcedure = itemView.findViewById(R.id.procedure_value_search)
         appointmentClientName = itemView.findViewById(R.id.client_value_search)
         appointmentClientPhone = itemView.findViewById(R.id.phone_value_search)
-        appointmentNotes = itemView.findViewById(R.id.misc_value_search)
+        appointmentClientVk = itemView.findViewById(R.id.client_vk_link_tv)
+        appointmentClientTelegram = itemView.findViewById(R.id.client_telegram_link_tv)
+        appointmentClientInstagram = itemView.findViewById(R.id.client_instagram_link_tv)
+        appointmentClientWhatsapp = itemView.findViewById(R.id.client_whatsapp_link_tv)
+        appointmentNotes = itemView.findViewById(R.id.client_notes)
 
         callClientButton = itemView.findViewById(R.id.call_client_button)
 

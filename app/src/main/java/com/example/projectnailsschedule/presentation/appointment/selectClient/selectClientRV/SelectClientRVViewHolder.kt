@@ -10,19 +10,51 @@ import com.example.projectnailsschedule.presentation.clients.clientsRecyclerView
 class SelectClientRVViewHolder internal constructor(
     itemView: View,
     listener: SelectClientRVAdapter.OnItemClickListener
-): RecyclerView.ViewHolder(itemView) {
+) : RecyclerView.ViewHolder(itemView) {
 
-    var name: TextView
-    var phone: TextView
-    var notes: TextView
-    var callClientButton: ImageButton
+    lateinit var name: TextView
+    lateinit var phone: TextView
+    lateinit var vk: TextView
+    lateinit var telegram: TextView
+    lateinit var instagram: TextView
+    lateinit var whatsapp: TextView
+    lateinit var notes: TextView
+
+    lateinit var callClientButton: ImageButton
+    lateinit var vkLogoImageButton: ImageButton
+    lateinit var telegramLogoImageButton: ImageButton
+    lateinit var instagramLogoImageButton: ImageButton
+    lateinit var whatsappLogoImageButton: ImageButton
 
     init {
-        name = itemView.findViewById(R.id.client_name_search)
-        phone = itemView.findViewById(R.id.client_phone_search)
-        notes = itemView.findViewById(R.id.client_notes_search)
-        callClientButton = itemView.findViewById(R.id.call_client_button)
+        inflateViews()
+        initButtons()
+        setClickListeners(listener)
+    }
 
+    private fun inflateViews() {
+        with(itemView) {
+            name = findViewById(R.id.client_select_name)
+            phone = findViewById(R.id.client_select_phone)
+            vk = findViewById(R.id.client_select_vk_link_tv)
+            telegram = findViewById(R.id.client_select_telegram_link_tv)
+            instagram = findViewById(R.id.client_select_instagram_link_tv)
+            whatsapp = findViewById(R.id.client_select_whatsapp_link_tv)
+            notes = findViewById(R.id.client_select_notes)
+        }
+    }
+
+    private fun initButtons() {
+        with(itemView) {
+            callClientButton = findViewById(R.id.call_client_button_select_button)
+            vkLogoImageButton = findViewById(R.id.vk_logo_imageButton_select_client)
+            telegramLogoImageButton = findViewById(R.id.telegram_logo_imageButton_select_client)
+            instagramLogoImageButton = findViewById(R.id.instagram_logo_imageButton_select_client)
+            whatsappLogoImageButton = findViewById(R.id.whatsapp_logo_imageButton_select_client)
+        }
+    }
+
+    private fun setClickListeners(listener: SelectClientRVAdapter.OnItemClickListener) {
         itemView.setOnClickListener {
             listener.onItemClick(adapterPosition)
         }

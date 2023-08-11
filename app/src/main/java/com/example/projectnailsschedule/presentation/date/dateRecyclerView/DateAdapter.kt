@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
+import java.lang.String
 
 class DateAdapter(
     private var appointmentsCount: Int,
@@ -35,32 +36,27 @@ class DateAdapter(
     }
 
     override fun onBindViewHolder(holder: DateViewHolder, position: Int) {
-        with(holder) {
-            // set date in holder
-            appointmentDate = appointmentsList[position].date
-
-            // set time in holder
-            appointmentTime.text = appointmentsList[position].time
-
-            // set procedure in holder
-            appointmentProcedure.text = appointmentsList[position].procedure
-
-            // set client name in holder
-            appointmentClientName.text = appointmentsList[position].name
-
-            // set client phone in holder
-            appointmentClientPhone.text = appointmentsList[position].phone
-
-            // set notes in holder
-            appointmentNotes.text = appointmentsList[position].notes
-
-            // set callClient click listener
-            holder.callClientButton.setOnClickListener {
-                val phone = appointmentsList[position].phone
-                val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phone"))
-                context.startActivity(intent)
-            }
+        with(appointmentsList[position]) {
+            holder.appointmentDate = date
+            holder.appointmentTime.text = time
+            holder.appointmentProcedure.text = procedure
+            holder.appointmentClientName.text = name
+            holder.appointmentClientPhone.text = phone
+            holder.appointmentClientVk.text = vk
+            holder.appointmentClientTelegram.text = telegram
+            holder.appointmentClientInstagram.text = instagram
+            holder.appointmentClientWhatsapp.text = whatsapp
+            holder.appointmentNotes.text = notes
         }
+
+
+        // set callClient click listener
+        holder.callClientButton.setOnClickListener {
+            val phone = appointmentsList[position].phone
+            val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phone"))
+            context.startActivity(intent)
+        }
+
     }
 
     override fun getItemCount(): Int {

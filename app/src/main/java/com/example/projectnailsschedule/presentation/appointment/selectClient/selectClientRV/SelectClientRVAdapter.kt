@@ -30,7 +30,7 @@ class SelectClientRVAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SelectClientRVViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val view: View = inflater.inflate(R.layout.client_rv_item, parent, false)
+        val view: View = inflater.inflate(R.layout.client_select_rv_item, parent, false)
 
         return SelectClientRVViewHolder(view, mListener)
     }
@@ -42,14 +42,29 @@ class SelectClientRVAdapter(
     }
 
     override fun onBindViewHolder(holder: SelectClientRVViewHolder, position: Int) {
-        holder.name.text = clientsList[position].name.toString()
-        holder.phone.text = clientsList[position].phone.toString()
-        holder.notes.text = clientsList[position].notes.toString()
+        inflateViews(holder, position)
+        setClickListeners(holder, position)
+    }
 
-        holder.callClientButton.setOnClickListener {
-            val phone = clientsList[position].phone.toString()
-            val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phone"))
-            context.startActivity(intent)
+    private fun inflateViews(holder: SelectClientRVViewHolder, position: Int) {
+        with(clientsList[position]) {
+            holder.name.text = name
+            holder.phone.text = phone
+            holder.vk.text = vk
+            holder.telegram.text = telegram
+            holder.instagram.text = instagram
+            holder.whatsapp.text = whatsapp
+            holder.notes.text = notes
+        }
+    }
+
+    private fun setClickListeners(holder: SelectClientRVViewHolder, position: Int) {
+        with(clientsList[position]) {
+            holder.callClientButton.setOnClickListener {
+                val phone = phone
+                val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phone"))
+                context.startActivity(intent)
+            }
         }
     }
 }

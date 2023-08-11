@@ -26,19 +26,19 @@ class ClientsViewHolder internal constructor(
     var instagramImageButton: ImageButton
 
     init {
-        name = itemView.findViewById(R.id.client_name_search)
-        phone = itemView.findViewById(R.id.client_phone_search)
-        vk = itemView.findViewById(R.id.client_vk_link_tw)
-        telegram = itemView.findViewById(R.id.client_telegram_link_tv)
-        instagram = itemView.findViewById(R.id.client_instagram_link_tv)
-        whatsapp = itemView.findViewById(R.id.client_whatsapp_link_tv)
-        notes = itemView.findViewById(R.id.client_notes_search)
+        name = itemView.findViewById(R.id.client_select_name)
+        phone = itemView.findViewById(R.id.client_select_phone)
+        vk = itemView.findViewById(R.id.client_select_vk_link_tv)
+        telegram = itemView.findViewById(R.id.client_select_telegram_link_tv)
+        instagram = itemView.findViewById(R.id.client_select_instagram_link_tv)
+        whatsapp = itemView.findViewById(R.id.client_select_whatsapp_link_tv)
+        notes = itemView.findViewById(R.id.client_select_notes)
 
 
-        callClientButton = itemView.findViewById(R.id.call_client_button)
-        vkImageButton = itemView.findViewById(R.id.vk_logo_imageButton)
-        telegramImageButton = itemView.findViewById(R.id.telegram_logo_imageButton)
-        instagramImageButton = itemView.findViewById(R.id.instagram_logo_imageButton)
+        callClientButton = itemView.findViewById(R.id.call_client_button_select_button)
+        vkImageButton = itemView.findViewById(R.id.vk_logo_imageButton_select_client)
+        telegramImageButton = itemView.findViewById(R.id.telegram_logo_imageButton_select_client)
+        instagramImageButton = itemView.findViewById(R.id.instagram_logo_imageButton_select_client)
 
         itemView.setOnClickListener {
             listener.onItemClick(adapterPosition)

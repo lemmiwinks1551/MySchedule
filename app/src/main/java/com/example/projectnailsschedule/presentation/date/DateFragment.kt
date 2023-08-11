@@ -89,13 +89,7 @@ class DateFragment : Fragment() {
         // add new appointment
         binding.addButton.setOnClickListener {
             val appointmentParams = AppointmentModelDb(
-                _id = null,
                 date = Util().dateConverterNew(dateParams?.date.toString()),
-                name = null,
-                time = null,
-                procedure = null,
-                phone = null,
-                notes = null,
                 deleted = false
             )
             val bundle = Bundle()
@@ -144,6 +138,10 @@ class DateFragment : Fragment() {
                     name = appointmentList?.get(position)?.name,
                     time = appointmentList?.get(position)?.time,
                     procedure = appointmentList?.get(position)?.procedure,
+                    vk = appointmentList?.get(position)?.vk,
+                    telegram = appointmentList?.get(position)?.telegram,
+                    instagram = appointmentList?.get(position)?.instagram,
+                    whatsapp = appointmentList?.get(position)?.whatsapp,
                     phone = appointmentList?.get(position)?.phone,
                     notes = appointmentList?.get(position)?.notes,
                     deleted = appointmentList?.get(position)!!.deleted

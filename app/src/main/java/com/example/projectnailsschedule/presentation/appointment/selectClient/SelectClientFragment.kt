@@ -110,6 +110,10 @@ class SelectClientFragment : DialogFragment() {
                     _id = clientsList[position]._id,
                     name = clientsList[position].name,
                     phone = clientsList[position].phone,
+                    vk = clientsList[position].vk,
+                    telegram = clientsList[position].telegram,
+                    instagram = clientsList[position].instagram,
+                    whatsapp = clientsList[position].whatsapp,
                     notes = clientsList[position].notes
                 )
 

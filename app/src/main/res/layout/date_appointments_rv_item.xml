@@ -31,15 +31,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/client_avatar"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ImageButton
-            android:id="@+id/call_client_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/baseline_call_24"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/client_value_search" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
 
         <TextView
             android:id="@+id/time_value_search"
@@ -88,7 +81,51 @@
             app:layout_constraintTop_toBottomOf="@id/client_value_search" />
 
         <TextView
-            android:id="@+id/misc_value_search"
+            android:id="@+id/client_vk_link_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="@string/vk_text"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toStartOf="@id/vk_logo_imageButton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/call_client_button" />
+
+        <TextView
+            android:id="@+id/client_telegram_link_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="@string/telegram_text"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toStartOf="@id/telegram_logo_imageButton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/telegram_logo_imageButton" />
+
+        <TextView
+            android:id="@+id/client_instagram_link_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="@string/instagram_text"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toStartOf="@id/instagram_logo_imageButton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/telegram_logo_imageButton" />
+
+        <TextView
+            android:id="@+id/client_whatsapp_link_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="@string/whatsapp_text"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toStartOf="@id/whatsapp_logo_imageButton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/instagram_logo_imageButton" />
+
+        <TextView
+            android:id="@+id/client_notes"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
@@ -97,7 +134,51 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/phone_value_search" />
+            app:layout_constraintTop_toBottomOf="@+id/whatsapp_logo_imageButton" />
+
+        <ImageButton
+            android:id="@+id/vk_logo_imageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/vk_logo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/client_vk_link_tv"
+            app:layout_constraintTop_toBottomOf="@id/call_client_button" />
+
+        <ImageButton
+            android:id="@+id/telegram_logo_imageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/telegram_logo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/client_telegram_link_tv"
+            app:layout_constraintTop_toBottomOf="@id/vk_logo_imageButton" />
+
+        <ImageButton
+            android:id="@+id/instagram_logo_imageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/instagram_logo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/client_instagram_link_tv"
+            app:layout_constraintTop_toBottomOf="@id/telegram_logo_imageButton" />
+
+        <ImageButton
+            android:id="@+id/whatsapp_logo_imageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/whatsapp_logo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/client_whatsapp_link_tv"
+            app:layout_constraintTop_toBottomOf="@id/instagram_logo_imageButton" />
+
+        <ImageButton
+            android:id="@+id/call_client_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_call_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/client_value_search" />
 
     </androidx.constraintlayout.widget.ConstraintLayout> <!--Appointment params-->
 

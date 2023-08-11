@@ -76,9 +76,13 @@ class AppointmentFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<ClientModelDb>("client")?.observe(viewLifecycleOwner) { result ->
-            // здесь обрабатываем результат
-            binding.nameEditText.setText(result.name)
-            binding.phoneEditText.setText(result.phone)
+            // здесь обрабатываем результат после выбора клиента
+            binding.nameEt.setText(result.name)
+            binding.phoneEt.setText(result.phone)
+            binding.clientVkLinkEt.setText(result.vk)
+            binding.clientTelegramLinkEt.setText(result.telegram)
+            binding.clientInstagramLinkEt.setText(result.instagram)
+            binding.clientWhatsappLinkEt.setText(result.whatsapp)
         }
     }
 
@@ -110,11 +114,11 @@ class AppointmentFragment : Fragment() {
         }
 
         // set phone input format on phone_edit_text
-        binding.phoneEditText.addTextChangedListener(PhoneNumberFormattingTextWatcher())
+        binding.phoneEt.addTextChangedListener(PhoneNumberFormattingTextWatcher())
 
         // set phone as hyperlink
         binding.callClientButton.setOnClickListener {
-            val phone = binding.phoneEditText.text.toString()
+            val phone = binding.phoneEt.text.toString()
             val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phone"))
             startActivity(intent)
         }
@@ -147,11 +151,15 @@ class AppointmentFragment : Fragment() {
             val appointmentModelDb = AppointmentModelDb(
                 _id = null,
                 date = dayEditText.text.toString(),
-                name = nameEditText.text.toString(),
+                name = nameEt.text.toString(),
                 time = timeEditText.text.toString(),
-                procedure = procedureEditText.text.toString(),
-                phone = phoneEditText.text.toString(),
-                notes = notesEditText.text.toString(),
+                procedure = procedureEt.text.toString(),
+                phone = phoneEt.text.toString(),
+                vk = clientVkLinkEt.text.toString(),
+                telegram = clientTelegramLinkEt.text.toString(),
+                instagram = clientInstagramLinkEt.text.toString(),
+                whatsapp = clientWhatsappLinkEt.text.toString(),
+                notes = notesEt.text.toString(),
                 deleted = false
             )
             appointmentViewModel?.createAppointment(appointmentModelDb)
@@ -176,11 +184,15 @@ class AppointmentFragment : Fragment() {
             val appointmentModelDb = AppointmentModelDb(
                 _id = appointmentParams?._id,
                 date = dayEditText.text.toString(),
-                name = nameEditText.text.toString(),
+                name = nameEt.text.toString(),
                 time = timeEditText.text.toString(),
-                procedure = procedureEditText.text.toString(),
-                phone = phoneEditText.text.toString(),
-                notes = notesEditText.text.toString(),
+                procedure = procedureEt.text.toString(),
+                phone = phoneEt.text.toString(),
+                vk = clientVkLinkEt.text.toString(),
+                telegram = clientTelegramLinkEt.text.toString(),
+                instagram = clientInstagramLinkEt.text.toString(),
+                whatsapp = clientWhatsappLinkEt.text.toString(),
+                notes = notesEt.text.toString(),
                 deleted = false
             )
 
@@ -199,10 +211,14 @@ class AppointmentFragment : Fragment() {
         with(binding) {
             dayEditText.text = appointmentParams?.date
             timeEditText.text = appointmentParams?.time
-            procedureEditText.setText(appointmentParams?.procedure)
-            nameEditText.setText(appointmentParams?.name)
-            phoneEditText.setText(appointmentParams?.phone)
-            notesEditText.setText(appointmentParams?.notes)
+            procedureEt.setText(appointmentParams?.procedure)
+            nameEt.setText(appointmentParams?.name)
+            phoneEt.setText(appointmentParams?.phone)
+            clientVkLinkEt.setText(appointmentParams?.vk)
+            clientTelegramLinkEt.setText(appointmentParams?.telegram)
+            clientInstagramLinkEt.setText(appointmentParams?.instagram)
+            clientWhatsappLinkEt.setText(appointmentParams?.whatsapp)
+            notesEt.setText(appointmentParams?.notes)
         }
     }
 
