@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="4dp"
-    android:background="@drawable/recycler_view_background_pink"
+    android:background="@drawable/bold_borders"
     android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             android:text="@string/mon"
-            android:textSize="15dp"
+            android:textSize="15sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -48,8 +48,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/rv_and_fab_cl"
         android:layout_width="0dp"
-        android:layout_margin="4dp"
         android:layout_height="wrap_content"
+        android:layout_margin="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_weight="0.8"
@@ -69,9 +69,10 @@
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/month_view_add_appointment_fab"
             android:layout_width="wrap_content"
-            android:layout_margin="4dp"
-            app:fabSize="mini"
             android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:src="@drawable/mini_fab"
+            app:fabCustomSize="30dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

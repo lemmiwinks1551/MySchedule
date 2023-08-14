@@ -13,6 +13,7 @@ class DateShortViewHolder internal constructor(itemView: View, onItemListener: C
     val time: TextView
     val procedure: TextView
     val number: TextView
+    val notes: TextView
     private val onItemListener: DateShortAdapter.OnItemListener
 
     init {
@@ -20,6 +21,7 @@ class DateShortViewHolder internal constructor(itemView: View, onItemListener: C
         time = itemView.findViewById(R.id.appointment_start_short)
         procedure = itemView.findViewById(R.id.appointment_procedure_short)
         number = itemView.findViewById(R.id.appointment_number)
+        notes = itemView.findViewById(R.id.notes_procedure_short)
         itemView.setOnClickListener(this)
         this.onItemListener = onItemListener
     }

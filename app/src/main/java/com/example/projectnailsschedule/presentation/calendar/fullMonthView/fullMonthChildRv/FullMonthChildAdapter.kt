@@ -41,47 +41,45 @@ class FullMonthChildAdapter(
     }
 
     private fun fillTextViews(holder: FullMonthChildViewHolder) {
-        with(holder) {
-            appointmentTime.text = appointmentsList[position].time
-            appointmentClientName.text = appointmentsList[position].name
-            appointmentClientPhone.text = appointmentsList[position].phone
-            appointmentProcedure.text = appointmentsList[position].procedure
-            appointmentNotes.text = appointmentsList[position].notes
+        with(appointmentsList[holder.adapterPosition]) {
+            holder.appointmentTime.text = time
+            holder.appointmentClientName.text = name
+            holder.appointmentClientPhone.text = phone
+            holder.appointmentClientVk.text = vk
+            holder.appointmentClientTelegram.text = telegram
+            holder.appointmentClientInstagram.text = instagram
+            holder.appointmentClientWhatsApp.text = whatsapp
+            holder.appointmentProcedure.text = procedure
+            holder.appointmentNotes.text = notes
         }
     }
 
     private fun expandFields(holder: FullMonthChildViewHolder) {
-        val fadeInAnimation = AlphaAnimation(0.0f, 1.0f)
-        fadeInAnimation.duration = 1000
-
         with(holder) {
-            appointmentProcedure.visibility = View.VISIBLE
-            appointmentProcedure.startAnimation(fadeInAnimation)
-
-            appointmentClientPhone.visibility = View.VISIBLE
-            appointmentClientPhone.startAnimation(fadeInAnimation)
-
-            appointmentNotes.visibility = View.VISIBLE
-            appointmentNotes.startAnimation(fadeInAnimation)
-
-            phoneCallButton.visibility= View.VISIBLE
-            phoneCallButton.startAnimation(fadeInAnimation)
+            cl3.visibility = View.VISIBLE
+            cl4.visibility = View.VISIBLE
+            cl5.visibility = View.VISIBLE
+            cl6.visibility = View.VISIBLE
+            cl7.visibility = View.VISIBLE
+            cl8.visibility = View.VISIBLE
         }
     }
 
     private fun collapseFields(holder: FullMonthChildViewHolder) {
         with(holder) {
-            appointmentProcedure.visibility = View.GONE
-            appointmentClientPhone.visibility = View.GONE
-            appointmentNotes.visibility = View.GONE
-            phoneCallButton.visibility= View.GONE
+            cl3.visibility = View.GONE
+            cl4.visibility = View.GONE
+            cl5.visibility = View.GONE
+            cl6.visibility = View.GONE
+            cl7.visibility = View.GONE
+            cl8.visibility = View.GONE
         }
     }
 
     private fun setOnClickListeners(holder: FullMonthChildViewHolder, position: Int) {
         with(holder) {
             expandButton.setOnClickListener {
-                expandButton.visibility = View.GONE
+                expandButton.visibility = View.INVISIBLE
                 collapseButton.visibility = View.VISIBLE
 
                 expandFields(holder = holder)
@@ -91,7 +89,7 @@ class FullMonthChildAdapter(
                 collapseFields(holder = holder)
 
                 expandButton.visibility = View.VISIBLE
-                collapseButton.visibility = View.GONE
+                collapseButton.visibility = View.INVISIBLE
             }
 
             phoneCallButton.setOnClickListener {

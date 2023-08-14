@@ -197,6 +197,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="24dp"
         android:contentDescription="@string/date_edit"
+        android:src="@drawable/mini_fab"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -212,48 +213,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/calendarRecyclerView">
-
-        <TableRow>
-
-<!--            <TextView
-                android:id="@+id/appointment_number"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:layout_weight="0.3"
-                android:text="@string/number"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/appointment_start_short"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:layout_weight="0.5"
-                android:text="@string/time"
-                android:textAlignment="textStart"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/appointment_name_short"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:layout_weight="1"
-                android:text="@string/client"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/appointment_procedure_short"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:layout_weight="1"
-                android:text="@string/procedure"
-                android:textSize="16sp" />-->
-
-        </TableRow>
 
 
     </TableLayout> <!--ShortViewTable-->

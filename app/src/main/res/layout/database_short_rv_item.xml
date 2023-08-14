@@ -11,12 +11,10 @@
         <TextView
             android:id="@+id/appointment_number"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_margin="4dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="4dp"
-            android:layout_weight="0.3"
-            android:gravity="center_vertical"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="2dp"
+            android:layout_weight="0.1"
             android:text="@string/number"
             android:textSize="16sp"
             android:textStyle="bold" />
@@ -25,9 +23,9 @@
             android:id="@+id/appointment_start_short"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            android:layout_weight="0.5"
-            android:gravity="center_vertical"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="2dp"
+            android:layout_weight="0.2"
             android:text="@string/time"
             android:textSize="16sp" />
 
@@ -35,9 +33,9 @@
             android:id="@+id/appointment_name_short"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="2dp"
+            android:layout_weight="0.3"
             android:text="@string/client"
             android:textSize="16sp" />
 
@@ -45,10 +43,20 @@
             android:id="@+id/appointment_procedure_short"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="2dp"
+            android:layout_weight="0.3"
             android:text="@string/procedure"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/notes_procedure_short"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="2dp"
+            android:layout_weight="0.3"
+            android:text="@string/notes"
             android:textSize="16sp" />
     </TableRow>
 

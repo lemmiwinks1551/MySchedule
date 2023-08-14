@@ -33,6 +33,7 @@ internal class DateShortAdapter(
         holder.time.text = currentDayAppointments.time
         holder.procedure.text = currentDayAppointments.procedure
         holder.number.text = String.format("${position + 1}.")
+        holder.notes.text = currentDayAppointments.notes
     }
 
     override fun getItemCount(): Int {
