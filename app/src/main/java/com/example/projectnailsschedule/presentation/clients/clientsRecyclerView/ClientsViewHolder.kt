@@ -24,6 +24,7 @@ class ClientsViewHolder internal constructor(
     var vkImageButton: ImageButton
     var telegramImageButton: ImageButton
     var instagramImageButton: ImageButton
+    var whatsappImageButton: ImageButton
 
     init {
         name = itemView.findViewById(R.id.client_select_name)
@@ -34,11 +35,11 @@ class ClientsViewHolder internal constructor(
         whatsapp = itemView.findViewById(R.id.client_select_whatsapp_link_tv)
         notes = itemView.findViewById(R.id.client_select_notes)
 
-
         callClientButton = itemView.findViewById(R.id.call_client_button_select_button)
         vkImageButton = itemView.findViewById(R.id.vk_logo_imageButton_select_client)
         telegramImageButton = itemView.findViewById(R.id.telegram_logo_imageButton_select_client)
         instagramImageButton = itemView.findViewById(R.id.instagram_logo_imageButton_select_client)
+        whatsappImageButton = itemView.findViewById(R.id.whatsapp_logo_imageButton_select_client)
 
         itemView.setOnClickListener {
             listener.onItemClick(adapterPosition)

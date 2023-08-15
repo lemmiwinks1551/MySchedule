@@ -270,7 +270,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
-
                 android:autofillHints="phone"
                 android:background="@null"
                 android:hint="@string/example_phone"
