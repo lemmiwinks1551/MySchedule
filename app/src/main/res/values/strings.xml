@@ -86,10 +86,10 @@
     // soc
     <string name="vk_text">VK</string>
     <string name="telegram_text">Telegram</string>
-    <string name="telegram_hint">Телефон или Ник</string>
+    <string name="telegram_hint">Ссылка https://t.me/ или Телефон или Ник</string>
     <string name="instagram_text">Instagram</string>
     <string name="whatsapp_text">Whatsapp</string>
-    <string name="vk_link_hint">https://vk.com/id/… или id или Ник</string>
+    <string name="vk_link_hint">Ссылка https://vk.com/id/… или id или Ник</string>
     <string name="instagram_link_hint">https://instagram.com/… или Ник</string>
 
 </resources>

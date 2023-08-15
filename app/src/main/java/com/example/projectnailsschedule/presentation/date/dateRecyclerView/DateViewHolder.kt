@@ -24,6 +24,11 @@ class DateViewHolder internal constructor(
     val appointmentClientWhatsapp: TextView
     val appointmentNotes: TextView
 
+    val vkImageButton: ImageButton
+    val telegramImageButton: ImageButton
+    val instagramImageButton: ImageButton
+    val whatsappImageButton: ImageButton
+
     var callClientButton: ImageButton
 
     init {
@@ -38,6 +43,10 @@ class DateViewHolder internal constructor(
         appointmentNotes = itemView.findViewById(R.id.client_notes)
 
         callClientButton = itemView.findViewById(R.id.call_client_button)
+        vkImageButton = itemView.findViewById(R.id.vk_logo_imageButton_date)
+        telegramImageButton = itemView.findViewById(R.id.telegram_logo_imageButton_date)
+        instagramImageButton = itemView.findViewById(R.id.instagram_logo_imageButton_date)
+        whatsappImageButton = itemView.findViewById(R.id.whatsapp_logo_imageButton_date)
 
         itemView.setOnClickListener {
             listener.onItemClick(adapterPosition)

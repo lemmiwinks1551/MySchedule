@@ -32,10 +32,10 @@ class FullMonthChildViewHolder internal constructor(
     val appointmentNotes: TextView
 
     val phoneCallButton: ImageButton
-    val vkButton: ImageButton
-    val telegramButton: ImageButton
-    val instagramButton: ImageButton
-    val whatsAppButton: ImageButton
+    val vkImageButton: ImageButton
+    val telegramImageButton: ImageButton
+    val instagramImageButton: ImageButton
+    val whatsAppImageButton: ImageButton
     val expandButton: ImageButton
     val collapseButton: ImageButton
 
@@ -58,10 +58,10 @@ class FullMonthChildViewHolder internal constructor(
         appointmentNotes = itemView.findViewById(R.id.notes_value_child)
 
         phoneCallButton = itemView.findViewById(R.id.phone_call_button)
-        vkButton = itemView.findViewById(R.id.vk_logo_imageButton_child)
-        telegramButton = itemView.findViewById(R.id.telegram_logo_imageButton_child)
-        instagramButton = itemView.findViewById(R.id.instagram_logo_imageButton_child)
-        whatsAppButton = itemView.findViewById(R.id.whatsapp_logo_imageButton_child)
+        vkImageButton = itemView.findViewById(R.id.vk_logo_imageButton_child)
+        telegramImageButton = itemView.findViewById(R.id.telegram_logo_imageButton_child)
+        instagramImageButton = itemView.findViewById(R.id.instagram_logo_imageButton_child)
+        whatsAppImageButton = itemView.findViewById(R.id.whatsapp_logo_imageButton_child)
         expandButton = itemView.findViewById(R.id.expand_button)
         collapseButton = itemView.findViewById(R.id.collapse_button)
     }

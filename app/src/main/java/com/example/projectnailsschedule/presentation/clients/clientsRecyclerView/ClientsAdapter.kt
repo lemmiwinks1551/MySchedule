@@ -109,6 +109,7 @@ class ClientsAdapter(
     }
 
     private fun startTelegram(uri: String) {
+        val uri = uri.replace("https://t.me/", "")
         try {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse("tg://resolve?domain=$uri"))
             context.startActivity(intent)

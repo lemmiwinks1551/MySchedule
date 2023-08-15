@@ -21,6 +21,7 @@ import com.example.projectnailsschedule.databinding.FragmentAppointmentBinding
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
 import com.example.projectnailsschedule.domain.models.ClientModelDb
 import com.example.projectnailsschedule.presentation.appointment.selectClient.SelectClientFragment
+import com.example.projectnailsschedule.presentation.clients.clientsRecyclerView.ClientsViewHolder
 import com.example.projectnailsschedule.util.Util
 import java.util.*
 
@@ -75,15 +76,16 @@ class AppointmentFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<ClientModelDb>("client")?.observe(viewLifecycleOwner) { result ->
-            // здесь обрабатываем результат после выбора клиента
-            binding.nameEt.setText(result.name)
-            binding.phoneEt.setText(result.phone)
-            binding.clientVkLinkEt.setText(result.vk)
-            binding.clientTelegramLinkEt.setText(result.telegram)
-            binding.clientInstagramLinkEt.setText(result.instagram)
-            binding.clientWhatsappLinkEt.setText(result.whatsapp)
-        }
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<ClientModelDb>("client")
+            ?.observe(viewLifecycleOwner) { result ->
+                // здесь обрабатываем результат после выбора клиента
+                binding.nameEt.setText(result.name)
+                binding.phoneEt.setText(result.phone)
+                binding.clientVkLinkEt.setText(result.vk)
+                binding.clientTelegramLinkEt.setText(result.telegram)
+                binding.clientInstagramLinkEt.setText(result.instagram)
+                binding.clientWhatsappLinkEt.setText(result.whatsapp)
+            }
     }
 
     private fun setClickListeners() {
@@ -113,9 +115,6 @@ class AppointmentFragment : Fragment() {
             setTimePicker()
         }
 
-        // set phone input format on phone_edit_text
-        binding.phoneEt.addTextChangedListener(PhoneNumberFormattingTextWatcher())
-
         // set phone as hyperlink
         binding.callClientButton.setOnClickListener {
             val phone = binding.phoneEt.text.toString()
@@ -123,10 +122,13 @@ class AppointmentFragment : Fragment() {
             startActivity(intent)
         }
 
+        // set call client button
         binding.selectClientButton.setOnClickListener {
             val dialogFragment = SelectClientFragment()
             dialogFragment.show(parentFragmentManager, "SelectClientFragment")
         }
+
+        initSocClickListeners()
     }
 
     private fun setTitle() {
@@ -262,5 +264,113 @@ class AppointmentFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun initSocClickListeners() {
+        with(binding) {
+            vkLogoImageButton.setOnClickListener {
+                startVk(clientVkLinkEt.text.toString().trim())
+            }
+
+            telegramLogoImageButton.setOnClickListener {
+                startTelegram(clientTelegramLinkEt.text.toString().trim())
+            }
+
+            instagramLogoImageButton.setOnClickListener {
+                startInstagram(clientInstagramLinkEt.text.toString().trim())
+            }
+
+            whatsappLogoImageButton.setOnClickListener {
+                startWhatsapp(clientWhatsappLinkEt.text.toString().trim())
+            }
+        }
+    }
+
+    private fun startVk(uri: String) {
+        val uri = uri.replace("https://vk.com/", "")
+        try {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://vk.com/$uri"))
+            requireContext().startActivity(intent)
+        } catch (e: Exception) {
+            try {
+                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://vk.com/$uri"))
+                requireContext().startActivity(browserIntent)
+            } catch (e: Exception) {
+                Toast.makeText(
+                    requireContext(),
+                    "Не удалось перейти во Вконтакте",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
+    }
+
+    private fun startTelegram(uri: String) {
+        val uri = uri.replace("https://t.me/", "")
+        try {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("tg://resolve?domain=$uri"))
+            requireContext().startActivity(intent)
+        } catch (e: Exception) {
+            try {
+                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://t.me/$uri"))
+                requireContext().startActivity(browserIntent)
+            } catch (e: Exception) {
+                Toast.makeText(
+                    requireContext(),
+                    "Не удалось перейти в Telegram",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
+    }
+
+    private fun startInstagram(uri: String) {
+        val regex = Regex("https:\\/\\/instagram\\.com\\/([^?\\/]+)(?:\\?igshid=.*)?|([\\w.-]+)")
+        val matchResult = regex.find(uri)
+        var username = matchResult?.groupValues?.getOrNull(1)
+        if (username == "") {
+            username = matchResult?.groupValues?.getOrNull(2)
+        }
+
+        try {
+            val intent =
+                Intent(Intent.ACTION_VIEW, Uri.parse("http://instagram.com/_u/$username"))
+            intent.setPackage("com.instagram.android")
+            requireContext().startActivity(intent)
+        } catch (e: Exception) {
+            try {
+                val browserIntent =
+                    Intent(Intent.ACTION_VIEW, Uri.parse("https://www.instagram.com/$username"))
+                requireContext().startActivity(browserIntent)
+            } catch (e: Exception) {
+                Toast.makeText(
+                    requireContext(),
+                    "Не удалось перейти в Instagram",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
+    }
+
+    private fun startWhatsapp(uri: String) {
+        try {
+            val intent =
+                Intent(Intent.ACTION_VIEW, Uri.parse("https://api.whatsapp.com/send?phone=$uri"))
+            requireContext().startActivity(intent)
+        } catch (e: Exception) {
+            try {
+                val browserIntent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://web.whatsapp.com/send?phone=$uri")
+                )
+                requireContext().startActivity(browserIntent)
+            } catch (e: Exception) {
+                Toast.makeText(
+                    requireContext(),
+                    "Не удалось перейти в Whatsapp",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
     }
 }

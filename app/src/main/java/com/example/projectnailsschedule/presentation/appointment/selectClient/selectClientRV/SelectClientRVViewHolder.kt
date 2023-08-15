@@ -5,7 +5,6 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
-import com.example.projectnailsschedule.presentation.clients.clientsRecyclerView.ClientsAdapter
 
 class SelectClientRVViewHolder internal constructor(
     itemView: View,
@@ -21,10 +20,10 @@ class SelectClientRVViewHolder internal constructor(
     lateinit var notes: TextView
 
     lateinit var callClientButton: ImageButton
-    lateinit var vkLogoImageButton: ImageButton
-    lateinit var telegramLogoImageButton: ImageButton
-    lateinit var instagramLogoImageButton: ImageButton
-    lateinit var whatsappLogoImageButton: ImageButton
+    lateinit var vkImageButton: ImageButton
+    lateinit var telegramImageButton: ImageButton
+    lateinit var instagramImageButton: ImageButton
+    lateinit var whatsappImageButton: ImageButton
 
     init {
         inflateViews()
@@ -47,10 +46,10 @@ class SelectClientRVViewHolder internal constructor(
     private fun initButtons() {
         with(itemView) {
             callClientButton = findViewById(R.id.call_client_button_select_button)
-            vkLogoImageButton = findViewById(R.id.vk_logo_imageButton_select_client)
-            telegramLogoImageButton = findViewById(R.id.telegram_logo_imageButton_select_client)
-            instagramLogoImageButton = findViewById(R.id.instagram_logo_imageButton_select_client)
-            whatsappLogoImageButton = findViewById(R.id.whatsapp_logo_imageButton_select_client)
+            vkImageButton = findViewById(R.id.vk_logo_imageButton_select_client)
+            telegramImageButton = findViewById(R.id.telegram_logo_imageButton_select_client)
+            instagramImageButton = findViewById(R.id.instagram_logo_imageButton_select_client)
+            whatsappImageButton = findViewById(R.id.whatsapp_logo_imageButton_select_client)
         }
     }
 
