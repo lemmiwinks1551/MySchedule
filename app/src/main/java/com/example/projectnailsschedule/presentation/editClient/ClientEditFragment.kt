@@ -78,27 +78,23 @@ class ClientEditFragment : Fragment() {
     }
 
     private fun setFields() {
-        // set fields into EditViews
-        val editableName: Editable = nameEt.editableText
-        editableName.insert(nameEt.selectionStart, clientToEdit!!.name)
+        val fields = mapOf(
+            nameEt to clientToEdit!!.name,
+            phoneEt to clientToEdit!!.phone,
+            vkEditText to clientToEdit!!.vk,
+            telegramEt to clientToEdit!!.telegram,
+            instagramEt to clientToEdit!!.instagram,
+            whatsappEt to clientToEdit!!.whatsapp,
+            notesEt to clientToEdit!!.notes
+        )
 
-        val editablePhone: Editable = phoneEt.editableText
-        editablePhone.insert(phoneEt.selectionStart, clientToEdit!!.phone)
-
-        val editableVk: Editable = vkEditText.editableText
-        editableVk.insert(vkEditText.selectionStart, clientToEdit!!.vk)
-
-        val editableTelegram: Editable = telegramEt.editableText
-        editableTelegram.insert(telegramEt.selectionStart, clientToEdit!!.telegram)
-
-        val editableInstagram: Editable = instagramEt.editableText
-        editableInstagram.insert(instagramEt.selectionStart, clientToEdit!!.instagram)
-
-        val editableWhatsapp: Editable = whatsappEt.editableText
-        editableWhatsapp.insert(whatsappEt.selectionStart, clientToEdit!!.whatsapp)
-
-        val editableNotes: Editable = notesEt.editableText
-        editableNotes.insert(notesEt.selectionStart, clientToEdit!!.notes)
+        for ((editText, value) in fields) {
+            value?.let {
+                val editable = editText.editableText
+                val selectionStart = editText.selectionStart
+                editable.insert(selectionStart, it)
+            }
+        }
     }
 
     private fun setClickListeners() {
