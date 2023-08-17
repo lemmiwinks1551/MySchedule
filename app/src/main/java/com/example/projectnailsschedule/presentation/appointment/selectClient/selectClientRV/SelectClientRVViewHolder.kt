@@ -3,6 +3,7 @@ package com.example.projectnailsschedule.presentation.appointment.selectClient.s
 import android.view.View
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 
@@ -25,6 +26,14 @@ class SelectClientRVViewHolder internal constructor(
     lateinit var instagramImageButton: ImageButton
     lateinit var whatsappImageButton: ImageButton
 
+    lateinit var clientNameCl: ConstraintLayout
+    lateinit var clientPhoneCl: ConstraintLayout
+    lateinit var clientVkCl: ConstraintLayout
+    lateinit var clientTelegramCl: ConstraintLayout
+    lateinit var clientInstagramCl: ConstraintLayout
+    lateinit var clientWhatsappCl: ConstraintLayout
+    lateinit var clientNotesCl: ConstraintLayout
+
     init {
         inflateViews()
         initButtons()
@@ -33,6 +42,7 @@ class SelectClientRVViewHolder internal constructor(
 
     private fun inflateViews() {
         with(itemView) {
+            // views
             name = findViewById(R.id.client_select_name)
             phone = findViewById(R.id.client_select_phone)
             vk = findViewById(R.id.client_select_vk_link_tv)
@@ -40,6 +50,16 @@ class SelectClientRVViewHolder internal constructor(
             instagram = findViewById(R.id.client_select_instagram_link_tv)
             whatsapp = findViewById(R.id.client_select_whatsapp_link_tv)
             notes = findViewById(R.id.client_select_notes)
+
+            // layouts
+            clientNameCl = findViewById(R.id.client_name_cl)
+            clientPhoneCl = findViewById(R.id.client_phone_cl)
+            clientVkCl = findViewById(R.id.client_vk_cl)
+            clientTelegramCl = findViewById(R.id.client_telegram_cl)
+            clientInstagramCl = findViewById(R.id.client_instagram_cl)
+            clientInstagramCl = findViewById(R.id.client_instagram_cl)
+            clientWhatsappCl = findViewById(R.id.client_whatsapp_cl)
+            clientNotesCl = findViewById(R.id.client_notes_cl)
         }
     }
 

@@ -58,11 +58,11 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintLayout1"
+                android:id="@+id/client_time_cl_date_appointment_rv_item"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/calendar_recycler_view_borders"
-                app:layout_constraintBottom_toTopOf="@+id/constraintLayout2"
+                app:layout_constraintBottom_toTopOf="@+id/client_name_cl_date_appointment_rv_item"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/constraintLayout0">
@@ -83,14 +83,14 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintLayout2"
+                android:id="@+id/client_name_cl_date_appointment_rv_item"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/calendar_recycler_view_borders"
-                app:layout_constraintBottom_toTopOf="@+id/constraintLayout3"
+                app:layout_constraintBottom_toTopOf="@+id/client_procedure_cl_date_appointment_rv_item"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout1">
+                app:layout_constraintTop_toBottomOf="@+id/client_time_cl_date_appointment_rv_item">
 
                 <TextView
                     android:id="@+id/client_value_search"
@@ -107,14 +107,14 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintLayout3"
+                android:id="@+id/client_procedure_cl_date_appointment_rv_item"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/calendar_recycler_view_borders"
-                app:layout_constraintBottom_toTopOf="@+id/constraintLayout4"
+                app:layout_constraintBottom_toTopOf="@+id/client_phone_cl_date_appointment_rv_item"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
+                app:layout_constraintTop_toBottomOf="@+id/client_name_cl_date_appointment_rv_item">
 
                 <TextView
                     android:id="@+id/procedure_value_search"
@@ -131,14 +131,14 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintLayout4"
+                android:id="@+id/client_phone_cl_date_appointment_rv_item"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/calendar_recycler_view_borders"
-                app:layout_constraintBottom_toTopOf="@+id/constraintLayout5"
+                app:layout_constraintBottom_toTopOf="@+id/client_vk_cl_date_appointment_rv_item"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout3">
+                app:layout_constraintTop_toBottomOf="@+id/client_procedure_cl_date_appointment_rv_item">
 
                 <TextView
                     android:id="@+id/phone_value_search"
@@ -164,14 +164,14 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintLayout5"
+                android:id="@+id/client_vk_cl_date_appointment_rv_item"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/calendar_recycler_view_borders"
-                app:layout_constraintBottom_toTopOf="@+id/constraintLayout6"
+                app:layout_constraintBottom_toTopOf="@+id/client_telegram_cl_date_appointment_rv_item"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout4">
+                app:layout_constraintTop_toBottomOf="@+id/client_phone_cl_date_appointment_rv_item">
 
                 <TextView
                     android:id="@+id/client_vk_link_tv"
@@ -199,12 +199,12 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintLayout6"
+                android:id="@+id/client_telegram_cl_date_appointment_rv_item"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/calendar_recycler_view_borders"
-                app:layout_constraintBottom_toTopOf="@+id/constraintLayout7"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout5">
+                app:layout_constraintBottom_toTopOf="@+id/client_instagram_cl_date_appointment_rv_item"
+                app:layout_constraintTop_toBottomOf="@+id/client_vk_cl_date_appointment_rv_item">
 
                 <TextView
                     android:id="@+id/client_telegram_link_tv"
@@ -230,14 +230,14 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintLayout7"
+                android:id="@+id/client_instagram_cl_date_appointment_rv_item"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/calendar_recycler_view_borders"
-                app:layout_constraintBottom_toTopOf="@+id/constraintLayout8"
+                app:layout_constraintBottom_toTopOf="@+id/client_whatsapp_cl_date_appointment_rv_item"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout6">
+                app:layout_constraintTop_toBottomOf="@+id/client_telegram_cl_date_appointment_rv_item">
 
                 <TextView
                     android:id="@+id/client_instagram_link_tv"
@@ -263,14 +263,14 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintLayout8"
+                android:id="@+id/client_whatsapp_cl_date_appointment_rv_item"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/calendar_recycler_view_borders"
-                app:layout_constraintBottom_toTopOf="@+id/constraintLayout9"
+                app:layout_constraintBottom_toTopOf="@+id/client_notes_cl_date_appointment_rv_item"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout7">
+                app:layout_constraintTop_toBottomOf="@+id/client_instagram_cl_date_appointment_rv_item">
 
                 <TextView
                     android:id="@+id/client_whatsapp_link_tv"
@@ -296,13 +296,13 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintLayout9"
+                android:id="@+id/client_notes_cl_date_appointment_rv_item"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout8">
+                app:layout_constraintTop_toBottomOf="@+id/client_whatsapp_cl_date_appointment_rv_item">
 
                 <TextView
                     android:id="@+id/client_notes"

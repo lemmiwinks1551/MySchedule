@@ -3,6 +3,7 @@ package com.example.projectnailsschedule.presentation.appointment.selectClient.s
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.opengl.Visibility
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -57,6 +58,8 @@ class SelectClientRVAdapter(
             holder.whatsapp.text = whatsapp
             holder.notes.text = notes
         }
+
+        hideEmptyViews(holder, position)
     }
 
     private fun setClickListeners(holder: SelectClientRVViewHolder, position: Int) {
@@ -176,6 +179,30 @@ class SelectClientRVAdapter(
                     Toast.LENGTH_LONG
                 ).show()
             }
+        }
+    }
+
+    private fun hideEmptyViews(holder: SelectClientRVViewHolder, position: Int) {
+        if (clientsList[position].name.isNullOrEmpty()) {
+            holder.clientNameCl.visibility = View.GONE
+        }
+        if (clientsList[position].phone.isNullOrEmpty()) {
+            holder.clientPhoneCl.visibility = View.GONE
+        }
+        if (clientsList[position].vk.isNullOrEmpty()) {
+            holder.clientVkCl.visibility = View.GONE
+        }
+        if (clientsList[position].telegram.isNullOrEmpty()) {
+            holder.clientTelegramCl.visibility = View.GONE
+        }
+        if (clientsList[position].instagram.isNullOrEmpty()) {
+            holder.clientInstagramCl.visibility = View.GONE
+        }
+        if (clientsList[position].whatsapp.isNullOrEmpty()) {
+            holder.clientWhatsappCl.visibility = View.GONE
+        }
+        if (clientsList[position].notes.isNullOrEmpty()) {
+            holder.clientNotesCl.visibility = View.GONE
         }
     }
 }

@@ -40,12 +40,12 @@ class FullMonthChildViewHolder internal constructor(
     val collapseButton: ImageButton
 
     init {
-        cl3 = itemView.findViewById(R.id.constraintLayout3)
-        cl4 = itemView.findViewById(R.id.constraintLayout4)
-        cl5 = itemView.findViewById(R.id.constraintLayout5)
-        cl6 = itemView.findViewById(R.id.constraintLayout6)
-        cl7 = itemView.findViewById(R.id.constraintLayout7)
-        cl8 = itemView.findViewById(R.id.constraintLayout8)
+        cl3 = itemView.findViewById(R.id.client_procedure_cl_date_appointment_rv_item)
+        cl4 = itemView.findViewById(R.id.client_phone_cl_date_appointment_rv_item)
+        cl5 = itemView.findViewById(R.id.client_vk_cl_date_appointment_rv_item)
+        cl6 = itemView.findViewById(R.id.client_telegram_cl_date_appointment_rv_item)
+        cl7 = itemView.findViewById(R.id.client_instagram_cl_date_appointment_rv_item)
+        cl8 = itemView.findViewById(R.id.client_whatsapp_cl_date_appointment_rv_item)
 
         appointmentTime = itemView.findViewById(R.id.child_time_value_child)
         appointmentProcedure = itemView.findViewById(R.id.procedure_value_child)

@@ -51,7 +51,6 @@ class DateAdapter(
             holder.appointmentNotes.text = notes
         }
 
-
         // set callClient click listener
         holder.callClientButton.setOnClickListener {
             val phone = appointmentsList[position].phone
@@ -61,6 +60,7 @@ class DateAdapter(
 
         initSocClickListeners(holder)
 
+        hideEmptyViews(holder, position)
     }
 
     override fun getItemCount(): Int {
@@ -172,6 +172,36 @@ class DateAdapter(
                     Toast.LENGTH_LONG
                 ).show()
             }
+        }
+    }
+
+    private fun hideEmptyViews(holder: DateViewHolder, position: Int) {
+        if (appointmentsList[position].time.isNullOrEmpty()) {
+            holder.clientTimeCl.visibility = View.GONE
+        }
+        if (appointmentsList[position].name.isNullOrEmpty()) {
+            holder.clientNameCl.visibility = View.GONE
+        }
+        if (appointmentsList[position].procedure.isNullOrEmpty()) {
+            holder.clientProcedureCl.visibility = View.GONE
+        }
+        if (appointmentsList[position].phone.isNullOrEmpty()) {
+            holder.clientPhoneCl.visibility = View.GONE
+        }
+        if (appointmentsList[position].vk.isNullOrEmpty()) {
+            holder.clientVkCl.visibility = View.GONE
+        }
+        if (appointmentsList[position].telegram.isNullOrEmpty()) {
+            holder.clientTelegramCl.visibility = View.GONE
+        }
+        if (appointmentsList[position].instagram.isNullOrEmpty()) {
+            holder.clientInstagramCl.visibility = View.GONE
+        }
+        if (appointmentsList[position].whatsapp.isNullOrEmpty()) {
+            holder.clientWhatsappCl.visibility = View.GONE
+        }
+        if (appointmentsList[position].notes.isNullOrEmpty()) {
+            holder.clientNotesCl.visibility = View.GONE
         }
     }
 }

@@ -55,6 +55,8 @@ class ClientsAdapter(
             holder.whatsapp.text = whatsapp
             holder.notes.text = notes
         }
+
+        hideEmptyViews(holder, holder.adapterPosition)
     }
 
     private fun setClickListeners(holder: ClientsViewHolder) {
@@ -174,6 +176,30 @@ class ClientsAdapter(
                     Toast.LENGTH_LONG
                 ).show()
             }
+        }
+    }
+
+    private fun hideEmptyViews(holder: ClientsViewHolder, position: Int) {
+        if (clientsList[position].name.isNullOrEmpty()) {
+            holder.clientNameCl.visibility = View.GONE
+        }
+        if (clientsList[position].phone.isNullOrEmpty()) {
+            holder.clientPhoneCl.visibility = View.GONE
+        }
+        if (clientsList[position].vk.isNullOrEmpty()) {
+            holder.clientVkCl.visibility = View.GONE
+        }
+        if (clientsList[position].telegram.isNullOrEmpty()) {
+            holder.clientTelegramCl.visibility = View.GONE
+        }
+        if (clientsList[position].instagram.isNullOrEmpty()) {
+            holder.clientInstagramCl.visibility = View.GONE
+        }
+        if (clientsList[position].whatsapp.isNullOrEmpty()) {
+            holder.clientWhatsappCl.visibility = View.GONE
+        }
+        if (clientsList[position].notes.isNullOrEmpty()) {
+            holder.clientNotesCl.visibility = View.GONE
         }
     }
 }

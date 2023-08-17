@@ -3,6 +3,7 @@ package com.example.projectnailsschedule.presentation.clients.clientsRecyclerVie
 import android.view.View
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 
@@ -26,20 +27,39 @@ class ClientsViewHolder internal constructor(
     var instagramImageButton: ImageButton
     var whatsappImageButton: ImageButton
 
-    init {
-        name = itemView.findViewById(R.id.client_select_name)
-        phone = itemView.findViewById(R.id.client_select_phone)
-        vk = itemView.findViewById(R.id.client_select_vk_link_tv)
-        telegram = itemView.findViewById(R.id.client_select_telegram_link_tv)
-        instagram = itemView.findViewById(R.id.client_select_instagram_link_tv)
-        whatsapp = itemView.findViewById(R.id.client_select_whatsapp_link_tv)
-        notes = itemView.findViewById(R.id.client_select_notes)
+    var clientNameCl: ConstraintLayout
+    var clientPhoneCl: ConstraintLayout
+    var clientVkCl: ConstraintLayout
+    var clientTelegramCl: ConstraintLayout
+    var clientInstagramCl: ConstraintLayout
+    var clientWhatsappCl: ConstraintLayout
+    var clientNotesCl: ConstraintLayout
 
-        callClientButton = itemView.findViewById(R.id.call_client_button_select_button)
-        vkImageButton = itemView.findViewById(R.id.vk_logo_imageButton_select_client)
-        telegramImageButton = itemView.findViewById(R.id.telegram_logo_imageButton_select_client)
-        instagramImageButton = itemView.findViewById(R.id.instagram_logo_imageButton_select_client)
-        whatsappImageButton = itemView.findViewById(R.id.whatsapp_logo_imageButton_select_client)
+    init {
+        with(itemView) {
+            name = findViewById(R.id.client_select_name)
+            phone = findViewById(R.id.client_select_phone)
+            vk = findViewById(R.id.client_select_vk_link_tv)
+            telegram = findViewById(R.id.client_select_telegram_link_tv)
+            instagram = findViewById(R.id.client_select_instagram_link_tv)
+            whatsapp = findViewById(R.id.client_select_whatsapp_link_tv)
+            notes = findViewById(R.id.client_select_notes)
+
+            callClientButton = findViewById(R.id.call_client_button_select_button)
+            vkImageButton = findViewById(R.id.vk_logo_imageButton_select_client)
+            telegramImageButton = findViewById(R.id.telegram_logo_imageButton_select_client)
+            instagramImageButton = findViewById(R.id.instagram_logo_imageButton_select_client)
+            whatsappImageButton = findViewById(R.id.whatsapp_logo_imageButton_select_client)
+
+            clientNameCl = findViewById(R.id.client_name_cl)
+            clientPhoneCl = findViewById(R.id.client_phone_cl)
+            clientVkCl = findViewById(R.id.client_vk_cl)
+            clientTelegramCl = findViewById(R.id.client_telegram_cl)
+            clientInstagramCl = findViewById(R.id.client_instagram_cl)
+            clientWhatsappCl = findViewById(R.id.client_whatsapp_cl)
+            clientNotesCl = findViewById(R.id.client_notes_cl)
+        }
+
 
         itemView.setOnClickListener {
             listener.onItemClick(adapterPosition)

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
@@ -11,7 +12,6 @@
         android:id="@+id/client_avatar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
         android:src="@drawable/ic_baseline_account_box_36"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/client_constraint_layout"
@@ -54,12 +54,10 @@
                 android:id="@+id/imageButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/baseline_call_24"
-                android:visibility="invisible"
+                android:src="@drawable/ic_baseline_people_alt_24"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -260,114 +258,13 @@
                 android:id="@+id/notes_logo_imageButton_select_client"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/whatsapp_logo"
-                android:visibility="invisible"
+                android:src="@drawable/baseline_edit_note_24"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <!--        <TextView
-                    android:id="@+id/client_select_vk_link_tv"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:text="@string/vk_text"
-                    android:textSize="20sp"
-                    app:layout_constraintBottom_toTopOf="@+id/client_select_telegram_link_tv"
-                    app:layout_constraintEnd_toStartOf="@id/vk_logo_imageButton_select_client"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/call_client_button_select_button" />
-
-                <TextView
-                    android:id="@+id/client_select_telegram_link_tv"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:text="@string/telegram_text"
-                    android:textSize="20sp"
-                    app:layout_constraintBottom_toTopOf="@+id/client_select_instagram_link_tv"
-                    app:layout_constraintEnd_toStartOf="@id/telegram_logo_imageButton_select_client"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/telegram_logo_imageButton_select_client" />
-
-                <TextView
-                    android:id="@+id/client_select_instagram_link_tv"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:text="@string/instagram_text"
-                    android:textSize="20sp"
-                    app:layout_constraintBottom_toTopOf="@+id/client_select_whatsapp_link_tv"
-                    app:layout_constraintEnd_toStartOf="@id/instagram_logo_imageButton_select_client"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/telegram_logo_imageButton_select_client" />
-
-                <TextView
-                    android:id="@+id/client_select_whatsapp_link_tv"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:text="@string/whatsapp_text"
-                    android:textSize="20sp"
-                    app:layout_constraintBottom_toTopOf="@+id/client_select_notes"
-                    app:layout_constraintEnd_toStartOf="@id/whatsapp_logo_imageButton_select_client"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/instagram_logo_imageButton_select_client" />
-
-                <TextView
-                    android:id="@+id/client_select_notes"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:text="@string/example_misc"
-                    android:textSize="20sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/whatsapp_logo_imageButton_select_client" />
-
-                <ImageButton
-                    android:id="@+id/vk_logo_imageButton_select_client"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/vk_logo"
-                    app:layout_constraintBottom_toTopOf="@id/telegram_logo_imageButton_select_client"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/client_select_vk_link_tv"
-                    app:layout_constraintTop_toBottomOf="@id/call_client_button_select_button" />
-
-                <ImageButton
-                    android:id="@+id/telegram_logo_imageButton_select_client"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toTopOf="@id/instagram_logo_imageButton_select_client"
-                    android:src="@drawable/telegram_logo"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/client_select_telegram_link_tv"
-                    app:layout_constraintTop_toBottomOf="@id/vk_logo_imageButton_select_client" />
-
-                <ImageButton
-                    android:id="@+id/instagram_logo_imageButton_select_client"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/instagram_logo"
-                    app:layout_constraintBottom_toTopOf="@id/whatsapp_logo_imageButton_select_client"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/client_select_instagram_link_tv"
-                    app:layout_constraintTop_toBottomOf="@id/telegram_logo_imageButton_select_client" />
-
-                <ImageButton
-                    app:layout_constraintBottom_toTopOf="@id/client_select_notes"
-                    android:id="@+id/whatsapp_logo_imageButton_select_client"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/whatsapp_logo"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/client_select_whatsapp_link_tv"
-                    app:layout_constraintTop_toBottomOf="@id/instagram_logo_imageButton_select_client" />-->
-
-    </androidx.constraintlayout.widget.ConstraintLayout> <!--Appointment params-->
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

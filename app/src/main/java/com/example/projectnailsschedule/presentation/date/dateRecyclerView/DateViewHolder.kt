@@ -3,6 +3,7 @@ package com.example.projectnailsschedule.presentation.date.dateRecyclerView
 import android.view.View
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 
@@ -24,29 +25,50 @@ class DateViewHolder internal constructor(
     val appointmentClientWhatsapp: TextView
     val appointmentNotes: TextView
 
+    var callClientButton: ImageButton
     val vkImageButton: ImageButton
     val telegramImageButton: ImageButton
     val instagramImageButton: ImageButton
     val whatsappImageButton: ImageButton
 
-    var callClientButton: ImageButton
+    var clientTimeCl: ConstraintLayout
+    var clientNameCl: ConstraintLayout
+    var clientProcedureCl: ConstraintLayout
+    var clientPhoneCl: ConstraintLayout
+    var clientVkCl: ConstraintLayout
+    var clientTelegramCl: ConstraintLayout
+    var clientInstagramCl: ConstraintLayout
+    var clientWhatsappCl: ConstraintLayout
+    var clientNotesCl: ConstraintLayout
 
     init {
-        appointmentTime = itemView.findViewById(R.id.time_value_search)
-        appointmentProcedure = itemView.findViewById(R.id.procedure_value_search)
-        appointmentClientName = itemView.findViewById(R.id.client_value_search)
-        appointmentClientPhone = itemView.findViewById(R.id.phone_value_search)
-        appointmentClientVk = itemView.findViewById(R.id.client_vk_link_tv)
-        appointmentClientTelegram = itemView.findViewById(R.id.client_telegram_link_tv)
-        appointmentClientInstagram = itemView.findViewById(R.id.client_instagram_link_tv)
-        appointmentClientWhatsapp = itemView.findViewById(R.id.client_whatsapp_link_tv)
-        appointmentNotes = itemView.findViewById(R.id.client_notes)
+        with(itemView) {
+            appointmentTime = findViewById(R.id.time_value_search)
+            appointmentProcedure = findViewById(R.id.procedure_value_search)
+            appointmentClientName = findViewById(R.id.client_value_search)
+            appointmentClientPhone = findViewById(R.id.phone_value_search)
+            appointmentClientVk = findViewById(R.id.client_vk_link_tv)
+            appointmentClientTelegram = findViewById(R.id.client_telegram_link_tv)
+            appointmentClientInstagram = findViewById(R.id.client_instagram_link_tv)
+            appointmentClientWhatsapp = findViewById(R.id.client_whatsapp_link_tv)
+            appointmentNotes = findViewById(R.id.client_notes)
 
-        callClientButton = itemView.findViewById(R.id.call_client_button)
-        vkImageButton = itemView.findViewById(R.id.vk_logo_imageButton_date)
-        telegramImageButton = itemView.findViewById(R.id.telegram_logo_imageButton_date)
-        instagramImageButton = itemView.findViewById(R.id.instagram_logo_imageButton_date)
-        whatsappImageButton = itemView.findViewById(R.id.whatsapp_logo_imageButton_date)
+            callClientButton = findViewById(R.id.call_client_button)
+            vkImageButton = findViewById(R.id.vk_logo_imageButton_date)
+            telegramImageButton = findViewById(R.id.telegram_logo_imageButton_date)
+            instagramImageButton = findViewById(R.id.instagram_logo_imageButton_date)
+            whatsappImageButton = findViewById(R.id.whatsapp_logo_imageButton_date)
+
+            clientTimeCl = findViewById(R.id.client_time_cl_date_appointment_rv_item)
+            clientNameCl = findViewById(R.id.client_name_cl_date_appointment_rv_item)
+            clientProcedureCl = findViewById(R.id.client_procedure_cl_date_appointment_rv_item)
+            clientPhoneCl = findViewById(R.id.client_phone_cl_date_appointment_rv_item)
+            clientVkCl = findViewById(R.id.client_vk_cl_date_appointment_rv_item)
+            clientTelegramCl = findViewById(R.id.client_telegram_cl_date_appointment_rv_item)
+            clientInstagramCl = findViewById(R.id.client_instagram_cl_date_appointment_rv_item)
+            clientWhatsappCl = findViewById(R.id.client_whatsapp_cl_date_appointment_rv_item)
+            clientNotesCl = findViewById(R.id.client_notes_cl_date_appointment_rv_item)
+        }
 
         itemView.setOnClickListener {
             listener.onItemClick(adapterPosition)
