@@ -1,5 +1,7 @@
 package com.example.projectnailsschedule.presentation.calendar.calendarRecyclerView
 
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -56,7 +58,7 @@ internal class CalendarAdapter(
 
             // if day is today set custom frame
             if (dateParams.date!! == LocalDate.now()) {
-                holder.cellLayout.setBackgroundResource(R.drawable.calendar_recycler_view_borders_today)
+                holder.date.setTextColor(Color.RED)
             }
         }
     }
