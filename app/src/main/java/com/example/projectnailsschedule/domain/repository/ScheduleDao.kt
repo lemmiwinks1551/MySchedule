@@ -18,7 +18,7 @@ interface ScheduleDao {
     @Update
     fun update(appointmentModelDb: AppointmentModelDb)
 
-    @Query("SELECT * FROM schedule WHERE date = :date")
+    @Query("SELECT * FROM schedule WHERE date = :date ORDER BY time")
     fun getDateAppointments(date: String): Array<AppointmentModelDb>
 
     @Query("SELECT * FROM schedule WHERE date LIKE :dateMonth ORDER BY date")
