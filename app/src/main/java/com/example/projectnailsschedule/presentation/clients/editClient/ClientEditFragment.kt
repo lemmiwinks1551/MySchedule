@@ -1,4 +1,4 @@
-package com.example.projectnailsschedule.presentation.editClient
+package com.example.projectnailsschedule.presentation.clients.editClient
 
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher

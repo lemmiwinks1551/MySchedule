@@ -16,7 +16,7 @@
             app:destination="@id/nav_clients" />
         <action
             android:id="@+id/action_nav_calendar_to_nav_price"
-            app:destination="@id/nav_price" />
+            app:destination="@id/nav_procedures" />
         <action
             android:id="@+id/action_nav_calendar_to_nav_settings"
             app:destination="@id/nav_settings" />
@@ -53,10 +53,14 @@
     </fragment>
 
     <fragment
-        android:id="@+id/nav_price"
-        android:name="com.example.projectnailsschedule.presentation.price.PriceFragment"
+        android:id="@+id/nav_procedures"
+        android:name="com.example.projectnailsschedule.presentation.procedures.ProceduresFragment"
         android:label="@string/menu_service"
-        tools:layout="@layout/fragment_price" />
+        tools:layout="@layout/fragment_price" >
+        <action
+            android:id="@+id/action_nav_procedures_to_nav_procedure_edit"
+            app:destination="@id/nav_procedure_edit" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_settings"
@@ -110,7 +114,7 @@
     </fragment>
     <fragment
         android:id="@+id/nav_client_edit_fragment"
-        android:name="com.example.projectnailsschedule.presentation.editClient.ClientEditFragment"
+        android:name="com.example.projectnailsschedule.presentation.clients.editClient.ClientEditFragment"
         android:label="@string/client"
         tools:layout="@layout/fragment_client_edit" />
     <fragment
@@ -130,4 +134,11 @@
             android:id="@+id/action_fullMonthViewFragment_to_nav_appointment"
             app:destination="@id/nav_appointment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/nav_procedure_edit"
+        android:name="com.example.projectnailsschedule.presentation.procedures.editProcedure.ProcedureEditFragment"
+        tools:layout="@layout/fragment_procedure_edit">
+    </fragment>
+
 </navigation>

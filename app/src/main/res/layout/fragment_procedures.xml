@@ -4,34 +4,34 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.clients.ClientsFragment">
+    tools:context=".presentation.procedures.ProceduresFragment">
 
     <androidx.appcompat.widget.SearchView
-        android:id="@+id/clients_search_view"
+        android:id="@+id/procedures_search_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:inputType="text"
         app:iconifiedByDefault="false"
-        app:layout_constraintBottom_toTopOf="@id/clients_recycler_view"
+        app:layout_constraintBottom_toTopOf="@id/procedures_recycler_view"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:queryHint="@string/clients_search_hint"
+        app:queryHint="@string/procedures_search_hint"
         app:searchIcon="@android:drawable/ic_menu_search" />
 
     <TextView
-        android:id="@+id/clients_count_text_view"
+        android:id="@+id/procedures_count_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:textSize="12sp"
-        app:layout_constraintBottom_toTopOf="@+id/clients_recycler_view"
-        app:layout_constraintEnd_toEndOf="@+id/clients_recycler_view"
-        app:layout_constraintTop_toBottomOf="@+id/clients_search_view" />
+        app:layout_constraintBottom_toTopOf="@+id/procedures_recycler_view"
+        app:layout_constraintEnd_toEndOf="@+id/procedures_recycler_view"
+        app:layout_constraintTop_toBottomOf="@+id/procedures_search_view" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/clients_recycler_view"
+        android:id="@+id/procedures_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="8dp"
@@ -42,7 +42,7 @@
         app:layout_constraintBottom_toTopOf="@id/addButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/clients_search_view" />
+        app:layout_constraintTop_toBottomOf="@+id/procedures_search_view" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addButton"

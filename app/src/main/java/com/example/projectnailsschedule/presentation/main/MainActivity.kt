@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity() {
             setOf(
                 R.id.nav_calendar,
                 R.id.nav_clients,
-                R.id.nav_price,
+                R.id.nav_procedures,
                 R.id.nav_settings,
                 R.id.nav_about
             ), drawerLayout

@@ -1,4 +1,4 @@
-package com.example.projectnailsschedule.presentation.editClient
+package com.example.projectnailsschedule.presentation.clients.editClient
 
 import android.content.Context
 import androidx.lifecycle.ViewModel

@@ -7,7 +7,7 @@
     android:layout_height="fill_parent"
     android:fadeScrollbars="false"
     android:focusableInTouchMode="true"
-    tools:context=".presentation.editClient.ClientEditFragment">
+    tools:context=".presentation.clients.editClient.ClientEditFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/client_status"
@@ -17,7 +17,7 @@
         android:clickable="true"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        tools:context=".presentation.editClient.ClientEditFragment">
+        tools:context=".presentation.clients.editClient.ClientEditFragment">
 
         <TextView
             android:id="@+id/fragment_appointment_title"
@@ -306,7 +306,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:background="@null"
-                android:hint="@string/example_misc"
+                android:hint="@string/example_notes"
                 android:imeOptions="actionDone"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -348,45 +348,6 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-        <!--        <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/left_constraint_layout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="30sp"
-                    app:layout_constraintEnd_toStartOf="@+id/right_constraint_layout"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/fragment_appointment_date">
-
-
-
-
-
-
-
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/right_constraint_layout"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="30sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/left_constraint_layout"
-                    app:layout_constraintTop_toBottomOf="@id/fragment_appointment_date">
-
-
-
-
-
-
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
--->
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

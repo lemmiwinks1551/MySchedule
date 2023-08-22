@@ -520,7 +520,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
                 android:background="@null"
-                android:hint="@string/example_misc"
+                android:hint="@string/example_notes"
                 android:imeOptions="actionDone"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"

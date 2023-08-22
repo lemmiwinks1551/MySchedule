@@ -1,4 +1,4 @@
-package com.example.projectnailsschedule.presentation.clients
+package com.example.projectnailsschedule.presentation.procedures
 
 import android.graphics.Canvas
 import android.graphics.Color
@@ -13,42 +13,44 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
-import com.example.projectnailsschedule.databinding.FragmentClientsBinding
-import com.example.projectnailsschedule.domain.models.ClientModelDb
-import com.example.projectnailsschedule.presentation.clients.clientsRecyclerView.ClientsAdapter
+import com.example.projectnailsschedule.databinding.FragmentProceduresBinding
+import com.example.projectnailsschedule.domain.models.ProcedureModelDb
+import com.example.projectnailsschedule.presentation.procedures.proceduresRv.ProceduresAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.launch
 
-class ClientsFragment : Fragment() {
+class ProceduresFragment : Fragment() {
     val log = this::class.simpleName
 
-    private var _binding: FragmentClientsBinding? = null
+    private var _binding: FragmentProceduresBinding? = null
     private val binding get() = _binding!!
-    private var clientsViewModel: ClientsViewModel? = null
+    private var proceduresViewModel: ProceduresViewModel? = null
 
-    private var clientsList: List<ClientModelDb>? = null
-    private var clientsRVAdapter: ClientsAdapter? = null
+    private var proceduresList: List<ProcedureModelDb>? = null
+    private var proceduresRVAdapter: ProceduresAdapter? = null
 
-    private var clientsSearchView: SearchView? = null
-    private var searchClientsRV: RecyclerView? = null
+    private var proceduresSearchView: SearchView? = null
+    private var searchProceduresRV: RecyclerView? = null
     private var addButton: FloatingActionButton? = null
-    private var clientsCountTextView: TextView? = null
+    private var proceduresCountTextView: TextView? = null
 
-    private var bindingKeyClientEdit = "editClient"
+    private var bindingKeyClientProcedure = "editProcedure"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        clientsViewModel = ViewModelProvider(
+        proceduresViewModel = ViewModelProvider(
             this,
-            ClientsViewModelFactory(context)
-        )[ClientsViewModel::class.java]
+            ProcedureVmFactory(context)
+        )[ProceduresViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -57,7 +59,7 @@ class ClientsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = FragmentClientsBinding.inflate(inflater, container, false)
+        _binding = FragmentProceduresBinding.inflate(inflater, container, false)
 
         // init widgets
         initWidgets()
@@ -72,15 +74,15 @@ class ClientsFragment : Fragment() {
     }
 
     private fun initWidgets() {
-        clientsSearchView = binding.clientsSearchView
-        searchClientsRV = binding.clientsRecyclerView
+        proceduresSearchView = binding.proceduresSearchView
+        searchProceduresRV = binding.proceduresRecyclerView
         addButton = binding.addButton
-        clientsCountTextView = binding.clientsCountTextView
+        proceduresCountTextView = binding.proceduresCountTextView
     }
 
     private fun initClickListeners() {
         // search panel listener
-        clientsSearchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
+        proceduresSearchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
             android.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 // search only after button Search pressed on keyboard
@@ -88,55 +90,54 @@ class ClientsFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                val searchQuery = "%$newText%"
-                clientsViewModel!!.searchDatabase(searchQuery).observe(viewLifecycleOwner) { list ->
-                    clientsList = list
-                    inflateClientsRecyclerView(list)
+                lifecycleScope.launch {
+                    val searchQuery = "%$newText%"
+                    proceduresViewModel!!.searchDatabase(searchQuery)
+                        .observe(viewLifecycleOwner) { list ->
+                            proceduresList = list
+                            inflateClientsRecyclerView(list)
+                        }
                 }
                 return false
             }
         })
 
-        // add new client
+        // add new procedure
         binding.addButton.setOnClickListener {
             binding.addButton.findNavController().navigate(
-                R.id.action_nav_clients_to_nav_client_edit_fragment
+                R.id.action_nav_procedures_to_nav_procedure_edit
             )
         }
     }
 
-    private fun inflateClientsRecyclerView(clientsList: List<ClientModelDb>) {
+    private fun inflateClientsRecyclerView(procedureModelDbList: List<ProcedureModelDb>) {
         // create adapter
-        clientsRVAdapter = ClientsAdapter(
-            clientsCount = clientsList.size,
-            clientsList = clientsList,
+        proceduresRVAdapter = ProceduresAdapter(
+            proceduresCount = procedureModelDbList.size,
+            proceduresList = procedureModelDbList,
             context = requireContext()
         )
 
         val layoutManager: RecyclerView.LayoutManager =
             GridLayoutManager(activity, 1)
 
-        searchClientsRV?.layoutManager = layoutManager
-        searchClientsRV?.adapter = clientsRVAdapter
+        searchProceduresRV?.layoutManager = layoutManager
+        searchProceduresRV?.adapter = proceduresRVAdapter
 
-        // set clickListener on clientsRV
-        clientsRVAdapter?.setOnItemClickListener(object : ClientsAdapter.OnItemClickListener {
+        // set clickListener on proceduresRV
+        proceduresRVAdapter?.setOnItemClickListener(object : ProceduresAdapter.OnItemClickListener {
             override fun onItemClick(position: Int) {
                 // edit selected client
                 val bundle = Bundle()
-                val clientModelDb = ClientModelDb(
-                    _id = clientsList[position]._id,
-                    name = clientsList[position].name,
-                    phone = clientsList[position].phone,
-                    vk = clientsList[position].vk,
-                    telegram = clientsList[position].telegram,
-                    instagram = clientsList[position].instagram,
-                    whatsapp = clientsList[position].whatsapp,
-                    notes = clientsList[position].notes
+                val procedureModelDb = ProcedureModelDb(
+                    _id = procedureModelDbList[position]._id,
+                    procedureName = procedureModelDbList[position].procedureName,
+                    procedurePrice = procedureModelDbList[position].procedurePrice,
+                    procedureNotes = procedureModelDbList[position].procedureNotes
                 )
                 val navController = findNavController()
-                bundle.putParcelable(bindingKeyClientEdit, clientModelDb)
-                navController.navigate(R.id.action_nav_clients_to_nav_client_edit_fragment, bundle)
+                bundle.putParcelable(bindingKeyClientProcedure, procedureModelDb)
+                navController.navigate(R.id.action_nav_procedures_to_nav_procedure_edit, bundle)
             }
         })
     }
@@ -155,19 +156,23 @@ class ClientsFragment : Fragment() {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 // this method is called when we swipe our item to left direction.
                 // on below line we are getting the item at a particular position.
-                val deleteClientModelDb: ClientModelDb = clientsList!![viewHolder.adapterPosition]
+                val deleteProcedureModelDb: ProcedureModelDb =
+                    proceduresList!![viewHolder.adapterPosition]
                 val position = viewHolder.adapterPosition
 
                 // delete client from Db
-                clientsViewModel?.deleteClient(deleteClientModelDb)
 
-                clientsRVAdapter?.notifyItemRemoved(position)
-                clientsSearchView?.setQuery(null, true) // clear search bar
+                lifecycleScope.launch() {
+                    proceduresViewModel?.deleteProcedure(deleteProcedureModelDb)
+                }
+
+                proceduresRVAdapter?.notifyItemRemoved(position)
+                proceduresSearchView?.setQuery(null, true) // clear search bar
 
                 // show Snackbar
                 Snackbar.make(
-                    searchClientsRV!!,
-                    "Удален клиент: " + deleteClientModelDb.name,
+                    searchProceduresRV!!,
+                    "Удалена услуга: " + deleteProcedureModelDb.procedureName,
                     Snackbar.LENGTH_LONG
                 ).setBackgroundTint(resources.getColor(R.color.yellow))
                     .setActionTextColor(resources.getColor(R.color.black))
@@ -177,12 +182,14 @@ class ClientsFragment : Fragment() {
                     ) {
                         // adding on click listener to our action of snack bar.
                         // below line is to add our item to array list with a position.
-                        clientsViewModel?.saveClient(deleteClientModelDb)
+                        lifecycleScope.launch {
+                            proceduresViewModel?.saveProcedure(deleteProcedureModelDb)
+                        }
 
                         // below line is to notify item is
                         // added to our adapter class.
 
-                        clientsRVAdapter?.notifyDataSetChanged()
+                        proceduresRVAdapter?.notifyDataSetChanged()
                     }.show()
 
             }
@@ -191,22 +198,36 @@ class ClientsFragment : Fragment() {
                 return super.getSwipeEscapeVelocity(defaultValue) * 10
             }
 
-            override fun onChildDraw(c: Canvas, recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean
+            override fun onChildDraw(
+                c: Canvas,
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                dX: Float,
+                dY: Float,
+                actionState: Int,
+                isCurrentlyActive: Boolean
             ) {
                 val deleteIcon: Drawable? =
                     ContextCompat.getDrawable(requireContext(), R.drawable.baseline_delete_24)!!
 
                 val itemView = viewHolder.itemView
-                val iconMarginVertical = (viewHolder.itemView.height - deleteIcon!!.intrinsicHeight) / 2
+                val iconMarginVertical =
+                    (viewHolder.itemView.height - deleteIcon!!.intrinsicHeight) / 2
 
                 val colorDrawableBackground = ColorDrawable(Color.parseColor("#ffcce6"))
 
-                val left = itemView.right - deleteIcon.intrinsicWidth - deleteIcon.intrinsicWidth // 882
+                val left =
+                    itemView.right - deleteIcon.intrinsicWidth - deleteIcon.intrinsicWidth // 882
                 val right = itemView.right - deleteIcon.intrinsicWidth // 1014
                 val top = itemView.top + iconMarginVertical
                 val bottom = itemView.bottom - iconMarginVertical
 
-                colorDrawableBackground.setBounds(itemView.right + dX.toInt(), itemView.top, itemView.right, itemView.bottom)
+                colorDrawableBackground.setBounds(
+                    itemView.right + dX.toInt(),
+                    itemView.top,
+                    itemView.right,
+                    itemView.bottom
+                )
                 deleteIcon.setBounds(left, top, right, bottom)
 
                 deleteIcon.level = 0
@@ -217,23 +238,36 @@ class ClientsFragment : Fragment() {
                 if (dX > 0)
                     c.clipRect(itemView.left, itemView.top, dX.toInt(), itemView.bottom)
                 else
-                    c.clipRect(itemView.right + dX.toInt(), itemView.top, itemView.right, itemView.bottom)
+                    c.clipRect(
+                        itemView.right + dX.toInt(),
+                        itemView.top,
+                        itemView.right,
+                        itemView.bottom
+                    )
 
                 deleteIcon.draw(c)
                 c.restore()
 
-                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                super.onChildDraw(
+                    c,
+                    recyclerView,
+                    viewHolder,
+                    dX,
+                    dY,
+                    actionState,
+                    isCurrentlyActive
+                )
             }
-        }).attachToRecyclerView(searchClientsRV)
+        }).attachToRecyclerView(searchProceduresRV)
     }
 
     override fun onResume() {
-        clientsSearchView?.setQuery(null, true) // clear search bar
+        proceduresSearchView?.setQuery(null, true) // clear search bar
         super.onResume()
     }
 
     override fun onPause() {
-        clientsSearchView?.setQuery(null, true) // clear search bar
+        proceduresSearchView?.setQuery(null, true) // clear search bar
         super.onPause()
     }
 

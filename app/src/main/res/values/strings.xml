@@ -22,13 +22,14 @@
     <string name="button_delete">Удалить</string>
     <string name="add_appointment_title">Запись</string>
     <string name="add_client_title">Клиент</string>
+    <string name="add_procedure_title">Услуга</string>
     <string name="day">День</string>
     <string name="example_date">01.01.2022</string>
     <string name="example_time">09:00</string>
     <string name="example_procedure">Наращивание</string>
     <string name="example_client">Имя клиента</string>
     <string name="example_phone">8 800 123–45–67</string>
-    <string name="example_misc">…</string>
+    <string name="example_notes">…</string>
     <string name="choose_previous_month">Choose previous month</string>
     <string name="choose_next_month">Choose next month</string>
     <string name="month_text_view">Январь</string>
@@ -49,6 +50,7 @@
     <string name="appointments_search_hint">Поиск по Расписанию</string>
     <string name="appointments_full_month_view">Посмотреть весь месяц</string>
     <string name="clients_search_hint">Поиск по Клиентам</string>
+    <string name="procedures_search_hint">Поиск по Услугам</string>
     <string name="search_client">Поиск</string>
     <string name="name">Имя</string>
     <string name="date">Дата</string>
@@ -91,5 +93,8 @@
     <string name="whatsapp_text">Whatsapp</string>
     <string name="vk_link_hint">Ссылка https://vk.com/id/… или id или Ник</string>
     <string name="instagram_link_hint">https://instagram.com/… или Ник</string>
+    <string name="add_procedure_title2">Добавление/изменение процедуры в базе</string>
+    <string name="price_example">Стоимость</string>
+    <string name="price_hint">100</string>
 
 </resources>
