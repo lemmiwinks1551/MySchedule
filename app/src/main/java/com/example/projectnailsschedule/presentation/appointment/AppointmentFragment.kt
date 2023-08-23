@@ -20,7 +20,9 @@ import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentAppointmentBinding
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
 import com.example.projectnailsschedule.domain.models.ClientModelDb
+import com.example.projectnailsschedule.domain.models.ProcedureModelDb
 import com.example.projectnailsschedule.presentation.appointment.selectClient.SelectClientFragment
+import com.example.projectnailsschedule.presentation.appointment.selectProcedure.SelectProcedureFragment
 import com.example.projectnailsschedule.presentation.clients.clientsRecyclerView.ClientsViewHolder
 import com.example.projectnailsschedule.util.Util
 import java.util.*
@@ -86,6 +88,11 @@ class AppointmentFragment : Fragment() {
                 binding.clientInstagramLinkEt.setText(result.instagram)
                 binding.clientWhatsappLinkEt.setText(result.whatsapp)
             }
+
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<ProcedureModelDb>("procedure")
+            ?.observe(viewLifecycleOwner) { result ->
+                binding.procedureEt.setText(result.procedureName)
+            }
     }
 
     private fun setClickListeners() {
@@ -113,6 +120,11 @@ class AppointmentFragment : Fragment() {
         // set ClickListener on time_edit_text
         binding.timeEditText.setOnClickListener {
             setTimePicker()
+        }
+
+        binding.procedureSelectButton.setOnClickListener {
+            val dialogFragment = SelectProcedureFragment()
+            dialogFragment.show(parentFragmentManager, "SelectProcedureFragment")
         }
 
         // set phone as hyperlink
