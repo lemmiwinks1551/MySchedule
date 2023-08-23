@@ -1,17 +1,16 @@
 package com.example.projectnailsschedule.util
 
+import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
+import android.graphics.Color
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import com.example.projectnailsschedule.data.repository.ScheduleRepositoryImpl
+import android.widget.EditText
 import com.example.projectnailsschedule.data.storage.ScheduleDb
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
-import com.example.projectnailsschedule.domain.usecase.appointmentUC.SaveAppointmentUseCase
-import com.example.projectnailsschedule.presentation.appointment.AppointmentViewModel
-import com.example.projectnailsschedule.presentation.main.MainActivity
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.YearMonth
@@ -19,7 +18,6 @@ import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
 import java.time.temporal.WeekFields
 import java.util.*
-import kotlin.collections.ArrayList
 
 /**
  * Вспомогательный класс
@@ -203,4 +201,23 @@ class Util() {
         Log.e(log, "Appointment $appointmentModelDb saved")
         return true
     }
+
+    fun animateEditTexts(vararg editTexts: EditText) {
+        for (editText in editTexts) {
+            val originalColor = editText.currentTextColor
+
+            editText.setTextColor(Color.RED)
+
+            val animator = ValueAnimator.ofArgb(Color.RED, originalColor)
+            animator.duration = 2000
+
+            animator.addUpdateListener { valueAnimator ->
+                val animatedValue = valueAnimator.animatedValue as Int
+                editText.setTextColor(animatedValue)
+            }
+
+            animator.start()
+        }
+    }
+
 }

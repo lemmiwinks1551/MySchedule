@@ -5,25 +5,20 @@ import android.app.TimePickerDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.telephony.PhoneNumberFormattingTextWatcher
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentAppointmentBinding
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
 import com.example.projectnailsschedule.domain.models.ClientModelDb
 import com.example.projectnailsschedule.domain.models.ProcedureModelDb
 import com.example.projectnailsschedule.presentation.appointment.selectClient.SelectClientFragment
 import com.example.projectnailsschedule.presentation.appointment.selectProcedure.SelectProcedureFragment
-import com.example.projectnailsschedule.presentation.clients.clientsRecyclerView.ClientsViewHolder
 import com.example.projectnailsschedule.util.Util
 import java.util.*
 
@@ -81,17 +76,30 @@ class AppointmentFragment : Fragment() {
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<ClientModelDb>("client")
             ?.observe(viewLifecycleOwner) { result ->
                 // здесь обрабатываем результат после выбора клиента
-                binding.nameEt.setText(result.name)
-                binding.phoneEt.setText(result.phone)
-                binding.clientVkLinkEt.setText(result.vk)
-                binding.clientTelegramLinkEt.setText(result.telegram)
-                binding.clientInstagramLinkEt.setText(result.instagram)
-                binding.clientWhatsappLinkEt.setText(result.whatsapp)
+                with(binding) {
+                    nameEt.setText(result.name)
+                    phoneEt.setText(result.phone)
+                    clientVkLinkEt.setText(result.vk)
+                    clientTelegramLinkEt.setText(result.telegram)
+                    clientInstagramLinkEt.setText(result.instagram)
+                    clientWhatsappLinkEt.setText(result.whatsapp)
+                    Util().animateEditTexts(
+                        nameEt,
+                        phoneEt,
+                        clientVkLinkEt,
+                        clientTelegramLinkEt,
+                        clientInstagramLinkEt,
+                        clientWhatsappLinkEt
+                    )
+                }
             }
 
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<ProcedureModelDb>("procedure")
             ?.observe(viewLifecycleOwner) { result ->
-                binding.procedureEt.setText(result.procedureName)
+                with(binding) {
+                    procedureEt.setText(result.procedureName)
+                    Util().animateEditTexts(procedureEt)
+                }
             }
     }
 
