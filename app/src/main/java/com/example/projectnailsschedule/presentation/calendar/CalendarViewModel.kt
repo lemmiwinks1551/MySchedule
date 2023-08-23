@@ -5,13 +5,17 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
 import com.example.projectnailsschedule.domain.models.DateParams
+import com.example.projectnailsschedule.domain.usecase.calendarUC.GetSelectedMonthUc
 import com.example.projectnailsschedule.domain.usecase.calendarUC.LoadShortDateUseCase
+import com.example.projectnailsschedule.domain.usecase.calendarUC.SetSelectedMonthUc
 import com.example.projectnailsschedule.domain.usecase.dateUC.GetDateAppointmentsUseCase
 import java.time.LocalDate
 
 class CalendarViewModel(
     private val loadShortDateUseCase: LoadShortDateUseCase,
-    private var getDateAppointmentsUseCase: GetDateAppointmentsUseCase
+    private var getDateAppointmentsUseCase: GetDateAppointmentsUseCase,
+    private var setSelectedMonthUc: SetSelectedMonthUc,
+    private var getSelectedMonthUc: GetSelectedMonthUc
 ) : ViewModel() {
 
     private val log = this::class.simpleName
@@ -20,9 +24,14 @@ class CalendarViewModel(
     var selectedDate =
         MutableLiveData(
             DateParams(
-                date = LocalDate.now()
+                date = getSelectedMonth()
             )
         )
+
+    fun setMonth(date: LocalDate) {
+        selectedDate.value?.date = date
+        selectedDate.value = selectedDate.value
+    }
 
     fun getArrayAppointments(dateParams: DateParams): Array<AppointmentModelDb> {
         // get all appointments in selectedDate
@@ -43,6 +52,9 @@ class CalendarViewModel(
         selectedDate.value?.date = selectedDate.value?.date?.withDayOfMonth(day)
         getDateAppointmentCount()
         selectedDate.value = selectedDate.value
+
+        // set date in shared prefs
+        setSelectedMonth(selectedDate.value?.date!!)
     }
 
     fun changeMonth(operator: Boolean) {
@@ -52,5 +64,16 @@ class CalendarViewModel(
             false -> selectedDate.value?.date = selectedDate.value?.date?.minusMonths(1)
         }
         selectedDate.value = selectedDate.value
+
+        // set date in shared prefs
+        setSelectedMonth(selectedDate.value?.date!!)
+    }
+
+    fun getSelectedMonth(): LocalDate {
+        return getSelectedMonthUc.execute()
+    }
+
+    private fun setSelectedMonth(date: LocalDate) {
+        setSelectedMonthUc.execute(date)
     }
 }

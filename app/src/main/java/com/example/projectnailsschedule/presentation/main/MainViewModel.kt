@@ -16,13 +16,13 @@ class MainViewModel(
         darkThemeOn = loadThemeUseCase.execute()
     }
 
-/*    init {
+    init {
         setSelectedMonth()
     }
 
     private fun setSelectedMonth() {
         setSelectedMonthUc.execute(LocalDate.now())
-    }*/
+    }
 }
 
 

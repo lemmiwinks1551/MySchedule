@@ -32,7 +32,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener,
     DateShortAdapter.OnItemListener {
 
     private val log = this::class.simpleName
-    private var calendarViewModel: CalendarViewModel? = null
+    lateinit var calendarViewModel: CalendarViewModel
     private var _binding: FragmentCalendarBinding? = null
     private val binding get() = _binding!!
 
@@ -303,6 +303,8 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener,
 
         // Clear views
         shortDataRecyclerView?.adapter = null
+
+        calendarViewModel.setMonth(calendarViewModel.getSelectedMonth())
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
