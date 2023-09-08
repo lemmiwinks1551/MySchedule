@@ -5,9 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.projectnailsschedule.data.repository.ScheduleRepositoryImpl
 import com.example.projectnailsschedule.data.repository.SettingsRepositoryImpl
-import com.example.projectnailsschedule.domain.usecase.calendarUC.GetSelectedMonthUc
-import com.example.projectnailsschedule.domain.usecase.calendarUC.LoadShortDateUseCase
-import com.example.projectnailsschedule.domain.usecase.calendarUC.SetSelectedMonthUc
+import com.example.projectnailsschedule.domain.usecase.calendarUC.*
 import com.example.projectnailsschedule.domain.usecase.dateUC.GetDateAppointmentsUseCase
 
 class CalendarViewModelFactory(context: Context?) : ViewModelProvider.Factory {
@@ -27,12 +25,20 @@ class CalendarViewModelFactory(context: Context?) : ViewModelProvider.Factory {
     private var getSelectedMonthUc =
         GetSelectedMonthUc(settingsRepository = settingsRepositoryImpl)
 
+    private var setSelectedDateUc =
+        SetSelectedDateUc(settingsRepository = settingsRepositoryImpl)
+
+    private var getSelectedDateUc =
+        GetSelectedDateUc(settingsRepository = settingsRepositoryImpl)
+
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return CalendarViewModel(
             loadShortDateUseCase,
             getDateAppointmentsUseCase,
             setSelectedMonthUc,
-            getSelectedMonthUc
+            getSelectedMonthUc,
+            setSelectedDateUc,
+            getSelectedDateUc
         ) as T
     }
 }

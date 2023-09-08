@@ -8,34 +8,46 @@ import java.time.LocalDate
 class SettingsRepositoryImpl(context: Context?) : SettingsRepository {
 
     private val CUSTOM_PREF_NAME = "Settings"
-    private val theme = "theme"
-    private val month = "month"
+    private val themeKey = "theme"
+    private val monthKey = "month"
+    private val selectedDateKey = "selectedDate"
+
     private val sharedPreference: SharedPreferences =
         context!!.getSharedPreferences(CUSTOM_PREF_NAME, Context.MODE_PRIVATE)
 
     override fun setDarkTheme() {
         val editor = sharedPreference.edit()
-        editor.putBoolean(theme, true)
+        editor.putBoolean(themeKey, true)
         editor.apply()
     }
 
     override fun setLightTheme() {
         val editor = sharedPreference.edit()
-        editor.putBoolean(theme, false)
+        editor.putBoolean(themeKey, false)
         editor.apply()
     }
 
     override fun loadTheme(): Boolean {
-        return sharedPreference.getBoolean(theme, false)
+        return sharedPreference.getBoolean(themeKey, false)
     }
 
     override fun getSelectedMonth(): LocalDate {
-        return LocalDate.parse(sharedPreference.getString(month, LocalDate.now().toString()))
+        return LocalDate.parse(sharedPreference.getString(monthKey, LocalDate.now().toString()))
     }
 
     override fun setSelectedMonth(selectedDate: LocalDate) {
         val editor = sharedPreference.edit()
-        editor.putString(month, selectedDate.toString())
+        editor.putString(monthKey, selectedDate.toString())
         editor.apply()
+    }
+
+    override fun setSelectedDate(selectedDate: LocalDate) {
+        val editor = sharedPreference.edit()
+        editor.putString(selectedDateKey, selectedDate.toString())
+        editor.apply()
+    }
+
+    override fun getSelectedDate(): LocalDate {
+        return LocalDate.parse(sharedPreference.getString(selectedDateKey, LocalDate.now().toString()))
     }
 }

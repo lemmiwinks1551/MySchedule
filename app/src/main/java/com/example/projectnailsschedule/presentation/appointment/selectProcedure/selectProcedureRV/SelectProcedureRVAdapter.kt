@@ -13,7 +13,6 @@ class SelectProcedureRVAdapter(
     private var proceduresCount: Int,
     private var proceduresList: List<ProcedureModelDb>
 ) : RecyclerView.Adapter<SelectProcedureRVAdapter.ViewHolder>() {
-
     inner class ViewHolder(itemView: View, listener: OnItemClickListener) :
         RecyclerView.ViewHolder(itemView) {
 
@@ -51,6 +50,8 @@ class SelectProcedureRVAdapter(
         }
     }
 
+    private val log = this::class.simpleName
+
     private lateinit var mListener: OnItemClickListener
 
     interface OnItemClickListener {
@@ -69,12 +70,12 @@ class SelectProcedureRVAdapter(
         return ViewHolder(view, mListener)
     }
 
-    override fun getItemCount(): Int {
-        return proceduresCount
-    }
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         inflateViews(holder, position)
+    }
+
+    override fun getItemCount(): Int {
+        return proceduresCount
     }
 
     private fun inflateViews(holder: ViewHolder, position: Int) {
@@ -87,7 +88,6 @@ class SelectProcedureRVAdapter(
         hideEmptyViews(holder, position)
     }
 
-
     private fun hideEmptyViews(holder: ViewHolder, position: Int) {
         if (proceduresList[position].procedureName.isNullOrEmpty()) {
             holder.procedureNameCl.visibility = View.GONE
@@ -99,5 +99,4 @@ class SelectProcedureRVAdapter(
             holder.procedureNotesCl.visibility = View.GONE
         }
     }
-
 }

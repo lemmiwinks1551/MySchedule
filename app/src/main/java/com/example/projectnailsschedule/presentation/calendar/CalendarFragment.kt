@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
@@ -18,8 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentCalendarBinding
 import com.example.projectnailsschedule.domain.models.DateParams
-import com.example.projectnailsschedule.presentation.calendar.calendarRecyclerView.CalendarAdapter
-import com.example.projectnailsschedule.presentation.calendar.calendarRecyclerView.CalendarViewHolder
+import com.example.projectnailsschedule.presentation.calendar.calendarRecyclerView.CalendarRvAdapter
 import com.example.projectnailsschedule.presentation.calendar.dateShortRecyclerView.DateShortAdapter
 import com.example.projectnailsschedule.util.Util
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -28,7 +26,7 @@ import java.time.LocalDate
 import java.time.ZoneId
 import java.util.*
 
-class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener,
+class CalendarFragment : Fragment(),
     DateShortAdapter.OnItemListener {
 
     private val log = this::class.simpleName
@@ -117,7 +115,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener,
 
     private fun initObservers() {
         // set observer for DateParams
-        calendarViewModel?.selectedDate?.observe(viewLifecycleOwner) {
+        calendarViewModel.localSelectedDate.observe(viewLifecycleOwner) {
             Log.e(log, "Current date: ${currentDate?.date}")
             Log.e(log, "Selected date: ${it.date}")
 
@@ -135,7 +133,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener,
             }
 
             // if day was changed and has appointments
-             if (it.appointmentCount != null
+            if (it.appointmentCount != null
             ) {
                 inflateShortDateRecyclerView(it)
             }
@@ -168,27 +166,42 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener,
         val daysInMonth: ArrayList<String> = Util().getArrayFromMonth(selectedDate)
 
         // create adapter
-        val calendarAdapter = CalendarAdapter(
+        val calendarRvAdapter = CalendarRvAdapter(
             daysInMonth = daysInMonth,
             calendarFragment = this,
-            calendarViewModel = calendarViewModel!!
+            calendarViewModel = calendarViewModel
         )
 
         val layoutManager: RecyclerView.LayoutManager =
             GridLayoutManager(activity, 7)
 
         calendarRecyclerView?.layoutManager = layoutManager
-        calendarRecyclerView?.adapter = calendarAdapter
+        calendarRecyclerView?.adapter = calendarRvAdapter
         calendarRecyclerView?.scheduleLayoutAnimation()
+
+        // set clickListener on clientsRV
+        calendarRvAdapter.setOnItemClickListener(object :
+            CalendarRvAdapter.OnItemClickListener {
+            override fun onItemClick(position: Int) {
+                if (daysInMonth[position].isNotEmpty()) {
+                    // set button go_into_date and recycler view components visible
+                    addButton?.visibility = View.VISIBLE
+                    shortDataRecyclerView?.visibility = View.VISIBLE
+
+                    // change selected date in ViewModel
+                    calendarViewModel.changeDay(day = daysInMonth[position].toInt())
+                }
+            }
+        })
     }
 
     private fun inflateShortDateRecyclerView(selectedDateParams: DateParams) {
         // create adapter for ShortDateRecyclerVIew
         val dateShortAdapter =
             DateShortAdapter(
-                selectedDateParams.appointmentCount!!,
+                calendarViewModel.getArrayAppointments(selectedDateParams).size,
                 selectedDateParams,
-                calendarViewModel!!,
+                calendarViewModel,
                 this
             )
 
@@ -206,7 +219,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener,
         addButton?.visibility = View.INVISIBLE
 
         // make calculations in ViewModel
-        calendarViewModel?.changeMonth(operator = operator)
+        calendarViewModel.changeMonth(operator = operator)
 
         // clear DateShort RecyclerView
         shortDataRecyclerView?.adapter = null
@@ -215,21 +228,7 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener,
         clicked = false
     }
 
-    override fun onCalendarClick(position: Int, dayText: String?) {
-        // click on day in calendar
-        if (!dayText.isNullOrEmpty()) {
-            // set button go_into_date and recycler view components visible
-            addButton?.visibility = View.VISIBLE
-            shortDataRecyclerView?.visibility = View.VISIBLE
-
-            // change selected date in ViewModel
-            calendarViewModel?.changeDay(day = dayText.toInt())
-
-            setBackgroundColor(position)
-        }
-    }
-
-    private fun initBackgroundColor(){
+    private fun initBackgroundColor() {
         val nightModeFlags: Int = this.resources.configuration.uiMode and
                 Configuration.UI_MODE_NIGHT_MASK
 
@@ -241,54 +240,6 @@ class CalendarFragment : Fragment(), CalendarAdapter.OnItemListener,
                 colorResIdSelBackgr = R.color.Pink6
             }
         }
-    }
-
-    private fun setBackgroundColor(position: Int) {
-        // set current holder and prev view holder
-        val holderClicked: CalendarViewHolder =
-            calendarRecyclerView?.findViewHolderForAdapterPosition(position) as CalendarViewHolder
-        var holderPrev: CalendarViewHolder? = null
-
-        if (prevHolderPos != null) {
-            // init previous holder
-            holderPrev =
-                calendarRecyclerView?.findViewHolderForAdapterPosition(prevHolderPos!!) as CalendarViewHolder
-        }
-
-        // set background
-        if (position != prevHolderPos) {
-            // if position is new - change colors for new holder and prev holder
-            holderClicked.cellLayout.setBackgroundColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    colorResIdSelBackgr
-                )
-            )
-            holderPrev?.cellLayout?.setBackgroundResource(R.drawable.calendar_recycler_view_borders)
-            clicked = true
-        }
-
-        if (position == prevHolderPos) {
-            // if position is the same - change background every next click
-            clicked = if (clicked) {
-                // if clicked is true - clear background and short data recycler view
-                holderClicked.cellLayout.setBackgroundResource(R.drawable.calendar_recycler_view_borders)
-                shortDataRecyclerView?.adapter = null
-                false
-            } else {
-                // if clicked is false - set new background and short data recycler view
-                holderClicked.cellLayout.setBackgroundColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        colorResIdSelBackgr
-                    )
-                )
-                true
-            }
-        }
-
-        // set prev position
-        prevHolderPos = position
     }
 
     override fun onResume() {

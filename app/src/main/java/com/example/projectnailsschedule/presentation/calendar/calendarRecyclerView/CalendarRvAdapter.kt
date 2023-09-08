@@ -1,38 +1,74 @@
 package com.example.projectnailsschedule.presentation.calendar.calendarRecyclerView
 
-import android.content.res.ColorStateList
 import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.domain.models.DateParams
 import com.example.projectnailsschedule.presentation.calendar.CalendarFragment
 import com.example.projectnailsschedule.presentation.calendar.CalendarViewModel
-import com.example.projectnailsschedule.util.Util
 import java.time.LocalDate
 
-internal class CalendarAdapter(
+class CalendarRvAdapter(
     private val daysInMonth: ArrayList<String>,
     private val calendarFragment: CalendarFragment,
     private val calendarViewModel: CalendarViewModel
-) :
-    RecyclerView.Adapter<CalendarViewHolder>() {
-    private var log = this::class.simpleName
+) : RecyclerView.Adapter<CalendarRvAdapter.ViewHolder>() {
+    inner class ViewHolder(itemView: View, listener: OnItemClickListener) :
+        RecyclerView.ViewHolder(itemView) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalendarViewHolder {
+        lateinit var date: TextView
+        lateinit var dateAppointmentsCount: TextView
+        lateinit var cellLayout: ConstraintLayout
+
+        init {
+            inflateViews()
+            setClickListeners(listener)
+        }
+
+        private fun inflateViews() {
+            date = itemView.findViewById(R.id.date_cell)
+            dateAppointmentsCount = itemView.findViewById(R.id.date_appointments_text_view)
+            cellLayout = itemView.findViewById(R.id.calendarRecyclerViewCell)
+        }
+
+        private fun setClickListeners(listener: OnItemClickListener) {
+            itemView.setOnClickListener {
+                listener.onItemClick(adapterPosition)
+            }
+        }
+    }
+
+    private val log = this::class.simpleName
+
+    private lateinit var mListener: OnItemClickListener
+
+    interface OnItemClickListener {
+        fun onItemClick(position: Int) {
+        }
+    }
+
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+        mListener = listener
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val view: View = inflater.inflate(R.layout.calendar_rv_item, parent, false)
 
-        return CalendarViewHolder(view, calendarFragment)
+        return ViewHolder(view, mListener)
     }
 
-    override fun onBindViewHolder(holder: CalendarViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         // get day to work with
         val dayInHolder = daysInMonth[position]
-        // set day number in CalendarViewHolder (even if it`s empty)
+
+        // set day number in CalendarViewHolder
         holder.date.text = dayInHolder
 
         // set appointments count
@@ -40,7 +76,7 @@ internal class CalendarAdapter(
             // get appointment count from date
             val appointmentCount: Int
             val dateParams = DateParams(
-                date = calendarViewModel.selectedDate.value?.date?.withDayOfMonth(
+                date = calendarViewModel.localSelectedDate.value?.date?.withDayOfMonth(
                     dayInHolder.toInt()
                 )
             )
@@ -67,7 +103,6 @@ internal class CalendarAdapter(
         return daysInMonth.size
     }
 
-    interface OnItemListener {
-        fun onCalendarClick(position: Int, dayText: String?)
+    private fun inflateViews() {
     }
 }

@@ -13,4 +13,8 @@ interface SettingsRepository {
     fun getSelectedMonth() : LocalDate
 
     fun setSelectedMonth(selectedDate: LocalDate)
+
+    fun setSelectedDate(selectedDate: LocalDate)
+
+    fun getSelectedDate(): LocalDate
 }

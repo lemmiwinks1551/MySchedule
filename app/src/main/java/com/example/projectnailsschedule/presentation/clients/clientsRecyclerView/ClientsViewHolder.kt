@@ -60,7 +60,6 @@ class ClientsViewHolder internal constructor(
             clientNotesCl = findViewById(R.id.client_notes_cl)
         }
 
-
         itemView.setOnClickListener {
             listener.onItemClick(adapterPosition)
         }
