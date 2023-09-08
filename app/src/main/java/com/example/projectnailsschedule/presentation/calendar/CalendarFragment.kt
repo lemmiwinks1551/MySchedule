@@ -42,6 +42,8 @@ class CalendarFragment : Fragment(),
     private var layout: ConstraintLayout? = null
     private var currentDate: DateParams? = null
     private var colorResIdSelBackgr: Int = R.color.transparent
+    private var colorResIdSelBackgrTr: Int = R.color.transparent
+    private var prevPressedHolderPos: Int = 0
 
     // color background click listener
     private var prevHolderPos: Int? = null
@@ -183,13 +185,27 @@ class CalendarFragment : Fragment(),
         calendarRvAdapter.setOnItemClickListener(object :
             CalendarRvAdapter.OnItemClickListener {
             override fun onItemClick(position: Int) {
-                if (daysInMonth[position].isNotEmpty()) {
+                val pressedDay = daysInMonth[position]
+                if (pressedDay.isNotEmpty()) {
                     // set button go_into_date and recycler view components visible
                     addButton?.visibility = View.VISIBLE
                     shortDataRecyclerView?.visibility = View.VISIBLE
 
                     // change selected date in ViewModel
-                    calendarViewModel.changeDay(day = daysInMonth[position].toInt())
+                    calendarViewModel.changeDay(day = pressedDay.toInt())
+
+                    // change selected date background
+                    if (position != prevPressedHolderPos) {
+                        val holderClicked: CalendarRvAdapter.ViewHolder =
+                            calendarRecyclerView?.findViewHolderForAdapterPosition(position) as CalendarRvAdapter.ViewHolder
+                        holderClicked.cellLayout.setBackgroundResource(colorResIdSelBackgr)
+
+                        val holderClickedPrev: CalendarRvAdapter.ViewHolder =
+                            calendarRecyclerView?.findViewHolderForAdapterPosition(prevPressedHolderPos!!) as CalendarRvAdapter.ViewHolder
+                        holderClickedPrev.cellLayout.setBackgroundResource(android.R.color.transparent)
+                    }
+
+                    prevPressedHolderPos = position
                 }
             }
         })
