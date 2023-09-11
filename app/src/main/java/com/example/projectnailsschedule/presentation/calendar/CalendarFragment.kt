@@ -1,6 +1,5 @@
 package com.example.projectnailsschedule.presentation.calendar
 
-import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -41,13 +40,10 @@ class CalendarFragment : Fragment(),
     private var addButton: FloatingActionButton? = null
     private var layout: ConstraintLayout? = null
     private var currentDate: DateParams? = null
-    private var colorResIdSelBackgr: Int = R.color.transparent
-    private var colorResIdSelBackgrTr: Int = R.color.transparent
-    private var prevPressedHolderPos: Int = 0
 
-    // color background click listener
-    private var prevHolderPos: Int? = null
-    private var clicked: Boolean = false
+    private var colorResIdSelBackground: Int = R.color.Pink6
+    private var colorResIdSelBackgroundUndo: Int = R.drawable.calendar_recycler_view_borders
+    private var prevPressedHolderPos: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,9 +70,6 @@ class CalendarFragment : Fragment(),
 
         // inti observers
         initObservers()
-
-        // set background for selected calendar cell
-        initBackgroundColor()
 
         setHasOptionsMenu(true)
         return binding.root
@@ -198,14 +191,19 @@ class CalendarFragment : Fragment(),
                     if (position != prevPressedHolderPos) {
                         val holderClicked: CalendarRvAdapter.ViewHolder =
                             calendarRecyclerView?.findViewHolderForAdapterPosition(position) as CalendarRvAdapter.ViewHolder
-                        holderClicked.cellLayout.setBackgroundResource(colorResIdSelBackgr)
+                        holderClicked.cellLayout.setBackgroundResource(colorResIdSelBackground)
 
                         val holderClickedPrev: CalendarRvAdapter.ViewHolder =
-                            calendarRecyclerView?.findViewHolderForAdapterPosition(prevPressedHolderPos!!) as CalendarRvAdapter.ViewHolder
-                        holderClickedPrev.cellLayout.setBackgroundResource(android.R.color.transparent)
+                            calendarRecyclerView?.findViewHolderForAdapterPosition(
+                                prevPressedHolderPos
+                            ) as CalendarRvAdapter.ViewHolder
+                        holderClickedPrev.cellLayout.setBackgroundResource(
+                            colorResIdSelBackgroundUndo
+                        )
                     }
 
                     prevPressedHolderPos = position
+                    calendarViewModel.setSelectedDateUc(calendarViewModel.localSelectedDate.value?.date!!)
                 }
             }
         })
@@ -240,38 +238,21 @@ class CalendarFragment : Fragment(),
         // clear DateShort RecyclerView
         shortDataRecyclerView?.adapter = null
 
-        // clear click
-        clicked = false
-    }
-
-    private fun initBackgroundColor() {
-        val nightModeFlags: Int = this.resources.configuration.uiMode and
-                Configuration.UI_MODE_NIGHT_MASK
-
-        when (nightModeFlags) {
-            Configuration.UI_MODE_NIGHT_YES -> {
-                colorResIdSelBackgr = R.color.Dark7
-            }
-            Configuration.UI_MODE_NIGHT_NO -> {
-                colorResIdSelBackgr = R.color.Pink6
-            }
-        }
+        prevPressedHolderPos = 0
     }
 
     override fun onResume() {
         Log.e(log, "onResume")
-        super.onResume()
 
-        // reset clicked var
-        clicked = false
+        super.onResume()
 
         // hide keyboard
         Util().hideKeyboard(requireActivity())
+    }
 
-        // Clear views
-        shortDataRecyclerView?.adapter = null
-
-        calendarViewModel.setMonth(calendarViewModel.getSelectedMonth())
+    override fun onPause() {
+        prevPressedHolderPos = 0
+        super.onPause()
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
