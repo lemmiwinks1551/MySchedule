@@ -7,6 +7,7 @@ import com.example.projectnailsschedule.domain.models.AppointmentModelDb
 import com.example.projectnailsschedule.domain.models.DateParams
 import com.example.projectnailsschedule.domain.usecase.calendarUC.*
 import com.example.projectnailsschedule.domain.usecase.dateUC.GetDateAppointmentsUseCase
+import com.example.projectnailsschedule.presentation.calendar.calendarRecyclerView.CalendarRvAdapter
 import java.time.LocalDate
 
 class CalendarViewModel(
@@ -21,67 +22,50 @@ class CalendarViewModel(
     private val log = this::class.simpleName
 
     // var updates when click at day or month in calendar
-    var localSelectedDate =
-        MutableLiveData(
-            DateParams(
-                date = getSelectedMonth()
-            )
+    var selectedDate = MutableLiveData(
+        DateParams(
+            _id = null,
+            date = LocalDate.now(),
+            appointmentCount = null
         )
+    )
 
-    fun setMonth(date: LocalDate) {
-        localSelectedDate.value?.date = date
-        localSelectedDate.value = localSelectedDate.value
-    }
+    var prevHolder: CalendarRvAdapter.ViewHolder? = null
 
     fun getArrayAppointments(dateParams: DateParams): Array<AppointmentModelDb> {
         // get all appointments in selectedDate
         // for recycler view adapter
-        Log.e(log, "Appointments from $localSelectedDate unloaded from DB")
+        Log.e(log, "Appointments from $selectedDate unloaded from DB")
         return loadShortDateUseCase.execute(dateParams)
     }
 
     private fun getDateAppointmentCount() {
         // get appointments count form selectedDate
-        localSelectedDate.value?.appointmentCount =
-            getDateAppointmentsUseCase.execute(localSelectedDate.value!!).size
-        localSelectedDate.value = localSelectedDate.value
+        selectedDate.value?.appointmentCount =
+            getDateAppointmentsUseCase.execute(selectedDate.value!!).size
+        selectedDate.value = selectedDate.value
     }
 
-    fun changeDay(day: Int) {
+    fun updateSelectedDate(day: Int) {
         // set month day in selectedDayParams
-        localSelectedDate.value?.date = localSelectedDate.value?.date?.withDayOfMonth(day)
+        selectedDate.value?.date = selectedDate.value?.date?.withDayOfMonth(day)
         getDateAppointmentCount()
-        localSelectedDate.value = localSelectedDate.value
-
-        // set date in shared prefs
-        setSelectedMonth(localSelectedDate.value?.date!!)
+        selectedDate.value = selectedDate.value
     }
 
     fun changeMonth(operator: Boolean) {
         // change current month
         when (operator) {
-            true -> localSelectedDate.value?.date = localSelectedDate.value?.date?.plusMonths(1)
-            false -> localSelectedDate.value?.date = localSelectedDate.value?.date?.minusMonths(1)
+            true -> selectedDate.value?.date = selectedDate.value?.date?.plusMonths(1)
+            false -> selectedDate.value?.date = selectedDate.value?.date?.minusMonths(1)
         }
-        localSelectedDate.value = localSelectedDate.value
+        selectedDate.value = selectedDate.value
 
         // set date in shared prefs
-        setSelectedMonth(localSelectedDate.value?.date!!)
-    }
-
-    fun getSelectedMonth(): LocalDate {
-        return getSelectedMonthUc.execute()
+        setSelectedMonth(selectedDate.value?.date!!)
     }
 
     private fun setSelectedMonth(date: LocalDate) {
         setSelectedMonthUc.execute(date)
-    }
-
-    fun setSelectedDateUc(selectedDate: LocalDate) {
-        setSelectedDateUc.execute(selectedDate)
-    }
-
-    fun getSelectedDateUc(): LocalDate {
-        return getSelectedDateUc.execute()
     }
 }

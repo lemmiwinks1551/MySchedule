@@ -41,10 +41,6 @@ class CalendarFragment : Fragment(),
     private var layout: ConstraintLayout? = null
     private var currentDate: DateParams? = null
 
-    private var colorResIdSelBackground: Int = R.color.Pink6
-    private var colorResIdSelBackgroundUndo: Int = R.drawable.calendar_recycler_view_borders
-    private var prevPressedHolderPos: Int = 0
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -110,7 +106,7 @@ class CalendarFragment : Fragment(),
 
     private fun initObservers() {
         // set observer for DateParams
-        calendarViewModel.localSelectedDate.observe(viewLifecycleOwner) {
+        calendarViewModel.selectedDate.observe(viewLifecycleOwner) {
             Log.e(log, "Current date: ${currentDate?.date}")
             Log.e(log, "Selected date: ${it.date}")
 
@@ -163,7 +159,6 @@ class CalendarFragment : Fragment(),
         // create adapter
         val calendarRvAdapter = CalendarRvAdapter(
             daysInMonth = daysInMonth,
-            calendarFragment = this,
             calendarViewModel = calendarViewModel
         )
 
@@ -173,43 +168,14 @@ class CalendarFragment : Fragment(),
         calendarRecyclerView?.layoutManager = layoutManager
         calendarRecyclerView?.adapter = calendarRvAdapter
         calendarRecyclerView?.scheduleLayoutAnimation()
-
-        // set clickListener on clientsRV
-        calendarRvAdapter.setOnItemClickListener(object :
-            CalendarRvAdapter.OnItemClickListener {
-            override fun onItemClick(position: Int) {
-                val pressedDay = daysInMonth[position]
-                if (pressedDay.isNotEmpty()) {
-                    // set button go_into_date and recycler view components visible
-                    addButton?.visibility = View.VISIBLE
-                    shortDataRecyclerView?.visibility = View.VISIBLE
-
-                    // change selected date in ViewModel
-                    calendarViewModel.changeDay(day = pressedDay.toInt())
-
-                    // change selected date background
-                    if (position != prevPressedHolderPos) {
-                        val holderClicked: CalendarRvAdapter.ViewHolder =
-                            calendarRecyclerView?.findViewHolderForAdapterPosition(position) as CalendarRvAdapter.ViewHolder
-                        holderClicked.cellLayout.setBackgroundResource(colorResIdSelBackground)
-
-                        val holderClickedPrev: CalendarRvAdapter.ViewHolder =
-                            calendarRecyclerView?.findViewHolderForAdapterPosition(
-                                prevPressedHolderPos
-                            ) as CalendarRvAdapter.ViewHolder
-                        holderClickedPrev.cellLayout.setBackgroundResource(
-                            colorResIdSelBackgroundUndo
-                        )
-                    }
-
-                    prevPressedHolderPos = position
-                    calendarViewModel.setSelectedDateUc(calendarViewModel.localSelectedDate.value?.date!!)
-                }
-            }
-        })
     }
 
     private fun inflateShortDateRecyclerView(selectedDateParams: DateParams) {
+        // Make View visible
+        if (shortDataRecyclerView!!.visibility == View.INVISIBLE) {
+            shortDataRecyclerView!!.visibility = View.VISIBLE
+        }
+
         // create adapter for ShortDateRecyclerVIew
         val dateShortAdapter =
             DateShortAdapter(
@@ -237,22 +203,16 @@ class CalendarFragment : Fragment(),
 
         // clear DateShort RecyclerView
         shortDataRecyclerView?.adapter = null
-
-        prevPressedHolderPos = 0
     }
 
     override fun onResume() {
         Log.e(log, "onResume")
-
         super.onResume()
 
         // hide keyboard
         Util().hideKeyboard(requireActivity())
-    }
 
-    override fun onPause() {
-        prevPressedHolderPos = 0
-        super.onPause()
+        shortDataRecyclerView!!.visibility = View.INVISIBLE
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
