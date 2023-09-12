@@ -2,39 +2,39 @@ package com.example.projectnailsschedule.util.rustore
 
 import android.content.Context
 import android.util.Log
-import android.view.View
-import android.view.ViewGroup
-import android.widget.RelativeLayout
-import com.example.projectnailsschedule.databinding.ActivityMainBinding
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.my.target.ads.InterstitialAd
 import com.my.target.ads.MyTargetView
+import com.my.target.common.MyTargetManager
 
-class RuStoreAd(val context: Context, val binding: ActivityMainBinding) {
-    val log = "RuStoreAd"
+class RuStoreAd {
 
     // Banner
-    private var adView: MyTargetView? = null
-    private var adViewLayoutParams: RelativeLayout.LayoutParams? = null
+    private lateinit var adView: MyTargetView
 
     // InterstitialAd
-    private var interstitialAd: InterstitialAd? = null
+    private lateinit var interstitialAd: InterstitialAd
 
-    fun interstitialAd() {
+    fun interstitialAd(context: Context) {
+        val log = "InterstitialAd"
+
         val slotId = 1285135
 
         // Создаем экземпляр InterstitialAd
         interstitialAd = InterstitialAd(slotId, context)
 
         // Устанавливаем слушатель событий
-        interstitialAd!!.setListener(object : InterstitialAd.InterstitialAdListener {
+        interstitialAd.setListener(object : InterstitialAd.InterstitialAdListener {
             override fun onLoad(ad: InterstitialAd) {
                 // Запускаем показ в отдельном Activity
                 Log.e(log, "onLoad")
                 ad.show()
             }
+
             override fun onNoAd(reason: String, ad: InterstitialAd) {
                 Log.e(log, "onNoAd")
             }
+
             override fun onClick(ad: InterstitialAd) {}
             override fun onDisplay(ad: InterstitialAd) {}
             override fun onDismiss(ad: InterstitialAd) {}
@@ -42,33 +42,47 @@ class RuStoreAd(val context: Context, val binding: ActivityMainBinding) {
         })
 
         // Запускаем загрузку данных
-        interstitialAd!!.load()
+        interstitialAd.load()
     }
 
-    fun banner() {
-        val slotId = 1284152
+    fun banner(
+        context: Context,
+        layout: ConstraintLayout
+    ) {
+        val log = "BannerAd"
+
+        val slotId = 1404141
+
         // Включение режима отладки
         // MyTargetManager.setDebugMode(true)
+
+        /*        GlobalScope.launch {
+            val adInfo = AdvertisingIdClient.getAdvertisingIdInfo(context)
+            Log.d("text", adInfo.id ?: "unknown")
+        }*/
 
         // Создаем экземпляр MyTargetView
         adView = MyTargetView(context)
 
         // Задаём id слота
-        adView!!.setSlotId(slotId)
+        adView.setSlotId(slotId)
 
-        // Устанавливаем LayoutParams
-        adViewLayoutParams = RelativeLayout.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
+        val adViewLayoutParams = ConstraintLayout.LayoutParams(
+            ConstraintLayout.LayoutParams.MATCH_CONSTRAINT,
+            ConstraintLayout.LayoutParams.WRAP_CONTENT
         )
-        adView!!.layoutParams = adViewLayoutParams
 
-        // Устанавливаем слушатель событий
-        adView!!.listener = object : MyTargetView.MyTargetViewListener {
+        adViewLayoutParams.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
+        adViewLayoutParams.startToStart = ConstraintLayout.LayoutParams.PARENT_ID
+        adViewLayoutParams.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID
+
+        adView.layoutParams = adViewLayoutParams
+
+        adView.listener = object : MyTargetView.MyTargetViewListener {
             override fun onLoad(myTargetView: MyTargetView) {
                 // Данные успешно загружены, запускаем показ объявлений
                 Log.e(log, "onLoad")
-                binding.root.addView(adView)
+                layout.addView(adView)
             }
             override fun onNoAd(reason: String, myTargetView: MyTargetView) {
                 Log.e(log, "onNoAd")
@@ -82,12 +96,11 @@ class RuStoreAd(val context: Context, val binding: ActivityMainBinding) {
         }
 
         // Запускаем загрузку данных
-        adView!!.load()
+        adView.load()
     }
 
     fun destroyAd() {
-        if (adView != null) {
-            adView!!.destroy()
-        }
+        adView.destroy()
+        interstitialAd.destroy()
     }
 }

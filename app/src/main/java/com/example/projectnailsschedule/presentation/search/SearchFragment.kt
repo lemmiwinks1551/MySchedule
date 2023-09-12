@@ -22,6 +22,7 @@ import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentSearchBinding
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
 import com.example.projectnailsschedule.presentation.search.searchRecyclerVIew.SearchRvAdapter
+import com.example.projectnailsschedule.util.rustore.RuStoreAd
 import com.google.android.material.snackbar.Snackbar
 
 class SearchFragment : Fragment() {
@@ -225,6 +226,7 @@ class SearchFragment : Fragment() {
     override fun onResume() {
         searchTextView?.setQuery("", true) // clear search bar
         super.onResume()
+        RuStoreAd().banner(requireContext(), binding.root)
     }
 
     override fun onPause() {

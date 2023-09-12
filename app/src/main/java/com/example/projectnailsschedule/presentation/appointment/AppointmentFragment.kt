@@ -22,8 +22,6 @@ import com.example.projectnailsschedule.presentation.appointment.selectProcedure
 import com.example.projectnailsschedule.util.Util
 import java.util.*
 
-/** AppointmentFragment */
-
 class AppointmentFragment : Fragment() {
     val log = this::class.simpleName
     private val bindingKey = "appointmentParams"

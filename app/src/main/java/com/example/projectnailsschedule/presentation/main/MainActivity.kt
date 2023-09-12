@@ -1,11 +1,9 @@
 package com.example.projectnailsschedule.presentation.main
 
-import android.content.res.Configuration
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -49,10 +47,6 @@ class MainActivity : AppCompatActivity() {
             MainActivityViewModelFactory(this)
         )[MainViewModel::class.java]
 
-        // set dark/light theme
-        mainViewModel?.loadTheme()
-        setTheme()
-
         binding = ActivityMainBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
@@ -77,17 +71,10 @@ class MainActivity : AppCompatActivity() {
         RuStoreUpdate(this).checkForUpdates()
 
         // start advertising
-        RuStoreAd(this, binding).interstitialAd()
+        RuStoreAd().interstitialAd(context = applicationContext)
 
-        // request user's review
+        // Request user's review
         RuStoreReview(this).rateApp()
-
-        // insert metrics
-        val firebaseModel = FirebaseModel(
-            time = LocalDateTime.now(),
-            event = "Start"
-        )
-        //FirebaseMetrics().insertMetrics(firebaseModel) CAUSE OF CRASH!!!
     }
 
     private fun initWidgets() {
@@ -107,30 +94,6 @@ class MainActivity : AppCompatActivity() {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
-    private fun setTheme() {
-        // change theme if it changed
-        var actualDarkThemeOn: Boolean? = null
-
-        val nightModeFlags: Int = this.resources.configuration.uiMode and
-                Configuration.UI_MODE_NIGHT_MASK
-        when (nightModeFlags) {
-            Configuration.UI_MODE_NIGHT_YES -> {
-                actualDarkThemeOn = true
-            }
-            Configuration.UI_MODE_NIGHT_NO -> {
-                actualDarkThemeOn = false
-            }
-        }
-
-        if (!mainViewModel?.darkThemeOn!! && actualDarkThemeOn == true) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-        }
-
-        if (mainViewModel?.darkThemeOn!! && actualDarkThemeOn == false) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-        }
-    }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.search -> navController.navigate(R.id.nav_search)
@@ -140,7 +103,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
-        RuStoreAd(this, binding).destroyAd()
+        RuStoreAd().destroyAd()
         super.onDestroy()
     }
 }

@@ -19,6 +19,7 @@ import com.example.projectnailsschedule.domain.models.DateParams
 import com.example.projectnailsschedule.presentation.calendar.calendarRecyclerView.CalendarRvAdapter
 import com.example.projectnailsschedule.presentation.calendar.dateShortRecyclerView.DateShortAdapter
 import com.example.projectnailsschedule.util.Util
+import com.example.projectnailsschedule.util.rustore.RuStoreAd
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.text.SimpleDateFormat
 import java.time.LocalDate
@@ -207,6 +208,8 @@ class CalendarFragment : Fragment(),
 
     override fun onResume() {
         Log.e(log, "onResume")
+        RuStoreAd().banner(requireContext(), binding.root)
+
         super.onResume()
 
         // hide keyboard

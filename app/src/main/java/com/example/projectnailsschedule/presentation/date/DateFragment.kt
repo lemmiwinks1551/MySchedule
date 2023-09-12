@@ -22,6 +22,7 @@ import com.example.projectnailsschedule.domain.models.AppointmentModelDb
 import com.example.projectnailsschedule.domain.models.DateParams
 import com.example.projectnailsschedule.presentation.date.dateRecyclerView.DateAdapter
 import com.example.projectnailsschedule.util.Util
+import com.example.projectnailsschedule.util.rustore.RuStoreAd
 import com.google.android.material.snackbar.Snackbar
 
 class DateFragment : Fragment() {
@@ -157,6 +158,8 @@ class DateFragment : Fragment() {
         super.onResume()
         // hide keyboard
         Util().hideKeyboard(requireActivity())
+
+        RuStoreAd().banner(requireContext(), binding.root)
     }
 
     private fun swipeToDelete() {

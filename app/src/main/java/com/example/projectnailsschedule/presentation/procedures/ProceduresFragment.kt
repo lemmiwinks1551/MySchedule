@@ -23,6 +23,7 @@ import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentProceduresBinding
 import com.example.projectnailsschedule.domain.models.ProcedureModelDb
 import com.example.projectnailsschedule.presentation.procedures.proceduresRv.ProceduresAdapter
+import com.example.projectnailsschedule.util.rustore.RuStoreAd
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
@@ -264,6 +265,7 @@ class ProceduresFragment : Fragment() {
     override fun onResume() {
         proceduresSearchView?.setQuery(null, true) // clear search bar
         super.onResume()
+        RuStoreAd().banner(requireContext(), binding.root)
     }
 
     override fun onPause() {

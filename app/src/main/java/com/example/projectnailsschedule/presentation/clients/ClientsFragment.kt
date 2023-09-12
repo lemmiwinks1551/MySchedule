@@ -22,6 +22,7 @@ import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentClientsBinding
 import com.example.projectnailsschedule.domain.models.ClientModelDb
 import com.example.projectnailsschedule.presentation.clients.clientsRecyclerView.ClientsAdapter
+import com.example.projectnailsschedule.util.rustore.RuStoreAd
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 
@@ -230,6 +231,7 @@ class ClientsFragment : Fragment() {
     override fun onResume() {
         clientsSearchView?.setQuery(null, true) // clear search bar
         super.onResume()
+        RuStoreAd().banner(requireContext(), binding.root)
     }
 
     override fun onPause() {

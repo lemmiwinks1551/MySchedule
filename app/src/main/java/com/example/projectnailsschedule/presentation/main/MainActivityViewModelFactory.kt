@@ -21,7 +21,6 @@ class MainActivityViewModelFactory(context: Context?) : ViewModelProvider.Factor
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return MainViewModel(
-            loadThemeUseCase = loadThemeUseCase,
             setSelectedMonthUc = setSelectedMonthUc,
             setSelectedDateUc = setSelectedDateUc
         ) as T

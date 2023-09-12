@@ -19,6 +19,7 @@ import com.example.projectnailsschedule.domain.models.DateParams
 import com.example.projectnailsschedule.domain.models.DateWeekAppModel
 import com.example.projectnailsschedule.presentation.calendar.fullMonthView.fullMonthViewRV.FullMonthViewRVAdapter
 import com.example.projectnailsschedule.util.Util
+import com.example.projectnailsschedule.util.rustore.RuStoreAd
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.ZoneId
@@ -154,5 +155,6 @@ class FullMonthViewFragment : Fragment() {
             smoothScroller.targetPosition = oldPosition
             layoutManager.startSmoothScroll(smoothScroller)
         }
+        RuStoreAd().banner(requireContext(), binding.root)
     }
 }
