@@ -85,7 +85,9 @@ class CalendarRvAdapter(
                 if (holder != calendarViewModel.prevHolder) {
 
                     // Unselect the previously selected cell
-                    calendarViewModel.prevHolder?.cellLayout?.setBackgroundResource(unselectedBackground)
+                    calendarViewModel.prevHolder?.cellLayout?.setBackgroundResource(
+                        unselectedBackground
+                    )
 
                     // Select the clicked cell
                     holder.cellLayout.setBackgroundResource(selectedColor)
