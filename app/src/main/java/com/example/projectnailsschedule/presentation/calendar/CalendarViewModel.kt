@@ -30,6 +30,8 @@ class CalendarViewModel(
         )
     )
 
+    var visibility = MutableLiveData(false)
+
     var prevHolder: CalendarRvAdapter.ViewHolder? = null
 
     fun getArrayAppointments(dateParams: DateParams): Array<AppointmentModelDb> {

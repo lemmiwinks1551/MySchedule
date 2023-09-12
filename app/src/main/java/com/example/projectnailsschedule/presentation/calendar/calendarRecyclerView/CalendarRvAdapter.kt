@@ -100,6 +100,7 @@ class CalendarRvAdapter(
                 }
 
                 calendarViewModel.updateSelectedDate(day = dayInHolder.toInt())
+                calendarViewModel.visibility.value = true
             }
         }
     }

@@ -137,6 +137,14 @@ class CalendarFragment : Fragment(),
                 appointmentCount = null
             )
         }
+
+        calendarViewModel.visibility.observe(viewLifecycleOwner) {
+            if (it) {
+                addButton?.visibility = View.VISIBLE
+            } else {
+                addButton?.visibility = View.INVISIBLE
+            }
+        }
     }
 
     private fun setMonthTextView(selectedDateParams: DateParams) {
@@ -215,6 +223,7 @@ class CalendarFragment : Fragment(),
         // hide keyboard
         Util().hideKeyboard(requireActivity())
 
+        addButton?.visibility = View.INVISIBLE
         shortDataRecyclerView!!.visibility = View.INVISIBLE
     }
 
