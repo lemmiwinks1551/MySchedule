@@ -22,8 +22,8 @@ android {
         applicationId "com.example.projectnailsschedule"
         minSdk 23
         targetSdk 33
-        versionCode 22
-        versionName "6.7"
+        versionCode 23
+        versionName "6.8"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
