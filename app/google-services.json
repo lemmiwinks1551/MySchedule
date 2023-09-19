@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "802466729294",
+    "firebase_url": "https://myscheduledb-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "myscheduledb",
+    "storage_bucket": "myscheduledb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:802466729294:android:ac53e682b98eaac472221f",
+        "android_client_info": {
+          "package_name": "com.example.projectnailsschedule"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDk8XpMO79PhXEluTXOQ5-QAReIK6_HBiI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
