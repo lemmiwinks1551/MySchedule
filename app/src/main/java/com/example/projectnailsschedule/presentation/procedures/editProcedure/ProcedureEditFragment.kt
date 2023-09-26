@@ -1,7 +1,6 @@
 package com.example.projectnailsschedule.presentation.procedures.editProcedure
 
 import android.os.Bundle
-import android.telephony.PhoneNumberFormattingTextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentProcedureEditBinding
 import com.example.projectnailsschedule.domain.models.ProcedureModelDb
 import kotlinx.coroutines.launch
@@ -115,7 +115,7 @@ class ProcedureEditFragment : Fragment() {
 
             val toast: Toast = Toast.makeText(
                 context,
-                "Услуга ${procedureModelDb.procedureName}\n${"создана."}",
+                getString(R.string.procedure_created, procedureModelDb.procedureName),
                 Toast.LENGTH_LONG
             )
             toast.show()

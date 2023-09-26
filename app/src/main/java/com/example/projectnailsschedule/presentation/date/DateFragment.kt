@@ -16,6 +16,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.example.projectnailsschedule.BuildConfig
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentDateBinding
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
@@ -32,7 +33,6 @@ class DateFragment : Fragment() {
     private val binding get() = _binding!!
     private val bindingKey = "dateParams"
     private val bindingKeyAppointment = "appointmentParams"
-    private val noAppointmentsTextTitle = "Нет записей"
     private val dateRecyclerViewSpanCount = 1
 
     private var appointmentList: List<AppointmentModelDb>? = null
@@ -104,9 +104,9 @@ class DateFragment : Fragment() {
         dateViewModel?.selectedDateParams?.observe(viewLifecycleOwner) {
             appointmentList = dateViewModel!!.getDateAppointments().toList()
             if (it.appointmentCount == 0) {
-                binding.fragmentDateTitle.text = noAppointmentsTextTitle
+                binding.fragmentDateTitle.text = requireContext().getString(R.string.no_data_title)
             } else {
-                binding.fragmentDateTitle.text = "Всего записей: ${it.appointmentCount}"
+                binding.fragmentDateTitle.text = getString(R.string.total_appointments_title, getString(R.string.no_data_title), it.appointmentCount)
             }
             binding.fragmentDateDate.text = it.date?.format(Util().formatter)
             inflateAppointmentsRV(it)
@@ -187,13 +187,13 @@ class DateFragment : Fragment() {
                 // show Snackbar
                 Snackbar.make(
                     appointmentsRv!!,
-                    "Удалена запись: " + deleteAppointmentModelDb.name,
+                    getString(R.string.deleted_appointment_text, deleteAppointmentModelDb.name),
                     Snackbar.LENGTH_LONG
                 ).setBackgroundTint(resources.getColor(R.color.yellow))
                     .setActionTextColor(resources.getColor(R.color.black))
                     .setTextColor(resources.getColor(R.color.black))
                     .setAction(
-                        "Отмена"
+                        getString(R.string.cancel)
                     ) {
                         // adding on click listener to our action of snack bar.
                         // below line is to add our item to array list with a position.

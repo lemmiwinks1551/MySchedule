@@ -151,8 +151,7 @@ class CalendarFragment : Fragment(),
         // update monthTextView
         val date =
             Date.from(selectedDateParams.date?.atStartOfDay(ZoneId.systemDefault())?.toInstant())
-        val month =
-            SimpleDateFormat("LLLL", Locale("ru")).format(date).replaceFirstChar { it.uppercase() }
+        val month = SimpleDateFormat("LLLL", Locale.getDefault()).format(date).replaceFirstChar { it.uppercase() }
         monthTextView?.text = month
     }
 

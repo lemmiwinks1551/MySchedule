@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentClientEditBinding
 import com.example.projectnailsschedule.domain.models.ClientModelDb
 
@@ -118,7 +119,7 @@ class ClientEditFragment : Fragment() {
 
             val toast: Toast = Toast.makeText(
                 context,
-                "Клиент ${clientModelDb.name}\n${"создан."}",
+                getString(R.string.client_created, clientModelDb.name),
                 Toast.LENGTH_LONG
             )
             toast.show()

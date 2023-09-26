@@ -7,8 +7,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.projectnailsschedule.BuildConfig
+import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentAboutBinding
-import com.example.projectnailsschedule.util.Util
 
 class AboutFragment : Fragment() {
 
@@ -38,15 +39,14 @@ class AboutFragment : Fragment() {
         return binding.root
     }
 
-    fun initObservers() {
-    }
-
     private fun initWidgets() {
         versionTextView = binding.versionTextView
     }
 
     private fun setVersionTextView() {
-        versionTextView?.text = aboutViewModel?.text
+        val versionLabel = getString(R.string.app_version)
+        val appVersion = "$versionLabel ${BuildConfig.VERSION_NAME}"
+        versionTextView?.text = appVersion
     }
 
     override fun onDestroyView() {

@@ -97,7 +97,7 @@ class FullMonthChildAdapter(
                 val phone = appointmentsList[position].phone.toString()
 
                 if (phone.isEmpty()) {
-                    Toast.makeText(context, "Номер телефона пуст", Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, context.getString(R.string.no_phone_number_error), Toast.LENGTH_LONG).show()
                 } else {
                     val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phone"))
                     context.startActivity(intent)
@@ -148,7 +148,7 @@ class FullMonthChildAdapter(
             } catch (e: Exception) {
                 Toast.makeText(
                     context,
-                    "Не удалось перейти во Вконтакте",
+                    context.getString(R.string.unknown_error),
                     Toast.LENGTH_LONG
                 ).show()
             }
@@ -167,7 +167,7 @@ class FullMonthChildAdapter(
             } catch (e: Exception) {
                 Toast.makeText(
                     context,
-                    "Не удалось перейти в Telegram",
+                    context.getString(R.string.unknown_error),
                     Toast.LENGTH_LONG
                 ).show()
             }
@@ -195,7 +195,7 @@ class FullMonthChildAdapter(
             } catch (e: Exception) {
                 Toast.makeText(
                     context,
-                    "Не удалось перейти в Instagram",
+                    context.getString(R.string.unknown_error),
                     Toast.LENGTH_LONG
                 ).show()
             }
@@ -217,7 +217,7 @@ class FullMonthChildAdapter(
             } catch (e: Exception) {
                 Toast.makeText(
                     context,
-                    "Не удалось перейти в Whatsapp",
+                    context.getString(R.string.unknown_error),
                     Toast.LENGTH_LONG
                 ).show()
             }

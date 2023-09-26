@@ -135,8 +135,7 @@ class FullMonthViewFragment : Fragment() {
             fullMonthViewVM!!.selectedMonth.value!!.atStartOfDay(ZoneId.systemDefault())
                 ?.toInstant()
         )
-        val month =
-            SimpleDateFormat("LLLL", Locale("ru")).format(date).replaceFirstChar { it.uppercase() }
+        val month = SimpleDateFormat("LLLL", Locale.getDefault()).format(date).replaceFirstChar { it.uppercase() }
 
         monthTextView!!.text = month
         yearTextView!!.text = fullMonthViewVM!!.selectedMonth.value!!.year.toString()

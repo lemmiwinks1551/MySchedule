@@ -165,13 +165,13 @@ class SearchFragment : Fragment() {
                 // show Snackbar
                 Snackbar.make(
                     searchRecyclerView!!,
-                    "Удалена запись: " + deleteAppointmentModelDb.name,
+                    getString(R.string.deleted_appointment_text, deleteAppointmentModelDb.name),
                     Snackbar.LENGTH_LONG
                 ).setBackgroundTint(resources.getColor(R.color.yellow))
                     .setActionTextColor(resources.getColor(R.color.black))
                     .setTextColor(resources.getColor(R.color.black))
                     .setAction(
-                        "Отмена"
+                        getString(R.string.cancel)
                     ) {
                         // adding on click listener to our action of snack bar.
                         // below line is to add our item to array list with a position.

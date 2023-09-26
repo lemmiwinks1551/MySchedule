@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentAppointmentBinding
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
 import com.example.projectnailsschedule.domain.models.ClientModelDb
@@ -25,10 +26,6 @@ import java.util.*
 class AppointmentFragment : Fragment() {
     val log = this::class.simpleName
     private val bindingKey = "appointmentParams"
-    private val toastCreated = "Запись добавлена"
-    private val toastEdited = "Запись изменена"
-    private val newAppointmentText = "Новая запись"
-    private val changeAppointmentText = "Изменить запись"
 
     private var appointmentViewModel: AppointmentViewModel? = null
     private var _binding: FragmentAppointmentBinding? = null
@@ -155,10 +152,10 @@ class AppointmentFragment : Fragment() {
 
         if (appointmentParams?._id == null) {
             // no _id - add new Appointment
-            title.text = newAppointmentText
+            title.text = getString(R.string.new_appointment_text)
         } else {
             // _id - edit Appointment
-            title.text = changeAppointmentText
+            title.text = getString(R.string.change_appointment_text)
         }
         titleDate.text = appointmentParams?.date
     }
@@ -186,7 +183,7 @@ class AppointmentFragment : Fragment() {
 
             val toast: Toast = Toast.makeText(
                 context,
-                "${appointmentModelDb.date}\n${toastCreated}",
+                "${appointmentModelDb.date}\n${getString(R.string.toast_created)}",
                 Toast.LENGTH_LONG
             )
             toast.show()
@@ -219,7 +216,7 @@ class AppointmentFragment : Fragment() {
             // send to AppointmentViewModel
             appointmentViewModel?.editAppointment(appointmentModelDb)
 
-            Toast.makeText(context, toastEdited, Toast.LENGTH_LONG).show()
+            Toast.makeText(context, getString(R.string.toast_edited), Toast.LENGTH_LONG).show()
 
             findNavController().popBackStack()
         }
@@ -316,7 +313,7 @@ class AppointmentFragment : Fragment() {
             } catch (e: Exception) {
                 Toast.makeText(
                     requireContext(),
-                    "Не удалось перейти во Вконтакте",
+                    getString(R.string.unknown_error),
                     Toast.LENGTH_LONG
                 ).show()
             }
@@ -335,7 +332,7 @@ class AppointmentFragment : Fragment() {
             } catch (e: Exception) {
                 Toast.makeText(
                     requireContext(),
-                    "Не удалось перейти в Telegram",
+                    getString(R.string.unknown_error),
                     Toast.LENGTH_LONG
                 ).show()
             }
@@ -363,7 +360,7 @@ class AppointmentFragment : Fragment() {
             } catch (e: Exception) {
                 Toast.makeText(
                     requireContext(),
-                    "Не удалось перейти в Instagram",
+                    getString(R.string.unknown_error),
                     Toast.LENGTH_LONG
                 ).show()
             }
@@ -385,7 +382,7 @@ class AppointmentFragment : Fragment() {
             } catch (e: Exception) {
                 Toast.makeText(
                     requireContext(),
-                    "Не удалось перейти в Whatsapp",
+                    getString(R.string.unknown_error),
                     Toast.LENGTH_LONG
                 ).show()
             }

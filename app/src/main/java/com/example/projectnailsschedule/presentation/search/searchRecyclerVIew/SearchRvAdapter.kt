@@ -114,7 +114,7 @@ internal class SearchRvAdapter(
             } catch (e: Exception) {
                 Toast.makeText(
                     context,
-                    "Не удалось перейти во Вконтакте",
+                    context.getString(R.string.unknown_error),
                     Toast.LENGTH_LONG
                 ).show()
             }
@@ -133,7 +133,7 @@ internal class SearchRvAdapter(
             } catch (e: Exception) {
                 Toast.makeText(
                     context,
-                    "Не удалось перейти в Telegram",
+                    context.getString(R.string.unknown_error),
                     Toast.LENGTH_LONG
                 ).show()
             }
@@ -161,7 +161,7 @@ internal class SearchRvAdapter(
             } catch (e: Exception) {
                 Toast.makeText(
                     context,
-                    "Не удалось перейти в Instagram",
+                    context.getString(R.string.unknown_error),
                     Toast.LENGTH_LONG
                 ).show()
             }
@@ -183,7 +183,7 @@ internal class SearchRvAdapter(
             } catch (e: Exception) {
                 Toast.makeText(
                     context,
-                    "Не удалось перейти в Whatsapp",
+                    context.getString(R.string.unknown_error),
                     Toast.LENGTH_LONG
                 ).show()
             }

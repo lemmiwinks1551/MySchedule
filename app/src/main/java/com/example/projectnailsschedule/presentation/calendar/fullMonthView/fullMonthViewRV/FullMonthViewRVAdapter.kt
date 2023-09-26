@@ -6,7 +6,6 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -151,13 +150,13 @@ class FullMonthViewRVAdapter(
                 // show Snackbar
                 Snackbar.make(
                     holder.childRv,
-                    "Запись ${deleteAppointmentModelDb.name} ${deleteAppointmentModelDb.date} удалена",
+                    context.getString(R.string.deleted_appointment_text, deleteAppointmentModelDb.name),
                     Snackbar.LENGTH_LONG
                 ).setBackgroundTint(Color.parseColor("#ffff00"))
                     .setActionTextColor(Color.parseColor("#003300"))
                     .setTextColor(Color.parseColor("#003300"))
                     .setAction(
-                        "Отмена"
+                        context.getString(R.string.cancel)
                     ) {
                         // restore appointment in Db
                         fullMonthViewViewModel.saveAppointment(deleteAppointmentModelDb)
@@ -179,7 +178,7 @@ class FullMonthViewRVAdapter(
 
                         Toast.makeText(
                             context,
-                            "Запись ${deleteAppointmentModelDb.name} ${deleteAppointmentModelDb.date} восстановлена",
+                            context.getString(R.string.restored_appointment_text, deleteAppointmentModelDb.name),
                             Toast.LENGTH_LONG
                         ).show()
                     }.show()

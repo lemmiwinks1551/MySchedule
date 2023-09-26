@@ -111,22 +111,22 @@ class Util() {
         }
     }
 
-    fun getDayOfWeek(date: String): String {
-        val sdf = SimpleDateFormat("dd.MM.yyyy", Locale("ru"))
-        val calendar = GregorianCalendar.getInstance()
+    fun getDayOfWeek(date: String, locale: Locale = Locale.getDefault()): String {
+        val sdf = SimpleDateFormat("dd.MM.yyyy", locale)
+        val calendar = Calendar.getInstance(locale)
         calendar.time = sdf.parse(date)
 
         val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
 
         return when (dayOfWeek) {
-            Calendar.MONDAY -> "Пн."
-            Calendar.TUESDAY -> "Вт."
-            Calendar.WEDNESDAY -> "Ср."
-            Calendar.THURSDAY -> "Чт."
-            Calendar.FRIDAY -> "Пт."
-            Calendar.SATURDAY -> "Сб."
-            Calendar.SUNDAY -> "Вс."
-            else -> throw IllegalArgumentException("Некорректный день недели")
+            Calendar.MONDAY -> SimpleDateFormat("E", locale).format(calendar.time)
+            Calendar.TUESDAY -> SimpleDateFormat("E", locale).format(calendar.time)
+            Calendar.WEDNESDAY -> SimpleDateFormat("E", locale).format(calendar.time)
+            Calendar.THURSDAY -> SimpleDateFormat("E", locale).format(calendar.time)
+            Calendar.FRIDAY -> SimpleDateFormat("E", locale).format(calendar.time)
+            Calendar.SATURDAY -> SimpleDateFormat("E", locale).format(calendar.time)
+            Calendar.SUNDAY -> SimpleDateFormat("E", locale).format(calendar.time)
+            else -> throw IllegalArgumentException("Error")
         }
     }
 
