@@ -151,8 +151,27 @@ class CalendarFragment : Fragment(),
         // update monthTextView
         val date =
             Date.from(selectedDateParams.date?.atStartOfDay(ZoneId.systemDefault())?.toInstant())
-        val month = SimpleDateFormat("LLLL", Locale.getDefault()).format(date).replaceFirstChar { it.uppercase() }
-        monthTextView?.text = month
+
+        val calendar = Calendar.getInstance()
+        calendar.time = date
+        val monthResource = when (calendar.get(Calendar.MONTH)) {
+            Calendar.JANUARY -> R.string.january
+            Calendar.FEBRUARY -> R.string.february
+            Calendar.MARCH -> R.string.march
+            Calendar.APRIL -> R.string.april
+            Calendar.MAY -> R.string.may
+            Calendar.JUNE -> R.string.june
+            Calendar.JULY -> R.string.july
+            Calendar.AUGUST -> R.string.august
+            Calendar.SEPTEMBER -> R.string.september
+            Calendar.OCTOBER -> R.string.october
+            Calendar.NOVEMBER -> R.string.november
+            Calendar.DECEMBER -> R.string.december
+            else -> 0
+        }
+        val formattedMonth = getString(monthResource)
+
+        monthTextView?.text = formattedMonth
     }
 
     private fun setYearTextView(yearValue: Int) {

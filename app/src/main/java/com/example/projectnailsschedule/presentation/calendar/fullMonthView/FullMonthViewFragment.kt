@@ -103,7 +103,7 @@ class FullMonthViewFragment : Fragment() {
 
             val addToList = DateWeekAppModel(
                 date = dateParams.date!!,
-                weekDay = Util().getDayOfWeek(date),
+                weekDay = Util().getDayOfWeek(date, requireContext()),
                 appointmentsList = fullMonthViewVM!!.getDateAppointments(dateParams)
             )
 

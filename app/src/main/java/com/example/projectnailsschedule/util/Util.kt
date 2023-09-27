@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.data.storage.ScheduleDb
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
 import java.text.SimpleDateFormat
@@ -111,24 +112,25 @@ class Util() {
         }
     }
 
-    fun getDayOfWeek(date: String, locale: Locale = Locale.getDefault()): String {
-        val sdf = SimpleDateFormat("dd.MM.yyyy", locale)
-        val calendar = Calendar.getInstance(locale)
-        calendar.time = sdf.parse(date)
+    fun getDayOfWeek(date: String, context: Context): String {
+        val sdf = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+        val calendar = Calendar.getInstance(Locale.getDefault())
+        calendar.time = sdf.parse(date) as Date
 
-        val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
-
-        return when (dayOfWeek) {
-            Calendar.MONDAY -> SimpleDateFormat("E", locale).format(calendar.time)
-            Calendar.TUESDAY -> SimpleDateFormat("E", locale).format(calendar.time)
-            Calendar.WEDNESDAY -> SimpleDateFormat("E", locale).format(calendar.time)
-            Calendar.THURSDAY -> SimpleDateFormat("E", locale).format(calendar.time)
-            Calendar.FRIDAY -> SimpleDateFormat("E", locale).format(calendar.time)
-            Calendar.SATURDAY -> SimpleDateFormat("E", locale).format(calendar.time)
-            Calendar.SUNDAY -> SimpleDateFormat("E", locale).format(calendar.time)
-            else -> throw IllegalArgumentException("Error")
+        val dayOfWeekResource = when (calendar.get(Calendar.DAY_OF_WEEK)) {
+            Calendar.MONDAY -> R.string.mon
+            Calendar.TUESDAY -> R.string.tue
+            Calendar.WEDNESDAY -> R.string.wed
+            Calendar.THURSDAY -> R.string.thu
+            Calendar.FRIDAY -> R.string.fri
+            Calendar.SATURDAY -> R.string.sat
+            Calendar.SUNDAY -> R.string.sun
+            else -> 0
         }
+
+        return context.getString(dayOfWeekResource)
     }
+
 
     fun addTestData(context: Context) {
         val currentMonth = LocalDate.now()
