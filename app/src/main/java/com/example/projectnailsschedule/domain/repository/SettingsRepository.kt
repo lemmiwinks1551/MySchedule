@@ -17,4 +17,8 @@ interface SettingsRepository {
     fun setSelectedDate(selectedDate: LocalDate)
 
     fun getSelectedDate(): LocalDate
+
+    fun setLanguage(language: String)
+
+    fun getLanguage() : String
 }

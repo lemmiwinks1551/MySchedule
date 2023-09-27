@@ -14,13 +14,11 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.ActivityMainBinding
-import com.example.projectnailsschedule.domain.models.FirebaseModel
 import com.example.projectnailsschedule.util.UncaughtExceptionHandler
 import com.example.projectnailsschedule.util.rustore.RuStoreAd
 import com.example.projectnailsschedule.util.rustore.RuStoreReview
 import com.example.projectnailsschedule.util.rustore.RuStoreUpdate
 import com.google.android.material.navigation.NavigationView
-import java.time.LocalDateTime
 
 class MainActivity : AppCompatActivity() {
     private val log = this::class.simpleName
@@ -106,4 +104,5 @@ class MainActivity : AppCompatActivity() {
         RuStoreAd().destroyAd()
         super.onDestroy()
     }
+
 }

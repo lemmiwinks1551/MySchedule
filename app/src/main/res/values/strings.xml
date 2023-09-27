@@ -1,118 +1,125 @@
 <resources>
 
-    <!--Global-->
-    <string name="app_name">Запись клиентов</string>
-    <string name="app_full_name">Запись клиентов</string>
+    <!-- Global -->
+    <string name="app_name">My Schedule</string>
+    <string name="app_full_name">My Schedule</string>
 
-    <!--Menu-->
-    <string name="nav_header_title">Меню</string>
-    <string name="menu_calendar">Календарь</string>
-    <string name="menu_clients">Клиенты</string>
-    <string name="menu_service">Услуги</string>
-    <string name="menu_settings">Настройки</string>
-    <string name="menu_about">О приложении</string>
+    <!-- Menu -->
+    <string name="nav_header_title">Menu</string>
+    <string name="menu_calendar">Calendar</string>
+    <string name="menu_clients">Clients</string>
+    <string name="menu_service">Procedures</string>
+    <string name="menu_settings">Settings</string>
+    <string name="menu_about">About</string>
 
-    <string name="time">Время</string>
-    <string name="number">№</string>
-    <string name="procedure">Услуга</string>
-    <string name="client">Клиент</string>
-    <string name="phone">Телефон</string>
-    <string name="notes">Заметки</string>
-    <string name="button_edit">Редактировать</string>
-    <string name="button_delete">Удалить</string>
-    <string name="add_appointment_title">Запись</string>
-    <string name="add_client_title">Клиент</string>
-    <string name="add_procedure_title">Услуга</string>
-    <string name="day">День</string>
-    <string name="example_date">01.01.2022</string>
-    <string name="example_time">09:00</string>
-    <string name="example_procedure">Наращивание</string>
-    <string name="example_client">Имя клиента</string>
-    <string name="example_phone">8 800 123–45–67</string>
+    <string name="time">Time</string>
+    <string name="number">No.</string>
+    <string name="procedure">Service</string>
+    <string name="client">Client</string>
+    <string name="phone">Phone</string>
+    <string name="notes">Notes</string>
+    <string name="button_edit">Edit</string>
+    <string name="button_delete">Delete</string>
+    <string name="add_appointment_title">Appointment</string>
+    <string name="add_client_title">Client</string>
+    <string name="add_procedure_title">Service</string>
+    <string name="day">Day</string>
+    <string name="example_date">01/01/2022</string>
+    <string name="example_time">09:00 AM</string>
+    <string name="example_procedure">Procedure</string>
+    <string name="example_client">Client Name</string>
+    <string name="example_phone">1–800–123–4567</string>
     <string name="example_notes">…</string>
     <string name="choose_previous_month">Choose previous month</string>
     <string name="choose_next_month">Choose next month</string>
-    <string name="month_text_view">Январь</string>
+    <string name="month_text_view">January</string>
     <string name="year_text_view">2022</string>
     <string name="release_year">2023</string>
-    <string name="appointments_count">Найдено записей: %d</string>
-    <string name="clients_count">Клиентов найдено: %d</string>
+    <string name="appointments_count">Appointments found: %d</string>
+    <string name="clients_count">Clients found: %d</string>
 
-    <!--Week days-->
-    <string name="mon">Пн</string>
-    <string name="tue">Вт</string>
-    <string name="wed">Ср</string>
-    <string name="thu">Чт</string>
-    <string name="fri">Пт</string>
-    <string name="sat">Сб</string>
-    <string name="sun">Вс</string>
+    <!-- Week days -->
+    <string name="mon">Mon</string>
+    <string name="tue">Tue</string>
+    <string name="wed">Wed</string>
+    <string name="thu">Thu</string>
+    <string name="fri">Fri</string>
+    <string name="sat">Sat</string>
+    <string name="sun">Sun</string>
 
-    <string name="appointments_search_hint">Поиск по Расписанию</string>
-    <string name="appointments_full_month_view">Посмотреть весь месяц</string>
-    <string name="clients_search_hint">Поиск по Клиентам</string>
-    <string name="procedures_search_hint">Поиск по Услугам</string>
-    <string name="search_client">Поиск</string>
-    <string name="name">Имя</string>
-    <string name="date">Дата</string>
-    <string name="time_text">Время</string>
-    <string name="toggle_button_search_name">Имя:</string>
-    <string name="toggle_button_search_phone">Телефон:</string>
-    <string name="search_client_by_phone">Телефон:</string>
+    <string name="appointments_search_hint">Search in Schedule</string>
+    <string name="appointments_full_month_view">View full month</string>
+    <string name="clients_search_hint">Search in Clients</string>
+    <string name="procedures_search_hint">Search in Services</string>
+    <string name="search_client">Search</string>
+    <string name="name">Name</string>
+    <string name="date">Date</string>
+    <string name="time_text">Time</string>
+    <string name="toggle_button_search_name">Name:</string>
+    <string name="toggle_button_search_phone">Phone:</string>
+    <string name="search_client_by_phone">Phone:</string>
 
-    <!--Support email settings-->
+    <!-- Support email settings -->
     <string name="support_email">scheduleapp@mail.ru</string>
     <string name="support_email_uri">mailto:scheduleapp@mail.ru</string>
-    <string name="support_subject">Запись клиентов. Ошибки.</string>
-    <string name="support_body">Письмо содержит логи для анализа ошибок.</string>
-    <string name="dark_theme_settings_title">Темная тема</string>
-    <string name="app_fullname">Мое расписание</string>
-    <string name="save_changes_button">Сохранить</string>
-    <string name="cancel__button">Отмена</string>
+    <string name="support_subject">My Schedule App. Errors.</string>
+    <string name="support_body">This email contains logs for error analysis.</string>
+    <string name="dark_theme_settings_title">Dark Theme</string>
+    <string name="app_fullname">My Schedule</string>
+    <string name="save_changes_button">Save</string>
+    <string name="cancel__button">Cancel</string>
     <string name="avatar_description">clickable client avatar</string>
     <string name="date_edit">edit date</string>
     <string name="select_previous_month">select previous month</string>
     <string name="edit_appointment">edit appointment</string>
     <string name="delete_appointment">delete appointment</string>
     <string name="ok">OK</string>
-    <string name="cancel">Отмена</string>
-    <string name="really_delete_text">Удалить запись?</string>
+    <string name="cancel">Cancel</string>
+    <string name="really_delete_text">Delete appointment?</string>
     <string name="calendar_cell_example">10</string>
-    <string name="fragment_date_title">Список записей</string>
+    <string name="fragment_date_title">List of Appointments</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="client_select_title">Выберите клиента из списка</string>
+    <string name="client_select_title">Select a client from the list</string>
     <string name="single_date_example">10</string>
-    <string name="no_data_example">Нет записей</string>
-    <string name="no_appointments_text">Нет записей</string>
+    <string name="no_data_example">No data</string>
+    <string name="no_appointments_text">No appointments</string>
 
-    // soc
+    <!-- Social links -->
     <string name="vk_text">VK</string>
     <string name="telegram_text">Telegram</string>
-    <string name="telegram_hint">Ссылка https://t.me/ или Телефон или Ник</string>
+    <string name="telegram_hint">Link https://t.me/ or Phone or Username</string>
     <string name="instagram_text">Instagram</string>
-    <string name="whatsapp_text">Whatsapp</string>
-    <string name="vk_link_hint">Ссылка https://vk.com/id/… или id или Ник</string>
-    <string name="instagram_link_hint">https://instagram.com/… или Ник</string>
-    <string name="add_procedure_title2">Добавление/изменение процедуры в базе</string>
-    <string name="price_example">Стоимость</string>
+    <string name="whatsapp_text">WhatsApp</string>
+    <string name="vk_link_hint">Link https://vk.com/id/… or id or Username</string>
+    <string name="instagram_link_hint">https://instagram.com/… or Username</string>
+    <string name="add_procedure_title2">Add/Modify Service in Database</string>
+    <string name="price_example">Price</string>
     <string name="price_hint">100</string>
 
-    <string name="app_version">Версия</string>
-    <string name="no_data_title">Нет записей</string>
+    <string name="app_version">Version</string>
+    <string name="no_data_title">No appointments</string>
     <string name="total_appointments_title">%1$s %2$d</string>
 
-    <string name="toast_created">Запись добавлена</string>
-    <string name="client_created">Клиент сохранен: %1$s</string>
-    <string name="procedure_created">Услуга сохранена: %1$s</string>
-    <string name="procedure_deleted">Услуга удалена: %1$s</string>
-    <string name="toast_edited">Запись изменена</string>
-    <string name="new_appointment_text">Новая запись</string>
-    <string name="change_appointment_text">Изменить запись</string>
-    <string name="deleted_appointment_text">Удалена запись: %1$s</string>
-    <string name="restored_appointment_text">Восстановлена запись: %1$s</string>
-    <string name="deleted_client_text">Удален клиент: %1$s</string>
+    <string name="toast_created">Appointment created</string>
+    <string name="client_created">Client saved: %1$s</string>
+    <string name="procedure_created">Procedure saved: %1$s</string>
+    <string name="procedure_deleted">Procedure deleted: %1$s</string>
+    <string name="toast_edited">Appointment edited</string>
+    <string name="new_appointment_text">New appointment</string>
+    <string name="change_appointment_text">Edit appointment</string>
+    <string name="deleted_appointment_text">Appointment deleted: %1$s</string>
+    <string name="restored_appointment_text">Appointment restored: %1$s</string>
+    <string name="deleted_client_text">Client deleted: %1$s</string>
 
-    <string name="unknown_error">Что-то пошло не так</string>
-    <string name="no_phone_number_error">Нет телефонного номера</string>
+    <string name="unknown_error">Something went wrong</string>
+    <string name="no_phone_number_error">No phone number</string>
+    <string name="language">Language</string>
+    <string name="temp_text">Coming soon, there will be a lot of interesting content here.</string>
+
+    <string-array name="languages">
+        <item>Russian</item>
+        <item>English</item>
+    </string-array>
 
 </resources>

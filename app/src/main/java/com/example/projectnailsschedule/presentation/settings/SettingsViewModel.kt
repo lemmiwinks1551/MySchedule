@@ -1,14 +1,14 @@
 package com.example.projectnailsschedule.presentation.settings
 
 import androidx.lifecycle.ViewModel
-import com.example.projectnailsschedule.domain.usecase.settingsUC.LoadThemeUseCase
-import com.example.projectnailsschedule.domain.usecase.settingsUC.SetDarkThemeUseCase
-import com.example.projectnailsschedule.domain.usecase.settingsUC.SetLightThemeUseCase
+import com.example.projectnailsschedule.domain.usecase.settingsUC.*
 
 class SettingsViewModel(
     private val setLightThemeUseCase: SetLightThemeUseCase,
     private val setDarkThemeUseCase: SetDarkThemeUseCase,
-    private val loadThemeUseCase: LoadThemeUseCase
+    private val getThemeUseCase: GetThemeUseCase,
+    private val getLanguageUc: GetLanguageUc,
+    private val setLanguageUc: SetLanguageUc
 ) : ViewModel() {
 
     init {
@@ -28,6 +28,10 @@ class SettingsViewModel(
     }
 
     private fun loadTheme() {
-        darkThemeOn = loadThemeUseCase.execute()
+        darkThemeOn = getThemeUseCase.execute()
+    }
+
+    fun setLanguage(language: String) {
+
     }
 }

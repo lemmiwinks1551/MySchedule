@@ -6,27 +6,38 @@
     android:layout_height="match_parent"
     tools:context=".presentation.settings.SettingsFragment">
 
-    <TextView
-        android:visibility="gone"
-        android:id="@+id/darkTheme"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="22dp"
-        android:text="@string/dark_theme_settings_title"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <!--    <TextView
+            android:id="@+id/languageLabelTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="@string/language"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.appcompat.widget.SwitchCompat
-        android:visibility="gone"
-        android:checked="true"
-        android:id="@+id/theme_switcher"
-        android:layout_width="wrap_content"
+        <Spinner
+            android:id="@+id/languageSpinner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:entries="@array/languages"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/languageLabelTextView"
+            app:layout_constraintTop_toTopOf="parent" />-->
+
+    <TextView
+        android:id="@+id/temp_text"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/darkTheme"
-        app:layout_constraintStart_toEndOf="@+id/darkTheme"
-        app:layout_constraintTop_toTopOf="@+id/darkTheme" />
+        android:text="@string/temp_text"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
