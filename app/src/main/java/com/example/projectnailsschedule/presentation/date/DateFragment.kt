@@ -106,7 +106,7 @@ class DateFragment : Fragment() {
             if (it.appointmentCount == 0) {
                 binding.fragmentDateTitle.text = requireContext().getString(R.string.no_data_title)
             } else {
-                binding.fragmentDateTitle.text = getString(R.string.total_appointments_title, getString(R.string.no_data_title), it.appointmentCount)
+                binding.fragmentDateTitle.text = requireContext().getString(R.string.fragment_date_title)
             }
             binding.fragmentDateDate.text = it.date?.format(Util().formatter)
             inflateAppointmentsRV(it)
