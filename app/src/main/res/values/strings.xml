@@ -135,5 +135,18 @@
     <string name="november">November</string>
     <string name="december">December</string>
 
+    <string name="import_export_info">Ипортируйте и экспортируйте базу данных приложения для сохранения данных при переходе на другое устройство</string>
+    <string name="import_description">Файлы приложения будут импортированы в папку Документы</string>
+    <string name="export_description">Файлы приложения будут экспортированы из папки Документы</string>
+
+    <string name="import_button_text">Импортировать данные</string>
+    <string name="export_button_text">Экспортировать данные</string>
+
+    <string name="permission_warning">Необходимо предоставить доступ</string>
+    <string name="imported">Файлы импортированы</string>
+    <string name="exported">Файлы экспортированы</string>
+
+
+
 
 </resources>
