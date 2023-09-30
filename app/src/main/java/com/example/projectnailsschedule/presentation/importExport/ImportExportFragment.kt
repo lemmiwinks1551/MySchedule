@@ -13,7 +13,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.projectnailsschedule.R
@@ -58,26 +57,29 @@ class ImportExportFragment : Fragment() {
 
     private fun initAllWidgets() {
         binding.exportButton.setOnClickListener {
-            // Запрашиваем разрешение на запись во внешнее хранилище
-            if (ContextCompat.checkSelfPermission(
-                    requireContext(),
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                // Если разрешение не предоставлено, запросите его у пользователя
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                if (Environment.isExternalStorageManager()) {
+                    // Разрешение предоставлено, выполните необходимые действия
+                    exportDatabaseFiles()
+                    Toast.makeText(
+                        requireContext(),
+                        requireContext().getString(R.string.exported),
+                        Toast.LENGTH_LONG
+                    ).show()
+                } else {
+                    // Запрос разрешения для управления всеми файлами
+                    val uri = Uri.parse("package:${requireContext().packageName}")
+                    startActivity(
+                        Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION, uri)
+                    )
+                }
+            } else {
+                // Ниже Android 11 (Android 10 и более ранние версии)
                 ActivityCompat.requestPermissions(
                     requireActivity(),
                     arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                    REQUEST_WRITE_EXTERNAL_STORAGE
+                    PERMISSION_REQUEST_CODE
                 )
-            } else {
-                // Если разрешение уже предоставлено, выполните операции экспорта
-                exportDatabaseFiles()
-                Toast.makeText(
-                    requireContext(),
-                    requireContext().getString(R.string.exported),
-                    Toast.LENGTH_LONG
-                ).show()
             }
         }
 
@@ -86,6 +88,11 @@ class ImportExportFragment : Fragment() {
                 if (Environment.isExternalStorageManager()) {
                     // Разрешение предоставлено, выполните необходимые действия
                     importDatabaseFiles()
+                    Toast.makeText(
+                        requireContext(),
+                        requireContext().getString(R.string.imported),
+                        Toast.LENGTH_LONG
+                    ).show()
                 } else {
                     // Запрос разрешения для управления всеми файлами
                     val uri = Uri.parse("package:${requireContext().packageName}")

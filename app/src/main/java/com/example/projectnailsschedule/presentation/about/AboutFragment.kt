@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.projectnailsschedule.BuildConfig
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentAboutBinding
+import com.example.projectnailsschedule.util.Util
 
 class AboutFragment : Fragment() {
 
