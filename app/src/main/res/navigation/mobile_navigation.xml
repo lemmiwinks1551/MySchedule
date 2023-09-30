@@ -40,6 +40,9 @@
         <action
             android:id="@+id/action_nav_calendar_to_fullMonthViewFragment"
             app:destination="@id/fullMonthViewFragment" />
+        <action
+            android:id="@+id/action_nav_calendar_to_backupFragment"
+            app:destination="@id/nav_import_export" />
     </fragment>
 
     <fragment
@@ -140,5 +143,9 @@
         android:name="com.example.projectnailsschedule.presentation.procedures.editProcedure.ProcedureEditFragment"
         tools:layout="@layout/fragment_procedure_edit">
     </fragment>
+    <fragment
+        android:id="@+id/nav_import_export"
+        android:name="com.example.projectnailsschedule.presentation.importExport.ImportExportFragment"
+        android:label="@string/menu_import_export" />
 
 </navigation>
