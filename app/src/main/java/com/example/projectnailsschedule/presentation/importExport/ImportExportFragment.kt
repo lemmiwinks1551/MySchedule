@@ -119,23 +119,31 @@ class ImportExportFragment : Fragment() {
         _binding = null
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>,
-        grantResults: IntArray
-    ) {
-        when (requestCode) {
-            REQUEST_WRITE_EXTERNAL_STORAGE -> {
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // Разрешение предоставлено, выполните операции экспорта
-                    exportDatabaseFiles()
-                } else {
-                    Toast.makeText(
-                        requireContext(),
-                        requireContext().getString(R.string.permission_warning),
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
+    private fun importDatabaseFiles() {
+        // Путь к папке MySchedule
+        val sourceDir =
+            "${Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)}/MySchedule/"
+
+        // Путь к папке баз данных приложения
+        val destinationDir = File(requireContext().applicationInfo.dataDir, "databases")
+        clearDirectory(destinationDir)
+
+        // Создаем целевую папку, если она не существует
+        val destinationFolder = File(destinationDir.path)
+        if (!destinationFolder.exists()) {
+            destinationFolder.mkdirs()
+        }
+
+        // Получаем список файлов в папке MySchedule
+        val filesInMySchedule = File(sourceDir).listFiles()
+
+        if (filesInMySchedule != null) {
+            for (file in filesInMySchedule) {
+                val sourcePath = file.path
+                val destinationPath = "${destinationDir.path}/${file.name}"
+
+                // Выполняем копирование файла
+                copyFile(sourcePath, destinationPath)
             }
         }
     }
@@ -145,6 +153,9 @@ class ImportExportFragment : Fragment() {
         val sourceDir = File(requireContext().applicationInfo.dataDir, "databases")
         val destinationDir =
             "${Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)}/MySchedule/"
+
+        val destinationFile = File("${Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)}/MySchedule/")
+        clearDirectory(destinationFile)
 
         // Создаем целевую папку, если она не существует
         val destinationFolder = File(destinationDir)
@@ -190,35 +201,6 @@ class ImportExportFragment : Fragment() {
             e.printStackTrace()
         } finally {
             outputStream.close()
-        }
-    }
-
-    private fun importDatabaseFiles() {
-        // Путь к папке MySchedule
-        val sourceDir =
-            "${Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)}/MySchedule/"
-
-        // Путь к папке баз данных приложения
-        val destinationDir = File(requireContext().applicationInfo.dataDir, "databases")
-        clearDirectory(destinationDir)
-
-        // Создаем целевую папку, если она не существует
-        val destinationFolder = File(destinationDir.path)
-        if (!destinationFolder.exists()) {
-            destinationFolder.mkdirs()
-        }
-
-        // Получаем список файлов в папке MySchedule
-        val filesInMySchedule = File(sourceDir).listFiles()
-
-        if (filesInMySchedule != null) {
-            for (file in filesInMySchedule) {
-                val sourcePath = file.path
-                val destinationPath = "${destinationDir.path}/${file.name}"
-
-                // Выполняем копирование файла
-                copyFile(sourcePath, destinationPath)
-            }
         }
     }
 
