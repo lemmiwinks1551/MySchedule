@@ -135,5 +135,17 @@
     <string name="november">Ноябрь</string>
     <string name="december">Декабрь</string>
 
+    <string name="import_description">Информация из папки Документы будет перенесена в приложение</string>
+    <string name="export_description">Вся информация будет сохранена в папке Документы</string>
+
+    <string name="import_button_text">Импортировать данные</string>
+    <string name="export_button_text">Экспортировать данные</string>
+
+    <string name="permission_granted">Доступ предоставлен</string>
+    <string name="imported">Файлы импортированы</string>
+    <string name="exported">Файлы экспортированы</string>
+    <string name="import_export_intro">"Если Вам необходимо переместить данные приложения (записи, клиенты и т.д.) на другое устройство или создать их резервную копию, вы можете воспользоваться функцией импорта и экспорта данных."</string>
+    <string name="grant_permissions">Предоставить доступ</string>
+    <string name="menu_import_export">Импорт/Экспорт</string>
 
 </resources>

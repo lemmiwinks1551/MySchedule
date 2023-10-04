@@ -1,8 +1,8 @@
 package com.example.projectnailsschedule.presentation.importExport
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -30,7 +30,6 @@ class ImportExportFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val PERMISSION_REQUEST_CODE = 999
-    private val REQUEST_WRITE_EXTERNAL_STORAGE = 123
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,16 +45,13 @@ class ImportExportFragment : Fragment() {
 
         _binding = FragmentImportExportBinding.inflate(inflater, container, false)
 
-        // init all widgets
-        initAllWidgets()
-
         // init click listeners
         initClickListeners()
 
         return binding.root
     }
 
-    private fun initAllWidgets() {
+    private fun initClickListeners() {
         binding.exportButton.setOnClickListener {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                 if (Environment.isExternalStorageManager()) {
@@ -111,9 +107,6 @@ class ImportExportFragment : Fragment() {
         }
     }
 
-    private fun initClickListeners() {
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -146,6 +139,8 @@ class ImportExportFragment : Fragment() {
                 copyFile(sourcePath, destinationPath)
             }
         }
+
+        restartApp(requireContext())
     }
 
     private fun exportDatabaseFiles() {
@@ -168,7 +163,6 @@ class ImportExportFragment : Fragment() {
             name.endsWith(".db") || name.endsWith(".db-shm") || name.endsWith(".db-wal")
         }
 
-
         // Проверяем, что список файлов не пустой
         if (dbFiles != null) {
             for (dbFile in dbFiles) {
@@ -179,6 +173,8 @@ class ImportExportFragment : Fragment() {
                 copyFile(sourcePath, destinationPath)
             }
         }
+
+        restartApp(requireContext())
     }
 
     private fun copyFile(sourcePath: String, destinationPath: String) {
@@ -214,6 +210,34 @@ class ImportExportFragment : Fragment() {
                     file.delete() // Удаляем файл
                 }
             }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            if (Environment.isExternalStorageManager()) {
+                // Разрешение предоставлено
+                Toast.makeText(
+                    requireContext(),
+                    requireContext().getString(R.string.permission_granted),
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
+    }
+
+    private fun restartApp(context: Context) {
+        val intent = context.packageManager
+            .getLaunchIntentForPackage(context.packageName)
+        intent?.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        intent?.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        context.startActivity(intent)
+
+        // Завершение текущей активности (если необходимо)
+        if (context is android.app.Activity) {
+            context.finish()
         }
     }
 }

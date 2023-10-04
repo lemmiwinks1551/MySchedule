@@ -10,10 +10,10 @@ import com.my.target.common.MyTargetManager
 class RuStoreAd {
 
     // Banner
-    private lateinit var adView: MyTargetView
+    lateinit var adView: MyTargetView
 
     // InterstitialAd
-    private lateinit var interstitialAd: InterstitialAd
+    lateinit var interstitialAd: InterstitialAd
 
     fun interstitialAd(context: Context) {
         val log = "InterstitialAd"

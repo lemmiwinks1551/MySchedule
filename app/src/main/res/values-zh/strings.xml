@@ -135,4 +135,17 @@
     <string name="november">十一月</string>
     <string name="december">十二月</string>
 
+    <string name="import_description">将文档文件夹中的信息导入到应用程序中。</string>
+    <string name="export_description">所有信息将保存在文档文件夹中。</string>
+
+    <string name="import_button_text">导入数据</string>
+    <string name="export_button_text">导出数据</string>
+
+    <string name="permission_granted">已授权访问</string>
+    <string name="imported">文件已导入</string>
+    <string name="exported">文件已导出</string>
+    <string name="import_export_intro">如果您需要将应用程序数据（记录、客户等）转移到其他设备或创建其备份，可以使用数据导入和导出功能。</string>
+    <string name="grant_permissions">授予访问权限</string>
+    <string name="menu_import_export">导入/导出</string>
+
 </resources>

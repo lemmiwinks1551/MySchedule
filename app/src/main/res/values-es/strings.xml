@@ -135,4 +135,17 @@
     <string name="november">Noviembre</string>
     <string name="december">Diciembre</string>
 
+    <string name="import_description">La información de la carpeta Documentos se importará en la aplicación.</string>
+    <string name="export_description">Toda la información se guardará en la carpeta Documentos.</string>
+
+    <string name="import_button_text">Importar datos</string>
+    <string name="export_button_text">Exportar datos</string>
+
+    <string name="permission_granted">Acceso concedido</string>
+    <string name="imported">Archivos importados</string>
+    <string name="exported">Archivos exportados</string>
+    <string name="import_export_intro">Si necesita transferir datos de la aplicación (registros, clientes, etc.) a otro dispositivo o crear una copia de seguridad de ellos, puede utilizar la función de importación y exportación de datos.</string>
+    <string name="grant_permissions">Conceder acceso</string>
+    <string name="menu_import_export">Importar/Exportar</string>
+
 </resources>

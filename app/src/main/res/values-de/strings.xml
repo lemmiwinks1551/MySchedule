@@ -135,4 +135,17 @@
     <string name="november">November</string>
     <string name="december">Dezember</string>
 
+    <string name="import_description">Informationen aus dem Dokumentenordner werden in die App importiert.</string>
+    <string name="export_description">Alle Informationen werden im Dokumentenordner gespeichert.</string>
+
+    <string name="import_button_text">Daten importieren</string>
+    <string name="export_button_text">Daten exportieren</string>
+
+    <string name="permission_granted">Zugriff gewährt</string>
+    <string name="imported">Dateien importiert</string>
+    <string name="exported">Dateien exportiert</string>
+    <string name="import_export_intro">Wenn Sie App-Daten (Aufzeichnungen, Kunden usw.) auf ein anderes Gerät übertragen oder eine Sicherung erstellen möchten, können Sie die Import- und Exportdatenfunktion verwenden.</string>
+    <string name="grant_permissions">Zugriff gewähren</string>
+    <string name="menu_import_export">Importieren/Exportieren</string>
+
 </resources>

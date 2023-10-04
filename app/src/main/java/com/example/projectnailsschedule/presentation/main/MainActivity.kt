@@ -19,6 +19,7 @@ import com.example.projectnailsschedule.util.rustore.RuStoreAd
 import com.example.projectnailsschedule.util.rustore.RuStoreReview
 import com.example.projectnailsschedule.util.rustore.RuStoreUpdate
 import com.google.android.material.navigation.NavigationView
+import com.my.target.ads.MyTargetView
 
 class MainActivity : AppCompatActivity() {
     private val log = this::class.simpleName
@@ -31,6 +32,8 @@ class MainActivity : AppCompatActivity() {
 
     private var drawerLayout: DrawerLayout? = null
     private var navView: NavigationView? = null
+
+    private val ruStoreAd = RuStoreAd()
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -69,7 +72,10 @@ class MainActivity : AppCompatActivity() {
         RuStoreUpdate(this).checkForUpdates()
 
         // start advertising
-        RuStoreAd().interstitialAd(context = applicationContext)
+        // Инициализация ruStoreAd
+        ruStoreAd.adView = MyTargetView(this)
+
+        ruStoreAd.interstitialAd(context = applicationContext)
 
         // Request user's review
         RuStoreReview(this).rateApp()
@@ -101,8 +107,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
-        RuStoreAd().destroyAd()
+        ruStoreAd.destroyAd()
         super.onDestroy()
     }
-
 }
