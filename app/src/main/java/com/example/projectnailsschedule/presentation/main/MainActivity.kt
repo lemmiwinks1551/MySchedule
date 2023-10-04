@@ -1,8 +1,14 @@
 package com.example.projectnailsschedule.presentation.main
 
 import android.os.Bundle
+import android.text.Layout
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.AlignmentSpan
+import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
@@ -72,13 +78,14 @@ class MainActivity : AppCompatActivity() {
         RuStoreUpdate(this).checkForUpdates()
 
         // start advertising
-        // Инициализация ruStoreAd
         ruStoreAd.adView = MyTargetView(this)
 
         ruStoreAd.interstitialAd(context = applicationContext)
 
         // Request user's review
         RuStoreReview(this).rateApp()
+
+        checkAndShowDialog()
     }
 
     private fun initWidgets() {
@@ -110,4 +117,42 @@ class MainActivity : AppCompatActivity() {
         ruStoreAd.destroyAd()
         super.onDestroy()
     }
+
+    private fun checkAndShowDialog() {
+        // Получаем applicationId текущего приложения
+        val currentApplicationId = this.packageName
+
+        // Задаем applicationId, который нам нужно проверить
+        val targetApplicationId = "com.example.projectnailsschedule"
+
+        // Проверяем, совпадает ли applicationId текущего приложения с целевым applicationId
+        if (currentApplicationId == targetApplicationId) {
+            // Создаем диалоговое окно с текстом и кнопкой "OK"
+            val dialogBuilder = AlertDialog.Builder(this)
+            val message = "Уважаемый пользователь, " +
+                    "данная версия приложения перестанет обновляться 08.10.2023. " +
+                    "Чтобы продолжить получать обновления необходимо скачать новую версию " +
+                    "из магазина RuStore или GooglePlay. " +
+                    "Для переноса данных о записях, клиентах и т.д. в новую версию необходимо в " +
+                    "текущей версии воспользоваться Экспортом данных, а в новой версии Импортом данных " +
+                    "(данная функция доступна из Меню приложения)"
+
+            val spannableMessage = SpannableString(message)
+            spannableMessage.setSpan(
+                AlignmentSpan.Standard(Layout.Alignment.ALIGN_CENTER),
+                0, spannableMessage.length,
+                Spannable.SPAN_INCLUSIVE_INCLUSIVE
+            )
+
+            dialogBuilder.setMessage(spannableMessage)
+                .setPositiveButton("OK") { dialog, _ ->
+                    // Обработчик нажатия на кнопку "OK"
+                    dialog.dismiss()
+                }
+                .create()
+                .show()
+        }
+    }
+
+
 }
