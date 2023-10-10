@@ -1,11 +1,10 @@
 package com.example.projectnailsschedule.presentation.importExport
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
-import android.provider.DocumentsContract
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,7 +22,6 @@ import java.io.IOException
 class ImportExportFragment : Fragment() {
 
     private val OPEN_DIRECTORY_REQUEST_CODE = 123
-    private val EXPORT_REQUEST_CODE = 456
     private val IMPORT_REQUEST_CODE = 789
     private lateinit var exportButton: Button
     private lateinit var importButton: Button
@@ -85,42 +83,42 @@ class ImportExportFragment : Fragment() {
             clearDirectory(destinationDir)
 
             val filesInDirectory = treeDocumentFile.listFiles()
-            if (filesInDirectory != null) {
-                for (file in filesInDirectory) {
-                    val sourceUri = file.uri
-                    val sourceStream = requireContext().contentResolver.openInputStream(sourceUri)
+            for (file in filesInDirectory) {
+                val sourceUri = file.uri
+                val sourceStream = requireContext().contentResolver.openInputStream(sourceUri)
 
-                    if (sourceStream != null) {
-                        val destinationFile = File(destinationDir, file.name)
-                        val destinationStream = FileOutputStream(destinationFile)
+                if (sourceStream != null) {
+                    val destinationFile = File(destinationDir, file.name)
+                    val destinationStream = FileOutputStream(destinationFile)
 
-                        try {
-                            val buffer = ByteArray(1024)
-                            var length: Int
+                    try {
+                        val buffer = ByteArray(1024)
+                        var length: Int
 
-                            while (sourceStream.read(buffer).also { length = it } > 0) {
-                                destinationStream.write(buffer, 0, length)
-                            }
-
-                            Toast.makeText(
-                                requireContext(),
-                                "File ${file.name} imported successfully",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        } catch (e: IOException) {
-                            e.printStackTrace()
-                            Toast.makeText(
-                                requireContext(),
-                                "Error importing file ${file.name}",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        } finally {
-                            sourceStream.close()
-                            destinationStream.close()
+                        while (sourceStream.read(buffer).also { length = it } > 0) {
+                            destinationStream.write(buffer, 0, length)
                         }
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                        Toast.makeText(
+                            requireContext(),
+                            "Error importing file ${file.name}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } finally {
+                        sourceStream.close()
+                        destinationStream.close()
                     }
                 }
             }
+
+            Toast.makeText(
+                requireContext(),
+                R.string.imported,
+                Toast.LENGTH_SHORT
+            ).show()
+
+            restartApp(requireContext())
         }
     }
 
@@ -167,11 +165,6 @@ class ImportExportFragment : Fragment() {
                                     while (sourceStream.read(buffer).also { length = it } > 0) {
                                         outputStream.write(buffer, 0, length)
                                     }
-                                    Toast.makeText(
-                                        requireContext(),
-                                        "${file.name} exported successfully",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
                                 } catch (e: IOException) {
                                     e.printStackTrace()
                                     Toast.makeText(
@@ -187,6 +180,12 @@ class ImportExportFragment : Fragment() {
                     }
                 }
             }
+
+            Toast.makeText(
+                requireContext(),
+                R.string.exported,
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 
@@ -196,4 +195,16 @@ class ImportExportFragment : Fragment() {
         startActivityForResult(intent, OPEN_DIRECTORY_REQUEST_CODE)
     }
 
+    private fun restartApp(context: Context) {
+        val intent = context.packageManager
+            .getLaunchIntentForPackage(context.packageName)
+        intent?.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        intent?.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        context.startActivity(intent)
+
+        // Завершение текущей активности (если необходимо)
+        if (context is android.app.Activity) {
+            context.finish()
+        }
+    }
 }
