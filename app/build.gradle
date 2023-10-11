@@ -22,8 +22,8 @@ android {
         applicationId "com.example.projectnailsschedule"
         minSdk 23
         targetSdk 34
-        versionCode 24
-        versionName "6.9"
+        versionCode 25
+        versionName "7.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -59,15 +59,15 @@ android {
         Rustore {
             dimension "MySchedule"
             applicationId "com.example.projectnailsschedule"
-            versionCode 24
-            versionName "6.9"
+            versionCode 25
+            versionName "7.0"
         }
 
         GooglePlay {
             dimension "MySchedule"
             applicationId "com.lemmiwinks.myschedule"
-            versionCode 24
-            versionName "6.9"
+            versionCode 25
+            versionName "7.0"
         }
     }
 }
