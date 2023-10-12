@@ -12,6 +12,7 @@ import android.widget.EditText
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.data.storage.ScheduleDb
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
+import java.io.File
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.YearMonth
@@ -24,7 +25,7 @@ import java.util.*
  * Вспомогательный класс
  * */
 
-class Util() {
+class Util {
 
     val log = this::class.simpleName
     val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
@@ -131,7 +132,6 @@ class Util() {
         return context.getString(dayOfWeekResource)
     }
 
-
     fun addTestData(context: Context) {
         val currentMonth = LocalDate.now()
         for (i in 1..currentMonth.lengthOfMonth()) {
@@ -222,4 +222,16 @@ class Util() {
         }
     }
 
+    fun clearDir(dir: File) {
+        val files = dir.listFiles()
+        if (files != null) {
+            for (file in files) {
+                if (file.isDirectory) {
+                    clearDir(file) // Рекурсивно очищаем поддиректории
+                } else {
+                    file.delete() // Удаляем файл
+                }
+            }
+        }
+    }
 }

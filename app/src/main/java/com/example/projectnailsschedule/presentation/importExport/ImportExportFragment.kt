@@ -1,7 +1,6 @@
 package com.example.projectnailsschedule.presentation.importExport
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -10,24 +9,31 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
-import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentImportExportBinding
-import java.io.File
-import java.io.FileInputStream
-import java.io.FileOutputStream
-import java.io.IOException
 
 class ImportExportFragment : Fragment() {
 
+    private lateinit var importExportViewModel: ImportExportViewModel
     private val OPEN_DIRECTORY_REQUEST_CODE = 123
     private val IMPORT_REQUEST_CODE = 789
+
     private lateinit var exportButton: Button
     private lateinit var importButton: Button
 
     private var _binding: FragmentImportExportBinding? = null
     private val binding get() = _binding!!
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        importExportViewModel = ViewModelProvider(
+            this,
+            ImportExportViewModelFactory(context)
+        )[ImportExportViewModel::class.java]
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,9 +41,19 @@ class ImportExportFragment : Fragment() {
     ): View {
         _binding = FragmentImportExportBinding.inflate(inflater, container, false)
 
+        initViews()
+
+        initClickListeners()
+
+        return binding.root
+    }
+
+    private fun initViews() {
         importButton = binding.importButton
         exportButton = binding.exportButton
+    }
 
+    private fun initClickListeners() {
         importButton.setOnClickListener {
             openDirectoryForImport()
         }
@@ -45,148 +61,11 @@ class ImportExportFragment : Fragment() {
         exportButton.setOnClickListener {
             openDirectoryForExport()
         }
-
-        return binding.root
     }
 
     private fun openDirectoryForImport() {
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
         startActivityForResult(intent, IMPORT_REQUEST_CODE)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == IMPORT_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            val treeUri = data?.data
-            if (treeUri != null) {
-                importDataFromUri(treeUri)
-            }
-        }
-
-        if (requestCode == OPEN_DIRECTORY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            val treeUri = data?.data
-            if (treeUri != null) {
-                exportToSelectedFolder(treeUri)
-            }
-        }
-    }
-
-    private fun importDataFromUri(treeUri: Uri) {
-        val treeDocumentFile = DocumentFile.fromTreeUri(requireContext(), treeUri)
-        if (treeDocumentFile != null && treeDocumentFile.exists() && treeDocumentFile.isDirectory) {
-            val destinationDir = File(
-                requireContext().applicationInfo.dataDir,
-                "databases"
-            )
-
-            clearDirectory(destinationDir)
-
-            val filesInDirectory = treeDocumentFile.listFiles()
-            for (file in filesInDirectory) {
-                val sourceUri = file.uri
-                val sourceStream = requireContext().contentResolver.openInputStream(sourceUri)
-
-                if (sourceStream != null) {
-                    val destinationFile = File(destinationDir, file.name)
-                    val destinationStream = FileOutputStream(destinationFile)
-
-                    try {
-                        val buffer = ByteArray(1024)
-                        var length: Int
-
-                        while (sourceStream.read(buffer).also { length = it } > 0) {
-                            destinationStream.write(buffer, 0, length)
-                        }
-                    } catch (e: IOException) {
-                        e.printStackTrace()
-                        Toast.makeText(
-                            requireContext(),
-                            "Error importing file ${file.name}",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    } finally {
-                        sourceStream.close()
-                        destinationStream.close()
-                    }
-                }
-            }
-
-            Toast.makeText(
-                requireContext(),
-                R.string.imported,
-                Toast.LENGTH_SHORT
-            ).show()
-
-            restartApp(requireContext())
-        }
-    }
-
-    private fun clearDirectory(dir: File) {
-        val files = dir.listFiles()
-        if (files != null) {
-            for (file in files) {
-                if (file.isDirectory) {
-                    clearDirectory(file) // Рекурсивно очищаем поддиректории
-                } else {
-                    file.delete() // Удаляем файл
-                }
-            }
-        }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
-    private fun exportToSelectedFolder(treeUri: Uri) {
-        val folder = DocumentFile.fromTreeUri(requireContext(), treeUri)
-        if (folder != null && folder.exists() && folder.isDirectory) {
-            val sourceDir = File(
-                requireContext().applicationInfo.dataDir,
-                "databases"
-            )
-            val files = sourceDir.listFiles()
-
-            if (files != null) {
-                for (file in files) {
-                    if (file.isFile) {
-                        val targetFile = folder.createFile("*/*", file.name)
-                        if (targetFile != null) {
-                            val targetUri = targetFile.uri
-                            val outputStream =
-                                requireContext().contentResolver.openOutputStream(targetUri)
-                            if (outputStream != null) {
-                                try {
-                                    val buffer = ByteArray(1024)
-                                    var length: Int
-                                    val sourceStream = FileInputStream(file)
-                                    while (sourceStream.read(buffer).also { length = it } > 0) {
-                                        outputStream.write(buffer, 0, length)
-                                    }
-                                } catch (e: IOException) {
-                                    e.printStackTrace()
-                                    Toast.makeText(
-                                        requireContext(),
-                                        "Error exporting ${file.name}",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                } finally {
-                                    outputStream.close()
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            Toast.makeText(
-                requireContext(),
-                R.string.exported,
-                Toast.LENGTH_SHORT
-            ).show()
-        }
     }
 
     private fun openDirectoryForExport() {
@@ -195,16 +74,48 @@ class ImportExportFragment : Fragment() {
         startActivityForResult(intent, OPEN_DIRECTORY_REQUEST_CODE)
     }
 
-    private fun restartApp(context: Context) {
-        val intent = context.packageManager
-            .getLaunchIntentForPackage(context.packageName)
-        intent?.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        intent?.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        context.startActivity(intent)
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
 
-        // Завершение текущей активности (если необходимо)
-        if (context is android.app.Activity) {
-            context.finish()
+        if (requestCode == IMPORT_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            val treeUri = data?.data
+            if (treeUri != null) {
+                import(treeUri)
+            }
         }
+
+        if (requestCode == OPEN_DIRECTORY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            val treeUri = data?.data
+            if (treeUri != null) {
+                export(treeUri)
+            }
+        }
+    }
+
+    private fun import(treeUri: Uri) {
+        importExportViewModel.import(treeUri)
+
+        Toast.makeText(
+            requireContext(),
+            R.string.imported,
+            Toast.LENGTH_SHORT
+        ).show()
+
+        importExportViewModel.restartApp()
+    }
+
+    private fun export(treeUri: Uri) {
+        importExportViewModel.export(treeUri)
+
+        Toast.makeText(
+            requireContext(),
+            R.string.exported,
+            Toast.LENGTH_SHORT
+        ).show()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
