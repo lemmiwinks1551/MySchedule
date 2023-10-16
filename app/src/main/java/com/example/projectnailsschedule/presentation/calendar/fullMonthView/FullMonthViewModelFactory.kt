@@ -11,6 +11,7 @@ import com.example.projectnailsschedule.domain.usecase.calendarUC.GetSelectedMon
 import com.example.projectnailsschedule.domain.usecase.calendarUC.SetSelectedMonthUc
 import com.example.projectnailsschedule.domain.usecase.dateUC.DeleteAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.dateUC.GetDateAppointmentsUseCase
+import com.example.projectnailsschedule.domain.usecase.socUC.*
 
 class FullMonthViewModelFactory(context: Context?) : ViewModelProvider.Factory {
     private val scheduleRepositoryImpl = ScheduleRepositoryImpl(context = context!!)
@@ -18,9 +19,6 @@ class FullMonthViewModelFactory(context: Context?) : ViewModelProvider.Factory {
 
     private var deleteAppointmentUseCase =
         DeleteAppointmentUseCase(scheduleRepository = scheduleRepositoryImpl)
-
-    private val getMonthAppointments =
-        GetMonthAppointmentsUC(scheduleRepository = scheduleRepositoryImpl)
 
     private val saveAppointmentUseCase =
         SaveAppointmentUseCase(scheduleRepository = scheduleRepositoryImpl)
@@ -34,14 +32,24 @@ class FullMonthViewModelFactory(context: Context?) : ViewModelProvider.Factory {
     private var getSelectedMonthUc =
         GetSelectedMonthUc(settingsRepository = settingsRepositoryImpl)
 
+    private var startVkUc = StartVkUc(context!!)
+    private var startTelegramUc = StartTelegramUc(context!!)
+    private var startInstagramUc = StartInstagramUc(context!!)
+    private var startWhatsAppUc = StartWhatsAppUc(context!!)
+    private var startPhoneUc = StartPhoneUc(context!!)
+
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return FullMonthViewViewModel(
             deleteAppointmentUseCase = deleteAppointmentUseCase,
-            getMonthAppointmentsUseCase = getMonthAppointments,
             saveAppointmentUseCase = saveAppointmentUseCase,
             getDateAppointmentsUseCase = getDateAppointmentsUseCase,
             setSelectedMonthUc = setSelectedMonthUc,
-            getSelectedMonthUc = getSelectedMonthUc
+            getSelectedMonthUc = getSelectedMonthUc,
+            startVkUc = startVkUc,
+            startTelegramUc = startTelegramUc,
+            startInstagramUc = startInstagramUc,
+            startWhatsAppUc = startWhatsAppUc,
+            startPhoneUc = startPhoneUc
         ) as T
     }
 }

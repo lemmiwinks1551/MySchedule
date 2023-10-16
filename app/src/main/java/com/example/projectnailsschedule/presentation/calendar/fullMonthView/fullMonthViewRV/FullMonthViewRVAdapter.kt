@@ -101,7 +101,12 @@ class FullMonthViewRVAdapter(
             childRv.layoutManager = GridLayoutManager(holder.itemView.context, 1)
 
             fullMonthChildAdapter =
-                FullMonthChildAdapter(parentItem.appointmentsList, context, navController)
+                FullMonthChildAdapter(
+                    parentItem.appointmentsList,
+                    context,
+                    navController,
+                    fullMonthViewViewModel
+                )
             childRv.adapter = fullMonthChildAdapter
         }
 
@@ -150,7 +155,10 @@ class FullMonthViewRVAdapter(
                 // show Snackbar
                 Snackbar.make(
                     holder.childRv,
-                    context.getString(R.string.deleted_appointment_text, deleteAppointmentModelDb.name),
+                    context.getString(
+                        R.string.deleted_appointment_text,
+                        deleteAppointmentModelDb.name
+                    ),
                     Snackbar.LENGTH_LONG
                 ).setBackgroundTint(Color.parseColor("#ffff00"))
                     .setActionTextColor(Color.parseColor("#003300"))
@@ -178,7 +186,10 @@ class FullMonthViewRVAdapter(
 
                         Toast.makeText(
                             context,
-                            context.getString(R.string.restored_appointment_text, deleteAppointmentModelDb.name),
+                            context.getString(
+                                R.string.restored_appointment_text,
+                                deleteAppointmentModelDb.name
+                            ),
                             Toast.LENGTH_LONG
                         ).show()
                     }.show()

@@ -148,4 +148,6 @@
     <string name="grant_permissions">Предоставить доступ</string>
     <string name="menu_import_export">Импорт/Экспорт</string>
 
+    <string name="no_data_error">Нет данных</string>
+
 </resources>

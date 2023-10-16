@@ -1,24 +1,21 @@
 package com.example.projectnailsschedule.presentation.calendar.fullMonthView.fullMonthChildRv
 
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AlphaAnimation
-import android.widget.Toast
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
-import com.example.projectnailsschedule.presentation.appointment.selectClient.selectClientRV.SelectClientRVViewHolder
+import com.example.projectnailsschedule.presentation.calendar.fullMonthView.FullMonthViewViewModel
 
 class FullMonthChildAdapter(
     val appointmentsList: MutableList<AppointmentModelDb>,
     private val context: Context,
-    private val navController: NavController
+    private val navController: NavController,
+    private val fullMonthViewViewModel: FullMonthViewViewModel
 ) : RecyclerView.Adapter<FullMonthChildViewHolder>() {
 
     private val bindingKeyAppointment = "appointmentParams"
@@ -94,30 +91,9 @@ class FullMonthChildAdapter(
             }
 
             phoneCallButton.setOnClickListener {
-                val phone = appointmentsList[position].phone.toString()
-
-                if (phone.isEmpty()) {
-                    Toast.makeText(context, context.getString(R.string.no_phone_number_error), Toast.LENGTH_LONG).show()
-                } else {
-                    val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phone"))
-                    context.startActivity(intent)
-                }
+                startPhone(holder.appointmentClientPhone.text.toString())
             }
-        }
 
-        holder.itemView.setOnClickListener {
-            val bundle = Bundle()
-            val selectedAppointment = appointmentsList[position]
-
-            bundle.putParcelable(bindingKeyAppointment, selectedAppointment)
-            navController.navigate(R.id.action_fullMonthViewFragment_to_nav_appointment, bundle)
-        }
-
-        initSocClickListeners(holder)
-    }
-
-    private fun initSocClickListeners(holder: FullMonthChildViewHolder) {
-        with(holder) {
             vkImageButton.setOnClickListener {
                 startVk(holder.appointmentClientVk.text.toString().trim())
             }
@@ -133,94 +109,35 @@ class FullMonthChildAdapter(
             whatsAppImageButton.setOnClickListener {
                 startWhatsapp(holder.appointmentClientWhatsApp.text.toString().trim())
             }
+
+            itemView.setOnClickListener {
+                val bundle = Bundle()
+                val selectedAppointment = appointmentsList[position]
+
+                bundle.putParcelable(bindingKeyAppointment, selectedAppointment)
+                navController.navigate(R.id.action_fullMonthViewFragment_to_nav_appointment, bundle)
+            }
         }
     }
 
+
     private fun startVk(uri: String) {
-        val uri = uri.replace("https://vk.com/", "")
-        try {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://vk.com/$uri"))
-            context.startActivity(intent)
-        } catch (e: Exception) {
-            try {
-                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://vk.com/$uri"))
-                context.startActivity(browserIntent)
-            } catch (e: Exception) {
-                Toast.makeText(
-                    context,
-                    context.getString(R.string.unknown_error),
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-        }
+        fullMonthViewViewModel.startVk(uri)
     }
 
     private fun startTelegram(uri: String) {
-        val uri = uri.replace("https://t.me/", "")
-        try {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("tg://resolve?domain=$uri"))
-            context.startActivity(intent)
-        } catch (e: Exception) {
-            try {
-                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://t.me/$uri"))
-                context.startActivity(browserIntent)
-            } catch (e: Exception) {
-                Toast.makeText(
-                    context,
-                    context.getString(R.string.unknown_error),
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-        }
+        fullMonthViewViewModel.startTelegram(uri)
     }
 
     private fun startInstagram(uri: String) {
-        val regex = Regex("https:\\/\\/instagram\\.com\\/([^?\\/]+)(?:\\?igshid=.*)?|([\\w.-]+)")
-        val matchResult = regex.find(uri)
-        var username = matchResult?.groupValues?.getOrNull(1)
-        if (username == "") {
-            username = matchResult?.groupValues?.getOrNull(2)
-        }
-
-        try {
-            val intent =
-                Intent(Intent.ACTION_VIEW, Uri.parse("http://instagram.com/_u/$username"))
-            intent.setPackage("com.instagram.android")
-            context.startActivity(intent)
-        } catch (e: Exception) {
-            try {
-                val browserIntent =
-                    Intent(Intent.ACTION_VIEW, Uri.parse("https://www.instagram.com/$username"))
-                context.startActivity(browserIntent)
-            } catch (e: Exception) {
-                Toast.makeText(
-                    context,
-                    context.getString(R.string.unknown_error),
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-        }
+        fullMonthViewViewModel.startInstagram(uri)
     }
 
     private fun startWhatsapp(uri: String) {
-        try {
-            val intent =
-                Intent(Intent.ACTION_VIEW, Uri.parse("https://api.whatsapp.com/send?phone=$uri"))
-            context.startActivity(intent)
-        } catch (e: Exception) {
-            try {
-                val browserIntent = Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse("https://web.whatsapp.com/send?phone=$uri")
-                )
-                context.startActivity(browserIntent)
-            } catch (e: Exception) {
-                Toast.makeText(
-                    context,
-                    context.getString(R.string.unknown_error),
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-        }
+        fullMonthViewViewModel.startWhatsApp(uri)
+    }
+
+    private fun startPhone(phoneNum: String) {
+        fullMonthViewViewModel.startPhone(phoneNum)
     }
 }

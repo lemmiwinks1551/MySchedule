@@ -4,21 +4,25 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
 import com.example.projectnailsschedule.domain.models.DateParams
-import com.example.projectnailsschedule.domain.usecase.appointmentUC.GetMonthAppointmentsUC
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.SaveAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.GetSelectedMonthUc
 import com.example.projectnailsschedule.domain.usecase.calendarUC.SetSelectedMonthUc
 import com.example.projectnailsschedule.domain.usecase.dateUC.DeleteAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.dateUC.GetDateAppointmentsUseCase
+import com.example.projectnailsschedule.domain.usecase.socUC.*
 import java.time.LocalDate
 
 class FullMonthViewViewModel(
     private var deleteAppointmentUseCase: DeleteAppointmentUseCase,
-    private var getMonthAppointmentsUseCase: GetMonthAppointmentsUC,
     private var saveAppointmentUseCase: SaveAppointmentUseCase,
     private var getDateAppointmentsUseCase: GetDateAppointmentsUseCase,
     private var setSelectedMonthUc: SetSelectedMonthUc,
-    private var getSelectedMonthUc: GetSelectedMonthUc
+    private var getSelectedMonthUc: GetSelectedMonthUc,
+    private val startVkUc: StartVkUc,
+    private val startTelegramUc: StartTelegramUc,
+    private val startInstagramUc: StartInstagramUc,
+    private val startWhatsAppUc: StartWhatsAppUc,
+    private val startPhoneUc: StartPhoneUc
 ) : ViewModel() {
 
     val log = this::class.simpleName
@@ -35,10 +39,6 @@ class FullMonthViewViewModel(
 
     fun saveAppointment(appointmentModelDb: AppointmentModelDb) {
         saveAppointmentUseCase.execute(appointmentModelDb)
-    }
-
-    fun getMonthAppointments(dateMonth: String): MutableList<AppointmentModelDb> {
-        return getMonthAppointmentsUseCase.execute(dateMonth)
     }
 
     fun getDateAppointments(dateParams: DateParams): MutableList<AppointmentModelDb> {
@@ -60,5 +60,25 @@ class FullMonthViewViewModel(
 
     private fun setSelectedMonth(date: LocalDate) {
         setSelectedMonthUc.execute(date)
+    }
+
+    fun startVk(uri: String) {
+        startVkUc.execute(uri)
+    }
+
+    fun startTelegram(uri: String) {
+        startTelegramUc.execute(uri)
+    }
+
+    fun startInstagram(uri: String) {
+        startInstagramUc.execute(uri)
+    }
+
+    fun startWhatsApp(uri: String) {
+        startWhatsAppUc.execute(uri)
+    }
+
+    fun startPhone(phoneNum: String) {
+        startPhoneUc.execute(phoneNum)
     }
 }

@@ -148,4 +148,6 @@
     <string name="grant_permissions">授予访问权限</string>
     <string name="menu_import_export">导入/导出</string>
 
+    <string name="no_data_error">没有数据</string>
+
 </resources>

@@ -148,4 +148,6 @@
     <string name="grant_permissions">Grant Access</string>
     <string name="menu_import_export">Import/Export</string>
 
+    <string name="no_data_error">No data</string>
+
 </resources>

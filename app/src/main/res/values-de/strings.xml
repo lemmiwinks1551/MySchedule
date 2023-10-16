@@ -148,4 +148,6 @@
     <string name="grant_permissions">Zugriff gewähren</string>
     <string name="menu_import_export">Importieren/Exportieren</string>
 
+    <string name="no_data_error">Keine Daten</string>
+
 </resources>
