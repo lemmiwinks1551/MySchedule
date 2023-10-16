@@ -9,6 +9,7 @@ import com.example.projectnailsschedule.domain.usecase.appointmentUC.SaveAppoint
 import com.example.projectnailsschedule.domain.usecase.dateUC.DeleteAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.searchUC.GetAllAppointmentsLiveDataUseCase
 import com.example.projectnailsschedule.domain.usecase.searchUC.SearchAppointmentUC
+import com.example.projectnailsschedule.domain.usecase.socUC.*
 
 class SearchViewModelFactory(context: Context?) : ViewModelProvider.Factory {
     private val scheduleRepositoryImpl = ScheduleRepositoryImpl(context = context!!)
@@ -22,18 +23,26 @@ class SearchViewModelFactory(context: Context?) : ViewModelProvider.Factory {
     private var searchAppointmentUC =
         SearchAppointmentUC(scheduleRepository = scheduleRepositoryImpl)
 
-    private var getAllAppointmentsUseCase =
-        GetAllAppointmentsUseCase(scheduleRepository = scheduleRepositoryImpl)
-
     private var getAllAppointmentsLiveDataUseCase =
         GetAllAppointmentsLiveDataUseCase(scheduleRepository = scheduleRepositoryImpl)
+
+    private var startVkUc = StartVkUc(context!!)
+    private var startTelegramUc = StartTelegramUc(context!!)
+    private var startInstagramUc = StartInstagramUc(context!!)
+    private var startWhatsAppUc = StartWhatsAppUc(context!!)
+    private var startPhoneUc = StartPhoneUc(context!!)
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return SearchViewModel(
             saveAppointmentUseCase = saveAppointmentsUseCase,
             deleteAppointmentUseCase = deleteAppointmentUseCase,
             searchAppointmentUC = searchAppointmentUC,
-            getAllAppointmentsLiveDataUseCase = getAllAppointmentsLiveDataUseCase
+            getAllAppointmentsLiveDataUseCase = getAllAppointmentsLiveDataUseCase,
+            startVkUc = startVkUc,
+            startTelegramUc = startTelegramUc,
+            startInstagramUc = startInstagramUc,
+            startWhatsAppUc = startWhatsAppUc,
+            startPhoneUc = startPhoneUc
         ) as T
     }
 }

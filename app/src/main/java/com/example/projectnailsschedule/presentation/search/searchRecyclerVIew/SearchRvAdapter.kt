@@ -6,11 +6,9 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
-import com.example.projectnailsschedule.presentation.date.dateRecyclerView.DateViewHolder
 import com.example.projectnailsschedule.presentation.search.SearchViewModel
 
 internal class SearchRvAdapter(
@@ -66,13 +64,7 @@ internal class SearchRvAdapter(
             notes.text = appointmentModelDb.notes
         }
 
-        holder.callClientButton.setOnClickListener {
-            val phone = appointmentsList[position].phone.toString()
-            val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phone"))
-            context.startActivity(intent)
-        }
-
-        initSocClickListeners(holder)
+        initClickListeners(holder)
     }
 
     override fun getItemCount(): Int {
@@ -82,7 +74,7 @@ internal class SearchRvAdapter(
         return appointmentCount
     }
 
-    private fun initSocClickListeners(holder: SearchViewHolder) {
+    private fun initClickListeners(holder: SearchViewHolder) {
         with(holder) {
             vkImageButton.setOnClickListener {
                 startVk(holder.vkLink.text.toString().trim())
@@ -99,94 +91,30 @@ internal class SearchRvAdapter(
             whatsappImageButton.setOnClickListener {
                 startWhatsapp(holder.whatsAppLink.text.toString().trim())
             }
+
+            callClientButton.setOnClickListener {
+                startPhone(holder.phone.text.toString())
+            }
         }
     }
 
     private fun startVk(uri: String) {
-        val uri = uri.replace("https://vk.com/", "")
-        try {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://vk.com/$uri"))
-            context.startActivity(intent)
-        } catch (e: Exception) {
-            try {
-                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://vk.com/$uri"))
-                context.startActivity(browserIntent)
-            } catch (e: Exception) {
-                Toast.makeText(
-                    context,
-                    context.getString(R.string.unknown_error),
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-        }
+        searchViewModel.startVk(uri)
     }
 
     private fun startTelegram(uri: String) {
-        val uri = uri.replace("https://t.me/", "")
-        try {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("tg://resolve?domain=$uri"))
-            context.startActivity(intent)
-        } catch (e: Exception) {
-            try {
-                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://t.me/$uri"))
-                context.startActivity(browserIntent)
-            } catch (e: Exception) {
-                Toast.makeText(
-                    context,
-                    context.getString(R.string.unknown_error),
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-        }
+        searchViewModel.startTelegram(uri)
     }
 
     private fun startInstagram(uri: String) {
-        val regex = Regex("https:\\/\\/instagram\\.com\\/([^?\\/]+)(?:\\?igshid=.*)?|([\\w.-]+)")
-        val matchResult = regex.find(uri)
-        var username = matchResult?.groupValues?.getOrNull(1)
-        if (username == "") {
-            username = matchResult?.groupValues?.getOrNull(2)
-        }
-
-        try {
-            val intent =
-                Intent(Intent.ACTION_VIEW, Uri.parse("http://instagram.com/_u/$username"))
-            intent.setPackage("com.instagram.android")
-            context.startActivity(intent)
-        } catch (e: Exception) {
-            try {
-                val browserIntent =
-                    Intent(Intent.ACTION_VIEW, Uri.parse("https://www.instagram.com/$username"))
-                context.startActivity(browserIntent)
-            } catch (e: Exception) {
-                Toast.makeText(
-                    context,
-                    context.getString(R.string.unknown_error),
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-        }
+        searchViewModel.startInstagram(uri)
     }
 
     private fun startWhatsapp(uri: String) {
-        try {
-            val intent =
-                Intent(Intent.ACTION_VIEW, Uri.parse("https://api.whatsapp.com/send?phone=$uri"))
-            context.startActivity(intent)
-        } catch (e: Exception) {
-            try {
-                val browserIntent = Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse("https://web.whatsapp.com/send?phone=$uri")
-                )
-                context.startActivity(browserIntent)
-            } catch (e: Exception) {
-                Toast.makeText(
-                    context,
-                    context.getString(R.string.unknown_error),
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-        }
+        searchViewModel.startWhatsApp(uri)
+    }
+
+    private fun startPhone(phoneNum: String) {
+        searchViewModel.startPhone(phoneNum)
     }
 }

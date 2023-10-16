@@ -32,7 +32,7 @@ class SearchFragment : Fragment() {
     private val binding get() = _binding!!
     private var searchTextView: SearchView? = null
     private var searchRecyclerView: RecyclerView? = null
-    private var searchViewModel: SearchViewModel? = null
+    lateinit var searchViewModel: SearchViewModel
     private var appointmentCount: TextView? = null
     private val bindingKeyAppointment = "appointmentParams"
 
@@ -79,7 +79,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun initObservers() {
-        searchViewModel!!.appointmentsTotalCount.observe(viewLifecycleOwner) {
+        searchViewModel.appointmentsTotalCount.observe(viewLifecycleOwner) {
             appointmentCount?.text = getString(R.string.appointments_count, it)
         }
     }
@@ -108,7 +108,7 @@ class SearchFragment : Fragment() {
         searchRvAdapter = SearchRvAdapter(
             appointmentCount = appointmentsList.size,
             appointmentsList = appointmentsList,
-            searchViewModel = searchViewModel!!,
+            searchViewModel = searchViewModel,
             context = requireContext()
         )
 
@@ -158,7 +158,7 @@ class SearchFragment : Fragment() {
                 val position = viewHolder.adapterPosition
 
                 // delete client from Db
-                searchViewModel?.deleteAppointment(deleteAppointmentModelDb)
+                searchViewModel.deleteAppointment(deleteAppointmentModelDb)
 
                 searchRvAdapter?.notifyItemRemoved(position)
 
@@ -175,7 +175,7 @@ class SearchFragment : Fragment() {
                     ) {
                         // adding on click listener to our action of snack bar.
                         // below line is to add our item to array list with a position.
-                        searchViewModel?.saveAppointment(deleteAppointmentModelDb)
+                        searchViewModel.saveAppointment(deleteAppointmentModelDb)
 
                         // below line is to notify item is
                         // added to our adapter class.
