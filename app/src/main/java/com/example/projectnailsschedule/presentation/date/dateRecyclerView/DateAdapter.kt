@@ -1,22 +1,17 @@
 package com.example.projectnailsschedule.presentation.date.dateRecyclerView
 
-import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
-import com.example.projectnailsschedule.presentation.clients.clientsRecyclerView.ClientsViewHolder
-import java.lang.String
+import com.example.projectnailsschedule.presentation.date.DateViewModel
 
 class DateAdapter(
     private var appointmentsCount: Int,
     private var appointmentsList: List<AppointmentModelDb>,
-    private val context: Context
+    private val dateViewModel: DateViewModel
 ) : RecyclerView.Adapter<DateViewHolder>() {
 
     val log = this::class.simpleName
@@ -51,24 +46,18 @@ class DateAdapter(
             holder.appointmentNotes.text = notes
         }
 
-        // set callClient click listener
-        holder.callClientButton.setOnClickListener {
-            val phone = appointmentsList[position].phone
-            val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phone"))
-            context.startActivity(intent)
-        }
-
-        initSocClickListeners(holder)
-
         hideEmptyViews(holder, position)
+
+        initClickListeners(holder)
     }
 
-    override fun getItemCount(): Int {
-        return appointmentsCount
-    }
 
-    private fun initSocClickListeners(holder: DateViewHolder) {
+    private fun initClickListeners(holder: DateViewHolder) {
         with(holder) {
+            callClientButton.setOnClickListener {
+                startPhone(holder.appointmentClientPhone.text.toString())
+            }
+
             vkImageButton.setOnClickListener {
                 startVk(holder.appointmentClientVk.text.toString().trim())
             }
@@ -87,92 +76,28 @@ class DateAdapter(
         }
     }
 
+    override fun getItemCount(): Int {
+        return appointmentsCount
+    }
+
     private fun startVk(uri: kotlin.String) {
-        val uri = uri.replace("https://vk.com/", "")
-        try {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://vk.com/$uri"))
-            context.startActivity(intent)
-        } catch (e: Exception) {
-            try {
-                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://vk.com/$uri"))
-                context.startActivity(browserIntent)
-            } catch (e: Exception) {
-                Toast.makeText(
-                    context,
-                    "Не удалось перейти во Вконтакте",
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-        }
+        dateViewModel.startVk(uri)
     }
 
     private fun startTelegram(uri: kotlin.String) {
-        val uri = uri.replace("https://t.me/", "")
-        try {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("tg://resolve?domain=$uri"))
-            context.startActivity(intent)
-        } catch (e: Exception) {
-            try {
-                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://t.me/$uri"))
-                context.startActivity(browserIntent)
-            } catch (e: Exception) {
-                Toast.makeText(
-                    context,
-                    "Не удалось перейти в Telegram",
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-        }
+        dateViewModel.startTelegram(uri)
     }
 
     private fun startInstagram(uri: kotlin.String) {
-        val regex = Regex("https:\\/\\/instagram\\.com\\/([^?\\/]+)(?:\\?igshid=.*)?|([\\w.-]+)")
-        val matchResult = regex.find(uri)
-        var username = matchResult?.groupValues?.getOrNull(1)
-        if (username == "") {
-            username = matchResult?.groupValues?.getOrNull(2)
-        }
-
-        try {
-            val intent =
-                Intent(Intent.ACTION_VIEW, Uri.parse("http://instagram.com/_u/$username"))
-            intent.setPackage("com.instagram.android")
-            context.startActivity(intent)
-        } catch (e: Exception) {
-            try {
-                val browserIntent =
-                    Intent(Intent.ACTION_VIEW, Uri.parse("https://www.instagram.com/$username"))
-                context.startActivity(browserIntent)
-            } catch (e: Exception) {
-                Toast.makeText(
-                    context,
-                    "Не удалось перейти в Instagram",
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-        }
+        dateViewModel.startInstagram(uri)
     }
 
     private fun startWhatsapp(uri: kotlin.String) {
-        try {
-            val intent =
-                Intent(Intent.ACTION_VIEW, Uri.parse("https://api.whatsapp.com/send?phone=$uri"))
-            context.startActivity(intent)
-        } catch (e: Exception) {
-            try {
-                val browserIntent = Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse("https://web.whatsapp.com/send?phone=$uri")
-                )
-                context.startActivity(browserIntent)
-            } catch (e: Exception) {
-                Toast.makeText(
-                    context,
-                    "Не удалось перейти в Whatsapp",
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-        }
+        dateViewModel.startWhatsApp(uri)
+    }
+
+    private fun startPhone(phoneNum: kotlin.String) {
+        dateViewModel.startPhone(phoneNum)
     }
 
     private fun hideEmptyViews(holder: DateViewHolder, position: Int) {

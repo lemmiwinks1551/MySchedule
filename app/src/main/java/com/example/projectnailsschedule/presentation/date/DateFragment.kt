@@ -16,7 +16,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.example.projectnailsschedule.BuildConfig
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentDateBinding
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
@@ -39,7 +38,7 @@ class DateFragment : Fragment() {
     private var appointmentsRvAdapter: DateAdapter? = null
 
     private var dateParams: DateParams? = null
-    private var dateViewModel: DateViewModel? = null
+    lateinit var dateViewModel: DateViewModel
     private var appointmentsRv: RecyclerView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,10 +67,10 @@ class DateFragment : Fragment() {
         initClickListeners()
 
         // set current date in viewModel
-        dateViewModel!!.selectedDateParams.value = dateParams
+        dateViewModel.selectedDateParams.value = dateParams
 
         // get and appointments from date
-        dateViewModel?.updateDateParams()
+        dateViewModel.updateDateParams()
 
         // set observers
         setObservers()
@@ -101,8 +100,8 @@ class DateFragment : Fragment() {
 
     private fun setObservers() {
         // dateParams observer
-        dateViewModel?.selectedDateParams?.observe(viewLifecycleOwner) {
-            appointmentList = dateViewModel!!.getDateAppointments().toList()
+        dateViewModel.selectedDateParams.observe(viewLifecycleOwner) {
+            appointmentList = dateViewModel.getDateAppointments().toList()
             if (it.appointmentCount == 0) {
                 binding.fragmentDateTitle.text = requireContext().getString(R.string.no_data_title)
             } else {
@@ -118,7 +117,7 @@ class DateFragment : Fragment() {
         appointmentsRvAdapter = DateAdapter(
             appointmentsCount = selectedDate.appointmentCount!!,
             appointmentsList = appointmentList!!,
-            context = requireContext()
+            dateViewModel = dateViewModel
         )
 
         val layoutManager: RecyclerView.LayoutManager =
@@ -180,7 +179,7 @@ class DateFragment : Fragment() {
                 val position = viewHolder.adapterPosition
 
                 // delete client from Db
-                dateViewModel?.deleteAppointment(deleteAppointmentModelDb)
+                dateViewModel.deleteAppointment(deleteAppointmentModelDb)
 
                 appointmentsRvAdapter?.notifyItemRemoved(position)
 
@@ -197,7 +196,7 @@ class DateFragment : Fragment() {
                     ) {
                         // adding on click listener to our action of snack bar.
                         // below line is to add our item to array list with a position.
-                        dateViewModel?.saveAppointment(deleteAppointmentModelDb)
+                        dateViewModel.saveAppointment(deleteAppointmentModelDb)
 
                         // below line is to notify item is
                         // added to our adapter class.

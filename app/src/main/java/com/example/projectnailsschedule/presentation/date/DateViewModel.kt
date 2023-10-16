@@ -7,11 +7,17 @@ import com.example.projectnailsschedule.domain.models.DateParams
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.SaveAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.dateUC.DeleteAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.dateUC.GetDateAppointmentsUseCase
+import com.example.projectnailsschedule.domain.usecase.socUC.*
 
 class DateViewModel(
     private var deleteAppointmentUseCase: DeleteAppointmentUseCase,
     private var getDateAppointmentsUseCase: GetDateAppointmentsUseCase,
-    private var saveAppointmentUseCase: SaveAppointmentUseCase
+    private var saveAppointmentUseCase: SaveAppointmentUseCase,
+    private val startVkUc: StartVkUc,
+    private val startTelegramUc: StartTelegramUc,
+    private val startInstagramUc: StartInstagramUc,
+    private val startWhatsAppUc: StartWhatsAppUc,
+    private val startPhoneUc: StartPhoneUc
     ) : ViewModel() {
 
     val log = this::class.simpleName
@@ -48,5 +54,25 @@ class DateViewModel(
     fun deleteAppointment(appointmentModelDb: AppointmentModelDb) {
         deleteAppointmentUseCase.execute(appointmentModelDb)
         updateDateParams()
+    }
+
+    fun startVk(uri: String) {
+        startVkUc.execute(uri)
+    }
+
+    fun startTelegram(uri: String) {
+        startTelegramUc.execute(uri)
+    }
+
+    fun startInstagram(uri: String) {
+        startInstagramUc.execute(uri)
+    }
+
+    fun startWhatsApp(uri: String) {
+        startWhatsAppUc.execute(uri)
+    }
+
+    fun startPhone(phoneNum: String) {
+        startPhoneUc.execute(phoneNum)
     }
 }
