@@ -92,7 +92,7 @@ class SelectClientFragment : DialogFragment() {
         val selectClientRVAdapter = SelectClientRVAdapter(
             clientsCount = clientsList.size,
             clientsList = clientsList,
-            context = requireContext()
+            selectClientViewModel = selectClientViewModel!!
         )
 
         val layoutManager: RecyclerView.LayoutManager =
