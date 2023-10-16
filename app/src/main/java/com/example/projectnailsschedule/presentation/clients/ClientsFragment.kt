@@ -31,7 +31,7 @@ class ClientsFragment : Fragment() {
 
     private var _binding: FragmentClientsBinding? = null
     private val binding get() = _binding!!
-    private var clientsViewModel: ClientsViewModel? = null
+    lateinit var clientsViewModel: ClientsViewModel
 
     private var clientsList: List<ClientModelDb>? = null
     private var clientsRVAdapter: ClientsAdapter? = null
@@ -90,7 +90,7 @@ class ClientsFragment : Fragment() {
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 val searchQuery = "%$newText%"
-                clientsViewModel!!.searchDatabase(searchQuery).observe(viewLifecycleOwner) { list ->
+                clientsViewModel.searchDatabase(searchQuery).observe(viewLifecycleOwner) { list ->
                     clientsList = list
                     inflateClientsRecyclerView(list)
                 }
@@ -111,7 +111,7 @@ class ClientsFragment : Fragment() {
         clientsRVAdapter = ClientsAdapter(
             clientsCount = clientsList.size,
             clientsList = clientsList,
-            context = requireContext()
+            clientsViewModel = clientsViewModel
         )
 
         val layoutManager: RecyclerView.LayoutManager =
@@ -160,7 +160,7 @@ class ClientsFragment : Fragment() {
                 val position = viewHolder.adapterPosition
 
                 // delete client from Db
-                clientsViewModel?.deleteClient(deleteClientModelDb)
+                clientsViewModel.deleteClient(deleteClientModelDb)
 
                 clientsRVAdapter?.notifyItemRemoved(position)
                 clientsSearchView?.setQuery(null, true) // clear search bar
