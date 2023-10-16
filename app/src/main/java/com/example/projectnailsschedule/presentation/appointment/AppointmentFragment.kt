@@ -27,7 +27,7 @@ class AppointmentFragment : Fragment() {
     val log = this::class.simpleName
     private val bindingKey = "appointmentParams"
 
-    private var appointmentViewModel: AppointmentViewModel? = null
+    lateinit var appointmentViewModel: AppointmentViewModel
     private var _binding: FragmentAppointmentBinding? = null
     private val binding get() = _binding!!
 
@@ -99,51 +99,58 @@ class AppointmentFragment : Fragment() {
     }
 
     private fun setClickListeners() {
-        // Set ClickListener on save_changes_button
-        binding.saveButton.setOnClickListener {
-            if (appointmentParams?._id == null) {
-                // no _id - add new Appointment
-                createAppointment()
-            } else {
-                // _id - edit Appointment
-                editAppointment()
+        with(binding) {
+            // Set ClickListener on save_changes_button
+            saveButton.setOnClickListener {
+                if (appointmentParams?._id == null) {
+                    // no _id - add new Appointment
+                    createAppointment()
+                } else {
+                    // _id - edit Appointment
+                    editAppointment()
+                }
+            }
+
+            // set ClickListener on cancel_button
+            cancelButton.setOnClickListener {
+                cancelButton()
+            }
+
+            // set ClickListener on day_edit_text
+            dayEditText.setOnClickListener {
+                setDatePicker()
+            }
+
+            // set ClickListener on time_edit_text
+            timeEditText.setOnClickListener {
+                setTimePicker()
+            }
+
+            procedureSelectButton.setOnClickListener {
+                val dialogFragment = SelectProcedureFragment()
+                dialogFragment.show(parentFragmentManager, "SelectProcedureFragment")
+            }
+
+            vkLogoImageButton.setOnClickListener {
+                startVk(clientVkLinkEt.text.toString().trim())
+            }
+
+            telegramLogoImageButton.setOnClickListener {
+                startTelegram(clientTelegramLinkEt.text.toString().trim())
+            }
+
+            instagramLogoImageButton.setOnClickListener {
+                startInstagram(clientInstagramLinkEt.text.toString().trim())
+            }
+
+            whatsappLogoImageButton.setOnClickListener {
+                startWhatsapp(clientWhatsappLinkEt.text.toString().trim())
+            }
+
+            callClientButton.setOnClickListener {
+                startPhone(binding.phoneEt.text.toString())
             }
         }
-
-        // set ClickListener on cancel_button
-        binding.cancelButton.setOnClickListener {
-            cancelButton()
-        }
-
-        // set ClickListener on day_edit_text
-        binding.dayEditText.setOnClickListener {
-            setDatePicker()
-        }
-
-        // set ClickListener on time_edit_text
-        binding.timeEditText.setOnClickListener {
-            setTimePicker()
-        }
-
-        binding.procedureSelectButton.setOnClickListener {
-            val dialogFragment = SelectProcedureFragment()
-            dialogFragment.show(parentFragmentManager, "SelectProcedureFragment")
-        }
-
-        // set phone as hyperlink
-        binding.callClientButton.setOnClickListener {
-            val phone = binding.phoneEt.text.toString()
-            val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phone"))
-            startActivity(intent)
-        }
-
-        // set call client button
-        binding.selectClientButton.setOnClickListener {
-            val dialogFragment = SelectClientFragment()
-            dialogFragment.show(parentFragmentManager, "SelectClientFragment")
-        }
-
-        initSocClickListeners()
     }
 
     private fun setTitle() {
@@ -281,111 +288,23 @@ class AppointmentFragment : Fragment() {
         _binding = null
     }
 
-    private fun initSocClickListeners() {
-        with(binding) {
-            vkLogoImageButton.setOnClickListener {
-                startVk(clientVkLinkEt.text.toString().trim())
-            }
-
-            telegramLogoImageButton.setOnClickListener {
-                startTelegram(clientTelegramLinkEt.text.toString().trim())
-            }
-
-            instagramLogoImageButton.setOnClickListener {
-                startInstagram(clientInstagramLinkEt.text.toString().trim())
-            }
-
-            whatsappLogoImageButton.setOnClickListener {
-                startWhatsapp(clientWhatsappLinkEt.text.toString().trim())
-            }
-        }
-    }
-
     private fun startVk(uri: String) {
-        val uri = uri.replace("https://vk.com/", "")
-        try {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://vk.com/$uri"))
-            requireContext().startActivity(intent)
-        } catch (e: Exception) {
-            try {
-                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://vk.com/$uri"))
-                requireContext().startActivity(browserIntent)
-            } catch (e: Exception) {
-                Toast.makeText(
-                    requireContext(),
-                    getString(R.string.unknown_error),
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-        }
+        appointmentViewModel.startVk(uri)
     }
 
     private fun startTelegram(uri: String) {
-        val uri = uri.replace("https://t.me/", "")
-        try {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("tg://resolve?domain=$uri"))
-            requireContext().startActivity(intent)
-        } catch (e: Exception) {
-            try {
-                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://t.me/$uri"))
-                requireContext().startActivity(browserIntent)
-            } catch (e: Exception) {
-                Toast.makeText(
-                    requireContext(),
-                    getString(R.string.unknown_error),
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-        }
+        appointmentViewModel.startTelegram(uri)
     }
 
     private fun startInstagram(uri: String) {
-        val regex = Regex("https:\\/\\/instagram\\.com\\/([^?\\/]+)(?:\\?igshid=.*)?|([\\w.-]+)")
-        val matchResult = regex.find(uri)
-        var username = matchResult?.groupValues?.getOrNull(1)
-        if (username == "") {
-            username = matchResult?.groupValues?.getOrNull(2)
-        }
-
-        try {
-            val intent =
-                Intent(Intent.ACTION_VIEW, Uri.parse("http://instagram.com/_u/$username"))
-            intent.setPackage("com.instagram.android")
-            requireContext().startActivity(intent)
-        } catch (e: Exception) {
-            try {
-                val browserIntent =
-                    Intent(Intent.ACTION_VIEW, Uri.parse("https://www.instagram.com/$username"))
-                requireContext().startActivity(browserIntent)
-            } catch (e: Exception) {
-                Toast.makeText(
-                    requireContext(),
-                    getString(R.string.unknown_error),
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-        }
+        appointmentViewModel.startInstagram(uri)
     }
 
     private fun startWhatsapp(uri: String) {
-        try {
-            val intent =
-                Intent(Intent.ACTION_VIEW, Uri.parse("https://api.whatsapp.com/send?phone=$uri"))
-            requireContext().startActivity(intent)
-        } catch (e: Exception) {
-            try {
-                val browserIntent = Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse("https://web.whatsapp.com/send?phone=$uri")
-                )
-                requireContext().startActivity(browserIntent)
-            } catch (e: Exception) {
-                Toast.makeText(
-                    requireContext(),
-                    getString(R.string.unknown_error),
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-        }
+        appointmentViewModel.startWhatsApp(uri)
+    }
+
+    private fun startPhone(phoneNum: String) {
+        appointmentViewModel.startPhone(phoneNum)
     }
 }

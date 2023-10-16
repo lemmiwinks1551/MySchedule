@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.projectnailsschedule.data.repository.ScheduleRepositoryImpl
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.UpdateAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.SaveAppointmentUseCase
+import com.example.projectnailsschedule.domain.usecase.socUC.*
 
 class AppointmentViewModelFactory(context: Context?) : ViewModelProvider.Factory {
     private val scheduleRepositoryImpl = ScheduleRepositoryImpl(context = context!!)
@@ -16,10 +17,21 @@ class AppointmentViewModelFactory(context: Context?) : ViewModelProvider.Factory
     private val editAppointmentUseCase =
         UpdateAppointmentUseCase(scheduleRepository = scheduleRepositoryImpl)
 
+    private var startVkUc = StartVkUc(context!!)
+    private var startTelegramUc = StartTelegramUc(context!!)
+    private var startInstagramUc = StartInstagramUc(context!!)
+    private var startWhatsAppUc = StartWhatsAppUc(context!!)
+    private var startPhoneUc = StartPhoneUc(context!!)
+
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return AppointmentViewModel(
             saveAppointmentUseCase = saveAppointmentUseCase,
-            editAppointmentUseCase = editAppointmentUseCase
+            editAppointmentUseCase = editAppointmentUseCase,
+            startVkUc = startVkUc,
+            startTelegramUc = startTelegramUc,
+            startInstagramUc = startInstagramUc,
+            startWhatsAppUc = startWhatsAppUc,
+            startPhoneUc = startPhoneUc
         ) as T
     }
 }

@@ -40,7 +40,7 @@ class SelectClientRVAdapter(
 
     override fun onBindViewHolder(holder: SelectClientRVViewHolder, position: Int) {
         inflateViews(holder, position)
-        setClickListeners(holder, position)
+        initClickListeners(holder)
     }
 
     private fun inflateViews(holder: SelectClientRVViewHolder, position: Int) {
@@ -57,17 +57,7 @@ class SelectClientRVAdapter(
         hideEmptyViews(holder, position)
     }
 
-    private fun setClickListeners(holder: SelectClientRVViewHolder, position: Int) {
-        with(clientsList[position]) {
-            holder.callClientButton.setOnClickListener {
-                selectClientViewModel.startPhone(phone!!)
-            }
-        }
-
-        initSocClickListeners(holder)
-    }
-
-    private fun initSocClickListeners(holder: SelectClientRVViewHolder) {
+    private fun initClickListeners(holder: SelectClientRVViewHolder) {
         with(holder) {
             vkImageButton.setOnClickListener {
                 startVk(holder.vk.text.toString().trim())
@@ -83,6 +73,10 @@ class SelectClientRVAdapter(
 
             whatsappImageButton.setOnClickListener {
                 startWhatsapp(holder.whatsapp.text.toString().trim())
+            }
+
+            callClientButton.setOnClickListener {
+                startPhone(holder.phone.text.toString())
             }
         }
     }
@@ -101,6 +95,10 @@ class SelectClientRVAdapter(
 
     private fun startWhatsapp(uri: String) {
         selectClientViewModel.startWhatsApp(uri)
+    }
+
+    private fun startPhone(phoneNum: String) {
+        selectClientViewModel.startPhone(phoneNum)
     }
 
     private fun hideEmptyViews(holder: SelectClientRVViewHolder, position: Int) {
