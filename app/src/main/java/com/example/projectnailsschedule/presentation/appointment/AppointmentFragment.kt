@@ -126,6 +126,11 @@ class AppointmentFragment : Fragment() {
                 setTimePicker()
             }
 
+            selectClientButton.setOnClickListener {
+                val dialogFragment = SelectClientFragment()
+                dialogFragment.show(parentFragmentManager, "SelectClientFragment")
+            }
+
             procedureSelectButton.setOnClickListener {
                 val dialogFragment = SelectProcedureFragment()
                 dialogFragment.show(parentFragmentManager, "SelectProcedureFragment")
@@ -186,7 +191,7 @@ class AppointmentFragment : Fragment() {
                 notes = notesEt.text.toString(),
                 deleted = false
             )
-            appointmentViewModel?.createAppointment(appointmentModelDb)
+            appointmentViewModel.createAppointment(appointmentModelDb)
 
             val toast: Toast = Toast.makeText(
                 context,
@@ -221,7 +226,7 @@ class AppointmentFragment : Fragment() {
             )
 
             // send to AppointmentViewModel
-            appointmentViewModel?.editAppointment(appointmentModelDb)
+            appointmentViewModel.editAppointment(appointmentModelDb)
 
             Toast.makeText(context, getString(R.string.toast_edited), Toast.LENGTH_LONG).show()
 
