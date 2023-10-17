@@ -35,10 +35,7 @@ class CalendarViewModelFactory(context: Context?) : ViewModelProvider.Factory {
         return CalendarViewModel(
             loadShortDateUseCase,
             getDateAppointmentsUseCase,
-            setSelectedMonthUc,
-            getSelectedMonthUc,
-            setSelectedDateUc,
-            getSelectedDateUc
+            setSelectedMonthUc
         ) as T
     }
 }

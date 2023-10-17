@@ -13,10 +13,7 @@ import java.time.LocalDate
 class CalendarViewModel(
     private val loadShortDateUseCase: LoadShortDateUseCase,
     private var getDateAppointmentsUseCase: GetDateAppointmentsUseCase,
-    private var setSelectedMonthUc: SetSelectedMonthUc,
-    private var getSelectedMonthUc: GetSelectedMonthUc,
-    private var setSelectedDateUc: SetSelectedDateUc,
-    private var getSelectedDateUc: GetSelectedDateUc
+    private var setSelectedMonthUc: SetSelectedMonthUc
 ) : ViewModel() {
 
     private val log = this::class.simpleName

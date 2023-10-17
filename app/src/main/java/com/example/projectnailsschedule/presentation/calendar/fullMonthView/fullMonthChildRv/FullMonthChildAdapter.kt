@@ -1,6 +1,5 @@
 package com.example.projectnailsschedule.presentation.calendar.fullMonthView.fullMonthChildRv
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +12,6 @@ import com.example.projectnailsschedule.presentation.calendar.fullMonthView.Full
 
 class FullMonthChildAdapter(
     val appointmentsList: MutableList<AppointmentModelDb>,
-    private val context: Context,
     private val navController: NavController,
     private val fullMonthViewViewModel: FullMonthViewViewModel
 ) : RecyclerView.Adapter<FullMonthChildViewHolder>() {
@@ -119,7 +117,6 @@ class FullMonthChildAdapter(
             }
         }
     }
-
 
     private fun startVk(uri: String) {
         fullMonthViewViewModel.startVk(uri)

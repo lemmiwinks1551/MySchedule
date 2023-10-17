@@ -103,7 +103,6 @@ class FullMonthViewRVAdapter(
             fullMonthChildAdapter =
                 FullMonthChildAdapter(
                     parentItem.appointmentsList,
-                    context,
                     navController,
                     fullMonthViewViewModel
                 )
