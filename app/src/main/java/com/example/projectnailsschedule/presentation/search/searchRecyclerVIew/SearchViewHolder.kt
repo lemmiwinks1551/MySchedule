@@ -65,12 +65,12 @@ class SearchViewHolder internal constructor(
             instagramImageButton = findViewById(R.id.instagram_logo_imageButton_date)
             whatsappImageButton = findViewById(R.id.whatsapp_logo_imageButton_date)
 
-            procedureCl = findViewById(R.id.client_procedure_cl_date_appointment_rv_item)
-            phoneCl = findViewById(R.id.client_phone_cl_date_appointment_rv_item)
-            vkCl = findViewById(R.id.client_vk_cl_date_appointment_rv_item)
-            telegramCl = findViewById(R.id.client_telegram_cl_date_appointment_rv_item)
-            instagramCl = findViewById(R.id.client_instagram_cl_date_appointment_rv_item)
-            whatsAppCl = findViewById(R.id.client_whatsapp_cl_date_appointment_rv_item)
+            procedureCl = findViewById(R.id.client_phone_appointment_month_rv_child)
+            phoneCl = findViewById(R.id.client_vk_appointment_month_rv_child)
+            vkCl = findViewById(R.id.client_telegram_appointment_month_rv_child)
+            telegramCl = findViewById(R.id.client_instagram_appointment_month_rv_child)
+            instagramCl = findViewById(R.id.client_whatsapp_appointment_month_rv_child)
+            whatsAppCl = findViewById(R.id.client_notes_appointment_month_rv_child)
             notesCl = findViewById(R.id.client_notes_cl_date_appointment_rv_item)
         }
         itemView.setOnClickListener {

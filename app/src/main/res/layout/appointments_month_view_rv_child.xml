@@ -90,12 +90,12 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/client_name_cl_date_appointment_rv_item"
+        android:id="@+id/client_procedure_appointment_month_rv_child"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/calendar_recycler_view_borders"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/client_procedure_cl_date_appointment_rv_item"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@id/client_phone_appointment_month_rv_child"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/client_time_cl_date_appointment_rv_item">
@@ -125,15 +125,15 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/client_procedure_cl_date_appointment_rv_item"
+        android:id="@+id/client_phone_appointment_month_rv_child"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/calendar_recycler_view_borders"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/client_phone_cl_date_appointment_rv_item"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/client_vk_appointment_month_rv_child"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/client_name_cl_date_appointment_rv_item">
+        app:layout_constraintTop_toBottomOf="@id/client_procedure_appointment_month_rv_child">
 
         <TextView
             android:id="@+id/phone_value_child"
@@ -160,14 +160,14 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/client_phone_cl_date_appointment_rv_item"
+        android:id="@+id/client_vk_appointment_month_rv_child"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/calendar_recycler_view_borders"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/client_procedure_cl_date_appointment_rv_item">
+        app:layout_constraintTop_toBottomOf="@id/client_phone_appointment_month_rv_child">
 
         <TextView
             android:id="@+id/client_vk_link_tv_child"
@@ -176,7 +176,7 @@
             android:layout_margin="2dp"
             android:text="@string/vk_text"
             android:textSize="20sp"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/vk_logo_imageButton_child"
             app:layout_constraintHorizontal_weight="4"
@@ -196,14 +196,14 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/client_vk_cl_date_appointment_rv_item"
+        android:id="@+id/client_telegram_appointment_month_rv_child"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/calendar_recycler_view_borders"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/client_phone_cl_date_appointment_rv_item">
+        app:layout_constraintTop_toBottomOf="@id/client_vk_appointment_month_rv_child">
 
         <TextView
             android:id="@+id/client_telegram_link_tv_child"
@@ -232,14 +232,14 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/client_telegram_cl_date_appointment_rv_item"
+        android:id="@+id/client_instagram_appointment_month_rv_child"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/calendar_recycler_view_borders"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/client_vk_cl_date_appointment_rv_item">
+        app:layout_constraintTop_toBottomOf="@id/client_telegram_appointment_month_rv_child">
 
         <TextView
             android:id="@+id/client_instagram_link_tv_child"
@@ -267,14 +267,14 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/client_instagram_cl_date_appointment_rv_item"
+        android:id="@+id/client_whatsapp_appointment_month_rv_child"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/calendar_recycler_view_borders"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/client_telegram_cl_date_appointment_rv_item">
+        app:layout_constraintTop_toBottomOf="@id/client_instagram_appointment_month_rv_child">
 
         <TextView
             android:id="@+id/client_whatsapp_link_tv_child"
@@ -302,15 +302,15 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/client_whatsapp_cl_date_appointment_rv_item"
+        android:id="@+id/client_notes_appointment_month_rv_child"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/calendar_recycler_view_borders"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/client_instagram_cl_date_appointment_rv_item">
+        app:layout_constraintTop_toBottomOf="@id/client_whatsapp_appointment_month_rv_child">
 
         <TextView
             android:id="@+id/notes_value_child"
