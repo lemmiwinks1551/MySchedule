@@ -5,7 +5,6 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -108,8 +107,7 @@ class SearchFragment : Fragment() {
         searchRvAdapter = SearchRvAdapter(
             appointmentCount = appointmentsList.size,
             appointmentsList = appointmentsList,
-            searchViewModel = searchViewModel,
-            context = requireContext()
+            searchViewModel = searchViewModel
         )
 
         val layoutManager: RecyclerView.LayoutManager =
@@ -129,6 +127,10 @@ class SearchFragment : Fragment() {
                     time = appointmentList?.get(position)?.time,
                     procedure = appointmentList?.get(position)?.procedure,
                     phone = appointmentList?.get(position)?.phone,
+                    telegram = appointmentList?.get(position)?.telegram,
+                    instagram = appointmentList?.get(position)?.instagram,
+                    vk = appointmentList?.get(position)?.vk,
+                    whatsapp = appointmentList?.get(position)?.whatsapp,
                     notes = appointmentList?.get(position)?.notes,
                     deleted = appointmentList?.get(position)!!.deleted
                 )

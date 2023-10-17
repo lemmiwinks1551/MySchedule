@@ -144,6 +144,10 @@ class Util {
                 time = "00:00",
                 procedure = generateRandomProcedure(),
                 phone = generateRandomRussianPhoneNumber(),
+                telegram = generateRandomRussianPhoneNumber(),
+                instagram = generateRandomInstagramLink(),
+                vk = generateRandomVkLink(),
+                whatsapp = generateRandomRussianPhoneNumber(),
                 notes = "Заметка",
                 deleted = false
             )

@@ -102,36 +102,40 @@ class ClientsAdapter(
     }
 
     private fun hideEmptyViews(holder: ClientsViewHolder, position: Int) {
-        if (clientsList[position].name.isNullOrEmpty()) {
-            holder.clientNameCl.visibility = View.GONE
-        }
-        if (clientsList[position].phone.isNullOrEmpty()) {
-            holder.clientPhoneCl.visibility = View.GONE
-        }
-        if (clientsList[position].vk.isNullOrEmpty()) {
-            holder.clientVkCl.visibility = View.GONE
-        }
-        if (clientsList[position].telegram.isNullOrEmpty()) {
-            holder.clientTelegramCl.visibility = View.GONE
-        }
-        if (clientsList[position].instagram.isNullOrEmpty()) {
-            holder.clientInstagramCl.visibility = View.GONE
-        }
-        if (clientsList[position].whatsapp.isNullOrEmpty()) {
-            holder.clientWhatsappCl.visibility = View.GONE
-        }
-        if (clientsList[position].notes.isNullOrEmpty()) {
-            holder.clientNotesCl.visibility = View.GONE
+        with(clientsList[position]) {
+            if (name.isNullOrEmpty()) {
+                holder.clientNameCl.visibility = View.GONE
+            }
+            if (phone.isNullOrEmpty()) {
+                holder.clientPhoneCl.visibility = View.GONE
+            }
+            if (vk.isNullOrEmpty()) {
+                holder.clientVkCl.visibility = View.GONE
+            }
+            if (telegram.isNullOrEmpty()) {
+                holder.clientTelegramCl.visibility = View.GONE
+            }
+            if (instagram.isNullOrEmpty()) {
+                holder.clientInstagramCl.visibility = View.GONE
+            }
+            if (whatsapp.isNullOrEmpty()) {
+                holder.clientWhatsappCl.visibility = View.GONE
+            }
+            if (notes.isNullOrEmpty()) {
+                holder.clientNotesCl.visibility = View.GONE
+            }
         }
     }
 
     private fun clearViews(holder: ClientsViewHolder) {
-        holder.clientNameCl.visibility = View.VISIBLE
-        holder.clientPhoneCl.visibility = View.VISIBLE
-        holder.clientVkCl.visibility = View.VISIBLE
-        holder.clientTelegramCl.visibility = View.VISIBLE
-        holder.clientInstagramCl.visibility = View.VISIBLE
-        holder.clientWhatsappCl.visibility = View.VISIBLE
-        holder.clientNotesCl.visibility = View.VISIBLE
+        with(holder) {
+            clientNameCl.visibility = View.VISIBLE
+            clientPhoneCl.visibility = View.VISIBLE
+            clientVkCl.visibility = View.VISIBLE
+            clientTelegramCl.visibility = View.VISIBLE
+            clientInstagramCl.visibility = View.VISIBLE
+            clientWhatsappCl.visibility = View.VISIBLE
+            clientNotesCl.visibility = View.VISIBLE
+        }
     }
 }

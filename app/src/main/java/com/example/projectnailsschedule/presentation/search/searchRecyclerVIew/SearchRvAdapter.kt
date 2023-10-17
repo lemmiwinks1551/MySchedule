@@ -1,8 +1,5 @@
 package com.example.projectnailsschedule.presentation.search.searchRecyclerVIew
 
-import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,11 +11,9 @@ import com.example.projectnailsschedule.presentation.search.SearchViewModel
 internal class SearchRvAdapter(
     private var appointmentCount: Int,
     private var appointmentsList: List<AppointmentModelDb>,
-    private val searchViewModel: SearchViewModel,
-    private val context: Context
+    private val searchViewModel: SearchViewModel
 ) :
-    RecyclerView.Adapter<SearchViewHolder>()
-{
+    RecyclerView.Adapter<SearchViewHolder>() {
     val log = this::class.simpleName
 
     private lateinit var mListener: OnItemClickListener
@@ -65,6 +60,10 @@ internal class SearchRvAdapter(
         }
 
         initClickListeners(holder)
+
+        clearViews(holder)
+
+        hideEmptyViews(holder, holder.adapterPosition)
     }
 
     override fun getItemCount(): Int {
@@ -72,6 +71,44 @@ internal class SearchRvAdapter(
         searchViewModel.appointmentsTotalCount.value = appointmentCount
         searchViewModel.getAllAppointmentsLiveData()
         return appointmentCount
+    }
+
+    private fun hideEmptyViews(holder: SearchViewHolder, position: Int) {
+        with(appointmentsList[position]) {
+            if (procedure.isNullOrEmpty()) {
+                holder.procedureCl.visibility = View.GONE
+            }
+            if (phone.isNullOrEmpty()) {
+                holder.phoneCl.visibility = View.GONE
+            }
+            if (vk.isNullOrEmpty()) {
+                holder.vkCl.visibility = View.GONE
+            }
+            if (telegram.isNullOrEmpty()) {
+                holder.telegramCl.visibility = View.GONE
+            }
+            if (instagram.isNullOrEmpty()) {
+                holder.instagramCl.visibility = View.GONE
+            }
+            if (whatsapp.isNullOrEmpty()) {
+                holder.whatsAppCl.visibility = View.GONE
+            }
+            if (notes.isNullOrEmpty()) {
+                holder.notesCl.visibility = View.GONE
+            }
+        }
+    }
+
+    private fun clearViews(holder: SearchViewHolder) {
+        with(holder) {
+            procedureCl.visibility = View.VISIBLE
+            phoneCl.visibility = View.VISIBLE
+            vkCl.visibility = View.VISIBLE
+            telegramCl.visibility = View.VISIBLE
+            instagramCl.visibility = View.VISIBLE
+            whatsAppCl.visibility = View.VISIBLE
+            notesCl.visibility = View.VISIBLE
+        }
     }
 
     private fun initClickListeners(holder: SearchViewHolder) {
