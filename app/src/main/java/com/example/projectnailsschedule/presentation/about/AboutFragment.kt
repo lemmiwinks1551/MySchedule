@@ -11,6 +11,7 @@ import com.example.projectnailsschedule.BuildConfig
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentAboutBinding
 import com.example.projectnailsschedule.util.Util
+import kotlinx.coroutines.runBlocking
 
 class AboutFragment : Fragment() {
 
@@ -33,10 +34,7 @@ class AboutFragment : Fragment() {
 
         setVersionTextView()
 
-        /** for test only !!!
-         * add fake appointments */
-        //Util().addTestData(requireContext())
-        //Util().createTestClients(requireContext())
+        //addTestData()
 
         return binding.root
     }
@@ -54,5 +52,15 @@ class AboutFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun addTestData() {
+        /** for test only !!!
+         * add fake appointments */
+        Util().addTestData(requireContext())
+        Util().createTestClients(requireContext())
+        runBlocking {
+            Util().createTestProcedures(requireContext())
+        }
     }
 }

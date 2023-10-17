@@ -11,9 +11,13 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.data.storage.ClientsDb
+import com.example.projectnailsschedule.data.storage.ProceduresDb
 import com.example.projectnailsschedule.data.storage.ScheduleDb
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
 import com.example.projectnailsschedule.domain.models.ClientModelDb
+import com.example.projectnailsschedule.domain.models.ProcedureModelDb
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.text.SimpleDateFormat
 import java.time.LocalDate
@@ -176,6 +180,39 @@ class Util {
         thread.start()
         thread.join()
         clientsDb.close()
+    }
+
+    suspend fun createTestProcedures(context: Context) = withContext(Dispatchers.IO) {
+        val proceduresDb = ProceduresDb.getDb(context)
+
+        repeat(25) {
+            val testProcedure = ProcedureModelDb(
+                _id = null,
+                procedureName = generateRandomProcedure(),
+                procedurePrice = kotlin.random.Random.nextInt(500, 3001).toString(),
+                procedureNotes = generateRandomNote()
+            )
+            proceduresDb.getDao().insert(testProcedure)
+        }
+        proceduresDb.close()
+    }
+
+    private fun generateRandomNote(): String {
+        val quotes = listOf(
+            "Всё идёт по плану.",
+            "Время лечит раны.",
+            "Любовь спасёт мир.",
+            "Человек — король природы.",
+            "Береги платье снову, а честь смолоду.",
+            "Счастливое детство — залог счастья в будущем.",
+            "Терпение и труд всё перетрут.",
+            "В каждой шутке есть доля правды.",
+            "Друзья познаются в беде.",
+            "Жизнь прекрасна во всех своих проявлениях."
+        )
+
+        return quotes.random()
+
     }
 
     private fun generateRandomName(): String {

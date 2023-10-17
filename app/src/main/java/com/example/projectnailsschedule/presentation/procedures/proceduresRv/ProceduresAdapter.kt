@@ -1,6 +1,5 @@
 package com.example.projectnailsschedule.presentation.procedures.proceduresRv
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,8 +10,7 @@ import com.example.projectnailsschedule.presentation.clients.clientsRecyclerView
 
 class ProceduresAdapter(
     private var proceduresCount: Int,
-    private var proceduresList: List<ProcedureModelDb>,
-    private var context: Context
+    private var proceduresList: List<ProcedureModelDb>
 ) : RecyclerView.Adapter<ProceduresViewHolder>() {
 
     private lateinit var mListener: OnItemClickListener
@@ -38,6 +36,7 @@ class ProceduresAdapter(
     }
 
     override fun onBindViewHolder(holder: ProceduresViewHolder, position: Int) {
+        clearViews(holder)
         setTextViews(holder)
     }
 
@@ -52,14 +51,24 @@ class ProceduresAdapter(
     }
 
     private fun hideEmptyViews(holder: ProceduresViewHolder, position: Int) {
-        if (proceduresList[position].procedureName.isNullOrEmpty()) {
-            holder.procedureNameCl.visibility = View.GONE
+        with(proceduresList[position]) {
+            if (procedureName.isNullOrEmpty()) {
+                holder.procedureNameCl.visibility = View.GONE
+            }
+            if (procedurePrice.isNullOrEmpty()) {
+                holder.procedurePriceCl.visibility = View.GONE
+            }
+            if (procedureNotes.isNullOrEmpty()) {
+                holder.procedureNotesCl.visibility = View.GONE
+            }
         }
-        if (proceduresList[position].procedurePrice.isNullOrEmpty()) {
-            holder.procedurePriceCl.visibility = View.GONE
-        }
-        if (proceduresList[position].procedureNotes.isNullOrEmpty()) {
-            holder.procedureNotesCl.visibility = View.GONE
+    }
+
+    private fun clearViews(holder: ProceduresViewHolder) {
+        with(holder) {
+            procedureName.visibility = View.VISIBLE
+            procedurePrice.visibility = View.VISIBLE
+            procedureNotes.visibility = View.VISIBLE
         }
     }
 

@@ -115,8 +115,7 @@ class ProceduresFragment : Fragment() {
         // create adapter
         proceduresRVAdapter = ProceduresAdapter(
             proceduresCount = procedureModelDbList.size,
-            proceduresList = procedureModelDbList,
-            context = requireContext()
+            proceduresList = procedureModelDbList
         )
 
         val layoutManager: RecyclerView.LayoutManager =
