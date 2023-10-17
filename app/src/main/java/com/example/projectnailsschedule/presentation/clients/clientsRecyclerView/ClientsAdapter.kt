@@ -38,6 +38,7 @@ class ClientsAdapter(
     }
 
     override fun onBindViewHolder(holder: ClientsViewHolder, position: Int) {
+        clearViews(holder)
         setTextViews(holder)
         setClickListeners(holder)
     }
@@ -122,5 +123,15 @@ class ClientsAdapter(
         if (clientsList[position].notes.isNullOrEmpty()) {
             holder.clientNotesCl.visibility = View.GONE
         }
+    }
+
+    private fun clearViews(holder: ClientsViewHolder) {
+        holder.clientNameCl.visibility = View.VISIBLE
+        holder.clientPhoneCl.visibility = View.VISIBLE
+        holder.clientVkCl.visibility = View.VISIBLE
+        holder.clientTelegramCl.visibility = View.VISIBLE
+        holder.clientInstagramCl.visibility = View.VISIBLE
+        holder.clientWhatsappCl.visibility = View.VISIBLE
+        holder.clientNotesCl.visibility = View.VISIBLE
     }
 }
