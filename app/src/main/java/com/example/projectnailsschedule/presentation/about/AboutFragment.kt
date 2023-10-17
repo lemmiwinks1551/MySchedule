@@ -35,7 +35,8 @@ class AboutFragment : Fragment() {
 
         /** for test only !!!
          * add fake appointments */
-        // Util().addTestData(requireContext())
+        //Util().addTestData(requireContext())
+        //Util().createTestClients(requireContext())
 
         return binding.root
     }

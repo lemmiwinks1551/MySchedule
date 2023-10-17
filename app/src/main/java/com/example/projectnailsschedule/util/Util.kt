@@ -10,8 +10,10 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import com.example.projectnailsschedule.R
+import com.example.projectnailsschedule.data.storage.ClientsDb
 import com.example.projectnailsschedule.data.storage.ScheduleDb
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
+import com.example.projectnailsschedule.domain.models.ClientModelDb
 import java.io.File
 import java.text.SimpleDateFormat
 import java.time.LocalDate
@@ -149,6 +151,29 @@ class Util {
         }
     }
 
+    fun createTestClients(context: Context) {
+        val clientsDb = ClientsDb.getDb(context)
+
+        val thread = Thread {
+            repeat(50) {
+                val testClient = ClientModelDb(
+                    _id = null,
+                    name = generateRandomName(),
+                    phone = generateRandomRussianPhoneNumber(),
+                    telegram = generateRandomRussianPhoneNumber(),
+                    instagram = generateRandomInstagramLink(),
+                    vk = generateRandomVkLink(),
+                    whatsapp = generateRandomRussianPhoneNumber(),
+                    notes = null
+                )
+                clientsDb.getDao().insert(testClient)
+            }
+        }
+        thread.start()
+        thread.join()
+        clientsDb.close()
+    }
+
     private fun generateRandomName(): String {
         val names = listOf(
             "Alice",
@@ -192,6 +217,36 @@ class Util {
         return "$prefix$randomNumbers$randomPart1$randomPart2$randomPart3"
     }
 
+    private fun generateRandomInstagramLink(): String {
+        val characters = "abcdefghijklmnopqrstuvwxyz1234567890"
+        val linkLength = 11  // Длина случайной ссылки в Instagram
+
+        val random = Random()
+        val linkBuilder = StringBuilder(linkLength)
+
+        for (i in 0 until linkLength) {
+            val randomIndex = random.nextInt(characters.length)
+            linkBuilder.append(characters[randomIndex])
+        }
+
+        return "https://www.instagram.com/$linkBuilder/"
+    }
+
+    private fun generateRandomVkLink(): String {
+        val characters = "abcdefghijklmnopqrstuvwxyz1234567890"
+        val linkLength = 10  // Длина случайной ссылки в VK
+
+        val random = Random()
+        val linkBuilder = StringBuilder(linkLength)
+
+        for (i in 0 until linkLength) {
+            val randomIndex = random.nextInt(characters.length)
+            linkBuilder.append(characters[randomIndex])
+        }
+
+        return "https://vk.com/$linkBuilder"
+    }
+
     private fun saveAppointment(appointmentModelDb: AppointmentModelDb, context: Context): Boolean {
         // Save appointment in database
         val scheduleDb = ScheduleDb.getDb(context = context)
@@ -201,6 +256,7 @@ class Util {
         thread.start()
         thread.join()
         Log.e(log, "Appointment $appointmentModelDb saved")
+        scheduleDb.close()
         return true
     }
 
