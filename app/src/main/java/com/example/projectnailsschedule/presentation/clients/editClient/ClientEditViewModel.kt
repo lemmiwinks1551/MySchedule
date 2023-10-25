@@ -2,17 +2,16 @@ package com.example.projectnailsschedule.presentation.clients.editClient
 
 import androidx.lifecycle.ViewModel
 import com.example.projectnailsschedule.domain.models.ClientModelDb
-import com.example.projectnailsschedule.domain.usecase.clientsUC.DeleteClientUseCase
-import com.example.projectnailsschedule.domain.usecase.clientsUC.SaveClientUseCase
+import com.example.projectnailsschedule.domain.usecase.clientsUC.InsertClientUseCase
 import com.example.projectnailsschedule.domain.usecase.clientsUC.UpdateClientUseCase
 
 class ClientEditViewModel(
-    private val saveClientUseCase: SaveClientUseCase,
+    private val insertClientUseCase: InsertClientUseCase,
     private val updateClientUseCase: UpdateClientUseCase
 ) : ViewModel() {
 
     fun saveClient(clientModelDb: ClientModelDb) {
-        saveClientUseCase.execute(clientModelDb)
+        insertClientUseCase.execute(clientModelDb)
     }
 
     fun updateClient(clientModelDb: ClientModelDb) {

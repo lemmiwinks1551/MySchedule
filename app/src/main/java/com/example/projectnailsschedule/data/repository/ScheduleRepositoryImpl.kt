@@ -14,14 +14,14 @@ class ScheduleRepositoryImpl(context: Context) : ScheduleRepository {
     private var scheduleDb = ScheduleDb.getDb(context)
     private var log = this::class.simpleName
 
-    override fun saveAppointment(appointmentModelDb: AppointmentModelDb): Boolean {
+    override fun insertAppointment(appointmentModelDb: AppointmentModelDb): Boolean {
         // Save appointment in database
         val thread = Thread {
             scheduleDb.getDao().insert(appointmentModelDb)
         }
         thread.start()
         thread.join()
-        Log.e(log, "Appointment $appointmentModelDb saved")
+        Log.e(log, "Appointment $appointmentModelDb inserted")
         return true
     }
 

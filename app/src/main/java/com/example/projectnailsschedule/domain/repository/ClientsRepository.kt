@@ -5,7 +5,7 @@ import com.example.projectnailsschedule.domain.models.ClientModelDb
 
 interface ClientsRepository {
 
-    fun saveClient(clientModelDb: ClientModelDb): Boolean
+    fun insertClient(clientModelDb: ClientModelDb): Boolean
 
     fun updateClient(clientModelDb: ClientModelDb): Boolean
 

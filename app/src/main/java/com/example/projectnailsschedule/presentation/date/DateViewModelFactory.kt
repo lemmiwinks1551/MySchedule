@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.projectnailsschedule.data.repository.ScheduleRepositoryImpl
-import com.example.projectnailsschedule.domain.usecase.appointmentUC.SaveAppointmentUseCase
+import com.example.projectnailsschedule.domain.usecase.appointmentUC.InsertAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.dateUC.DeleteAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.dateUC.GetDateAppointmentsUseCase
 import com.example.projectnailsschedule.domain.usecase.socUC.*
@@ -22,7 +22,7 @@ class DateViewModelFactory(context: Context?) : ViewModelProvider.Factory {
         GetDateAppointmentsUseCase(scheduleRepository = scheduleRepositoryImpl)
 
     private var saveAppointmentsUseCase =
-        SaveAppointmentUseCase(scheduleRepository = scheduleRepositoryImpl)
+        InsertAppointmentUseCase(scheduleRepository = scheduleRepositoryImpl)
 
     private var startVkUc = StartVkUc(context!!)
     private var startTelegramUc = StartTelegramUc(context!!)
@@ -34,7 +34,7 @@ class DateViewModelFactory(context: Context?) : ViewModelProvider.Factory {
         return DateViewModel(
             deleteAppointmentUseCase = deleteAppointmentUseCase,
             getDateAppointmentsUseCase = getDateAppointmentsUseCase,
-            saveAppointmentUseCase = saveAppointmentsUseCase,
+            insertAppointmentUseCase = saveAppointmentsUseCase,
             startVkUc = startVkUc,
             startTelegramUc = startTelegramUc,
             startInstagramUc = startInstagramUc,

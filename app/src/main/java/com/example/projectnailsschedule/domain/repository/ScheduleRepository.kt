@@ -6,7 +6,7 @@ import com.example.projectnailsschedule.domain.models.DateParams
 
 interface ScheduleRepository {
 
-    fun saveAppointment(appointmentModelDb: AppointmentModelDb): Boolean
+    fun insertAppointment(appointmentModelDb: AppointmentModelDb): Boolean
 
     fun updateAppointment(appointmentModelDb: AppointmentModelDb): Boolean
 

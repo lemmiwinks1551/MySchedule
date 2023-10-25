@@ -12,14 +12,14 @@ class ClientRepositoryImpl(context: Context) : ClientsRepository {
     private var dbRoom = ClientsDb.getDb(context)
     private var log = this::class.simpleName
 
-    override fun saveClient(clientModelDb: ClientModelDb): Boolean {
+    override fun insertClient(clientModelDb: ClientModelDb): Boolean {
         // Save client in database
         val thread = Thread {
             dbRoom.getDao().insert(clientModelDb)
         }
         thread.start()
         thread.join()
-        Log.e(log, "Client $clientModelDb saved")
+        Log.e(log, "Client $clientModelDb inserted")
         return true
     }
 

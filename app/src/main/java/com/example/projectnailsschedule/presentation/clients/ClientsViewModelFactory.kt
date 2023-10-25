@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.projectnailsschedule.data.repository.ClientRepositoryImpl
 import com.example.projectnailsschedule.domain.usecase.clientsUC.DeleteClientUseCase
-import com.example.projectnailsschedule.domain.usecase.clientsUC.SaveClientUseCase
+import com.example.projectnailsschedule.domain.usecase.clientsUC.InsertClientUseCase
 import com.example.projectnailsschedule.domain.usecase.clientsUC.SearchClientUseCase
 import com.example.projectnailsschedule.domain.usecase.socUC.*
 
@@ -14,7 +14,7 @@ class ClientsViewModelFactory(context: Context?) : ViewModelProvider.Factory {
 
     private var searchClientUseCase = SearchClientUseCase(clientsRepository = clientsRepositoryImpl)
     private var deleteClientUseCase = DeleteClientUseCase(clientsRepository = clientsRepositoryImpl)
-    private var saveClientUseCase = SaveClientUseCase(clientsRepository = clientsRepositoryImpl)
+    private var insertClientUseCase = InsertClientUseCase(clientsRepository = clientsRepositoryImpl)
 
     private var startVkUc = StartVkUc(context!!)
     private var startTelegramUc = StartTelegramUc(context!!)
@@ -26,7 +26,7 @@ class ClientsViewModelFactory(context: Context?) : ViewModelProvider.Factory {
         return ClientsViewModel(
             searchClientUseCase = searchClientUseCase,
             deleteClientUseCase = deleteClientUseCase,
-            saveClientUseCase = saveClientUseCase,
+            insertClientUseCase = insertClientUseCase,
             startVkUc = startVkUc,
             startTelegramUc = startTelegramUc,
             startInstagramUc = startInstagramUc,

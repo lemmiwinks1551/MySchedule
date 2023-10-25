@@ -4,11 +4,11 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.UpdateAppointmentUseCase
-import com.example.projectnailsschedule.domain.usecase.appointmentUC.SaveAppointmentUseCase
+import com.example.projectnailsschedule.domain.usecase.appointmentUC.InsertAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.socUC.*
 
 class AppointmentViewModel(
-    private val saveAppointmentUseCase: SaveAppointmentUseCase,
+    private val insertAppointmentUseCase: InsertAppointmentUseCase,
     private val editAppointmentUseCase: UpdateAppointmentUseCase,
     private val startVkUc: StartVkUc,
     private val startTelegramUc: StartTelegramUc,
@@ -20,7 +20,7 @@ class AppointmentViewModel(
     val log = this::class.simpleName
 
     fun createAppointment(appointmentModelDb: AppointmentModelDb) {
-        saveAppointmentUseCase.execute(appointmentModelDb)
+        insertAppointmentUseCase.execute(appointmentModelDb)
         Log.e(log, "Appointment saved")
     }
 

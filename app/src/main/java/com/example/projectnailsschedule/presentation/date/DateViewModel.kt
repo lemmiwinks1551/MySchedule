@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
 import com.example.projectnailsschedule.domain.models.DateParams
-import com.example.projectnailsschedule.domain.usecase.appointmentUC.SaveAppointmentUseCase
+import com.example.projectnailsschedule.domain.usecase.appointmentUC.InsertAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.dateUC.DeleteAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.dateUC.GetDateAppointmentsUseCase
 import com.example.projectnailsschedule.domain.usecase.socUC.*
@@ -12,7 +12,7 @@ import com.example.projectnailsschedule.domain.usecase.socUC.*
 class DateViewModel(
     private var deleteAppointmentUseCase: DeleteAppointmentUseCase,
     private var getDateAppointmentsUseCase: GetDateAppointmentsUseCase,
-    private var saveAppointmentUseCase: SaveAppointmentUseCase,
+    private var insertAppointmentUseCase: InsertAppointmentUseCase,
     private val startVkUc: StartVkUc,
     private val startTelegramUc: StartTelegramUc,
     private val startInstagramUc: StartInstagramUc,
@@ -31,7 +31,7 @@ class DateViewModel(
         )
 
     fun saveAppointment(appointmentModelDb: AppointmentModelDb) {
-        saveAppointmentUseCase.execute(appointmentModelDb)
+        insertAppointmentUseCase.execute(appointmentModelDb)
         updateDateParams()
     }
 

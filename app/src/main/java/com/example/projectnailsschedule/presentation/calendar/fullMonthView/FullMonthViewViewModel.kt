@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
 import com.example.projectnailsschedule.domain.models.DateParams
-import com.example.projectnailsschedule.domain.usecase.appointmentUC.SaveAppointmentUseCase
+import com.example.projectnailsschedule.domain.usecase.appointmentUC.InsertAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.GetSelectedMonthUc
 import com.example.projectnailsschedule.domain.usecase.calendarUC.SetSelectedMonthUc
 import com.example.projectnailsschedule.domain.usecase.dateUC.DeleteAppointmentUseCase
@@ -14,7 +14,7 @@ import java.time.LocalDate
 
 class FullMonthViewViewModel(
     private var deleteAppointmentUseCase: DeleteAppointmentUseCase,
-    private var saveAppointmentUseCase: SaveAppointmentUseCase,
+    private var insertAppointmentUseCase: InsertAppointmentUseCase,
     private var getDateAppointmentsUseCase: GetDateAppointmentsUseCase,
     private var setSelectedMonthUc: SetSelectedMonthUc,
     private var getSelectedMonthUc: GetSelectedMonthUc,
@@ -38,7 +38,7 @@ class FullMonthViewViewModel(
     }
 
     fun saveAppointment(appointmentModelDb: AppointmentModelDb) {
-        saveAppointmentUseCase.execute(appointmentModelDb)
+        insertAppointmentUseCase.execute(appointmentModelDb)
     }
 
     fun getDateAppointments(dateParams: DateParams): MutableList<AppointmentModelDb> {

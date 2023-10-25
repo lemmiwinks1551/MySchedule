@@ -1,19 +1,17 @@
 package com.example.projectnailsschedule.presentation.clients
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import com.example.projectnailsschedule.domain.models.ClientModelDb
 import com.example.projectnailsschedule.domain.usecase.clientsUC.DeleteClientUseCase
-import com.example.projectnailsschedule.domain.usecase.clientsUC.SaveClientUseCase
+import com.example.projectnailsschedule.domain.usecase.clientsUC.InsertClientUseCase
 import com.example.projectnailsschedule.domain.usecase.clientsUC.SearchClientUseCase
 import com.example.projectnailsschedule.domain.usecase.socUC.*
 
 class ClientsViewModel(
     private val searchClientUseCase: SearchClientUseCase,
     private val deleteClientUseCase: DeleteClientUseCase,
-    private val saveClientUseCase: SaveClientUseCase,
+    private val insertClientUseCase: InsertClientUseCase,
     private val startVkUc: StartVkUc,
     private val startTelegramUc: StartTelegramUc,
     private val startInstagramUc: StartInstagramUc,
@@ -30,7 +28,7 @@ class ClientsViewModel(
     }
 
     fun saveClient(clientModelDb: ClientModelDb) {
-        saveClientUseCase.execute(clientModelDb)
+        insertClientUseCase.execute(clientModelDb)
     }
 
     fun startVk(uri: String) {

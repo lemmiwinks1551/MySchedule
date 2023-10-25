@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.projectnailsschedule.data.repository.ScheduleRepositoryImpl
-import com.example.projectnailsschedule.domain.usecase.appointmentUC.SaveAppointmentUseCase
+import com.example.projectnailsschedule.domain.usecase.appointmentUC.InsertAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.dateUC.DeleteAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.searchUC.GetAllAppointmentsLiveDataUseCase
 import com.example.projectnailsschedule.domain.usecase.searchUC.SearchAppointmentUC
@@ -17,7 +17,7 @@ class SearchViewModelFactory(context: Context?) : ViewModelProvider.Factory {
         DeleteAppointmentUseCase(scheduleRepository = scheduleRepositoryImpl)
 
     private var saveAppointmentsUseCase =
-        SaveAppointmentUseCase(scheduleRepository = scheduleRepositoryImpl)
+        InsertAppointmentUseCase(scheduleRepository = scheduleRepositoryImpl)
 
     private var searchAppointmentUC =
         SearchAppointmentUC(scheduleRepository = scheduleRepositoryImpl)
@@ -33,7 +33,7 @@ class SearchViewModelFactory(context: Context?) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return SearchViewModel(
-            saveAppointmentUseCase = saveAppointmentsUseCase,
+            insertAppointmentUseCase = saveAppointmentsUseCase,
             deleteAppointmentUseCase = deleteAppointmentUseCase,
             searchAppointmentUC = searchAppointmentUC,
             getAllAppointmentsLiveDataUseCase = getAllAppointmentsLiveDataUseCase,

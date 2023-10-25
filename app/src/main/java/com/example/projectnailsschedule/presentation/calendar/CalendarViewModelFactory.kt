@@ -22,15 +22,6 @@ class CalendarViewModelFactory(context: Context?) : ViewModelProvider.Factory {
     private var setSelectedMonthUc =
         SetSelectedMonthUc(settingsRepository = settingsRepositoryImpl)
 
-    private var getSelectedMonthUc =
-        GetSelectedMonthUc(settingsRepository = settingsRepositoryImpl)
-
-    private var setSelectedDateUc =
-        SetSelectedDateUc(settingsRepository = settingsRepositoryImpl)
-
-    private var getSelectedDateUc =
-        GetSelectedDateUc(settingsRepository = settingsRepositoryImpl)
-
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return CalendarViewModel(
             loadShortDateUseCase,
