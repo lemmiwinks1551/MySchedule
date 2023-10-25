@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.projectnailsschedule.data.repository.ScheduleRepositoryImpl
-import com.example.projectnailsschedule.domain.usecase.appointmentUC.GetAllAppointmentsUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.SaveAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.dateUC.DeleteAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.searchUC.GetAllAppointmentsLiveDataUseCase

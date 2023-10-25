@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.projectnailsschedule.data.repository.ScheduleRepositoryImpl
 import com.example.projectnailsschedule.data.repository.SettingsRepositoryImpl
-import com.example.projectnailsschedule.domain.usecase.appointmentUC.GetMonthAppointmentsUC
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.SaveAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.GetSelectedMonthUc
 import com.example.projectnailsschedule.domain.usecase.calendarUC.SetSelectedMonthUc
