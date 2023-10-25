@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-10-25T18:39:35.713Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36" etag="RDMa-5zgTENO5sgQnnia" version="22.0.7" type="github">
+<mxfile host="app.diagrams.net" modified="2023-10-25T18:40:08.558Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36" etag="wOft2f1XmTIom7DLB_J7" version="22.0.7" type="github">
   <diagram id="-fB192dCxYrc6BMrNV2s" name="Страница 1">
     <mxGraphModel dx="14021" dy="5764" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -699,7 +699,7 @@
         <mxCell id="r7-e_KJdZXoIzfTeK7qY-81" value="/" style="swimlane;startSize=0;container=0;strokeWidth=3;" vertex="1" parent="1">
           <mxGeometry x="-138.5" y="1169" width="398" height="184.99999999999994" as="geometry" />
         </mxCell>
-        <mxCell id="r7-e_KJdZXoIzfTeK7qY-82" value="Schedule&lt;br&gt;repository - Interface" style="text;strokeColor=none;fillColor=none;html=1;fontSize=35;fontStyle=1;verticalAlign=middle;align=center;strokeWidth=3;container=0;" vertex="1" parent="r7-e_KJdZXoIzfTeK7qY-81">
+        <mxCell id="r7-e_KJdZXoIzfTeK7qY-82" value="Clients&lt;br&gt;repository - Interface" style="text;strokeColor=none;fillColor=none;html=1;fontSize=35;fontStyle=1;verticalAlign=middle;align=center;strokeWidth=3;container=0;" vertex="1" parent="r7-e_KJdZXoIzfTeK7qY-81">
           <mxGeometry x="99.25" y="79.00199999999995" width="199.5" height="26.999999999999993" as="geometry" />
         </mxCell>
         <mxCell id="r7-e_KJdZXoIzfTeK7qY-83" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=3;startSize=10;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" source="r7-e_KJdZXoIzfTeK7qY-81" parent="1" target="r7-e_KJdZXoIzfTeK7qY-70">
