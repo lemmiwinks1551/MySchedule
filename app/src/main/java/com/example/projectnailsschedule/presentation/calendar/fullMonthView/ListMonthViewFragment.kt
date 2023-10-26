@@ -25,10 +25,10 @@ import java.time.LocalDate
 import java.time.ZoneId
 import java.util.*
 
-class FullMonthViewFragment : Fragment() {
+class ListMonthViewFragment : Fragment() {
     val log = this::class.simpleName
 
-    private var fullMonthViewVM: FullMonthViewViewModel? = null
+    private var fullMonthViewVM: ListMonthViewModel? = null
 
     private var _binding: FragmentFullMonthViewBinding? = null
     private var fullMonthAppointmentsRV: RecyclerView? = null
@@ -47,8 +47,8 @@ class FullMonthViewFragment : Fragment() {
         // create ViewModel object with Factory
         fullMonthViewVM = ViewModelProvider(
             this,
-            FullMonthViewModelFactory(context)
-        )[FullMonthViewViewModel::class.java]
+            ListMonthViewModelFactory(context)
+        )[ListMonthViewModel::class.java]
     }
 
     override fun onCreateView(

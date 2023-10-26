@@ -9,7 +9,7 @@ import com.example.projectnailsschedule.domain.usecase.socUC.*
 
 class AppointmentViewModel(
     private val insertAppointmentUseCase: InsertAppointmentUseCase,
-    private val editAppointmentUseCase: UpdateAppointmentUseCase,
+    private val updateAppointmentUseCase: UpdateAppointmentUseCase,
     private val startVkUc: StartVkUc,
     private val startTelegramUc: StartTelegramUc,
     private val startInstagramUc: StartInstagramUc,
@@ -25,7 +25,7 @@ class AppointmentViewModel(
     }
 
     fun editAppointment(appointmentModelDb: AppointmentModelDb) {
-        editAppointmentUseCase.execute(appointmentModelDb)
+        updateAppointmentUseCase.execute(appointmentModelDb)
         Log.e(log, "Appointment edited")
     }
 

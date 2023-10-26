@@ -131,7 +131,7 @@
     </fragment>
     <fragment
         android:id="@+id/fullMonthViewFragment"
-        android:name="com.example.projectnailsschedule.presentation.calendar.fullMonthView.FullMonthViewFragment"
+        android:name="com.example.projectnailsschedule.presentation.calendar.fullMonthView.ListMonthViewFragment"
         android:label="@string/menu_calendar">
         <action
             android:id="@+id/action_fullMonthViewFragment_to_nav_appointment"

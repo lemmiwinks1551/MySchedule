@@ -12,7 +12,7 @@ import com.example.projectnailsschedule.domain.usecase.dateUC.GetDateAppointment
 import com.example.projectnailsschedule.domain.usecase.socUC.*
 import java.time.LocalDate
 
-class FullMonthViewViewModel(
+class ListMonthViewModel(
     private var deleteAppointmentUseCase: DeleteAppointmentUseCase,
     private var insertAppointmentUseCase: InsertAppointmentUseCase,
     private var getDateAppointmentsUseCase: GetDateAppointmentsUseCase,

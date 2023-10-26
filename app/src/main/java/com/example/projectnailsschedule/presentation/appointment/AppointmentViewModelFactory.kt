@@ -26,7 +26,7 @@ class AppointmentViewModelFactory(context: Context?) : ViewModelProvider.Factory
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return AppointmentViewModel(
             insertAppointmentUseCase = insertAppointmentUseCase,
-            editAppointmentUseCase = editAppointmentUseCase,
+            updateAppointmentUseCase = editAppointmentUseCase,
             startVkUc = startVkUc,
             startTelegramUc = startTelegramUc,
             startInstagramUc = startInstagramUc,

@@ -12,7 +12,7 @@ import com.example.projectnailsschedule.domain.usecase.dateUC.DeleteAppointmentU
 import com.example.projectnailsschedule.domain.usecase.dateUC.GetDateAppointmentsUseCase
 import com.example.projectnailsschedule.domain.usecase.socUC.*
 
-class FullMonthViewModelFactory(context: Context?) : ViewModelProvider.Factory {
+class ListMonthViewModelFactory(context: Context?) : ViewModelProvider.Factory {
     private val scheduleRepositoryImpl = ScheduleRepositoryImpl(context = context!!)
     private val settingsRepositoryImpl = SettingsRepositoryImpl(context = context!!)
 
@@ -38,7 +38,7 @@ class FullMonthViewModelFactory(context: Context?) : ViewModelProvider.Factory {
     private var startPhoneUc = StartPhoneUc(context!!)
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return FullMonthViewViewModel(
+        return ListMonthViewModel(
             deleteAppointmentUseCase = deleteAppointmentUseCase,
             insertAppointmentUseCase = insertAppointmentUseCase,
             getDateAppointmentsUseCase = getDateAppointmentsUseCase,
