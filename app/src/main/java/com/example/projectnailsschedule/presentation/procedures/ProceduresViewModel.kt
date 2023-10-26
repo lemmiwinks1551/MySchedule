@@ -4,13 +4,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.example.projectnailsschedule.domain.models.ProcedureModelDb
 import com.example.projectnailsschedule.domain.usecase.proceduresUc.DeleteProcedureUseCase
-import com.example.projectnailsschedule.domain.usecase.proceduresUc.SaveProcedureUseCase
+import com.example.projectnailsschedule.domain.usecase.proceduresUc.InsertProcedureUseCase
 import com.example.projectnailsschedule.domain.usecase.proceduresUc.SearchProcedureUseCase
 
 class ProceduresViewModel(
     private val searchProcedureUseCase: SearchProcedureUseCase,
     private val deleteProcedureUseCase: DeleteProcedureUseCase,
-    private val saveProcedureUseCase: SaveProcedureUseCase
+    private val insertProcedureUseCase: InsertProcedureUseCase
 ) : ViewModel() {
 
     fun searchDatabase(searchQuery: String): LiveData<List<ProcedureModelDb>> {
@@ -22,7 +22,7 @@ class ProceduresViewModel(
     }
 
     suspend fun saveProcedure(procedureModelDb: ProcedureModelDb) {
-        saveProcedureUseCase.execute(procedureModelDb)
+        insertProcedureUseCase.execute(procedureModelDb)
     }
 
 }

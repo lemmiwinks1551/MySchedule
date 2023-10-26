@@ -1,4 +1,4 @@
-package com.example.projectnailsschedule.presentation.calendar.fullMonthView
+package com.example.projectnailsschedule.presentation.calendar.listMonthView
 
 import android.content.Context
 import androidx.lifecycle.ViewModel

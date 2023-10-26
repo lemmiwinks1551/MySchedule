@@ -1,4 +1,4 @@
-package com.example.projectnailsschedule.presentation.calendar.fullMonthView
+package com.example.projectnailsschedule.presentation.calendar.listMonthView
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView.SmoothScroller
 import com.example.projectnailsschedule.databinding.FragmentFullMonthViewBinding
 import com.example.projectnailsschedule.domain.models.DateParams
 import com.example.projectnailsschedule.domain.models.DateWeekAppModel
-import com.example.projectnailsschedule.presentation.calendar.fullMonthView.fullMonthViewRV.FullMonthViewRVAdapter
+import com.example.projectnailsschedule.presentation.calendar.listMonthView.fullMonthViewRV.FullMonthViewRVAdapter
 import com.example.projectnailsschedule.util.Util
 import com.example.projectnailsschedule.util.rustore.RuStoreAd
 import java.text.SimpleDateFormat

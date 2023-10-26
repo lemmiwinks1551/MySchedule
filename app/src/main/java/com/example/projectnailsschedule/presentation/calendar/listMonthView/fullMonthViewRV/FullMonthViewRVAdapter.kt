@@ -1,4 +1,4 @@
-package com.example.projectnailsschedule.presentation.calendar.fullMonthView.fullMonthViewRV
+package com.example.projectnailsschedule.presentation.calendar.listMonthView.fullMonthViewRV
 
 import android.content.Context
 import android.graphics.Canvas
@@ -18,9 +18,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
 import com.example.projectnailsschedule.domain.models.DateWeekAppModel
-import com.example.projectnailsschedule.presentation.calendar.fullMonthView.ListMonthViewModel
-import com.example.projectnailsschedule.presentation.calendar.fullMonthView.fullMonthChildRv.FullMonthChildAdapter
-import com.example.projectnailsschedule.presentation.calendar.fullMonthView.fullMonthChildRv.FullMonthChildViewHolder
+import com.example.projectnailsschedule.presentation.calendar.listMonthView.ListMonthViewModel
+import com.example.projectnailsschedule.presentation.calendar.listMonthView.fullMonthChildRv.FullMonthChildAdapter
+import com.example.projectnailsschedule.presentation.calendar.listMonthView.fullMonthChildRv.FullMonthChildViewHolder
 import com.example.projectnailsschedule.util.Util
 import com.google.android.material.snackbar.Snackbar
 import java.time.LocalDate

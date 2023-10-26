@@ -1,4 +1,4 @@
-package com.example.projectnailsschedule.presentation.calendar.fullMonthView.fullMonthChildRv
+package com.example.projectnailsschedule.presentation.calendar.listMonthView.fullMonthChildRv
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,7 +8,7 @@ import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
-import com.example.projectnailsschedule.presentation.calendar.fullMonthView.ListMonthViewModel
+import com.example.projectnailsschedule.presentation.calendar.listMonthView.ListMonthViewModel
 
 class FullMonthChildAdapter(
     val appointmentsList: MutableList<AppointmentModelDb>,

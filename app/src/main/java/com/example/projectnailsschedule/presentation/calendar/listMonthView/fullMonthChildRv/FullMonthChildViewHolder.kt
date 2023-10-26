@@ -1,4 +1,4 @@
-package com.example.projectnailsschedule.presentation.calendar.fullMonthView.fullMonthChildRv
+package com.example.projectnailsschedule.presentation.calendar.listMonthView.fullMonthChildRv
 
 import android.view.View
 import android.widget.ImageButton

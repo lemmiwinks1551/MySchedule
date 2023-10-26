@@ -11,7 +11,7 @@ class ProcedureRepositoryImpl(context: Context): ProcedureRepository {
     private var procedureDb = ProceduresDb.getDb(context)
     private var log = this::class.simpleName
 
-    override suspend fun saveProcedure(procedureModelDb: ProcedureModelDb) {
+    override suspend fun insertProcedure(procedureModelDb: ProcedureModelDb) {
         procedureDb.getDao().insert(procedureModelDb)
     }
 

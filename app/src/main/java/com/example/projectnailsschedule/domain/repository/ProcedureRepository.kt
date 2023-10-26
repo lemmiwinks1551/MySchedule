@@ -5,7 +5,7 @@ import com.example.projectnailsschedule.domain.models.ProcedureModelDb
 
 interface ProcedureRepository {
 
-    suspend fun saveProcedure(procedureModelDb: ProcedureModelDb)
+    suspend fun insertProcedure(procedureModelDb: ProcedureModelDb)
 
     suspend fun updateProcedure(procedureModelDb: ProcedureModelDb)
 

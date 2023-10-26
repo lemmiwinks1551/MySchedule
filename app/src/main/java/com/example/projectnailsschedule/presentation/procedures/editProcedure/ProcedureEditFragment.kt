@@ -109,7 +109,7 @@ class ProcedureEditFragment : Fragment() {
                 }
             } else {
                 lifecycleScope.launch {
-                    procedureEditViewModel.saveProcedure(procedureModelDb)
+                    procedureEditViewModel.insertProcedure(procedureModelDb)
                 }
             }
 
