@@ -22,3 +22,5 @@
   <img src="https://github.com/lemmiwinks1551/MySchedule/raw/v.7.1(26)/screenshots/3.png" width="300">
   <img src="https://github.com/lemmiwinks1551/MySchedule/raw/v.7.1(26)/screenshots/4.png" width="300">
 </div>
+
+[![Скачать из Google Play](https://github.com/lemmiwinks1551/MySchedule/blob/v.7.1(26)/badges/google-play-badge.png)](https://play.google.com/store/apps/details?id=com.lemmiwinks.myschedule)
