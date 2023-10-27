@@ -24,3 +24,13 @@
 </div>
 
 [![Скачать из Google Play](https://github.com/lemmiwinks1551/MySchedule/blob/v.7.1(26)/badges/google-play-badge.png)](https://play.google.com/store/apps/details?id=com.lemmiwinks.myschedule)
+
+
+<details>
+<summary>Нажмите, чтобы развернуть спойлер</summary>
+
+App architecture:
+
+<img src="https://github.com/lemmiwinks1551/MySchedule/blob/main/app%20architecture.drawio.png" alt="App architecture">
+
+</details>
