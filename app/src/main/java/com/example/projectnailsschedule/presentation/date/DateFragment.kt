@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -24,10 +25,13 @@ import com.example.projectnailsschedule.presentation.date.dateRecyclerView.DateA
 import com.example.projectnailsschedule.util.Util
 import com.example.projectnailsschedule.util.rustore.RuStoreAd
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class DateFragment : Fragment() {
     val log = this::class.simpleName
 
+    private val dateViewModel: DateViewModel by viewModels()
     private var _binding: FragmentDateBinding? = null
     private val binding get() = _binding!!
     private val bindingKey = "dateParams"
@@ -38,18 +42,10 @@ class DateFragment : Fragment() {
     private var appointmentsRvAdapter: DateAdapter? = null
 
     private var dateParams: DateParams? = null
-    lateinit var dateViewModel: DateViewModel
     private var appointmentsRv: RecyclerView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // create ViewModel object with Factory
-        dateViewModel = ViewModelProvider(
-            this,
-            DateViewModelFactory(context)
-        )[DateViewModel::class.java]
-
         // get dateParams from Bundle
         dateParams = arguments?.getParcelable(bindingKey)
     }

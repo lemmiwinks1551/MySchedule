@@ -4,8 +4,11 @@ import androidx.lifecycle.ViewModel
 import com.example.projectnailsschedule.domain.models.ClientModelDb
 import com.example.projectnailsschedule.domain.usecase.clientsUC.InsertClientUseCase
 import com.example.projectnailsschedule.domain.usecase.clientsUC.UpdateClientUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class ClientEditViewModel(
+@HiltViewModel
+class ClientEditViewModel @Inject constructor(
     private val insertClientUseCase: InsertClientUseCase,
     private val updateClientUseCase: UpdateClientUseCase
 ) : ViewModel() {

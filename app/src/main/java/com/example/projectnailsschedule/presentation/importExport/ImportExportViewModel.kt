@@ -5,8 +5,11 @@ import androidx.lifecycle.ViewModel
 import com.example.projectnailsschedule.domain.usecase.importExportUc.ExportUseCase
 import com.example.projectnailsschedule.domain.usecase.importExportUc.ImportUseCase
 import com.example.projectnailsschedule.domain.usecase.importExportUc.RestartAppUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class ImportExportViewModel(
+@HiltViewModel
+class ImportExportViewModel @Inject constructor(
     private var restartAppUseCase: RestartAppUseCase,
     private var importUseCase: ImportUseCase,
     private var exportUseCase: ExportUseCase

@@ -12,6 +12,7 @@ import android.widget.TextView
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -23,30 +24,22 @@ import com.example.projectnailsschedule.domain.models.AppointmentModelDb
 import com.example.projectnailsschedule.presentation.search.searchRecyclerVIew.SearchRvAdapter
 import com.example.projectnailsschedule.util.rustore.RuStoreAd
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SearchFragment : Fragment() {
     private val log = this::class.simpleName
+    private val searchViewModel: SearchViewModel by viewModels()
 
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
     private var searchTextView: SearchView? = null
     private var searchRecyclerView: RecyclerView? = null
-    lateinit var searchViewModel: SearchViewModel
     private var appointmentCount: TextView? = null
     private val bindingKeyAppointment = "appointmentParams"
 
     private var appointmentList: List<AppointmentModelDb>? = null
     private var searchRvAdapter: SearchRvAdapter? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        // create ViewModel object with Factory
-        searchViewModel = ViewModelProvider(
-            this,
-            SearchViewModelFactory(context)
-        )[SearchViewModel::class.java]
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

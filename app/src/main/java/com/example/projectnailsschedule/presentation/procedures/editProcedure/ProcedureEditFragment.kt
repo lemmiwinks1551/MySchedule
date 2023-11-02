@@ -9,20 +9,23 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentProcedureEditBinding
 import com.example.projectnailsschedule.domain.models.ProcedureModelDb
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class ProcedureEditFragment : Fragment() {
+    private val procedureEditViewModel: ProcedureEditViewModel by viewModels()
 
     private var _binding: FragmentProcedureEditBinding? = null
     private val binding get() = _binding!!
 
-    lateinit var procedureEditViewModel: ProcedureEditViewModel
 
     private var procedureToEdit: ProcedureModelDb? = null
     private var bindingKeyProcedureEdit = "editProcedure"
@@ -43,11 +46,6 @@ class ProcedureEditFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        procedureEditViewModel = ViewModelProvider(
-            this,
-            ProcedureEditVmFactory(context)
-        )[ProcedureEditViewModel::class.java]
-
         _binding = FragmentProcedureEditBinding.inflate(inflater, container, false)
 
         // init widgets

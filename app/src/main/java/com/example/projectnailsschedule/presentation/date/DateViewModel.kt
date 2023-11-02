@@ -8,8 +8,11 @@ import com.example.projectnailsschedule.domain.usecase.appointmentUC.InsertAppoi
 import com.example.projectnailsschedule.domain.usecase.dateUC.DeleteAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.dateUC.GetDateAppointmentsUseCase
 import com.example.projectnailsschedule.domain.usecase.socUC.*
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class DateViewModel(
+@HiltViewModel
+class DateViewModel @Inject constructor(
     private var deleteAppointmentUseCase: DeleteAppointmentUseCase,
     private var getDateAppointmentsUseCase: GetDateAppointmentsUseCase,
     private var insertAppointmentUseCase: InsertAppointmentUseCase,

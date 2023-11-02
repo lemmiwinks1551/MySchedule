@@ -7,13 +7,16 @@ import com.example.projectnailsschedule.domain.models.AppointmentModelDb
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.InsertAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.dateUC.DeleteAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.searchUC.GetAllAppointmentsLiveDataUseCase
-import com.example.projectnailsschedule.domain.usecase.searchUC.SearchAppointmentUC
+import com.example.projectnailsschedule.domain.usecase.searchUC.SearchAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.socUC.*
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class SearchViewModel(
+@HiltViewModel
+class SearchViewModel @Inject constructor(
     private var insertAppointmentUseCase: InsertAppointmentUseCase,
     private var deleteAppointmentUseCase: DeleteAppointmentUseCase,
-    private var searchAppointmentUC: SearchAppointmentUC,
+    private var searchAppointmentUseCase: SearchAppointmentUseCase,
     private var getAllAppointmentsLiveDataUseCase: GetAllAppointmentsLiveDataUseCase,
     private val startVkUc: StartVkUc,
     private val startTelegramUc: StartTelegramUc,
@@ -25,7 +28,7 @@ class SearchViewModel(
     var appointmentsTotalCount = MutableLiveData<Int>()
 
     fun searchDatabase(searchQuery: String): LiveData<List<AppointmentModelDb>> {
-        return searchAppointmentUC.execute(searchQuery)
+        return searchAppointmentUseCase.execute(searchQuery)
     }
 
     fun getAllAppointmentsLiveData() : LiveData<List<AppointmentModelDb>> {

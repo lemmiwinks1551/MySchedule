@@ -1,16 +1,18 @@
 package com.example.projectnailsschedule.presentation.main
 
 import androidx.lifecycle.ViewModel
-import com.example.projectnailsschedule.domain.usecase.calendarUC.SetSelectedDateUc
+import com.example.projectnailsschedule.domain.usecase.calendarUC.SetSelectedDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.SetSelectedMonthUc
-import com.example.projectnailsschedule.domain.usecase.settingsUC.GetLanguageUc
-import com.example.projectnailsschedule.domain.usecase.settingsUC.SetLanguageUc
+import com.example.projectnailsschedule.domain.usecase.settingsUC.GetLanguageUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDate
+import javax.inject.Inject
 
-class MainViewModel(
+@HiltViewModel
+class MainViewModel @Inject constructor(
     private val setSelectedMonthUc: SetSelectedMonthUc,
-    private val setSelectedDateUc: SetSelectedDateUc,
-    private val getLanguageUc: GetLanguageUc
+    private val setSelectedDateUc: SetSelectedDateUseCase,
+    private val getLanguageUseCase: GetLanguageUseCase
 ) : ViewModel() {
 
     init {
@@ -27,7 +29,7 @@ class MainViewModel(
     }
 
     fun getLanguage() : String {
-        return getLanguageUc.execute()
+        return getLanguageUseCase.execute()
     }
 }
 

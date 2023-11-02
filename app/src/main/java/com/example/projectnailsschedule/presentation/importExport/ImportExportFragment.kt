@@ -10,13 +10,16 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentImportExportBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ImportExportFragment : Fragment() {
 
-    private lateinit var importExportViewModel: ImportExportViewModel
+    private val importExportViewModel: ImportExportViewModel by viewModels()
     private val OPEN_DIRECTORY_REQUEST_CODE = 123
     private val IMPORT_REQUEST_CODE = 789
 
@@ -25,15 +28,6 @@ class ImportExportFragment : Fragment() {
 
     private var _binding: FragmentImportExportBinding? = null
     private val binding get() = _binding!!
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        importExportViewModel = ViewModelProvider(
-            this,
-            ImportExportViewModelFactory(context)
-        )[ImportExportViewModel::class.java]
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

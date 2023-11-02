@@ -3,6 +3,7 @@ package com.example.projectnailsschedule.presentation.main
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
@@ -25,12 +26,12 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private val log = this::class.simpleName
+    private val mainViewModel: MainViewModel by viewModels()
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
     private val uncaughtExceptionHandler = UncaughtExceptionHandler()
-    private var mainViewModel: MainViewModel? = null
 
     private var drawerLayout: DrawerLayout? = null
     private var navView: NavigationView? = null
@@ -43,12 +44,6 @@ class MainActivity : AppCompatActivity() {
 
         // Set uncaught exception handler
         Thread.setDefaultUncaughtExceptionHandler(uncaughtExceptionHandler)
-
-        // create ViewModel object with Factory
-        mainViewModel = ViewModelProvider(
-            this,
-            MainActivityViewModelFactory(this)
-        )[MainViewModel::class.java]
 
         binding = ActivityMainBinding.inflate(layoutInflater)
 

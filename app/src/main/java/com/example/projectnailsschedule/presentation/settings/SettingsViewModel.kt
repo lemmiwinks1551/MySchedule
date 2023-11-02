@@ -2,13 +2,16 @@ package com.example.projectnailsschedule.presentation.settings
 
 import androidx.lifecycle.ViewModel
 import com.example.projectnailsschedule.domain.usecase.settingsUC.*
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class SettingsViewModel(
+@HiltViewModel
+class SettingsViewModel @Inject constructor(
     private val setLightThemeUseCase: SetLightThemeUseCase,
     private val setDarkThemeUseCase: SetDarkThemeUseCase,
     private val getThemeUseCase: GetThemeUseCase,
-    private val getLanguageUc: GetLanguageUc,
-    private val setLanguageUc: SetLanguageUc
+    private val getLanguageUseCase: GetLanguageUseCase,
+    private val setLanguageUseCase: SetLanguageUseCase
 ) : ViewModel() {
 
     init {
