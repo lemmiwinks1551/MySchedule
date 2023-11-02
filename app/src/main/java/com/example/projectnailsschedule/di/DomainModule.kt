@@ -7,8 +7,11 @@ import com.example.projectnailsschedule.domain.usecase.appointmentUC.UpdateAppoi
 import com.example.projectnailsschedule.domain.usecase.socUC.*
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ViewModelComponent
 
 @Module
+@InstallIn(ViewModelComponent::class)
 class DomainModule {
 
     @Provides

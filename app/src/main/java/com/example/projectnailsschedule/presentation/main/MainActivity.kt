@@ -26,7 +26,9 @@ import com.example.projectnailsschedule.util.rustore.RuStoreReview
 import com.example.projectnailsschedule.util.rustore.RuStoreUpdate
 import com.google.android.material.navigation.NavigationView
 import com.my.target.ads.MyTargetView
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private val log = this::class.simpleName
 

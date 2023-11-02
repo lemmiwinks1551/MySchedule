@@ -1,8 +1,6 @@
 package com.example.projectnailsschedule.di
 
 import android.content.Context
-import com.example.projectnailsschedule.data.repository.ScheduleRepositoryImpl
-import com.example.projectnailsschedule.domain.repository.ScheduleRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -12,11 +10,11 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class DataModule {
+class ContextModule {
 
     @Provides
     @Singleton
-    fun provideScheduleRepository(@ApplicationContext context: Context): ScheduleRepository {
-        return ScheduleRepositoryImpl(context)
+    fun provideContext(@ApplicationContext context: Context): Context {
+        return context
     }
 }

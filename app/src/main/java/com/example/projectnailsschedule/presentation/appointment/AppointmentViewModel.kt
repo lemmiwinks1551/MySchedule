@@ -6,8 +6,11 @@ import com.example.projectnailsschedule.domain.models.AppointmentModelDb
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.UpdateAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.InsertAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.socUC.*
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class AppointmentViewModel(
+@HiltViewModel
+class AppointmentViewModel @Inject constructor(
     private val insertAppointmentUseCase: InsertAppointmentUseCase,
     private val updateAppointmentUseCase: UpdateAppointmentUseCase,
     private val startVkUc: StartVkUc,
