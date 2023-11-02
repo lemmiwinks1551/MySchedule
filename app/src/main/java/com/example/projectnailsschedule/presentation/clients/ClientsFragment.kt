@@ -12,6 +12,7 @@ import android.widget.TextView
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -25,13 +26,15 @@ import com.example.projectnailsschedule.presentation.clients.clientsRecyclerView
 import com.example.projectnailsschedule.util.rustore.RuStoreAd
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ClientsFragment : Fragment() {
     val log = this::class.simpleName
 
     private var _binding: FragmentClientsBinding? = null
     private val binding get() = _binding!!
-    lateinit var clientsViewModel: ClientsViewModel
+    private val clientsViewModel: ClientsViewModel by viewModels()
 
     private var clientsList: List<ClientModelDb>? = null
     private var clientsRVAdapter: ClientsAdapter? = null
@@ -42,15 +45,6 @@ class ClientsFragment : Fragment() {
     private var clientsCountTextView: TextView? = null
 
     private var bindingKeyClientEdit = "editClient"
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        clientsViewModel = ViewModelProvider(
-            this,
-            ClientsViewModelFactory(context)
-        )[ClientsViewModel::class.java]
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

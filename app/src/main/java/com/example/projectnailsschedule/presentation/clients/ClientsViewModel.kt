@@ -7,8 +7,11 @@ import com.example.projectnailsschedule.domain.usecase.clientsUC.DeleteClientUse
 import com.example.projectnailsschedule.domain.usecase.clientsUC.InsertClientUseCase
 import com.example.projectnailsschedule.domain.usecase.clientsUC.SearchClientUseCase
 import com.example.projectnailsschedule.domain.usecase.socUC.*
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class ClientsViewModel(
+@HiltViewModel
+class ClientsViewModel @Inject constructor(
     private val searchClientUseCase: SearchClientUseCase,
     private val deleteClientUseCase: DeleteClientUseCase,
     private val insertClientUseCase: InsertClientUseCase,

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -20,15 +21,17 @@ import com.example.projectnailsschedule.domain.models.DateWeekAppModel
 import com.example.projectnailsschedule.presentation.calendar.listMonthView.fullMonthViewRV.FullMonthViewRVAdapter
 import com.example.projectnailsschedule.util.Util
 import com.example.projectnailsschedule.util.rustore.RuStoreAd
+import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.ZoneId
 import java.util.*
 
+@AndroidEntryPoint
 class ListMonthViewFragment : Fragment() {
     val log = this::class.simpleName
 
-    private var fullMonthViewVM: ListMonthViewModel? = null
+    private val fullMonthViewVM: ListMonthViewModel by viewModels()
 
     private var _binding: FragmentFullMonthViewBinding? = null
     private var fullMonthAppointmentsRV: RecyclerView? = null
@@ -40,16 +43,6 @@ class ListMonthViewFragment : Fragment() {
     lateinit var layoutManager: LayoutManager
 
     private val binding get() = _binding!!
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        // create ViewModel object with Factory
-        fullMonthViewVM = ViewModelProvider(
-            this,
-            ListMonthViewModelFactory(context)
-        )[ListMonthViewModel::class.java]
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

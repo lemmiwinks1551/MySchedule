@@ -7,9 +7,14 @@ import com.example.projectnailsschedule.domain.repository.ScheduleRepository
 import com.example.projectnailsschedule.domain.repository.SettingsRepository
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.InsertAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.UpdateAppointmentUseCase
+import com.example.projectnailsschedule.domain.usecase.calendarUC.GetSelectedMonthUc
 import com.example.projectnailsschedule.domain.usecase.calendarUC.LoadShortDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.SetSelectedMonthUc
+import com.example.projectnailsschedule.domain.usecase.clientsUC.DeleteClientUseCase
+import com.example.projectnailsschedule.domain.usecase.clientsUC.InsertClientUseCase
 import com.example.projectnailsschedule.domain.usecase.clientsUC.SearchClientUseCase
+import com.example.projectnailsschedule.domain.usecase.clientsUC.UpdateClientUseCase
+import com.example.projectnailsschedule.domain.usecase.dateUC.DeleteAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.dateUC.GetDateAppointmentsUseCase
 import com.example.projectnailsschedule.domain.usecase.proceduresUc.SearchProcedureUseCase
 import com.example.projectnailsschedule.domain.usecase.socUC.*
@@ -30,6 +35,26 @@ class DomainModule {
     @Provides
     fun provideUpdateAppointmentUseCase(repository: ScheduleRepository): UpdateAppointmentUseCase {
         return UpdateAppointmentUseCase(repository)
+    }
+
+    @Provides
+    fun provideDeleteAppointmentUseCase(repository: ScheduleRepository): DeleteAppointmentUseCase {
+        return DeleteAppointmentUseCase(repository)
+    }
+
+    @Provides
+    fun provideInsertClientUseCase(repository: ClientsRepository) : InsertClientUseCase {
+        return InsertClientUseCase(repository)
+    }
+
+    @Provides
+    fun provideUpdateClientUseCase(repository: ClientsRepository) : UpdateClientUseCase {
+        return UpdateClientUseCase(repository)
+    }
+
+    @Provides
+    fun provideDeleteClientUseCase(repository: ClientsRepository) : DeleteClientUseCase {
+        return DeleteClientUseCase(repository)
     }
 
     @Provides
@@ -55,6 +80,11 @@ class DomainModule {
     @Provides
     fun provideSetSelectedMonthUseCase(repository: SettingsRepository) : SetSelectedMonthUc {
         return SetSelectedMonthUc(repository)
+    }
+
+    @Provides
+    fun provideGetSelectedMonthUseCase(repository: SettingsRepository) : GetSelectedMonthUc {
+        return GetSelectedMonthUc(repository)
     }
 
     @Provides

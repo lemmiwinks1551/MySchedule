@@ -10,9 +10,12 @@ import com.example.projectnailsschedule.domain.usecase.calendarUC.SetSelectedMon
 import com.example.projectnailsschedule.domain.usecase.dateUC.DeleteAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.dateUC.GetDateAppointmentsUseCase
 import com.example.projectnailsschedule.domain.usecase.socUC.*
+import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDate
+import javax.inject.Inject
 
-class ListMonthViewModel(
+@HiltViewModel
+class ListMonthViewModel @Inject constructor(
     private var deleteAppointmentUseCase: DeleteAppointmentUseCase,
     private var insertAppointmentUseCase: InsertAppointmentUseCase,
     private var getDateAppointmentsUseCase: GetDateAppointmentsUseCase,
