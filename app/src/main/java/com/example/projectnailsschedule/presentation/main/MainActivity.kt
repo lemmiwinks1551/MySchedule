@@ -1,14 +1,8 @@
 package com.example.projectnailsschedule.presentation.main
 
 import android.os.Bundle
-import android.text.Layout
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.style.AlignmentSpan
-import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider

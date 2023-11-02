@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -14,11 +15,13 @@ import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentSelectClientBinding
 import com.example.projectnailsschedule.domain.models.ClientModelDb
 import com.example.projectnailsschedule.presentation.appointment.selectClient.selectClientRV.SelectClientRVAdapter
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SelectClientFragment : DialogFragment() {
     val log = this::class.simpleName
 
-    private var selectClientViewModel: SelectClientViewModel? = null
+    private val selectClientViewModel: SelectClientViewModel by viewModels()
 
     private var _binding: FragmentSelectClientBinding? = null
     private var clientSearchRV: RecyclerView? = null
@@ -28,13 +31,6 @@ class SelectClientFragment : DialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // create ViewModel object with Factory
-        selectClientViewModel = ViewModelProvider(
-            this,
-            SelectClientViewModelFactory(context)
-        )[SelectClientViewModel::class.java]
-
         setStyle(STYLE_NORMAL, R.style.FullScreenDialog)
     }
 

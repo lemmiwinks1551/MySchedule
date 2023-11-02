@@ -5,8 +5,11 @@ import androidx.lifecycle.ViewModel
 import com.example.projectnailsschedule.domain.models.ClientModelDb
 import com.example.projectnailsschedule.domain.usecase.clientsUC.SearchClientUseCase
 import com.example.projectnailsschedule.domain.usecase.socUC.*
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class SelectClientViewModel(
+@HiltViewModel
+class SelectClientViewModel @Inject constructor(
     private val searchClientUseCase: SearchClientUseCase,
     private val startVkUc: StartVkUc,
     private val startTelegramUc: StartTelegramUc,
