@@ -1,9 +1,11 @@
 package com.example.projectnailsschedule.di
 
 import android.content.Context
+import com.example.projectnailsschedule.domain.repository.ProcedureRepository
 import com.example.projectnailsschedule.domain.repository.ScheduleRepository
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.InsertAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.UpdateAppointmentUseCase
+import com.example.projectnailsschedule.domain.usecase.proceduresUc.SearchProcedureUseCase
 import com.example.projectnailsschedule.domain.usecase.socUC.*
 import dagger.Module
 import dagger.Provides
@@ -22,6 +24,11 @@ class DomainModule {
     @Provides
     fun provideUpdateAppointmentUseCase(repository: ScheduleRepository): UpdateAppointmentUseCase {
         return UpdateAppointmentUseCase(repository)
+    }
+
+    @Provides
+    fun provideSearchProcedureUseCase(repository: ProcedureRepository): SearchProcedureUseCase {
+        return SearchProcedureUseCase(repository)
     }
 
     @Provides

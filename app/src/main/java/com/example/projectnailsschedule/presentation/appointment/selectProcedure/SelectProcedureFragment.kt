@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -14,12 +15,13 @@ import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentSelectProcedureBinding
 import com.example.projectnailsschedule.domain.models.ProcedureModelDb
 import com.example.projectnailsschedule.presentation.appointment.selectProcedure.selectProcedureRV.SelectProcedureRVAdapter
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SelectProcedureFragment : DialogFragment() {
     val log = this::class.simpleName
 
-    private var selectProcedureViewModel: SelectProcedureViewModel? = null
-
+    private val selectProcedureViewModel: SelectProcedureViewModel by viewModels()
     private var _binding: FragmentSelectProcedureBinding? = null
     private var procedureSelectRv: RecyclerView? = null
     private var proceduresSv: SearchView? = null
@@ -28,13 +30,6 @@ class SelectProcedureFragment : DialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // create ViewModel object with Factory
-        selectProcedureViewModel = ViewModelProvider(
-            this,
-            SelectProcedureViewModelFactory(context)
-        )[SelectProcedureViewModel::class.java]
-
         setStyle(STYLE_NORMAL, R.style.FullScreenDialog)
     }
 
