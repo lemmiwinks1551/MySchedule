@@ -8,9 +8,12 @@ import com.example.projectnailsschedule.domain.models.DateParams
 import com.example.projectnailsschedule.domain.usecase.calendarUC.*
 import com.example.projectnailsschedule.domain.usecase.dateUC.GetDateAppointmentsUseCase
 import com.example.projectnailsschedule.presentation.calendar.calendarRecyclerView.CalendarRvAdapter
+import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDate
+import javax.inject.Inject
 
-class CalendarViewModel(
+@HiltViewModel
+class CalendarViewModel @Inject constructor(
     private val loadShortDateUseCase: LoadShortDateUseCase,
     private var getDateAppointmentsUseCase: GetDateAppointmentsUseCase,
     private var setSelectedMonthUc: SetSelectedMonthUc

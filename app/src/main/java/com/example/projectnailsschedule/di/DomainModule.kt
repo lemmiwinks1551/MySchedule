@@ -4,9 +4,13 @@ import android.content.Context
 import com.example.projectnailsschedule.domain.repository.ClientsRepository
 import com.example.projectnailsschedule.domain.repository.ProcedureRepository
 import com.example.projectnailsschedule.domain.repository.ScheduleRepository
+import com.example.projectnailsschedule.domain.repository.SettingsRepository
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.InsertAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.UpdateAppointmentUseCase
+import com.example.projectnailsschedule.domain.usecase.calendarUC.LoadShortDateUseCase
+import com.example.projectnailsschedule.domain.usecase.calendarUC.SetSelectedMonthUc
 import com.example.projectnailsschedule.domain.usecase.clientsUC.SearchClientUseCase
+import com.example.projectnailsschedule.domain.usecase.dateUC.GetDateAppointmentsUseCase
 import com.example.projectnailsschedule.domain.usecase.proceduresUc.SearchProcedureUseCase
 import com.example.projectnailsschedule.domain.usecase.socUC.*
 import dagger.Module
@@ -36,6 +40,21 @@ class DomainModule {
     @Provides
     fun provideSearchClientUseCase(repository: ClientsRepository) : SearchClientUseCase {
         return SearchClientUseCase(repository)
+    }
+
+    @Provides
+    fun provideLoadShortDateUseCase(repository: ScheduleRepository) : LoadShortDateUseCase {
+        return LoadShortDateUseCase(repository)
+    }
+
+    @Provides
+    fun provideGetDateAppointmentsUseCase(repository: ScheduleRepository) : GetDateAppointmentsUseCase {
+        return GetDateAppointmentsUseCase(repository)
+    }
+
+    @Provides
+    fun provideSetSelectedMonthUseCase(repository: SettingsRepository) : SetSelectedMonthUc {
+        return SetSelectedMonthUc(repository)
     }
 
     @Provides

@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -21,16 +22,18 @@ import com.example.projectnailsschedule.presentation.calendar.dateShortRecyclerV
 import com.example.projectnailsschedule.util.Util
 import com.example.projectnailsschedule.util.rustore.RuStoreAd
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.ZoneId
 import java.util.*
 
+@AndroidEntryPoint
 class CalendarFragment : Fragment(),
     DateShortAdapter.OnItemListener {
 
     private val log = this::class.simpleName
-    lateinit var calendarViewModel: CalendarViewModel
+    private val calendarViewModel: CalendarViewModel by viewModels()
     private var _binding: FragmentCalendarBinding? = null
     private val binding get() = _binding!!
 
@@ -41,16 +44,6 @@ class CalendarFragment : Fragment(),
     private var addButton: FloatingActionButton? = null
     private var layout: ConstraintLayout? = null
     private var currentDate: DateParams? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        // create ViewModel object with Factory
-        calendarViewModel = ViewModelProvider(
-            this,
-            CalendarViewModelFactory(context)
-        )[CalendarViewModel::class.java]
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
