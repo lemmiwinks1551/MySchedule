@@ -3,10 +3,11 @@ package com.example.projectnailsschedule.presentation.main
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -18,15 +19,29 @@ import com.example.projectnailsschedule.databinding.ActivityMainBinding
 import com.example.projectnailsschedule.util.UncaughtExceptionHandler
 import com.example.projectnailsschedule.util.rustore.RuStoreAd
 import com.example.projectnailsschedule.util.rustore.RuStoreReview
-import com.example.projectnailsschedule.util.rustore.RuStoreUpdate
 import com.google.android.material.navigation.NavigationView
+import com.google.android.play.core.appupdate.AppUpdateManager
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.install.InstallStateUpdatedListener
+import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.InstallStatus
+import com.google.android.play.core.install.model.UpdateAvailability
+import com.google.android.play.core.ktx.installStatus
+import com.google.android.play.core.ktx.isFlexibleUpdateAllowed
+import com.google.android.play.core.ktx.isImmediateUpdateAllowed
 import com.my.target.ads.MyTargetView
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.seconds
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private val log = this::class.simpleName
     private val mainViewModel: MainViewModel by viewModels()
+
+    private lateinit var appUpdateManager: AppUpdateManager
+    private val updateType = AppUpdateType.FLEXIBLE
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
@@ -37,6 +52,20 @@ class MainActivity : AppCompatActivity() {
     private var navView: NavigationView? = null
 
     private val ruStoreAd = RuStoreAd()
+
+    private val installStateUpdatedListener = InstallStateUpdatedListener { state ->
+        if (state.installStatus == InstallStatus.DOWNLOADED) {
+            Toast.makeText(
+                applicationContext,
+                "Download successful. Restarting app in 5 seconds",
+                Toast.LENGTH_LONG
+            ).show()
+        }
+        lifecycleScope.launch {
+            delay(5.seconds)
+            appUpdateManager.completeUpdate()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -66,7 +95,12 @@ class MainActivity : AppCompatActivity() {
         navView?.setupWithNavController(navController)
 
         // check for updates
-        RuStoreUpdate(this).checkForUpdates()
+        // RuStoreUpdate(this).checkForUpdates()
+        appUpdateManager = AppUpdateManagerFactory.create(applicationContext)
+        if (updateType == AppUpdateType.FLEXIBLE) {
+            appUpdateManager.registerListener(installStateUpdatedListener)
+        }
+        checkForUpdates()
 
         // start advertising
         ruStoreAd.adView = MyTargetView(this)
@@ -75,6 +109,22 @@ class MainActivity : AppCompatActivity() {
 
         // Request user's review
         RuStoreReview(this).rateApp()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (updateType == AppUpdateType.IMMEDIATE) {
+            appUpdateManager.appUpdateInfo.addOnSuccessListener { info ->
+                if (info.updateAvailability() == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
+                    appUpdateManager.startUpdateFlowForResult(
+                        info,
+                        updateType,
+                        this,
+                        123
+                    )
+                }
+            }
+        }
     }
 
     private fun initWidgets() {
@@ -105,5 +155,28 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         ruStoreAd.destroyAd()
         super.onDestroy()
+        if (updateType == AppUpdateType.FLEXIBLE) {
+            appUpdateManager.unregisterListener(installStateUpdatedListener)
+        }
+    }
+
+    private fun checkForUpdates() {
+        appUpdateManager.appUpdateInfo.addOnSuccessListener { info ->
+            val isUpdateAvailable = info.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+            val isUpdateAllowed = when (updateType) {
+                AppUpdateType.FLEXIBLE -> info.isFlexibleUpdateAllowed
+                AppUpdateType.IMMEDIATE -> info.isImmediateUpdateAllowed
+                else -> false
+            }
+
+            if (isUpdateAvailable && isUpdateAllowed) {
+                appUpdateManager.startUpdateFlowForResult(
+                    info,
+                    updateType,
+                    this,
+                    123
+                )
+            }
+        }
     }
 }
