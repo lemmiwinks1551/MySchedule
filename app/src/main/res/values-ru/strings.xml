@@ -150,4 +150,5 @@
 
     <string name="no_data_error">Нет данных</string>
 
+    <string name="update_app_toast">Загрузка завершена. Перезапуск приложения через 5 секунд</string>
 </resources>

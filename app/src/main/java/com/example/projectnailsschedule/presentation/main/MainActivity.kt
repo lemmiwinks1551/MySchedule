@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity() {
         if (state.installStatus == InstallStatus.DOWNLOADED) {
             Toast.makeText(
                 applicationContext,
-                "Download successful. Restarting app in 5 seconds",
+                R.string.update_app_toast,
                 Toast.LENGTH_LONG
             ).show()
         }

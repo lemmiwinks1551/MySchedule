@@ -150,4 +150,5 @@
 
     <string name="no_data_error">Sin datos</string>
 
+    <string name="update_app_toast">Descarga exitosa. Reiniciando la aplicación en 5 segundos</string>
 </resources>

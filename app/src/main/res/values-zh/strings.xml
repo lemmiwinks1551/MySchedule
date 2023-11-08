@@ -150,4 +150,5 @@
 
     <string name="no_data_error">没有数据</string>
 
+    <string name="update_app_toast">下载成功。5秒后重新启动应用程序</string>
 </resources>
