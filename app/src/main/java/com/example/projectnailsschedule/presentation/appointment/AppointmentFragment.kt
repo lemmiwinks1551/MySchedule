@@ -23,7 +23,6 @@ import com.example.projectnailsschedule.util.Util
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
-
 @AndroidEntryPoint
 class AppointmentFragment : Fragment() {
     val log = this::class.simpleName
