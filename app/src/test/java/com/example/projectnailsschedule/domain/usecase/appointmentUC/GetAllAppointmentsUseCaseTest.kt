@@ -18,8 +18,8 @@ internal class GetAllAppointmentsUseCaseTest {
 
         Mockito.`when`(scheduleRepository.getAllAppointments()).thenReturn(testList)
 
-        val getAllAppointmentsUseCaseTest = GetAllAppointmentsUseCase(scheduleRepository = scheduleRepository)
-        val actual = getAllAppointmentsUseCaseTest.execute()
+        val getAllAppointmentsUseCase = GetAllAppointmentsUseCase(scheduleRepository = scheduleRepository)
+        val actual = getAllAppointmentsUseCase.execute()
         val expected = listOf(testAppointment0, testAppointment1)
 
         Assertions.assertEquals(actual, expected)
