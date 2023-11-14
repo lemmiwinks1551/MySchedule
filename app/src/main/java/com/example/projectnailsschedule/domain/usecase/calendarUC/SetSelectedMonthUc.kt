@@ -5,7 +5,8 @@ import java.time.LocalDate
 
 class SetSelectedMonthUc(private val settingsRepository: SettingsRepository) {
 
-    fun execute(selectedDate: LocalDate) {
+    fun execute(selectedDate: LocalDate): Boolean {
         settingsRepository.setSelectedMonth(selectedDate)
+        return true
     }
 }
