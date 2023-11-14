@@ -7,20 +7,20 @@ import org.junit.jupiter.api.Test
 import org.mockito.Mockito
 import org.mockito.kotlin.mock
 
-class GetAllAppointmentsUseCaseTest {
+internal class GetAllAppointmentsUseCaseTest {
     private val scheduleRepository = mock<ScheduleRepository>()
 
     @Test
     fun `should return all appointments from Schedule repository`() {
-        val testAppointments0 = AppointmentModelDb(deleted = false)
-        val testAppointments1 = AppointmentModelDb(deleted = false)
-        val testList = listOf(testAppointments0, testAppointments1)
+        val testAppointment0 = AppointmentModelDb(deleted = false)
+        val testAppointment1 = AppointmentModelDb(deleted = false)
+        val testList = listOf(testAppointment0, testAppointment1)
 
         Mockito.`when`(scheduleRepository.getAllAppointments()).thenReturn(testList)
 
         val getAllAppointmentsUseCaseTest = GetAllAppointmentsUseCase(scheduleRepository = scheduleRepository)
         val actual = getAllAppointmentsUseCaseTest.execute()
-        val expected = listOf(testAppointments0, testAppointments1)
+        val expected = listOf(testAppointment0, testAppointment1)
 
         Assertions.assertEquals(actual, expected)
     }
