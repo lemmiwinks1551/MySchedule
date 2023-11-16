@@ -1,4 +1,4 @@
-package com.example.projectnailsschedule.domain.usecase.proceduresUc
+package com.example.projectnailsschedule.domain.usecase.proceduresUC
 
 import androidx.lifecycle.LiveData
 import com.example.projectnailsschedule.domain.models.ProcedureModelDb

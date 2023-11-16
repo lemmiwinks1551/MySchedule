@@ -1,4 +1,4 @@
-package com.example.projectnailsschedule.domain.usecase.proceduresUc
+package com.example.projectnailsschedule.domain.usecase.proceduresUC
 
 import com.example.projectnailsschedule.domain.models.ProcedureModelDb
 import com.example.projectnailsschedule.domain.repository.ProcedureRepository
