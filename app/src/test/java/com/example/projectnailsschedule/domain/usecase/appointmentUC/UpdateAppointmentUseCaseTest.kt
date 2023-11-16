@@ -14,8 +14,8 @@ internal class UpdateAppointmentUseCaseTest {
         val updateAppointmentUseCase = UpdateAppointmentUseCase(scheduleRepository = scheduleRepository)
         val testAppointment = AppointmentModelDb(_id = null, deleted = false)
 
-        val actual = updateAppointmentUseCase.execute(testAppointment)
         val expected = true
+        val actual = updateAppointmentUseCase.execute(testAppointment)
 
         Assertions.assertEquals(expected, actual)
     }

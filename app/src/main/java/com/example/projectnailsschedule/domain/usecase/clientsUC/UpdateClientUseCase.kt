@@ -5,7 +5,8 @@ import com.example.projectnailsschedule.domain.repository.ClientsRepository
 
 class UpdateClientUseCase(private val clientsRepository: ClientsRepository) {
 
-    fun execute(clientModelDb: ClientModelDb) {
+    fun execute(clientModelDb: ClientModelDb):Boolean {
         clientsRepository.updateClient(clientModelDb)
+        return true
     }
 }
