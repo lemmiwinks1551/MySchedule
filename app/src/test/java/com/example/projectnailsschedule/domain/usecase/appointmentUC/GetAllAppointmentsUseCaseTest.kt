@@ -12,13 +12,13 @@ internal class GetAllAppointmentsUseCaseTest {
 
     @Test
     fun `should return all appointments from Schedule repository`() {
+        val getAllAppointmentsUseCase = GetAllAppointmentsUseCase(scheduleRepository = scheduleRepository)
         val testAppointment0 = AppointmentModelDb(deleted = false)
         val testAppointment1 = AppointmentModelDb(deleted = false)
         val testList = listOf(testAppointment0, testAppointment1)
 
         Mockito.`when`(scheduleRepository.getAllAppointments()).thenReturn(testList)
 
-        val getAllAppointmentsUseCase = GetAllAppointmentsUseCase(scheduleRepository = scheduleRepository)
         val actual = getAllAppointmentsUseCase.execute()
         val expected = listOf(testAppointment0, testAppointment1)
 
