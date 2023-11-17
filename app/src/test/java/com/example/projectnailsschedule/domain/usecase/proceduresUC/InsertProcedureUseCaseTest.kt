@@ -7,17 +7,17 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.mock
 
-internal class DeleteProcedureUseCaseTest {
+internal class InsertProcedureUseCaseTest {
     private val procedureRepository = mock<ProcedureRepository>()
 
     @Test
-    fun `should delete Procedure from Procedure repository and return true`() {
-        val deleteProcedureUseCase =
-            DeleteProcedureUseCase(procedureRepository = procedureRepository)
-        val testProcedure = ProcedureModelDb()
+    fun `should insert Procedure to the Procedure repository and return true`() {
+        val insertProcedureUseCase =
+            InsertProcedureUseCase(procedureRepository = procedureRepository)
+        val procedureTest = ProcedureModelDb()
         val expected = true
         runBlocking {
-            val actual = deleteProcedureUseCase.execute(testProcedure)
+            val actual = insertProcedureUseCase.execute(procedureTest)
             Assertions.assertEquals(expected, actual)
         }
     }
