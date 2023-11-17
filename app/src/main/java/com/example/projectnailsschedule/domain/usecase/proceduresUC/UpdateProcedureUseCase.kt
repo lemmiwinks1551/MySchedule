@@ -5,7 +5,8 @@ import com.example.projectnailsschedule.domain.repository.ProcedureRepository
 
 class UpdateProcedureUseCase(private val procedureRepository: ProcedureRepository) {
 
-    suspend fun execute(procedureModelDb: ProcedureModelDb) {
+    suspend fun execute(procedureModelDb: ProcedureModelDb): Boolean {
         procedureRepository.updateProcedure(procedureModelDb)
+        return true
     }
 }
