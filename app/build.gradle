@@ -68,8 +68,8 @@ android {
         GooglePlay {
             dimension "MySchedule"
             applicationId "com.lemmiwinks.myschedule"
-            versionCode 29
-            versionName "7.2"
+            versionCode 30
+            versionName "7.3"
         }
     }
 }
@@ -99,7 +99,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
 
-    implementation 'androidx.activity:activity:1.8.0'
+    implementation 'androidx.activity:activity:1.8.1'
     implementation 'androidx.fragment:fragment:1.6.2'
 
     implementation("ru.rustore.sdk:appupdate:0.1.0")
