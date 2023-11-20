@@ -3,7 +3,7 @@ package com.example.projectnailsschedule.presentation.appointment.selectProcedur
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.example.projectnailsschedule.domain.models.ProcedureModelDb
-import com.example.projectnailsschedule.domain.usecase.proceduresUc.SearchProcedureUseCase
+import com.example.projectnailsschedule.domain.usecase.proceduresUC.SearchProcedureUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

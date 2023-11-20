@@ -4,7 +4,8 @@ import com.example.projectnailsschedule.domain.repository.SettingsRepository
 
 class SetDarkThemeUseCase(private val settingsRepository: SettingsRepository) {
 
-    fun execute() {
+    fun execute(): Boolean {
         settingsRepository.setDarkTheme()
+        return true
     }
 }

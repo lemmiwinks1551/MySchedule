@@ -2,8 +2,7 @@ package com.example.projectnailsschedule.presentation.appointment
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import android.content.Intent
-import android.net.Uri
+import android.app.TimePickerDialog.OnTimeSetListener
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +11,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentAppointmentBinding
@@ -22,7 +20,6 @@ import com.example.projectnailsschedule.domain.models.ProcedureModelDb
 import com.example.projectnailsschedule.presentation.appointment.selectClient.SelectClientFragment
 import com.example.projectnailsschedule.presentation.appointment.selectProcedure.SelectProcedureFragment
 import com.example.projectnailsschedule.util.Util
-import dagger.hilt.EntryPoint
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
@@ -271,7 +268,7 @@ class AppointmentFragment : Fragment() {
     }
 
     private fun setTimePicker() {
-        // set time Picker to select time field
+        // clocks time picker
         val calendar = Calendar.getInstance()
         val mTimePicker: TimePickerDialog
         val hour = calendar.get(Calendar.HOUR_OF_DAY)
@@ -284,6 +281,31 @@ class AppointmentFragment : Fragment() {
             }, hour, minute, true
         )
         mTimePicker.show()
+    }
+
+    private fun setSpinnerTimePicker() {
+        // spinner time picker
+        val myCalender = Calendar.getInstance()
+        val hour = myCalender[Calendar.HOUR_OF_DAY]
+        val minute = myCalender[Calendar.MINUTE]
+        val myTimeListener =
+            OnTimeSetListener { view, hourOfDay, minute ->
+                if (view.isShown) {
+                    myCalender[Calendar.HOUR_OF_DAY] = hourOfDay
+                    myCalender[Calendar.MINUTE] = minute
+                }
+            }
+        val timePickerDialog = TimePickerDialog(
+            activity,
+            android.R.style.Theme_Holo_Light_Dialog_NoActionBar,
+            myTimeListener,
+            hour,
+            minute,
+            true
+        )
+        timePickerDialog.setTitle("Choose hour:")
+        timePickerDialog.window!!.setBackgroundDrawableResource(android.R.color.transparent)
+        timePickerDialog.show()
     }
 
     override fun onDestroyView() {

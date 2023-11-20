@@ -43,8 +43,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
         coreLibraryDesugaringEnabled true
     }
     kotlinOptions {
@@ -68,11 +68,21 @@ android {
         GooglePlay {
             dimension "MySchedule"
             applicationId "com.lemmiwinks.myschedule"
-            versionCode 28
-            versionName "7.1"
+            versionCode 29
+            versionName "7.2"
         }
     }
 }
+
+tasks.withType(Test) {
+    useJUnitPlatform()
+    testLogging {
+        exceptionFormat "full"
+        events "standardOut", "started", "passed", "skipped", "failed"
+        showStandardStreams true
+    }
+}
+
 
 dependencies {
     implementation 'androidx.core:core-ktx:1.12.0'
@@ -81,16 +91,16 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.6.2'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2'
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.7.4'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.7.4'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.7.5'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.7.5'
     implementation 'com.google.firebase:firebase-database-ktx:20.3.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.3'
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
 
     implementation 'androidx.activity:activity:1.8.0'
-    implementation 'androidx.fragment:fragment:1.6.1'
+    implementation 'androidx.fragment:fragment:1.6.2'
 
     implementation("ru.rustore.sdk:appupdate:0.1.0")
 
@@ -111,9 +121,18 @@ dependencies {
     // Hilt
     implementation "com.google.dagger:hilt-android:2.44"
     kapt "com.google.dagger:hilt-compiler:2.48.1"
-    implementation "androidx.fragment:fragment-ktx:1.6.1"
+    implementation "androidx.fragment:fragment-ktx:1.6.2"
 
     // Google update
     implementation 'com.google.android.play:app-update:2.1.0'
     implementation 'com.google.android.play:app-update-ktx:2.1.0'
+
+    testImplementation "org.junit.jupiter:junit-jupiter:5.8.2"
+    testImplementation "org.mockito:mockito-core:4.0.0"
+    testImplementation "org.mockito.kotlin:mockito-kotlin:4.0.0"
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+
+    testImplementation('org.junit.jupiter:junit-jupiter-api:5.8.2')
+    testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine:5.8.2')
+    testRuntimeOnly('org.junit.vintage:junit-vintage-engine:5.8.2')
 }

@@ -37,6 +37,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
+                android:textStyle="bold"
                 android:id="@+id/client_select_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

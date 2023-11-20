@@ -1,5 +1,5 @@
 <resources>
-    <style name="Theme.Main" parent="Theme.MaterialComponents.DayNight.DarkActionBar.Bridge">
+    <style name="Theme.Main" parent="Theme.MaterialComponents.Light.DarkActionBar.Bridge">
 
         <!-- The primary branding color for the app. By default, this is the color applied to the
      action bar background. -->

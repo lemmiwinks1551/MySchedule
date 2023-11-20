@@ -33,7 +33,6 @@ class CalendarRvAdapter(
             dateAppointmentsCount = itemView.findViewById(R.id.date_appointments_text_view)
             cellLayout = itemView.findViewById(R.id.calendarRecyclerViewCell)
         }
-
     }
 
     private val log = this::class.simpleName
@@ -94,9 +93,6 @@ class CalendarRvAdapter(
 
                     // Update the previous holder
                     calendarViewModel.prevHolder = holder
-
-                    // Update selectedDate appointments count
-
                 }
 
                 calendarViewModel.updateSelectedDate(day = dayInHolder.toInt())

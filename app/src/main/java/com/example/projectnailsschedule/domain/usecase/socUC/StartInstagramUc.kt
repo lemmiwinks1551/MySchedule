@@ -21,11 +21,13 @@ class StartInstagramUc(val context: Context) {
                 val intent =
                     Intent(Intent.ACTION_VIEW, Uri.parse("http://instagram.com/_u/$username"))
                 intent.setPackage("com.instagram.android")
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                 context.startActivity(intent)
             } catch (e: Exception) {
                 try {
                     val browserIntent =
                         Intent(Intent.ACTION_VIEW, Uri.parse("https://www.instagram.com/$username"))
+                    browserIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                     context.startActivity(browserIntent)
                 } catch (e: Exception) {
                     Toast.makeText(

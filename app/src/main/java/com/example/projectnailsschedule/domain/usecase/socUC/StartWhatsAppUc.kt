@@ -16,6 +16,7 @@ class StartWhatsAppUc(val context: Context) {
                         Intent.ACTION_VIEW,
                         Uri.parse("https://api.whatsapp.com/send?phone=$uri")
                     )
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                 context.startActivity(intent)
             } catch (e: Exception) {
                 try {
@@ -23,6 +24,7 @@ class StartWhatsAppUc(val context: Context) {
                         Intent.ACTION_VIEW,
                         Uri.parse("https://web.whatsapp.com/send?phone=$uri")
                     )
+                    browserIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                     context.startActivity(browserIntent)
                 } catch (e: Exception) {
                     Toast.makeText(

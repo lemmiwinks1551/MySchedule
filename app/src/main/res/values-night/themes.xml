@@ -1,11 +1,11 @@
 <resources>
-    <style name="Theme.Main" parent="Theme.MaterialComponents.DayNight.DarkActionBar.Bridge">
+    <style name="Theme.Main" parent="Theme.MaterialComponents.Light.DarkActionBar.Bridge">
 
         <!-- The primary branding color for the app. By default, this is the color applied to the
      action bar background. -->
 
         <item name="colorPrimary">@color/Pink5</item>
-        <item name="colorButtonNormal">@android:color/transparent</item>
+        <item name="colorButtonNormal">@color/Pink6</item>
 
         <!--A lighter/darker variant of your primary brand color, used sparingly in theming-->
         <item name="colorPrimaryVariant">@color/Pink7</item>

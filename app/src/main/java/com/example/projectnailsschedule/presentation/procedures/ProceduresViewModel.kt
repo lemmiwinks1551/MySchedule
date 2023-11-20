@@ -3,9 +3,9 @@ package com.example.projectnailsschedule.presentation.procedures
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.example.projectnailsschedule.domain.models.ProcedureModelDb
-import com.example.projectnailsschedule.domain.usecase.proceduresUc.DeleteProcedureUseCase
-import com.example.projectnailsschedule.domain.usecase.proceduresUc.InsertProcedureUseCase
-import com.example.projectnailsschedule.domain.usecase.proceduresUc.SearchProcedureUseCase
+import com.example.projectnailsschedule.domain.usecase.proceduresUC.DeleteProcedureUseCase
+import com.example.projectnailsschedule.domain.usecase.proceduresUC.InsertProcedureUseCase
+import com.example.projectnailsschedule.domain.usecase.proceduresUC.SearchProcedureUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
