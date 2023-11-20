@@ -13,10 +13,12 @@ class StartVkUc(val context: Context) {
             val uri = uri.replace("https://vk.com/", "")
             try {
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://vk.com/$uri"))
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                 context.startActivity(intent)
             } catch (e: Exception) {
                 try {
                     val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://vk.com/$uri"))
+                    browserIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                     context.startActivity(browserIntent)
                 } catch (e: Exception) {
                     Toast.makeText(

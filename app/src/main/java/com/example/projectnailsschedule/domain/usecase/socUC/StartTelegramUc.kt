@@ -13,10 +13,12 @@ class StartTelegramUc(val context: Context) {
             val uri = uri.replace("https://t.me/", "")
             try {
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse("tg://resolve?domain=$uri"))
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                 context.startActivity(intent)
             } catch (e: Exception) {
                 try {
                     val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://t.me/$uri"))
+                    browserIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                     context.startActivity(browserIntent)
                 } catch (e: Exception) {
                     Toast.makeText(
