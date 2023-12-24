@@ -186,7 +186,7 @@ class AppointmentFragment : Fragment() {
                 notes = notesEt.text.toString(),
                 deleted = false
             )
-            appointmentViewModel.createAppointment(appointmentModelDb)
+            appointmentViewModel.insertAppointment(appointmentModelDb)
 
             val toast: Toast = Toast.makeText(
                 context,
@@ -221,7 +221,7 @@ class AppointmentFragment : Fragment() {
             )
 
             // send to AppointmentViewModel
-            appointmentViewModel.editAppointment(appointmentModelDb)
+            appointmentViewModel.updateAppointment(appointmentModelDb)
 
             Toast.makeText(context, getString(R.string.toast_edited), Toast.LENGTH_LONG).show()
 

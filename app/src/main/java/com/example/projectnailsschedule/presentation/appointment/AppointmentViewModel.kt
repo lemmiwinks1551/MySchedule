@@ -1,10 +1,9 @@
 package com.example.projectnailsschedule.presentation.appointment
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
-import com.example.projectnailsschedule.domain.usecase.appointmentUC.UpdateAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.InsertAppointmentUseCase
+import com.example.projectnailsschedule.domain.usecase.appointmentUC.UpdateAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.socUC.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -22,23 +21,12 @@ class AppointmentViewModel @Inject constructor(
 
     val log = this::class.simpleName
 
-    fun createAppointment(appointmentModelDb: AppointmentModelDb) {
-        insertAppointmentUseCase.execute(appointmentModelDb)
-        Log.e(log, "Appointment saved")
+    fun insertAppointment(appointmentModelDb: AppointmentModelDb) : Boolean {
+        return insertAppointmentUseCase.execute(appointmentModelDb)
     }
 
-    fun editAppointment(appointmentModelDb: AppointmentModelDb) {
+    fun updateAppointment(appointmentModelDb: AppointmentModelDb) {
         updateAppointmentUseCase.execute(appointmentModelDb)
-        Log.e(log, "Appointment edited")
-    }
-
-    init {
-        Log.e(log, "AppointmentViewModel created")
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        Log.e(log, "AppointmentViewModel cleared")
     }
 
     fun startVk(uri: String) {
