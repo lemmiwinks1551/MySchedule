@@ -74,7 +74,7 @@ class SelectClientFragment : DialogFragment() {
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 val searchQuery = "%$newText%"
-                selectClientViewModel!!.searchClients(searchQuery)
+                selectClientViewModel.searchClients(searchQuery)
                     .observe(viewLifecycleOwner) { list ->
                         inflateSearchRecyclerVIew(list)
                     }
@@ -88,7 +88,7 @@ class SelectClientFragment : DialogFragment() {
         val selectClientRVAdapter = SelectClientRVAdapter(
             clientsCount = clientsList.size,
             clientsList = clientsList,
-            selectClientViewModel = selectClientViewModel!!
+            selectClientViewModel = selectClientViewModel
         )
 
         val layoutManager: RecyclerView.LayoutManager =
