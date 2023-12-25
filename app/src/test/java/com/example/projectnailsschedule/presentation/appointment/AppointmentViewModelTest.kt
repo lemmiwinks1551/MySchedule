@@ -16,6 +16,7 @@ import org.mockito.kotlin.mock
 internal class AppointmentViewModelTest {
 
     lateinit var appointmentViewModel: AppointmentViewModel
+
     private val insertAppointmentUseCase = mock<InsertAppointmentUseCase>()
     private val updateAppointmentUseCase = mock<UpdateAppointmentUseCase>()
     private val startVkUc = mock<StartVkUc>()
