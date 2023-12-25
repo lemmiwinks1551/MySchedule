@@ -2,9 +2,12 @@ package com.example.projectnailsschedule.presentation.appointment.selectClient
 
 import androidx.arch.core.executor.ArchTaskExecutor
 import androidx.arch.core.executor.TaskExecutor
+import androidx.lifecycle.MutableLiveData
+import com.example.projectnailsschedule.domain.models.ClientModelDb
 import com.example.projectnailsschedule.domain.usecase.clientsUC.SearchClientUseCase
 import com.example.projectnailsschedule.domain.usecase.socUC.*
 import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito
@@ -61,6 +64,14 @@ internal class SelectClientViewModelTest {
 
     @Test
     fun `should search client and return liveData list`() {
+        val testLiveData = MutableLiveData<List<ClientModelDb>>()
+        val query = "query"
 
+        Mockito.`when`(searchClientUseCase.execute(query)).thenReturn(testLiveData)
+
+        val actual = selectClientViewModel.searchClients(query)
+        val expected = testLiveData
+
+        Assertions.assertEquals(expected, actual)
     }
 }
