@@ -15,7 +15,7 @@ import org.mockito.kotlin.mock
 
 internal class SelectClientViewModelTest {
 
-    lateinit var selectClientViewModel: SelectClientViewModel
+    private lateinit var selectClientViewModel: SelectClientViewModel
 
     private val searchClientUseCase = mock<SearchClientUseCase>()
     private val startVkUc = mock<StartVkUc>()
