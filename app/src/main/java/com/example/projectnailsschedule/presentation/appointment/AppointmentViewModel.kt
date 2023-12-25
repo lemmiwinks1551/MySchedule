@@ -25,8 +25,8 @@ class AppointmentViewModel @Inject constructor(
         return insertAppointmentUseCase.execute(appointmentModelDb)
     }
 
-    fun updateAppointment(appointmentModelDb: AppointmentModelDb) {
-        updateAppointmentUseCase.execute(appointmentModelDb)
+    fun updateAppointment(appointmentModelDb: AppointmentModelDb) : Boolean {
+        return updateAppointmentUseCase.execute(appointmentModelDb)
     }
 
     fun startVk(uri: String) {

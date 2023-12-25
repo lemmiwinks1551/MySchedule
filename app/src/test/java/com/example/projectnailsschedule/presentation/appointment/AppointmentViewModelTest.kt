@@ -15,6 +15,7 @@ import org.mockito.kotlin.mock
 
 internal class AppointmentViewModelTest {
 
+    lateinit var appointmentViewModel: AppointmentViewModel
     private val insertAppointmentUseCase = mock<InsertAppointmentUseCase>()
     private val updateAppointmentUseCase = mock<UpdateAppointmentUseCase>()
     private val startVkUc = mock<StartVkUc>()
@@ -22,7 +23,6 @@ internal class AppointmentViewModelTest {
     private val startInstagramUc = mock<StartInstagramUc>()
     private val startWhatsAppUc = mock<StartWhatsAppUc>()
     private val startPhoneUc = mock<StartPhoneUc>()
-    lateinit var appointmentViewModel: AppointmentViewModel
 
     @AfterEach
     fun afterEach() {
@@ -77,32 +77,14 @@ internal class AppointmentViewModelTest {
     }
 
     @Test
-    fun `should update appointment`(appointmentModelDb: AppointmentModelDb) {
-        updateAppointmentUseCase.execute(appointmentModelDb)
-    }
+    fun `should update appointment`() {
+        val testAppointment = AppointmentModelDb(deleted = false)
 
-    @Test
-    fun `should start vk`(uri: String) {
-        startVkUc.execute(uri)
-    }
+        Mockito.`when`(updateAppointmentUseCase.execute(testAppointment)).thenReturn(true)
 
-    @Test
-    fun `should start telegram`(uri: String) {
-        startTelegramUc.execute(uri)
-    }
+        val expected = true
+        val actual = appointmentViewModel.updateAppointment(testAppointment)
 
-    @Test
-    fun `should start instagram`(uri: String) {
-        startInstagramUc.execute(uri)
-    }
-
-    @Test
-    fun `should start whatsApp`(uri: String) {
-        startWhatsAppUc.execute(uri)
-    }
-
-    @Test
-    fun `should start phone`(phoneNum: String) {
-        startPhoneUc.execute(phoneNum)
+        Assertions.assertEquals(expected, actual)
     }
 }
