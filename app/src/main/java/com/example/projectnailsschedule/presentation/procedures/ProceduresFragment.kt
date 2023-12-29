@@ -71,7 +71,7 @@ class ProceduresFragment : Fragment() {
     private fun initWidgets() {
         proceduresSearchView = binding.proceduresSearchView
         searchProceduresRV = binding.proceduresRecyclerView
-        addButton = binding.addButton
+        addButton = binding.fragmentProceduresAddButton
         proceduresCountTextView = binding.proceduresCountTextView
     }
 
@@ -98,8 +98,8 @@ class ProceduresFragment : Fragment() {
         })
 
         // add new procedure
-        binding.addButton.setOnClickListener {
-            binding.addButton.findNavController().navigate(
+        binding.fragmentProceduresAddButton.setOnClickListener {
+            binding.fragmentProceduresAddButton.findNavController().navigate(
                 R.id.action_nav_procedures_to_nav_procedure_edit
             )
         }
@@ -157,7 +157,7 @@ class ProceduresFragment : Fragment() {
                 // delete client from Db
 
                 lifecycleScope.launch() {
-                    proceduresViewModel?.deleteProcedure(deleteProcedureModelDb)
+                    proceduresViewModel.deleteProcedure(deleteProcedureModelDb)
                 }
 
                 proceduresRVAdapter?.notifyItemRemoved(position)
@@ -177,7 +177,7 @@ class ProceduresFragment : Fragment() {
                         // adding on click listener to our action of snack bar.
                         // below line is to add our item to array list with a position.
                         lifecycleScope.launch {
-                            proceduresViewModel?.saveProcedure(deleteProcedureModelDb)
+                            proceduresViewModel.saveProcedure(deleteProcedureModelDb)
                         }
 
                         // below line is to notify item is
