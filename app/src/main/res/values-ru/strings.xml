@@ -69,7 +69,7 @@
     <string name="save_changes_button">Сохранить</string>
     <string name="cancel__button">Отмена</string>
     <string name="avatar_description">clickable client avatar</string>
-    <string name="date_edit">edit date</string>
+    <string name="date_edit">Редактировать запись</string>
     <string name="select_previous_month">select previous month</string>
     <string name="edit_appointment">edit appointment</string>
     <string name="delete_appointment">delete appointment</string>
@@ -151,4 +151,6 @@
     <string name="no_data_error">Нет данных</string>
 
     <string name="update_app_toast">Загрузка завершена. Перезапуск приложения через 5 секунд</string>
+    <string name="appointment_set_client_name">appointment set client name</string>
+    <string name="appointment_set_time">appointment set time</string>
 </resources>

@@ -8,6 +8,7 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.*
 import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
+import androidx.test.espresso.matcher.RootMatchers.isDialog
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -30,9 +31,14 @@ class InsertAppointmentTest {
     @JvmField
     var mActivityScenarioRule = ActivityScenarioRule(MainActivity::class.java)
 
+    private val openDateDescr = R.string.date_edit
+    private val addAppDescr = R.string.add_appointment_title
+    private val setClientName = R.string.appointment_set_client_name
+    private val appSetTimeDescr = R.string.appointment_set_time
+
     @Test
     fun insertAppointmentTest() {
-        val recyclerView = onView(
+        val calendarRv = onView(
             allOf(
                 withId(R.id.calendarRecyclerView),
                 childAtPosition(
@@ -41,11 +47,13 @@ class InsertAppointmentTest {
                 )
             )
         )
-        recyclerView.perform(actionOnItemAtPosition<ViewHolder>(4, click()))
 
-        val floatingActionButton = onView(
+        // click on calendar
+        calendarRv.perform(actionOnItemAtPosition<ViewHolder>(15, click()))
+
+        val goDateButton = onView(
             allOf(
-                withId(R.id.go_into_date), withContentDescription("edit date"),
+                withId(R.id.go_into_date), withContentDescription(openDateDescr),
                 childAtPosition(
                     allOf(
                         withId(R.id.fragment_calendar),
@@ -59,12 +67,13 @@ class InsertAppointmentTest {
                 isDisplayed()
             )
         )
-        floatingActionButton.perform(click())
 
-        val floatingActionButton2 = onView(
+        // click go to date button
+        goDateButton.perform(click())
+
+        val addAppButton = onView(
             allOf(
-                withId(R.id.fragment_date_addButton), withContentDescription("Запись"),
-                // TODO: поправить  ContentDescription
+                withId(R.id.fragment_date_addButton), withContentDescription(addAppDescr),
                 childAtPosition(
                     allOf(
                         withId(R.id.fragment_date),
@@ -78,11 +87,11 @@ class InsertAppointmentTest {
                 isDisplayed()
             )
         )
-        floatingActionButton2.perform(click())
+        addAppButton.perform(click())
 
-        val appCompatTextView = onView(
+        val setAppTime = onView(
             allOf(
-                withId(R.id.time_edit_text),
+                withId(R.id.time_edit_text), withContentDescription(appSetTimeDescr),
                 childAtPosition(
                     allOf(
                         withId(R.id.client_procedure_appointment_month_rv_child),
@@ -95,11 +104,17 @@ class InsertAppointmentTest {
                 )
             )
         )
-        appCompatTextView.perform(scrollTo(), click())
+        setAppTime.perform(scrollTo(), click())
 
-        val appCompatButton = onView(
+        // click OK in time picker
+        onView(withText("OK"))
+            .inRoot(isDialog())
+            .check(matches(isDisplayed()))
+            .perform(click())
+
+        val setClientNameButton = onView(
             allOf(
-                withId(android.R.id.button1), withText("��"),
+                withId(android.R.id.button1), withContentDescription(setClientName),
                 childAtPosition(
                     childAtPosition(
                         withClassName(`is`("android.widget.ScrollView")),
@@ -109,7 +124,7 @@ class InsertAppointmentTest {
                 )
             )
         )
-        appCompatButton.perform(scrollTo(), click())
+        setClientNameButton.perform(scrollTo(), click())
 
         val appCompatEditText = onView(
             allOf(

@@ -108,6 +108,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                android:contentDescription="@string/appointment_set_time"
                 android:id="@+id/time_edit_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -165,6 +166,7 @@
                 android:imeOptions="actionDone"
                 android:inputType="textCapWords"
                 android:textSize="20sp"
+                android:contentDescription="@string/appointment_set_client_name"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/select_client_button"
                 app:layout_constraintHorizontal_weight="8"

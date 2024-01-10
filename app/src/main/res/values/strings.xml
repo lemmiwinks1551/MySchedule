@@ -151,4 +151,6 @@
     <string name="no_data_error">No data</string>
 
     <string name="update_app_toast">Download successful. Restarting app in 5 seconds</string>
+    <string name="appointment_set_client_name">appointment set client name</string>
+    <string name="appointment_set_time">appointment set time</string>
 </resources>
