@@ -78,6 +78,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
                 android:src="@drawable/baseline_today_24"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -108,11 +109,11 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:contentDescription="@string/appointment_set_time"
                 android:id="@+id/time_edit_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
+                android:contentDescription="@string/appointment_set_time"
                 android:hint="@string/example_time"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -127,6 +128,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
                 android:src="@drawable/baseline_access_time_24"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -162,11 +164,11 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
                 android:background="@null"
+                android:contentDescription="@string/appointment_set_client_name"
                 android:hint="@string/example_client"
                 android:imeOptions="actionDone"
                 android:inputType="textCapWords"
                 android:textSize="20sp"
-                android:contentDescription="@string/appointment_set_client_name"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/select_client_button"
                 app:layout_constraintHorizontal_weight="8"
@@ -178,6 +180,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
+                android:adjustViewBounds="false"
+                android:cropToPadding="false"
+                android:elevation="14dp"
                 android:src="@drawable/ic_baseline_people_alt_24"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -228,6 +233,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
+                android:elevation="14dp"
                 android:src="@drawable/baseline_attach_money_24"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -279,6 +285,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
                 android:src="@drawable/baseline_call_24"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -327,6 +334,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
                 android:src="@drawable/vk_logo"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -375,6 +383,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
                 android:src="@drawable/telegram_logo"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -423,6 +432,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
                 android:src="@drawable/instagram_logo"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -473,6 +483,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
                 android:src="@drawable/whatsapp_logo"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -523,6 +534,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
                 android:src="@drawable/baseline_edit_note_24"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

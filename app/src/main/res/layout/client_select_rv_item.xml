@@ -51,6 +51,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
+                android:visibility="invisible"
                 android:id="@+id/imageButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -85,6 +86,8 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
+                android:background="@color/transparent"
+                android:layout_margin="10dp"
                 android:id="@+id/call_client_button_select_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -119,6 +122,8 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
+                android:background="@color/transparent"
+                android:layout_margin="10dp"
                 android:id="@+id/vk_logo_imageButton_select_client"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -153,6 +158,8 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
+                android:background="@color/transparent"
+                android:layout_margin="10dp"
                 android:id="@+id/telegram_logo_imageButton_select_client"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -187,6 +194,8 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
+                android:background="@color/transparent"
+                android:layout_margin="10dp"
                 android:id="@+id/instagram_logo_imageButton_select_client"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -221,6 +230,8 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
+                android:background="@color/transparent"
+                android:layout_margin="10dp"
                 android:id="@+id/whatsapp_logo_imageButton_select_client"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -255,6 +266,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
+                android:visibility="invisible"
                 android:id="@+id/notes_logo_imageButton_select_client"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

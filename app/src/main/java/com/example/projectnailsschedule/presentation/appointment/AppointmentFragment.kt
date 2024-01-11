@@ -131,25 +131,25 @@ class AppointmentFragment : Fragment() {
                 dialogFragment.show(parentFragmentManager, "SelectProcedureFragment")
             }
 
-            vkLogoImageButton.setOnClickListener {
+/*            vkLogoImageButton.setOnClickListener {
                 startVk(clientVkLinkEt.text.toString().trim())
-            }
+            }*/
 
-            telegramLogoImageButton.setOnClickListener {
+/*            telegramLogoImageButton.setOnClickListener {
                 startTelegram(clientTelegramLinkEt.text.toString().trim())
-            }
+            }*/
 
-            instagramLogoImageButton.setOnClickListener {
+/*            instagramLogoImageButton.setOnClickListener {
                 startInstagram(clientInstagramLinkEt.text.toString().trim())
-            }
+            }*/
 
-            whatsappLogoImageButton.setOnClickListener {
+/*            whatsappLogoImageButton.setOnClickListener {
                 startWhatsapp(clientWhatsappLinkEt.text.toString().trim())
-            }
+            }*/
 
-            callClientButton.setOnClickListener {
+/*            callClientButton.setOnClickListener {
                 startPhone(binding.phoneEt.text.toString())
-            }
+            }*/
         }
     }
 
