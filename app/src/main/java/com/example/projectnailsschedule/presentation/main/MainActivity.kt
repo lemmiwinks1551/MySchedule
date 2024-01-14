@@ -68,8 +68,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
+
+        // set theme from shared prefs
+        val currentUserTheme = mainViewModel.getUserTheme()
+        val currentUserThemeId = resources.getIdentifier(currentUserTheme, "style", packageName)
+        setTheme(currentUserThemeId)
 
         // Set uncaught exception handler
         Thread.setDefaultUncaughtExceptionHandler(uncaughtExceptionHandler)

@@ -21,4 +21,8 @@ interface SettingsRepository {
     fun setLanguage(language: String)
 
     fun getLanguage() : String
+
+    fun setUserTheme(theme: String)
+
+    fun getUserTheme() : String
 }

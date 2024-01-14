@@ -11,11 +11,12 @@ class SettingsViewModel @Inject constructor(
     private val setDarkThemeUseCase: SetDarkThemeUseCase,
     private val getThemeUseCase: GetThemeUseCase,
     private val getLanguageUseCase: GetLanguageUseCase,
-    private val setLanguageUseCase: SetLanguageUseCase
+    private val setLanguageUseCase: SetLanguageUseCase,
+    private val setUserThemeUseCase: SetUserThemeUseCase
 ) : ViewModel() {
 
     init {
-        loadTheme()
+        //loadTheme()
     }
 
     var darkThemeOn: Boolean? = null
@@ -35,6 +36,9 @@ class SettingsViewModel @Inject constructor(
     }
 
     fun setLanguage(language: String) {
+    }
 
+    fun setUserTheme(theme: String) {
+        setUserThemeUseCase.execute(theme)
     }
 }
