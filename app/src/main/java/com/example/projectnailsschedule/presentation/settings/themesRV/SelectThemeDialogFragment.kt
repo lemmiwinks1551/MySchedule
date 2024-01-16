@@ -2,9 +2,11 @@ package com.example.projectnailsschedule.presentation.settings.themesRV
 
 import ZoomOutPageTransformer
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.graphics.drawable.toDrawable
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
@@ -48,6 +50,8 @@ class SelectThemeDialogFragment : DialogFragment() {
 
         inflatePager()
 
+        initClickListener()
+
         return binding.root
     }
 
@@ -56,7 +60,6 @@ class SelectThemeDialogFragment : DialogFragment() {
         val tabLayout = binding.tabLayout
 
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-            //tab.text = "${(position + 1)}"
             tab.setIcon(R.drawable.background)
         }.attach()
 
@@ -86,6 +89,13 @@ class SelectThemeDialogFragment : DialogFragment() {
             container: ViewGroup?,
             savedInstanceState: Bundle?
         ): View = inflater.inflate(R.layout.fragment_screen_slide_page, container, false)
+    }
+
+    private fun initClickListener() {
+        binding.selectThemeButton.setOnClickListener {
+            val themeNum = viewPager.currentItem
+            Log.e("AAA", themeNum.toString())
+        }
     }
 }
 

@@ -1,7 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <androidx.viewpager2.widget.ViewPager2
@@ -11,8 +10,16 @@
         android:layout_weight="1" />
 
     <com.google.android.material.tabs.TabLayout
-        app:tabIndicatorFullWidth="false"
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
+    <Button
+        android:layout_margin="8dp"
+        android:id="@+id/select_theme_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Set as Theme" />
+
 </LinearLayout>
