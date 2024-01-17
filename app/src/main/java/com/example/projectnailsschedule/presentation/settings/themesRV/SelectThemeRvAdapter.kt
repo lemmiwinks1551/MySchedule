@@ -25,7 +25,6 @@ class SelectThemeRvAdapter(
         private fun inflateViews() {
             with(itemView) {
                 themeImage = findViewById(R.id.theme_image)
-                themeText = findViewById(R.id.theme_text)
             }
         }
 

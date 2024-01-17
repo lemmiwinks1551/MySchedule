@@ -2,30 +2,38 @@ package com.example.projectnailsschedule.presentation.settings.themesRV
 
 import ZoomOutPageTransformer
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.core.graphics.drawable.toDrawable
+import android.widget.ImageView
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.RecyclerView
+import androidx.fragment.app.viewModels
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentSelectThemeBinding
+import com.example.projectnailsschedule.presentation.settings.SettingsViewModel
 import com.google.android.material.tabs.TabLayoutMediator
+import dagger.hilt.android.AndroidEntryPoint
 
 private const val NUM_PAGES = 5
+private val iconArray = arrayOf(
+    R.drawable.background_default,
+    R.drawable.background_pink,
+    R.drawable.background_blue,
+    R.drawable.background_green,
+    R.drawable.background_orange
+)
 
+@AndroidEntryPoint
 class SelectThemeDialogFragment : DialogFragment() {
     val log = this::class.simpleName
 
     private var _binding: FragmentSelectThemeBinding? = null
-    private var themeSelectRv: RecyclerView? = null
     private lateinit var viewPager: ViewPager2
     private val binding get() = _binding!!
+    private val settingsViewModel: SettingsViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,11 +66,9 @@ class SelectThemeDialogFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val tabLayout = binding.tabLayout
-
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-            tab.setIcon(R.drawable.background)
+            tab.setIcon(iconArray[position])
         }.attach()
-
     }
 
     private fun inflatePager() {
@@ -79,22 +85,41 @@ class SelectThemeDialogFragment : DialogFragment() {
     inner class ScreenSlidePagerAdapter(fa: SelectThemeDialogFragment) : FragmentStateAdapter(fa) {
         override fun getItemCount(): Int = NUM_PAGES
 
-        override fun createFragment(position: Int): Fragment = ScreenSlidePageFragment()
+        override fun createFragment(position: Int): Fragment = ScreenSlidePageFragment(position)
     }
 
-    class ScreenSlidePageFragment : Fragment() {
-
+    class ScreenSlidePageFragment(val position: Int) : Fragment() {
         override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
-        ): View = inflater.inflate(R.layout.fragment_screen_slide_page, container, false)
+        ): View = inflater.inflate(R.layout.fragment_screen_slide_page, container, false).apply {
+
+            val imageView = findViewById<ImageView>(R.id.theme_image)
+            imageView.setImageResource(iconArray[position])
+        }
+
     }
 
     private fun initClickListener() {
         binding.selectThemeButton.setOnClickListener {
             val themeNum = viewPager.currentItem
-            Log.e("AAA", themeNum.toString())
+            val themeName = getThemeName(themeNum)
+            dialog?.dismiss()
+
+            settingsViewModel.setUserTheme(theme = themeName)
+            settingsViewModel.restartApp()
+        }
+    }
+
+    private fun getThemeName(item: Int): String {
+        return when (item) {
+            0 -> "Theme.Main"
+            1 -> "MyNewThemePink"
+            2 -> "MyNewThemeBlue"
+            3 -> "MyNewThemeGreen"
+            4 -> "MyNewThemeOrange"
+            else -> ""
         }
     }
 }
