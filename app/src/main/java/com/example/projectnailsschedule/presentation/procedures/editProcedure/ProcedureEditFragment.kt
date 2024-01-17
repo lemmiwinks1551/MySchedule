@@ -2,6 +2,8 @@ package com.example.projectnailsschedule.presentation.procedures.editProcedure
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
@@ -26,7 +28,6 @@ class ProcedureEditFragment : Fragment() {
     private var _binding: FragmentProcedureEditBinding? = null
     private val binding get() = _binding!!
 
-
     private var procedureToEdit: ProcedureModelDb? = null
     private var bindingKeyProcedureEdit = "editProcedure"
 
@@ -38,8 +39,7 @@ class ProcedureEditFragment : Fragment() {
     lateinit var procedurePriceEt: EditText
     lateinit var procedureNotesEt: EditText
 
-    lateinit var saveButton: Button
-    lateinit var cancelButton: Button
+    private lateinit var saveToolbarButton: MenuItem
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,15 +51,13 @@ class ProcedureEditFragment : Fragment() {
         // init widgets
         initWidgets()
 
-        // init clickListeners
-        setClickListeners()
-
         // get bindingKeyClientEdit from arguments
         if (arguments != null) {
             procedureToEdit = arguments?.getParcelable(bindingKeyProcedureEdit)
             setFields()
         }
 
+        setHasOptionsMenu(true)
         return binding.root
     }
 
@@ -71,9 +69,6 @@ class ProcedureEditFragment : Fragment() {
         procedureNameEt = binding.procedureNameEditText
         procedurePriceEt = binding.procedurePriceEditText
         procedureNotesEt = binding.procedureNotesEditText
-
-        saveButton = binding.saveButton
-        cancelButton = binding.cancelButton
     }
 
     private fun setFields() {
@@ -93,7 +88,7 @@ class ProcedureEditFragment : Fragment() {
     }
 
     private fun setClickListeners() {
-        saveButton.setOnClickListener {
+        saveToolbarButton.setOnMenuItemClickListener {
             val procedureModelDb = ProcedureModelDb(
                 _id = procedureToEdit?._id,
                 procedureName = procedureNameEt.text.toString(),
@@ -121,15 +116,17 @@ class ProcedureEditFragment : Fragment() {
             // Return to previous screen
             findNavController().popBackStack()
         }
-
-        cancelButton.setOnClickListener {
-            // Return to previous screen
-            findNavController().popBackStack()
-        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        saveToolbarButton = menu.findItem(R.id.save_toolbar_button)
+        saveToolbarButton.isVisible = true
+        setClickListeners()
+        super.onPrepareOptionsMenu(menu)
     }
 }

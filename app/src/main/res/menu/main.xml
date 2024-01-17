@@ -15,4 +15,11 @@
         android:visible="false"
         app:showAsAction="ifRoom" />
 
+    <item
+        android:id="@+id/save_toolbar_button"
+        android:title="Save"
+        android:tooltipText="Save"
+        android:visible="false"
+        app:showAsAction="ifRoom"/>
+
 </menu>

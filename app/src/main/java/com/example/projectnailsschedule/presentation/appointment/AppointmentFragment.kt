@@ -5,10 +5,13 @@ import android.app.TimePickerDialog
 import android.app.TimePickerDialog.OnTimeSetListener
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.app.ActivityCompat.invalidateOptionsMenu
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -32,6 +35,8 @@ class AppointmentFragment : Fragment() {
     private var _binding: FragmentAppointmentBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var saveToolbarButton: MenuItem
+
     private var appointmentParams: AppointmentModelDb? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,15 +53,13 @@ class AppointmentFragment : Fragment() {
         // set binding
         _binding = FragmentAppointmentBinding.inflate(inflater, container, false)
 
-        // set ClickListeners
-        setClickListeners()
-
         // set current appointmentParams form DateFragment binding object
         setAppointmentCurrentParams()
 
         // set title text
         setTitle()
 
+        setHasOptionsMenu(true)
         return binding.root
     }
 
@@ -93,24 +96,25 @@ class AppointmentFragment : Fragment() {
             }
     }
 
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        saveToolbarButton = menu.findItem(R.id.save_toolbar_button)
+        saveToolbarButton.isVisible = true
+        setClickListeners()
+        super.onPrepareOptionsMenu(menu)
+    }
+
     private fun setClickListeners() {
+        saveToolbarButton.setOnMenuItemClickListener {
+            if (appointmentParams?._id == null) {
+                // no _id - add new Appointment
+                createAppointment()
+            } else {
+                // _id - edit Appointment
+                editAppointment()
+            }
+            true
+        }
         with(binding) {
-            // Set ClickListener on save_changes_button
-            saveButton.setOnClickListener {
-                if (appointmentParams?._id == null) {
-                    // no _id - add new Appointment
-                    createAppointment()
-                } else {
-                    // _id - edit Appointment
-                    editAppointment()
-                }
-            }
-
-            // set ClickListener on cancel_button
-            cancelButton.setOnClickListener {
-                cancelButton()
-            }
-
             // set ClickListener on day_edit_text
             dayEditText.setOnClickListener {
                 setDatePicker()
@@ -130,26 +134,6 @@ class AppointmentFragment : Fragment() {
                 val dialogFragment = SelectProcedureFragment()
                 dialogFragment.show(parentFragmentManager, "SelectProcedureFragment")
             }
-
-/*            vkLogoImageButton.setOnClickListener {
-                startVk(clientVkLinkEt.text.toString().trim())
-            }*/
-
-/*            telegramLogoImageButton.setOnClickListener {
-                startTelegram(clientTelegramLinkEt.text.toString().trim())
-            }*/
-
-/*            instagramLogoImageButton.setOnClickListener {
-                startInstagram(clientInstagramLinkEt.text.toString().trim())
-            }*/
-
-/*            whatsappLogoImageButton.setOnClickListener {
-                startWhatsapp(clientWhatsappLinkEt.text.toString().trim())
-            }*/
-
-/*            callClientButton.setOnClickListener {
-                startPhone(binding.phoneEt.text.toString())
-            }*/
         }
     }
 
@@ -246,11 +230,6 @@ class AppointmentFragment : Fragment() {
         }
     }
 
-    private fun cancelButton() {
-        // Cancel button
-        findNavController().popBackStack()
-    }
-
     private fun setDatePicker() {
         // set datePicker to select date field
         val calendar = Calendar.getInstance()
@@ -311,25 +290,5 @@ class AppointmentFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    private fun startVk(uri: String) {
-        appointmentViewModel.startVk(uri)
-    }
-
-    private fun startTelegram(uri: String) {
-        appointmentViewModel.startTelegram(uri)
-    }
-
-    private fun startInstagram(uri: String) {
-        appointmentViewModel.startInstagram(uri)
-    }
-
-    private fun startWhatsapp(uri: String) {
-        appointmentViewModel.startWhatsApp(uri)
-    }
-
-    private fun startPhone(phoneNum: String) {
-        appointmentViewModel.startPhone(phoneNum)
     }
 }
