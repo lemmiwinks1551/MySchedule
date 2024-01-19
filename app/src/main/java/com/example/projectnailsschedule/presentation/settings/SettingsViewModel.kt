@@ -14,6 +14,7 @@ class SettingsViewModel @Inject constructor(
     private val getLanguageUseCase: GetLanguageUseCase,
     private val setLanguageUseCase: SetLanguageUseCase,
     private val setUserThemeUseCase: SetUserThemeUseCase,
+    private val getUserThemeUseCase: GetUserThemeUseCase,
     private var restartAppUseCase: RestartAppUseCase,
     ) : ViewModel() {
 
@@ -42,6 +43,10 @@ class SettingsViewModel @Inject constructor(
 
     fun setUserTheme(theme: String) {
         setUserThemeUseCase.execute(theme)
+    }
+
+    fun getUserTheme() : String {
+        return getUserThemeUseCase.execute()
     }
 
     fun restartApp() {

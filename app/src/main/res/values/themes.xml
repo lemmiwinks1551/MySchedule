@@ -94,7 +94,7 @@
 
     </style>
 
-    <style name="MyNewThemeBlue" parent="Theme.MaterialComponents.Light.DarkActionBar.Bridge">
+    <style name="MyNewThemeGray" parent="Theme.MaterialComponents.Light.DarkActionBar.Bridge">
 
         <!-- The primary branding color for the app. By default, this is the color applied to the
      action bar background. -->
@@ -123,7 +123,7 @@
         <!-- Floating action button color. -->
         <item name="colorAccent">@color/Pink6</item>
 
-        <item name="android:windowBackground">@drawable/background_blue</item>
+        <item name="android:windowBackground">@drawable/background_gray</item>
         <item name="navigationIconTint">@color/white</item>
 
     </style>

@@ -17,8 +17,7 @@
 
     <item
         android:id="@+id/save_toolbar_button"
-        android:title="Save"
-        android:tooltipText="Save"
+        android:title="@string/save_changes_button"
         android:visible="false"
         app:showAsAction="ifRoom"/>
 

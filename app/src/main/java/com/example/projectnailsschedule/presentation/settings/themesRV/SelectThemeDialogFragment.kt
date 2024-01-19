@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -21,9 +22,17 @@ private const val NUM_PAGES = 5
 private val iconArray = arrayOf(
     R.drawable.background_default,
     R.drawable.background_pink,
-    R.drawable.background_blue,
+    R.drawable.background_gray,
     R.drawable.background_green,
     R.drawable.background_orange
+)
+
+private val themesArray = arrayOf(
+    "Theme.Main",
+    "MyNewThemePink",
+    "MyNewThemeGray",
+    "MyNewThemeGreen",
+    "MyNewThemeOrange"
 )
 
 @AndroidEntryPoint
@@ -35,9 +44,12 @@ class SelectThemeDialogFragment : DialogFragment() {
     private val binding get() = _binding!!
     private val settingsViewModel: SettingsViewModel by viewModels()
 
+    private lateinit var currentTheme: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStyle(STYLE_NORMAL, R.style.SelectThemeDialog)
+        getCurrentName()
     }
 
     override fun onStart() {
@@ -80,6 +92,8 @@ class SelectThemeDialogFragment : DialogFragment() {
 
         viewPager.clipToPadding = false
         viewPager.setPadding(40, 40, 40, 40)
+
+        viewPager.currentItem = getThemeItem(themeName = currentTheme)
     }
 
     inner class ScreenSlidePagerAdapter(fa: SelectThemeDialogFragment) : FragmentStateAdapter(fa) {
@@ -105,22 +119,41 @@ class SelectThemeDialogFragment : DialogFragment() {
         binding.selectThemeButton.setOnClickListener {
             val themeNum = viewPager.currentItem
             val themeName = getThemeName(themeNum)
-            dialog?.dismiss()
+            if (themeName == currentTheme) {
+                Toast.makeText(requireContext(), "Already done!", Toast.LENGTH_SHORT).show()
+            } else {
+                dialog?.dismiss()
 
-            settingsViewModel.setUserTheme(theme = themeName)
-            settingsViewModel.restartApp()
+                settingsViewModel.setUserTheme(theme = themeName)
+                settingsViewModel.restartApp()
+            }
         }
     }
 
     private fun getThemeName(item: Int): String {
         return when (item) {
-            0 -> "Theme.Main"
-            1 -> "MyNewThemePink"
-            2 -> "MyNewThemeBlue"
-            3 -> "MyNewThemeGreen"
-            4 -> "MyNewThemeOrange"
+            0 -> themesArray[0]
+            1 -> themesArray[1]
+            2 -> themesArray[2]
+            3 -> themesArray[3]
+            4 -> themesArray[4]
             else -> ""
         }
+    }
+
+    private fun getThemeItem(themeName: String): Int {
+        return when (themeName) {
+            themesArray[0] -> 0
+            themesArray[1] -> 1
+            themesArray[2] -> 2
+            themesArray[3] -> 3
+            themesArray[4] -> 4
+            else -> 0
+        }
+    }
+
+    private fun getCurrentName() {
+        currentTheme = settingsViewModel.getUserTheme()
     }
 }
 
