@@ -153,4 +153,23 @@
     <string name="update_app_toast">Download erfolgreich. App wird in 5 Sekunden neu gestartet</string>
     <string name="appointment_set_client_name">appointment set client name</string>
     <string name="appointment_set_time">appointment set time</string>
+
+    <!-- Preference Titles -->
+    <string name="messages_header">Nachrichten</string>
+    <string name="sync_header">Synchronisierung</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Ihre Signatur</string>
+    <string name="reply_title">Standardantwortaktion</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">E-Mails periodisch synchronisieren</string>
+    <string name="attachment_title">Eingehende Anhänge herunterladen</string>
+    <string name="attachment_summary_on">Anhänge für eingehende E-Mails automatisch herunterladen</string>
+    <string name="attachment_summary_off">Anhänge nur bei manueller Anforderung herunterladen</string>
+    <string name="already_done">"Bereits erledigt!"</string>
+
+    <string name="change_application_theme">Ändere das Anwendungsthema</string>
+    <string name="send_feedback">Feedback senden</string>
+    <string name="report_technical_issues_or_suggest_new_features">Technische Probleme melden oder neue Funktionen vorschlagen</string>
 </resources>

@@ -153,4 +153,23 @@
     <string name="update_app_toast">Descarga exitosa. Reiniciando la aplicación en 5 segundos</string>
     <string name="appointment_set_client_name">appointment set client name</string>
     <string name="appointment_set_time">appointment set time</string>
+
+    <!-- Preference Titles -->
+    <string name="messages_header">Mensajes</string>
+    <string name="sync_header">Sincronización</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Tu firma</string>
+    <string name="reply_title">Acción de respuesta predeterminada</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sincronizar correo electrónico periódicamente</string>
+    <string name="attachment_title">Descargar archivos adjuntos entrantes</string>
+    <string name="attachment_summary_on">Descargar automáticamente archivos adjuntos de correos electrónicos entrantes</string>
+    <string name="attachment_summary_off">Solo descargar archivos adjuntos cuando se solicite manualmente</string>
+    <string name="already_done">"¡Ya hecho!"</string>
+
+    <string name="change_application_theme">Cambiar el tema de la aplicación</string>
+    <string name="send_feedback">Enviar comentarios</string>
+    <string name="report_technical_issues_or_suggest_new_features">Informar problemas técnicos o sugerir nuevas funciones</string>
 </resources>

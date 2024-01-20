@@ -18,13 +18,15 @@ import com.example.projectnailsschedule.presentation.settings.SettingsViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 
-private const val NUM_PAGES = 5
+private const val NUM_PAGES = 6
+
 private val iconArray = arrayOf(
     R.drawable.background_default,
     R.drawable.background_pink,
     R.drawable.background_gray,
     R.drawable.background_green,
-    R.drawable.background_orange
+    R.drawable.background_orange,
+    R.drawable.background_black
 )
 
 private val themesArray = arrayOf(
@@ -32,7 +34,8 @@ private val themesArray = arrayOf(
     "MyNewThemePink",
     "MyNewThemeGray",
     "MyNewThemeGreen",
-    "MyNewThemeOrange"
+    "MyNewThemeOrange",
+    "MyNewThemeBlack"
 )
 
 @AndroidEntryPoint
@@ -120,7 +123,7 @@ class SelectThemeDialogFragment : DialogFragment() {
             val themeNum = viewPager.currentItem
             val themeName = getThemeName(themeNum)
             if (themeName == currentTheme) {
-                Toast.makeText(requireContext(), "Already done!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), R.string.already_done, Toast.LENGTH_SHORT).show()
             } else {
                 dialog?.dismiss()
 
@@ -137,6 +140,7 @@ class SelectThemeDialogFragment : DialogFragment() {
             2 -> themesArray[2]
             3 -> themesArray[3]
             4 -> themesArray[4]
+            5 -> themesArray[5]
             else -> ""
         }
     }
@@ -148,6 +152,7 @@ class SelectThemeDialogFragment : DialogFragment() {
             themesArray[2] -> 2
             themesArray[3] -> 3
             themesArray[4] -> 4
+            themesArray[5] -> 5
             else -> 0
         }
     }

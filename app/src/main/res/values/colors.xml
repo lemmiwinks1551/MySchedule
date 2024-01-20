@@ -33,4 +33,13 @@
     <color name="Dark6">#21324C</color>
     <color name="Dark7">#284060</color>
 
+    <!--    MyNewThemePink  -->
+    <color name="MyNewThemePink1">#bf4f4e</color>
+    <color name="MyNewThemePink2">#e186a7</color>
+    <color name="MyNewThemePink3">#d19fce</color>
+    <color name="MyNewThemePink4">#d6d2e3</color>
+    <color name="MyNewThemePink5">#93bbf9</color>
+    <color name="MyNewThemePink6">#e6dcef</color>
+    <color name="MyNewThemePink7">#4BEAE6EB</color>
+
 </resources>

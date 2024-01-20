@@ -3,11 +3,11 @@
 
     <Preference
         app:key="theme"
-        app:title="Change application theme"/>
+        app:title="@string/change_application_theme"/>
 
     <Preference
         app:key="feedback"
-        app:title="Send feedback"
-        app:summary="Report technical issues or suggest new features"/>
+        app:title="@string/send_feedback"
+        app:summary="@string/report_technical_issues_or_suggest_new_features"/>
 
 </PreferenceScreen>

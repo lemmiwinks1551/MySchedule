@@ -153,4 +153,23 @@
     <string name="update_app_toast">Загрузка завершена. Перезапуск приложения через 5 секунд</string>
     <string name="appointment_set_client_name">appointment set client name</string>
     <string name="appointment_set_time">appointment set time</string>
+
+    <!-- Preference Titles -->
+    <string name="messages_header">Сообщения</string>
+    <string name="sync_header">Синхронизация</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Ваша подпись</string>
+    <string name="reply_title">Действие по умолчанию для ответа</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Периодическая синхронизация электронной почты</string>
+    <string name="attachment_title">Загрузка входящих вложений</string>
+    <string name="attachment_summary_on">Автоматическая загрузка вложений для входящих сообщений</string>
+    <string name="attachment_summary_off">Загружать вложения только по запросу</string>
+    <string name="already_done">"Уже сделано!"</string>
+
+    <string name="change_application_theme">Изменить тему приложения</string>
+    <string name="send_feedback">Отправить отзыв</string>
+    <string name="report_technical_issues_or_suggest_new_features">Сообщить о технических проблемах или предложить новые функции</string>
 </resources>
