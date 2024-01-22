@@ -28,7 +28,7 @@
         <!-- Floating action button color. -->
         <item name="colorAccent">@color/Pink6</item>
 
-        <item name="android:windowBackground">@drawable/day_theme_background</item>
+        <item name="android:windowBackground">@drawable/background_default</item>
         <item name="navigationIconTint">@color/white</item>
 
     </style>

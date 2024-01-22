@@ -1,0 +1,13 @@
+<PreferenceScreen
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <Preference
+        app:key="theme"
+        app:title="@string/change_application_theme"/>
+
+    <Preference
+        app:key="feedback"
+        app:title="@string/send_feedback"
+        app:summary="@string/report_technical_issues_or_suggest_new_features"/>
+
+</PreferenceScreen>

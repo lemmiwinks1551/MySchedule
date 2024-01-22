@@ -15,4 +15,10 @@
         android:visible="false"
         app:showAsAction="ifRoom" />
 
+    <item
+        android:id="@+id/save_toolbar_button"
+        android:title="@string/save_changes_button"
+        android:visible="false"
+        app:showAsAction="ifRoom"/>
+
 </menu>

@@ -192,4 +192,13 @@ class DomainModule {
         return SetLanguageUseCase(repository)
     }
 
+    @Provides
+    fun provideSetUserThemeUseCase(repository: SettingsRepository): SetUserThemeUseCase {
+        return SetUserThemeUseCase(repository)
+    }
+
+    @Provides
+    fun provideGetUserThemeUseCase(repository: SettingsRepository): GetUserThemeUseCase {
+        return GetUserThemeUseCase(repository)
+    }
 }

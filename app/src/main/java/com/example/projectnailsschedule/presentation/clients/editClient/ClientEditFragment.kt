@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.text.Editable
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
@@ -20,25 +22,23 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class ClientEditFragment : Fragment() {
+    private val clientEditViewModel: ClientEditViewModel by viewModels()
 
     private var _binding: FragmentClientEditBinding? = null
     private val binding get() = _binding!!
 
-    private val clientEditViewModel: ClientEditViewModel by viewModels()
-
     private var clientToEdit: ClientModelDb? = null
     private var bindingKeyClientEdit = "editClient"
 
-    lateinit var nameEt: EditText
-    lateinit var phoneEt: EditText
+    private lateinit var nameEt: EditText
+    private lateinit var phoneEt: EditText
     private lateinit var vkEditText: EditText
     private lateinit var telegramEt: EditText
     private lateinit var instagramEt: EditText
     private lateinit var whatsappEt: EditText
-    lateinit var notesEt: EditText
+    private lateinit var notesEt: EditText
 
-    lateinit var saveButton: Button
-    lateinit var cancelButton: Button
+    private lateinit var saveToolbarButton: MenuItem
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,15 +51,13 @@ class ClientEditFragment : Fragment() {
         // init widgets
         initWidgets()
 
-        // init clickListeners
-        setClickListeners()
-
         // get bindingKeyClientEdit from arguments
         if (arguments != null) {
             clientToEdit = arguments?.getParcelable(bindingKeyClientEdit)
             setFields()
         }
 
+        setHasOptionsMenu(true)
         return binding.root
     }
 
@@ -71,9 +69,6 @@ class ClientEditFragment : Fragment() {
         instagramEt = binding.clientInstagramLinkEt
         whatsappEt = binding.clientWhatsappLinkEt
         notesEt = binding.clientNotesEditText
-
-        saveButton = binding.saveButton
-        cancelButton = binding.cancelButton
     }
 
     private fun setFields() {
@@ -97,7 +92,7 @@ class ClientEditFragment : Fragment() {
     }
 
     private fun setClickListeners() {
-        saveButton.setOnClickListener {
+        saveToolbarButton.setOnMenuItemClickListener {
             val clientModelDb = ClientModelDb(
                 _id = clientToEdit?._id,
                 name = nameEt.text.toString(),
@@ -126,11 +121,6 @@ class ClientEditFragment : Fragment() {
             findNavController().popBackStack()
         }
 
-        cancelButton.setOnClickListener {
-            // Return to previous screen
-            findNavController().popBackStack()
-        }
-
         // set phone input format on phone_edit_text
         binding.clientPhoneEditText.addTextChangedListener(PhoneNumberFormattingTextWatcher())
     }
@@ -138,5 +128,12 @@ class ClientEditFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        saveToolbarButton = menu.findItem(R.id.save_toolbar_button)
+        saveToolbarButton.isVisible = true
+        setClickListeners()
+        super.onPrepareOptionsMenu(menu)
     }
 }

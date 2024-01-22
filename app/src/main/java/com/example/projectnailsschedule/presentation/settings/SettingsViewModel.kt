@@ -1,6 +1,7 @@
 package com.example.projectnailsschedule.presentation.settings
 
 import androidx.lifecycle.ViewModel
+import com.example.projectnailsschedule.domain.usecase.importExportUC.RestartAppUseCase
 import com.example.projectnailsschedule.domain.usecase.settingsUC.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -11,11 +12,14 @@ class SettingsViewModel @Inject constructor(
     private val setDarkThemeUseCase: SetDarkThemeUseCase,
     private val getThemeUseCase: GetThemeUseCase,
     private val getLanguageUseCase: GetLanguageUseCase,
-    private val setLanguageUseCase: SetLanguageUseCase
-) : ViewModel() {
+    private val setLanguageUseCase: SetLanguageUseCase,
+    private val setUserThemeUseCase: SetUserThemeUseCase,
+    private val getUserThemeUseCase: GetUserThemeUseCase,
+    private var restartAppUseCase: RestartAppUseCase,
+    ) : ViewModel() {
 
     init {
-        loadTheme()
+        //loadTheme()
     }
 
     var darkThemeOn: Boolean? = null
@@ -35,6 +39,17 @@ class SettingsViewModel @Inject constructor(
     }
 
     fun setLanguage(language: String) {
+    }
 
+    fun setUserTheme(theme: String) {
+        setUserThemeUseCase.execute(theme)
+    }
+
+    fun getUserTheme() : String {
+        return getUserThemeUseCase.execute()
+    }
+
+    fun restartApp() {
+        restartAppUseCase.execute()
     }
 }

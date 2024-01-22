@@ -83,7 +83,7 @@ class DateFragment : Fragment() {
 
     private fun initClickListeners() {
         // add new appointment
-        binding.addButton.setOnClickListener {
+        binding.fragmentDateAddButton.setOnClickListener {
             val appointmentParams = AppointmentModelDb(
                 date = Util().dateConverterNew(dateParams?.date.toString()),
                 deleted = false

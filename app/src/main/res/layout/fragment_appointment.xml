@@ -78,6 +78,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
                 android:src="@drawable/baseline_today_24"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -112,6 +113,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
+                android:contentDescription="@string/appointment_set_time"
                 android:hint="@string/example_time"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -126,6 +128,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
                 android:src="@drawable/baseline_access_time_24"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -161,6 +164,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
                 android:background="@null"
+                android:contentDescription="@string/appointment_set_client_name"
                 android:hint="@string/example_client"
                 android:imeOptions="actionDone"
                 android:inputType="textCapWords"
@@ -176,6 +180,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
+                android:adjustViewBounds="false"
+                android:cropToPadding="false"
+                android:elevation="14dp"
                 android:src="@drawable/ic_baseline_people_alt_24"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -226,6 +233,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
+                android:elevation="14dp"
                 android:src="@drawable/baseline_attach_money_24"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -277,6 +285,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
                 android:src="@drawable/baseline_call_24"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -325,6 +334,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
                 android:src="@drawable/vk_logo"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -373,6 +383,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
                 android:src="@drawable/telegram_logo"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -421,6 +432,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
                 android:src="@drawable/instagram_logo"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -471,6 +483,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
                 android:src="@drawable/whatsapp_logo"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -482,7 +495,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/calendar_recycler_view_borders"
-            app:layout_constraintBottom_toTopOf="@id/constraintLayout11"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/client_notes_cl_date_appointment_rv_item">
@@ -521,35 +533,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
                 android:src="@drawable/baseline_edit_note_24"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout11"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout10">
-
-            <Button
-                android:id="@+id/save_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="30dp"
-                android:text="@string/save_changes_button"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <Button
-                android:id="@+id/cancel_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="30dp"
-                android:text="@string/cancel__button"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

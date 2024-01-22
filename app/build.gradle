@@ -12,7 +12,7 @@ android {
 
     signingConfigs {
         debug {
-            storeFile file('E:\\key\\key.jks')
+            storeFile file('C:\\Users\\Kirill\\Desktop\\key.jks')
             storePassword 'RTS567m81'
             keyPassword 'RTS567m81'
             keyAlias 'key0'
@@ -135,4 +135,8 @@ dependencies {
     testImplementation('org.junit.jupiter:junit-jupiter-api:5.8.2')
     testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine:5.8.2')
     testRuntimeOnly('org.junit.vintage:junit-vintage-engine:5.8.2')
+
+    implementation "androidx.preference:preference-ktx:1.2.1"
+
+    implementation("androidx.viewpager2:viewpager2:1.0.0")
 }

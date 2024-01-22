@@ -69,7 +69,7 @@ class ClientsFragment : Fragment() {
     private fun initWidgets() {
         clientsSearchView = binding.clientsSearchView
         searchClientsRV = binding.clientsRecyclerView
-        addButton = binding.addButton
+        addButton = binding.fragmentClientsAddButton
         clientsCountTextView = binding.clientsCountTextView
     }
 
@@ -93,8 +93,8 @@ class ClientsFragment : Fragment() {
         })
 
         // add new client
-        binding.addButton.setOnClickListener {
-            binding.addButton.findNavController().navigate(
+        binding.fragmentClientsAddButton.setOnClickListener {
+            binding.fragmentClientsAddButton.findNavController().navigate(
                 R.id.action_nav_clients_to_nav_client_edit_fragment
             )
         }
@@ -172,7 +172,7 @@ class ClientsFragment : Fragment() {
                     ) {
                         // adding on click listener to our action of snack bar.
                         // below line is to add our item to array list with a position.
-                        clientsViewModel?.saveClient(deleteClientModelDb)
+                        clientsViewModel.saveClient(deleteClientModelDb)
 
                         // below line is to notify item is
                         // added to our adapter class.

@@ -35,14 +35,13 @@ class CalendarViewModel @Inject constructor(
     var prevHolder: CalendarRvAdapter.ViewHolder? = null
 
     fun getArrayAppointments(dateParams: DateParams): Array<AppointmentModelDb> {
-        // get all appointments in selectedDate
-        // for recycler view adapter
+        // get all appointments in selectedDate for recycler view adapter
         Log.e(log, "Appointments from $selectedDate unloaded from DB")
         return loadShortDateUseCase.execute(dateParams)
     }
 
     private fun getDateAppointmentCount() {
-        // get appointments count form selectedDate
+        // get appointments count from selectedDate
         selectedDate.value?.appointmentCount =
             getDateAppointmentsUseCase.execute(selectedDate.value!!).size
         selectedDate.value = selectedDate.value

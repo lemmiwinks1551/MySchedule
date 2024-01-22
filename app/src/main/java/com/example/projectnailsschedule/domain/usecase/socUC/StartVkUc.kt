@@ -31,6 +31,5 @@ class StartVkUc(val context: Context) {
         } else {
             Toast.makeText(context, R.string.no_data_error, Toast.LENGTH_LONG).show()
         }
-
     }
 }

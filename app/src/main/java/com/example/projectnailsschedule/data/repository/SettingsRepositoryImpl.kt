@@ -12,6 +12,7 @@ class SettingsRepositoryImpl(context: Context?) : SettingsRepository {
     private val monthKey = "month"
     private val selectedDateKey = "selectedDate"
     private val languageKey = "language"
+    private val userTheme = "theme"
 
     private val sharedPreference: SharedPreferences =
         context!!.getSharedPreferences(CUSTOM_PREF_NAME, Context.MODE_PRIVATE)
@@ -60,5 +61,16 @@ class SettingsRepositoryImpl(context: Context?) : SettingsRepository {
 
     override fun getLanguage(): String {
         return sharedPreference.getString(languageKey, "English")!!
+    }
+
+    override fun setUserTheme(theme: String) {
+        val editor = sharedPreference.edit()
+        editor.putString(userTheme, theme)
+        editor.apply()
+    }
+
+    override fun getUserTheme(): String {
+        val defaultTheme = "Theme.Main"
+        return sharedPreference.getString(userTheme, defaultTheme)!!
     }
 }

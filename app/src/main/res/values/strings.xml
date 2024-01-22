@@ -151,4 +151,25 @@
     <string name="no_data_error">No data</string>
 
     <string name="update_app_toast">Download successful. Restarting app in 5 seconds</string>
+    <string name="appointment_set_client_name">appointment set client name</string>
+    <string name="appointment_set_time">appointment set time</string>
+
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails</string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="already_done">"Already done!"</string>
+
+    <string name="change_application_theme">"Change application theme"</string>
+    <string name="send_feedback">"Send feedback"</string>
+    <string name="report_technical_issues_or_suggest_new_features">"Report technical issues or suggest new features"</string>
 </resources>

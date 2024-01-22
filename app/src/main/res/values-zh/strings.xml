@@ -151,4 +151,25 @@
     <string name="no_data_error">没有数据</string>
 
     <string name="update_app_toast">下载成功。5秒后重新启动应用程序</string>
+    <string name="appointment_set_client_name">appointment set client name</string>
+    <string name="appointment_set_time">appointment set time</string>
+
+    <!-- Preference Titles -->
+    <string name="messages_header">消息</string>
+    <string name="sync_header">同步</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">您的签名</string>
+    <string name="reply_title">默认回复操作</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">定期同步电子邮件</string>
+    <string name="attachment_title">下载收件附件</string>
+    <string name="attachment_summary_on">自动下载收件电子邮件的附件</string>
+    <string name="attachment_summary_off">仅在手动请求时下载附件</string>
+    <string name="already_done">"已经完成!"</string>
+
+    <string name="change_application_theme">更改应用主题</string>
+    <string name="send_feedback">发送反馈</string>
+    <string name="report_technical_issues_or_suggest_new_features">报告技术问题或建议新功能</string>
 </resources>
