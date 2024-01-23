@@ -159,7 +159,7 @@ class FullMonthViewRVAdapter(
                         deleteAppointmentModelDb.name
                     ),
                     Snackbar.LENGTH_LONG
-                ).setBackgroundTint(Color.parseColor("#ffff00"))
+                ).setBackgroundTint(context.resources.getColor(R.color.yellow))
                     .setActionTextColor(Color.parseColor("#003300"))
                     .setTextColor(Color.parseColor("#003300"))
                     .setAction(
@@ -214,7 +214,7 @@ class FullMonthViewRVAdapter(
                 val iconMarginVertical =
                     (viewHolder.itemView.height - deleteIcon!!.intrinsicHeight) / 2
 
-                val colorDrawableBackground = ColorDrawable(Color.parseColor("#ffcce6"))
+                val colorDrawableBackground = ColorDrawable(context.resources.getColor(R.color.yellow))
 
                 val left =
                     itemView.right - deleteIcon.intrinsicWidth - deleteIcon.intrinsicWidth // 882

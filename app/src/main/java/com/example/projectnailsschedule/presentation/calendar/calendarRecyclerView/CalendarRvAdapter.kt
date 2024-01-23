@@ -15,7 +15,8 @@ import java.time.LocalDate
 
 class CalendarRvAdapter(
     private val daysInMonth: ArrayList<String>,
-    private val calendarViewModel: CalendarViewModel
+    private val calendarViewModel: CalendarViewModel,
+    private val selectedDayColor: Int
 ) : RecyclerView.Adapter<CalendarRvAdapter.ViewHolder>() {
     inner class ViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
@@ -36,7 +37,6 @@ class CalendarRvAdapter(
     }
 
     private val log = this::class.simpleName
-    private var selectedColor: Int = R.color.Pink6
     private var unselectedBackground: Int = R.drawable.calendar_recycler_view_borders
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -89,7 +89,7 @@ class CalendarRvAdapter(
                     )
 
                     // Select the clicked cell
-                    holder.cellLayout.setBackgroundResource(selectedColor)
+                    holder.cellLayout.setBackgroundResource(selectedDayColor)
 
                     // Update the previous holder
                     calendarViewModel.prevHolder = holder

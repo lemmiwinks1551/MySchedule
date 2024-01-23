@@ -69,7 +69,7 @@ class ListMonthViewFragment : Fragment() {
     }
 
     private fun setObservers() {
-        fullMonthViewVM!!.selectedMonth.observe(viewLifecycleOwner) { selectedMonth ->
+        fullMonthViewVM.selectedMonth.observe(viewLifecycleOwner) { selectedMonth ->
             inflateCalendarRecyclerView(selectedMonth)
             setMonthAndYear() // update year and month in text view
         }
@@ -85,7 +85,7 @@ class ListMonthViewFragment : Fragment() {
         for (i in 1..selectedDate.lengthOfMonth()) {
 
             val dateFormat =
-                Util().dateConverterNew(fullMonthViewVM!!.selectedMonth.value.toString())
+                Util().dateConverterNew(fullMonthViewVM.selectedMonth.value.toString())
             var date = dateFormat.drop(2)
             date = daysInMonth[i - 1] + date
             date = Util().dateConverter(date)
@@ -97,7 +97,7 @@ class ListMonthViewFragment : Fragment() {
             val addToList = DateWeekAppModel(
                 date = dateParams.date!!,
                 weekDay = Util().getDayOfWeek(date, requireContext()),
-                appointmentsList = fullMonthViewVM!!.getDateAppointments(dateParams)
+                appointmentsList = fullMonthViewVM.getDateAppointments(dateParams)
             )
 
             list.add(addToList)
@@ -105,7 +105,7 @@ class ListMonthViewFragment : Fragment() {
 
         // create adapter
         val fullMonthViewRVAdapter =
-            FullMonthViewRVAdapter(list, requireContext(), findNavController(), fullMonthViewVM!!)
+            FullMonthViewRVAdapter(list, requireContext(), findNavController(), fullMonthViewVM)
 
         layoutManager = GridLayoutManager(activity, 1)
 
@@ -115,30 +115,30 @@ class ListMonthViewFragment : Fragment() {
 
     private fun initClickListeners() {
         nextMonthButton!!.setOnClickListener {
-            fullMonthViewVM!!.changeMonth(true)
+            fullMonthViewVM.changeMonth(true)
         }
         prevMonthButton!!.setOnClickListener {
-            fullMonthViewVM!!.changeMonth(false)
+            fullMonthViewVM.changeMonth(false)
         }
     }
 
     private fun setMonthAndYear() {
         // set month name
         val date = Date.from(
-            fullMonthViewVM!!.selectedMonth.value!!.atStartOfDay(ZoneId.systemDefault())
+            fullMonthViewVM.selectedMonth.value!!.atStartOfDay(ZoneId.systemDefault())
                 ?.toInstant()
         )
         val month = SimpleDateFormat("LLLL", Locale.getDefault()).format(date).replaceFirstChar { it.uppercase() }
 
         monthTextView!!.text = month
-        yearTextView!!.text = fullMonthViewVM!!.selectedMonth.value!!.year.toString()
+        yearTextView!!.text = fullMonthViewVM.selectedMonth.value!!.year.toString()
     }
 
     override fun onResume() {
         super.onResume()
         // scroll to previous position
         fullMonthAppointmentsRV?.post {
-            val oldPosition = fullMonthViewVM!!.oldPosition
+            val oldPosition = fullMonthViewVM.oldPosition
             val smoothScroller: SmoothScroller = object : LinearSmoothScroller(context) {
                 override fun getVerticalSnapPreference(): Int {
                     return SNAP_TO_START

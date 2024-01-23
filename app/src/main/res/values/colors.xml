@@ -34,12 +34,28 @@
     <color name="Dark7">#284060</color>
 
     <!--    MyNewThemePink  -->
-    <color name="MyNewThemePink1">#bf4f4e</color>
-    <color name="MyNewThemePink2">#e186a7</color>
-    <color name="MyNewThemePink3">#d19fce</color>
-    <color name="MyNewThemePink4">#d6d2e3</color>
-    <color name="MyNewThemePink5">#93bbf9</color>
-    <color name="MyNewThemePink6">#e6dcef</color>
-    <color name="MyNewThemePink7">#4BEAE6EB</color>
+    <color name="MyNewThemePink4">#97B8F8</color>
+    <color name="MyNewThemePink5">#7495D3</color>
+    <color name="MyNewThemePink6">#DEBEE9</color>
+
+    <!--    MyNewThemeGray  -->
+    <color name="MyNewThemeGray4">#909090</color>
+    <color name="MyNewThemeGray5">#C6C6C6</color>
+    <color name="MyNewThemeGray6">#B5B5B5</color>
+
+    <!--    MyNewThemeGreen  -->
+    <color name="MyNewThemeGreen4">#8DD188</color>
+    <color name="MyNewThemeGreen5">#8DD188</color>
+    <color name="MyNewThemeGreen6">#8DD188</color>
+
+    <!--    MyNewThemeFall  -->
+    <color name="MyNewThemeFall4">#BF612D</color>
+    <color name="MyNewThemeFall5">#D6926B</color>
+    <color name="MyNewThemeFall6">#C36531</color>
+
+    <!--    MyNewThemeBlack  -->
+    <color name="MyNewThemeBlack4">#22252A</color>
+    <color name="MyNewThemeBlack5">#22252A</color>
+    <color name="MyNewThemeBlack6">#7A7A7A</color>
 
 </resources>

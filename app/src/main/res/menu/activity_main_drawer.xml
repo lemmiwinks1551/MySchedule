@@ -14,7 +14,7 @@
             android:title="@string/menu_clients" />
         <item
             android:id="@+id/nav_procedures"
-            android:icon="@drawable/ic_baseline_attach_money_24"
+            android:icon="@drawable/baseline_attach_money_24"
             android:title="@string/menu_service" />
         <item
             android:id="@+id/nav_settings"

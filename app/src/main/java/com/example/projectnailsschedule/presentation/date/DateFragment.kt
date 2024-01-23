@@ -212,7 +212,7 @@ class DateFragment : Fragment() {
                 val itemView = viewHolder.itemView
                 val iconMarginVertical = (viewHolder.itemView.height - deleteIcon!!.intrinsicHeight) / 2
 
-                val colorDrawableBackground = ColorDrawable(Color.parseColor("#ffcce6"))
+                val colorDrawableBackground = ColorDrawable(resources.getColor(R.color.yellow))
 
                 val left = itemView.right - deleteIcon.intrinsicWidth - deleteIcon.intrinsicWidth // 882
                 val right = itemView.right - deleteIcon.intrinsicWidth // 1014

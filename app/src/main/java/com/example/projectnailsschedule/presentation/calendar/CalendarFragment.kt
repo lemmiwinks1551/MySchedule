@@ -10,7 +10,6 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,10 +22,10 @@ import com.example.projectnailsschedule.util.Util
 import com.example.projectnailsschedule.util.rustore.RuStoreAd
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
-import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.ZoneId
-import java.util.*
+import java.util.Calendar
+import java.util.Date
 
 @AndroidEntryPoint
 class CalendarFragment : Fragment(),
@@ -179,7 +178,8 @@ class CalendarFragment : Fragment(),
         // create adapter
         val calendarRvAdapter = CalendarRvAdapter(
             daysInMonth = daysInMonth,
-            calendarViewModel = calendarViewModel
+            calendarViewModel = calendarViewModel,
+            selectedDayColor = getColorFromTheme()
         )
 
         val layoutManager: RecyclerView.LayoutManager =
@@ -264,5 +264,17 @@ class CalendarFragment : Fragment(),
             R.id.action_nav_calendar_to_dateFragment,
             bundle
         )
+    }
+
+    private fun getColorFromTheme(): Int {
+        return when (calendarViewModel.getUserTheme()) {
+            "Theme.Main" -> R.color.Pink6
+            "MyNewThemePink" -> R.color.MyNewThemePink6
+            "MyNewThemeGray" -> R.color.MyNewThemeGray6
+            "MyNewThemeGreen" -> R.color.MyNewThemeGreen6
+            "MyNewThemeOrange" -> R.color.MyNewThemeFall6
+            "MyNewThemeBlack" -> R.color.MyNewThemeBlack6
+            else -> R.color.Pink6
+        }
     }
 }
