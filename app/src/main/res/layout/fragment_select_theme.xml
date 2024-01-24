@@ -20,6 +20,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Set as Theme" />
+        android:text="@string/set_as_theme" />
 
 </LinearLayout>

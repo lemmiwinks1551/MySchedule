@@ -4,6 +4,7 @@ import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
+import android.content.res.Configuration
 import android.graphics.Color
 import android.util.Log
 import android.view.View
@@ -330,5 +331,10 @@ class Util {
                 }
             }
         }
+    }
+
+    fun isDarkModeEnabled(context: Context): Boolean {
+        val currentNightMode = context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+        return currentNightMode == Configuration.UI_MODE_NIGHT_YES
     }
 }

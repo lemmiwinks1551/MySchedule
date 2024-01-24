@@ -13,7 +13,6 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class SettingsFragmentCompat : PreferenceFragmentCompat() {
-    private val settingsViewModel: SettingsViewModel by viewModels()
     private val selectThemeFragmentTag = "SelectThemeFragment"
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {

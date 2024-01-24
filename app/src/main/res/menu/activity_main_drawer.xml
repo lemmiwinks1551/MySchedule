@@ -20,7 +20,6 @@
             android:id="@+id/nav_settings"
             android:icon="@drawable/ic_baseline_settings_24"
             android:title="@string/menu_settings" />
-
         <item
             android:id="@+id/nav_import_export"
             android:icon="@drawable/baseline_import_export_24"

@@ -196,7 +196,7 @@
 
     </style>
 
-    <style name="MyNewThemeBlack" parent="Theme.MaterialComponents.Light.DarkActionBar.Bridge">
+    <style name="MyNewThemeBlack" parent="Theme.MaterialComponents.DayNight.DarkActionBar.Bridge">
 
         <item name="colorPrimary">@color/MyNewThemeBlack5</item>
         <item name="colorButtonNormal">@color/MyNewThemeBlack6</item>

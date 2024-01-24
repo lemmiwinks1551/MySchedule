@@ -172,4 +172,6 @@
     <string name="change_application_theme">Изменить тему приложения</string>
     <string name="send_feedback">Отправить отзыв</string>
     <string name="report_technical_issues_or_suggest_new_features">Сообщить о технических проблемах или предложить новые функции</string>
+    <string name="set_as_theme">Выбрать тему</string>
+    <string name="set_dark_theme">Темная тема</string>
 </resources>
