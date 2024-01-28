@@ -1,9 +1,16 @@
 package com.example.projectnailsschedule.presentation.appointment
 
+import android.Manifest
 import android.app.DatePickerDialog
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.TimePickerDialog
 import android.app.TimePickerDialog.OnTimeSetListener
+import android.content.Context
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
@@ -11,7 +18,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.app.ActivityCompat.invalidateOptionsMenu
+import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -24,7 +32,7 @@ import com.example.projectnailsschedule.presentation.appointment.selectClient.Se
 import com.example.projectnailsschedule.presentation.appointment.selectProcedure.SelectProcedureFragment
 import com.example.projectnailsschedule.util.Util
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.*
+import java.util.Calendar
 
 @AndroidEntryPoint
 class AppointmentFragment : Fragment() {
@@ -108,6 +116,7 @@ class AppointmentFragment : Fragment() {
             if (appointmentParams?._id == null) {
                 // no _id - add new Appointment
                 createAppointment()
+                // createNotification()
             } else {
                 // _id - edit Appointment
                 editAppointment()
@@ -290,5 +299,54 @@ class AppointmentFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun createNotification() {
+        try {
+            // Create the NotificationChannel, but only on API 26+ because
+            // the NotificationChannel class is not in the Support Library.
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                val channelId = "1"
+                val notificationId = 1
+
+                val builder = NotificationCompat.Builder(requireContext(), channelId)
+                    .setSmallIcon(R.mipmap.ic_launcher)
+                    .setContentTitle("Title")
+                    .setContentText("Text")
+                    .setAutoCancel(true)
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+
+                val name = "chanel"
+                val descriptionText = "description"
+                val importance = NotificationManager.IMPORTANCE_DEFAULT
+                val channel = NotificationChannel(channelId, name, importance).apply {
+                    description = descriptionText
+                }
+
+                // Register the channel with the system.
+                val notificationManager: NotificationManager =
+                    requireContext().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                notificationManager.createNotificationChannel(channel)
+
+                if (ActivityCompat.checkSelfPermission(
+                        requireContext(),
+                        Manifest.permission.POST_NOTIFICATIONS
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    Log.e(log, "Notification permission missed")
+                    // TODO: Consider calling
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
+                    return
+                }
+                notificationManager.notify(notificationId, builder.build())
+            }
+        } catch (e: Exception) {
+            Log.e(log, "Notifications error $e")
+        }
     }
 }
