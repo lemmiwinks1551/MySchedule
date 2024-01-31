@@ -49,9 +49,8 @@
     <color name="MyNewThemeGreen6">#8DD188</color>
 
     <!--    MyNewThemeFall  -->
-    <color name="MyNewThemeFall4">#BF612D</color>
-    <color name="MyNewThemeFall5">#D6926B</color>
-    <color name="MyNewThemeFall6">#C36531</color>
+    <color name="MyNewThemeFall5">#BF612D</color>
+    <color name="MyNewThemeFall6">#EEAF47</color>
 
     <!--    MyNewThemeBlack  -->
     <color name="MyNewThemeBlack4">#22252A</color>

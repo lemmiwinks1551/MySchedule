@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    android:background="@drawable/recycler_view_background_pink"
+    android:background="@drawable/bold_borders"
     android:orientation="vertical">
 
     <ImageView
