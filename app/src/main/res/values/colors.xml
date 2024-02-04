@@ -37,24 +37,29 @@
     <color name="MyNewThemePink4">#97B8F8</color>
     <color name="MyNewThemePink5">#7495D3</color>
     <color name="MyNewThemePink6">#DEBEE9</color>
+    <color name="MyNewThemePinkSelectedDay">#409AB7F9</color>
 
     <!--    MyNewThemeGray  -->
     <color name="MyNewThemeGray4">#909090</color>
-    <color name="MyNewThemeGray5">#C6C6C6</color>
+    <color name="MyNewThemeGray5">#818181</color>
     <color name="MyNewThemeGray6">#B5B5B5</color>
+    <color name="MyNewThemeGraySelectedDay">#40808080</color>
 
     <!--    MyNewThemeGreen  -->
     <color name="MyNewThemeGreen4">#8DD188</color>
     <color name="MyNewThemeGreen5">#8DD188</color>
     <color name="MyNewThemeGreen6">#8DD188</color>
+    <color name="MyNewThemeGreenSelectedDay">#40808080</color>
 
     <!--    MyNewThemeFall  -->
     <color name="MyNewThemeFall5">#BF612D</color>
     <color name="MyNewThemeFall6">#EEAF47</color>
+    <color name="MyNewThemeFallSelectedDay">#40FDA858</color>
 
     <!--    MyNewThemeBlack  -->
     <color name="MyNewThemeBlack4">#22252A</color>
     <color name="MyNewThemeBlack5">#22252A</color>
     <color name="MyNewThemeBlack6">#7A7A7A</color>
+    <color name="MyNewThemeBlackSelectedDay">#405D6770</color>
 
 </resources>

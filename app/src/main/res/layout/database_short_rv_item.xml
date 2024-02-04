@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="2dp"
     android:layout_marginBottom="2dp"
-    android:background="@drawable/recycler_view_background_pink">
+    android:background="@drawable/bold_borders">
 
     <TableRow>
 
@@ -13,7 +13,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_margin="2dp"
+            android:layout_margin="4dp"
             android:layout_weight="0.1"
             android:text="@string/number"
             android:textSize="16sp"

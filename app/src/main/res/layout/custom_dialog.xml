@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:background="@drawable/bold_borders">
+
+    <ImageButton
+        android:id="@+id/circleGreen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@color/transparent"
+        android:src="@drawable/baseline_circle_24_green" />
+
+    <ImageButton
+        android:id="@+id/circleYellow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@color/transparent"
+        android:src="@drawable/baseline_circle_24_yellow" />
+
+    <ImageButton
+        android:id="@+id/circleRed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@color/transparent"
+        android:src="@drawable/baseline_circle_24_red" />
+
+    <ImageButton
+        android:id="@+id/circleBlue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@color/transparent"
+        android:src="@drawable/baseline_circle_24_blue" />
+
+    <ImageButton
+        android:id="@+id/circleCancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@color/transparent"
+        android:src="@drawable/baseline_clear_24" />
+
+</LinearLayout>

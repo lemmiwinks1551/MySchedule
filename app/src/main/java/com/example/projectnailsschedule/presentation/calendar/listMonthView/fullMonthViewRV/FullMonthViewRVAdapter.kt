@@ -72,7 +72,7 @@ class FullMonthViewRVAdapter(
 
             // if day is today set custom frame
             if (monthDatesList[position].date == LocalDate.now()) {
-                holder.dateCl.setBackgroundResource(R.drawable.calendar_recycler_view_borders_today)
+                holder.mothViewParentCl.setBackgroundResource(R.drawable.bold_borders_red)
             } else {
                 holder.dateCl.setBackgroundColor(context.resources.getColor(R.color.transparent))
             }

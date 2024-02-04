@@ -11,8 +11,8 @@
       "type": "SINGLE",
       "filters": [],
       "attributes": [],
-      "versionCode": 33,
-      "versionName": "7.3",
+      "versionCode": 38,
+      "versionName": "7.3.38",
       "outputFile": "app-GooglePlay-release.apk"
     }
   ],

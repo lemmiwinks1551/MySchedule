@@ -69,7 +69,7 @@
         <item name="colorButtonNormal">@color/MyNewThemePink6</item>
 
         <!--A lighter/darker variant of your primary brand color, used sparingly in theming-->
-        <item name="colorPrimaryVariant">@color/Pink7</item>
+        <item name="colorPrimaryVariant">@color/MyNewThemePinkSelectedDay</item>
         <!--The color used for elements displayed on top of your primary colors (eg. Text and icons, often white or semi-transparent black depending on accessibility)-->
         <item name="colorOnPrimary">@color/white</item>
 
@@ -103,7 +103,7 @@
         <item name="colorButtonNormal">@color/MyNewThemeGray6</item>
 
         <!--A lighter/darker variant of your primary brand color, used sparingly in theming-->
-        <item name="colorPrimaryVariant">@color/Pink7</item>
+        <item name="colorPrimaryVariant">@color/MyNewThemeGraySelectedDay</item>
         <!--The color used for elements displayed on top of your primary colors (eg. Text and icons, often white or semi-transparent black depending on accessibility)-->
         <item name="colorOnPrimary">@color/white</item>
 
@@ -171,7 +171,7 @@
         <item name="colorButtonNormal">@color/MyNewThemeFall6</item>
 
         <!--A lighter/darker variant of your primary brand color, used sparingly in theming-->
-        <item name="colorPrimaryVariant">@color/Pink7</item>
+        <item name="colorPrimaryVariant">@color/MyNewThemeFallSelectedDay</item>
         <!--The color used for elements displayed on top of your primary colors (eg. Text and icons, often white or semi-transparent black depending on accessibility)-->
         <item name="colorOnPrimary">@color/white</item>
 
@@ -202,7 +202,7 @@
         <item name="colorButtonNormal">@color/MyNewThemeBlack6</item>
 
         <!--A lighter/darker variant of your primary brand color, used sparingly in theming-->
-        <item name="colorPrimaryVariant">@color/Pink7</item>
+        <item name="colorPrimaryVariant">@color/MyNewThemeBlackSelectedDay</item>
         <!--The color used for elements displayed on top of your primary colors (eg. Text and icons, often white or semi-transparent black depending on accessibility)-->
         <item name="colorOnPrimary">@color/black</item>
 

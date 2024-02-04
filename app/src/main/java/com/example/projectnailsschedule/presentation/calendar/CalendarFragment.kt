@@ -179,7 +179,7 @@ class CalendarFragment : Fragment(),
         val calendarRvAdapter = CalendarRvAdapter(
             daysInMonth = daysInMonth,
             calendarViewModel = calendarViewModel,
-            selectedDayColor = getColorFromTheme()
+            context = requireContext()
         )
 
         val layoutManager: RecyclerView.LayoutManager =

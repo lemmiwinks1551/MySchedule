@@ -16,6 +16,7 @@ class FullMonthViewRVViewHolder internal constructor(
     val childRv: RecyclerView
     val addAppointmentFab: FloatingActionButton
     val dateCl: ConstraintLayout
+    val mothViewParentCl: ConstraintLayout
 
     init {
         date = itemView.findViewById(R.id.date_text_view)
@@ -23,5 +24,6 @@ class FullMonthViewRVViewHolder internal constructor(
         childRv = itemView.findViewById(R.id.child_rv)
         addAppointmentFab = itemView.findViewById(R.id.month_view_add_appointment_fab)
         dateCl = itemView.findViewById(R.id.date_cl)
+        mothViewParentCl = itemView.findViewById(R.id.moth_view_parent_cl)
     }
 }
