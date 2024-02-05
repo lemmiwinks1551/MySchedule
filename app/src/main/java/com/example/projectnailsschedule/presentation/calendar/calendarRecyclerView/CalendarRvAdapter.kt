@@ -10,7 +10,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.animation.AnimationUtils
+import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
@@ -139,5 +142,55 @@ class CalendarRvAdapter(
         dialog.window?.attributes = layoutParams
 
         dialog.show()
+
+        dialogView.findViewById<ImageButton>(R.id.circleGreen)
+
+        setColorsClickListeners(holder, dialogView, dialog)
+    }
+
+    private fun setColorsClickListeners(holder: ViewHolder, dialogView: View, dialog: AlertDialog) {
+        val greenImageView: ImageView = dialogView.findViewById(R.id.circleGreen)
+        val yellowImageView: ImageView = dialogView.findViewById(R.id.circleYellow)
+        val redImageView: ImageView = dialogView.findViewById(R.id.circleRed)
+        val blueImageView: ImageView = dialogView.findViewById(R.id.circleBlue)
+        val resetImageView: ImageView = dialogView.findViewById(R.id.circleReset)
+
+        greenImageView.setOnClickListener {
+            holder.cellLayout.background = AppCompatResources.getDrawable(
+                context,
+                R.drawable.calendar_recycler_view_borders_green
+            )
+            dialog.dismiss()
+        }
+
+        yellowImageView.setOnClickListener {
+            holder.cellLayout.background = AppCompatResources.getDrawable(
+                context,
+                R.drawable.calendar_recycler_view_borders_yellow
+            )
+            dialog.dismiss()
+        }
+
+        redImageView.setOnClickListener {
+            holder.cellLayout.background = AppCompatResources.getDrawable(
+                context,
+                R.drawable.calendar_recycler_view_borders_red
+            )
+            dialog.dismiss()
+        }
+
+        blueImageView.setOnClickListener {
+            holder.cellLayout.background = AppCompatResources.getDrawable(
+                context,
+                R.drawable.calendar_recycler_view_borders_blue
+            )
+            dialog.dismiss()
+        }
+
+        resetImageView.setOnClickListener {
+            holder.cellLayout.background =
+                AppCompatResources.getDrawable(context, R.drawable.calendar_recycler_view_borders)
+            dialog.dismiss()
+        }
     }
 }

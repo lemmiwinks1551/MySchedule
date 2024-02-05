@@ -60,16 +60,16 @@
         android:background="@color/transparent"
         android:src="@drawable/baseline_circle_24_blue"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/circleCancel"
+        app:layout_constraintEnd_toStartOf="@+id/circleReset"
         app:layout_constraintStart_toEndOf="@+id/circleRed" />
 
     <ImageButton
-        android:id="@+id/circleCancel"
+        android:id="@+id/circleReset"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="12dp"
         android:background="@color/transparent"
-        android:src="@drawable/baseline_clear_24"
+        android:src="@drawable/baseline_delete_outline_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/circleBlue" />
