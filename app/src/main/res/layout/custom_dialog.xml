@@ -1,49 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/FullScreenDialog"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    android:background="@drawable/bold_borders">
+    android:background="@drawable/dialog_background">
+
+    <TextView
+        android:id="@+id/DateColorDialogTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        android:text="Установить цвет для даты"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@id/circleGreen"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageButton
         android:id="@+id/circleGreen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_margin="12dp"
         android:background="@color/transparent"
-        android:src="@drawable/baseline_circle_24_green" />
+        android:src="@drawable/baseline_circle_24_green"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/circleYellow"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageButton
         android:id="@+id/circleYellow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_margin="12dp"
         android:background="@color/transparent"
-        android:src="@drawable/baseline_circle_24_yellow" />
+        android:src="@drawable/baseline_circle_24_yellow"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/circleRed"
+        app:layout_constraintStart_toEndOf="@+id/circleGreen" />
 
     <ImageButton
         android:id="@+id/circleRed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_margin="12dp"
         android:background="@color/transparent"
-        android:src="@drawable/baseline_circle_24_red" />
+        android:src="@drawable/baseline_circle_24_red"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/circleBlue"
+        app:layout_constraintStart_toEndOf="@+id/circleYellow" />
 
     <ImageButton
         android:id="@+id/circleBlue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_margin="12dp"
         android:background="@color/transparent"
-        android:src="@drawable/baseline_circle_24_blue" />
+        android:src="@drawable/baseline_circle_24_blue"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/circleCancel"
+        app:layout_constraintStart_toEndOf="@+id/circleRed" />
 
     <ImageButton
         android:id="@+id/circleCancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_margin="12dp"
         android:background="@color/transparent"
-        android:src="@drawable/baseline_clear_24" />
+        android:src="@drawable/baseline_clear_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/circleBlue" />
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

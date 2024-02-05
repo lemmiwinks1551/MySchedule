@@ -13,7 +13,7 @@ import ru.vk.store.sdk.review.model.ReviewInfo
 class RuStoreReview(val context: Context) {
 
     private val log = "RuStoreReview"
-    private val minAppointments = 10
+    private val minAppointments = 50
 
     private fun getAllAppointmentsCount(): Int {
         val scheduleRepositoryImpl = ScheduleRepositoryImpl(context)

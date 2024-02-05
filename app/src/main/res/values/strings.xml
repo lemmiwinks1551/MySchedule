@@ -174,4 +174,6 @@
     <string name="report_technical_issues_or_suggest_new_features">"Report technical issues or suggest new features"</string>
     <string name="set_as_theme">Set as Theme</string>
     <string name="set_dark_theme">Dark Theme</string>
+    <string name="formatted_date">Установить цвет для даты %1$s</string>
+
 </resources>

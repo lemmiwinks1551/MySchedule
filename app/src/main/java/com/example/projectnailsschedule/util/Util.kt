@@ -337,4 +337,9 @@ class Util {
         val currentNightMode = context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
         return currentNightMode == Configuration.UI_MODE_NIGHT_YES
     }
+
+    fun formatDate(date: LocalDate): String {
+        val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy", Locale("ru"))
+        return date.format(formatter)
+    }
 }

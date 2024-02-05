@@ -3,8 +3,8 @@ package com.example.projectnailsschedule.presentation.calendar.calendarRecyclerV
 import android.app.AlertDialog
 import android.content.Context
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.util.Log
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.domain.models.DateParams
 import com.example.projectnailsschedule.presentation.calendar.CalendarViewModel
+import com.example.projectnailsschedule.util.Util
 import java.time.LocalDate
 
 class CalendarRvAdapter(
@@ -104,48 +105,39 @@ class CalendarRvAdapter(
                 calendarViewModel.visibility.value = true
             }
 
-            val scaleUpAnimation = AnimationUtils.loadAnimation(context, R.anim.scale_up)
-            val scaleDownAnimation = AnimationUtils.loadAnimation(context, R.anim.scale_down)
-
             holder.cellLayout.setOnLongClickListener {
-                val x = it.x.toInt() + it.width / 2  // Горизонтальная координата центра view
-                val y = it.y.toInt() + it.height / 2 // Вертикальная координата центра view
-
-                // Запустить анимацию масштабирования (увеличение)
-                holder.cellLayout.startAnimation(scaleUpAnimation)
-
-                val builder = AlertDialog.Builder(context)
-                val inflater = LayoutInflater.from(context)
-                val dialogView = inflater.inflate(R.layout.custom_dialog, null)
-                builder.setView(dialogView)
-
-                // Создайте диалог и покажите его
-                val dialog = builder.create()
-                val layoutParams = WindowManager.LayoutParams()
-
-                layoutParams.copyFrom(dialog.window?.attributes)
-
-                //layoutParams.width = WindowManager.LayoutParams.WRAP_CONTENT
-                //layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT
-
-                layoutParams.gravity = Gravity.TOP or Gravity.START  // Установите позицию
-
-                layoutParams.x = it.x.toInt()  // Задайте горизонтальную позицию (x)
-                layoutParams.y = it.y.toInt() + 260  // Задайте вертикальную позицию (y)
-
-                dialog.window?.attributes = layoutParams
-                dialog.window?.setLayout(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT)
-                // Установите прозрачный фон для диалога
-                dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-
-                dialog.show()
-
-                true // Возвращаем true, чтобы указать, что событие было обработано
+                setDateColorDialog(holder, dateParams.date!!)
+                true
             }
         }
     }
 
     override fun getItemCount(): Int {
         return daysInMonth.size
+    }
+
+    private fun setDateColorDialog(holder: ViewHolder, date: LocalDate) {
+        // Start scale up animation
+        val scaleUpAnimation = AnimationUtils.loadAnimation(context, R.anim.scale_up)
+        holder.cellLayout.startAnimation(scaleUpAnimation)
+
+        val builder = AlertDialog.Builder(context)
+        val inflater = LayoutInflater.from(context)
+        val dialogView = inflater.inflate(R.layout.custom_dialog, null)
+        builder.setView(dialogView)
+
+        // Add date to the dialog title
+        val dateColorDialogTitle = dialogView.findViewById<TextView>(R.id.DateColorDialogTitle)
+        dateColorDialogTitle.text =
+            context.getString(R.string.formatted_date, Util().formatDate(date))
+
+        val dialog = builder.create()
+        val layoutParams = WindowManager.LayoutParams()
+
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        dialog.window?.attributes = layoutParams
+
+        dialog.show()
     }
 }

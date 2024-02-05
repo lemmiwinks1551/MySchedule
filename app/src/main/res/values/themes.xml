@@ -48,7 +48,7 @@
 
     <style name="FullScreenDialog" parent="Theme.AppCompat.Light.Dialog">
         <item name="android:windowNoTitle">true</item>
-        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowFullscreen">false</item>
     </style>
 
     <style name="SelectThemeDialog" parent="Theme.AppCompat.Light.Dialog">
@@ -130,9 +130,6 @@
 
     <style name="MyNewThemeGreen" parent="Theme.MaterialComponents.Light.DarkActionBar.Bridge">
 
-        <!-- The primary branding color for the app. By default, this is the color applied to the
-     action bar background. -->
-
         <item name="colorPrimary">@color/MyNewThemeGreen5</item>
         <item name="colorButtonNormal">@color/MyNewThemeGreen6</item>
 
@@ -163,9 +160,6 @@
     </style>
 
     <style name="MyNewThemeOrange" parent="Theme.MaterialComponents.Light.DarkActionBar.Bridge">
-
-        <!-- The primary branding color for the app. By default, this is the color applied to the
-     action bar background. -->
 
         <item name="colorPrimary">@color/MyNewThemeFall5</item>
         <item name="colorButtonNormal">@color/MyNewThemeFall6</item>
