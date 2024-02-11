@@ -22,6 +22,9 @@ import com.example.projectnailsschedule.util.Util
 import com.example.projectnailsschedule.util.rustore.RuStoreAd
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
 import java.time.LocalDate
 import java.time.ZoneId
 import java.util.Calendar
@@ -43,6 +46,7 @@ class CalendarFragment : Fragment(),
     private var addButton: FloatingActionButton? = null
     private var layout: ConstraintLayout? = null
     private var currentDate: DateParams? = null
+    lateinit var coroutineScope: CoroutineScope
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -174,8 +178,8 @@ class CalendarFragment : Fragment(),
     private fun inflateCalendarRecyclerView(selectedDate: LocalDate) {
         // get array of days from selected month
         val daysInMonth: ArrayList<String> = Util().getArrayFromMonth(selectedDate)
-
         // create adapter
+        coroutineScope = CoroutineScope(Dispatchers.IO)
         val calendarRvAdapter = CalendarRvAdapter(
             daysInMonth = daysInMonth,
             calendarViewModel = calendarViewModel,
@@ -253,6 +257,7 @@ class CalendarFragment : Fragment(),
             appointmentCount = null
         )
         _binding = null
+        coroutineScope.cancel()
         super.onDestroyView()
     }
 

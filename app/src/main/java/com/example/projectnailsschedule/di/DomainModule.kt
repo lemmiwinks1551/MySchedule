@@ -2,15 +2,19 @@ package com.example.projectnailsschedule.di
 
 import android.content.Context
 import com.example.projectnailsschedule.domain.repository.ClientsRepository
+import com.example.projectnailsschedule.domain.repository.CalendarRepository
 import com.example.projectnailsschedule.domain.repository.ProcedureRepository
 import com.example.projectnailsschedule.domain.repository.ScheduleRepository
 import com.example.projectnailsschedule.domain.repository.SettingsRepository
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.InsertAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.UpdateAppointmentUseCase
+import com.example.projectnailsschedule.domain.usecase.calendarUC.SelectCalendarDateByDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.GetSelectedMonthUc
 import com.example.projectnailsschedule.domain.usecase.calendarUC.LoadShortDateUseCase
+import com.example.projectnailsschedule.domain.usecase.calendarUC.InsertCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.SetSelectedDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.SetSelectedMonthUc
+import com.example.projectnailsschedule.domain.usecase.calendarUC.UpdateDateColorUseCase
 import com.example.projectnailsschedule.domain.usecase.clientsUC.DeleteClientUseCase
 import com.example.projectnailsschedule.domain.usecase.clientsUC.InsertClientUseCase
 import com.example.projectnailsschedule.domain.usecase.clientsUC.SearchClientUseCase
@@ -200,5 +204,20 @@ class DomainModule {
     @Provides
     fun provideGetUserThemeUseCase(repository: SettingsRepository): GetUserThemeUseCase {
         return GetUserThemeUseCase(repository)
+    }
+
+    @Provides
+    fun provideGetDateColorUseCase(repository: CalendarRepository): SelectCalendarDateByDateUseCase {
+        return SelectCalendarDateByDateUseCase(repository)
+    }
+
+    @Provides
+    fun provideSetDateColorUseCase(repository: CalendarRepository): InsertCalendarDateUseCase {
+        return InsertCalendarDateUseCase(repository)
+    }
+
+    @Provides
+    fun provideUpdateDateColorUseCase(repository: CalendarRepository): UpdateDateColorUseCase {
+        return UpdateDateColorUseCase(repository)
     }
 }

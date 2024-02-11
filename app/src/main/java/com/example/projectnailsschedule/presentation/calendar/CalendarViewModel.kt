@@ -4,12 +4,21 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
+import com.example.projectnailsschedule.domain.models.CalendarDateModelDb
 import com.example.projectnailsschedule.domain.models.DateParams
-import com.example.projectnailsschedule.domain.usecase.calendarUC.*
+import com.example.projectnailsschedule.domain.usecase.calendarUC.InsertCalendarDateUseCase
+import com.example.projectnailsschedule.domain.usecase.calendarUC.LoadShortDateUseCase
+import com.example.projectnailsschedule.domain.usecase.calendarUC.SelectCalendarDateByDateUseCase
+import com.example.projectnailsschedule.domain.usecase.calendarUC.SetSelectedMonthUc
+import com.example.projectnailsschedule.domain.usecase.calendarUC.UpdateDateColorUseCase
 import com.example.projectnailsschedule.domain.usecase.dateUC.GetDateAppointmentsUseCase
 import com.example.projectnailsschedule.domain.usecase.settingsUC.GetUserThemeUseCase
 import com.example.projectnailsschedule.presentation.calendar.calendarRecyclerView.CalendarRvAdapter
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import java.lang.Exception
 import java.time.LocalDate
 import javax.inject.Inject
 
@@ -18,10 +27,14 @@ class CalendarViewModel @Inject constructor(
     private val loadShortDateUseCase: LoadShortDateUseCase,
     private var getDateAppointmentsUseCase: GetDateAppointmentsUseCase,
     private var setSelectedMonthUc: SetSelectedMonthUc,
-    private val getUserThemeUseCase: GetUserThemeUseCase
-    ) : ViewModel() {
+    private val getUserThemeUseCase: GetUserThemeUseCase,
+    private val selectCalendarDateByDateUseCase: SelectCalendarDateByDateUseCase,
+    private val insertCalendarDateUseCase: InsertCalendarDateUseCase,
+    private val updateDateColorUseCase: UpdateDateColorUseCase
+) : ViewModel() {
 
     private val log = this::class.simpleName
+    private val tagDateColor = "DateColor"
 
     // var updates when click at day or month in calendar
     var selectedDate = MutableLiveData(
@@ -72,7 +85,40 @@ class CalendarViewModel @Inject constructor(
         setSelectedMonthUc.execute(date)
     }
 
-    fun getUserTheme() : String {
+    fun getUserTheme(): String {
         return getUserThemeUseCase.execute()
+    }
+
+    private suspend fun selectCalendarDateByDate(date: String): CalendarDateModelDb {
+        return selectCalendarDateByDateUseCase.execute(date)
+    }
+
+    suspend fun getDateId(ruFormatDate: String) : Int? {
+        Log.d(tagDateColor, "Getting color for $ruFormatDate")
+        return try {
+            val deferredColor = CoroutineScope(Dispatchers.IO).async {
+                selectCalendarDateByDate(ruFormatDate)
+            }
+
+            Log.d(tagDateColor, "Date $ruFormatDate has color ${deferredColor.await()._id}")
+            deferredColor.await()._id
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    suspend fun getDateColor(ruFormatDate: String): Int? {
+        Log.d(tagDateColor, "Getting color for $ruFormatDate")
+
+        val deferredColor = CoroutineScope(Dispatchers.IO).async {
+            selectCalendarDateByDate(ruFormatDate)
+        }
+
+        Log.d(tagDateColor, "Date $ruFormatDate has color ${deferredColor.await().color}")
+        return deferredColor.await().color
+    }
+
+    suspend fun insertCalendarDate(calendarDateModelDb: CalendarDateModelDb): Boolean {
+        return insertCalendarDateUseCase.execute(calendarDateModelDb)
     }
 }
