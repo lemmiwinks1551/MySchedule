@@ -187,7 +187,7 @@ class CalendarRvAdapter(
             paintViewHolder(holder, color)
 
             CoroutineScope(Dispatchers.IO).launch {
-                changeColorInDb(ruFormatDate = ruFormatDate, color = color)
+                changeColorInDb(ruFormatDate = ruFormatDate, color = color, holder = holder)
             }
             dialog.dismiss()
         }
@@ -197,7 +197,7 @@ class CalendarRvAdapter(
             paintViewHolder(holder, color)
 
             CoroutineScope(Dispatchers.IO).launch {
-                changeColorInDb(ruFormatDate = ruFormatDate, color = color)
+                changeColorInDb(ruFormatDate = ruFormatDate, color = color, holder = holder)
             }
             dialog.dismiss()
         }
@@ -207,7 +207,7 @@ class CalendarRvAdapter(
             paintViewHolder(holder, color)
 
             CoroutineScope(Dispatchers.IO).launch {
-                changeColorInDb(ruFormatDate = ruFormatDate, color = color)
+                changeColorInDb(ruFormatDate = ruFormatDate, color = color, holder = holder)
             }
             dialog.dismiss()
         }
@@ -217,7 +217,7 @@ class CalendarRvAdapter(
             paintViewHolder(holder, color)
 
             CoroutineScope(Dispatchers.IO).launch {
-                changeColorInDb(ruFormatDate = ruFormatDate, color = color)
+                changeColorInDb(ruFormatDate = ruFormatDate, color = color, holder = holder)
             }
             dialog.dismiss()
         }
@@ -227,21 +227,27 @@ class CalendarRvAdapter(
             paintViewHolder(holder, color)
 
             CoroutineScope(Dispatchers.IO).launch {
-                changeColorInDb(ruFormatDate = ruFormatDate, color = color)
+                changeColorInDb(ruFormatDate = ruFormatDate, color = color, holder)
             }
             dialog.dismiss()
         }
     }
 
-    private suspend fun changeColorInDb(ruFormatDate: String, color: Int) {
+    private suspend fun changeColorInDb(ruFormatDate: String, color: Int, holder: ViewHolder) {
         Log.d("Color", "Changing color for $ruFormatDate")
         val id = calendarViewModel.getDateId(ruFormatDate = ruFormatDate)
+
         if (id == null) {
             // if date in not exists in database
             insertDateWithNewColor(ruFormatDate = ruFormatDate, color = color)
         } else {
-            // if date already exists in database
-            replaceColor(id, ruFormatDate, color)
+            if (color == defaultBackground) {
+                // if color is deleted - delete from db
+                calendarDbDeleteObj(id = id)
+            } else {
+                // if date already exists in database
+                replaceColor(id = id, ruFormatDate = ruFormatDate, color = color)
+            }
         }
     }
 
@@ -254,14 +260,19 @@ class CalendarRvAdapter(
         insertColorToCalendarDb(calendarDateModelDb = calendarDateModelDb)
     }
 
-    private suspend fun replaceColor(id: Int, ruFormatDate: String, colorBackground: Int) {
+    private suspend fun replaceColor(id: Int, ruFormatDate: String, color: Int) {
         Log.e("Color", "Replacing color for date $ruFormatDate")
         val calendarDateModelDb = CalendarDateModelDb(
             _id = id,
             date = ruFormatDate,
-            color = colorBackground
+            color = color
         )
         insertColorToCalendarDb(calendarDateModelDb = calendarDateModelDb)
+    }
+
+    private suspend fun calendarDbDeleteObj(id: Int) {
+        val calendarDbObj = CalendarDateModelDb(_id = id)
+        calendarViewModel.calendarDbDeleteObj(calendarDbObj)
     }
 
     private suspend fun insertColorToCalendarDb(calendarDateModelDb: CalendarDateModelDb) {

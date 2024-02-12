@@ -8,6 +8,7 @@ import com.example.projectnailsschedule.domain.repository.ScheduleRepository
 import com.example.projectnailsschedule.domain.repository.SettingsRepository
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.InsertAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.UpdateAppointmentUseCase
+import com.example.projectnailsschedule.domain.usecase.calendarUC.CalendarDbDeleteObj
 import com.example.projectnailsschedule.domain.usecase.calendarUC.SelectCalendarDateByDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.GetSelectedMonthUc
 import com.example.projectnailsschedule.domain.usecase.calendarUC.LoadShortDateUseCase
@@ -219,5 +220,10 @@ class DomainModule {
     @Provides
     fun provideUpdateDateColorUseCase(repository: CalendarRepository): UpdateDateColorUseCase {
         return UpdateDateColorUseCase(repository)
+    }
+
+    @Provides
+    fun provideDeleteCalendarObj(repository: CalendarRepository): CalendarDbDeleteObj {
+        return CalendarDbDeleteObj(repository)
     }
 }

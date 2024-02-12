@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
 import com.example.projectnailsschedule.domain.models.CalendarDateModelDb
 import com.example.projectnailsschedule.domain.models.DateParams
+import com.example.projectnailsschedule.domain.usecase.calendarUC.CalendarDbDeleteObj
 import com.example.projectnailsschedule.domain.usecase.calendarUC.InsertCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.LoadShortDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.SelectCalendarDateByDateUseCase
@@ -30,7 +31,8 @@ class CalendarViewModel @Inject constructor(
     private val getUserThemeUseCase: GetUserThemeUseCase,
     private val selectCalendarDateByDateUseCase: SelectCalendarDateByDateUseCase,
     private val insertCalendarDateUseCase: InsertCalendarDateUseCase,
-    private val updateDateColorUseCase: UpdateDateColorUseCase
+    private val updateDateColorUseCase: UpdateDateColorUseCase,
+    private val calendarDbDeleteObj: CalendarDbDeleteObj
 ) : ViewModel() {
 
     private val log = this::class.simpleName
@@ -120,5 +122,9 @@ class CalendarViewModel @Inject constructor(
 
     suspend fun insertCalendarDate(calendarDateModelDb: CalendarDateModelDb): Boolean {
         return insertCalendarDateUseCase.execute(calendarDateModelDb)
+    }
+
+    suspend fun calendarDbDeleteObj(calendarDateModelDb: CalendarDateModelDb): Boolean {
+        return calendarDbDeleteObj.execute(calendarDateModelDb)
     }
 }
