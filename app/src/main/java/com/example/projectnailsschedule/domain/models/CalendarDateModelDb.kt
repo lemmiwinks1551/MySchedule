@@ -16,5 +16,5 @@ data class CalendarDateModelDb(
     val date: String? = null,
 
     @ColumnInfo(name = "color")
-    val color: Int? = null
+    val color: String? = null
 ) : Parcelable

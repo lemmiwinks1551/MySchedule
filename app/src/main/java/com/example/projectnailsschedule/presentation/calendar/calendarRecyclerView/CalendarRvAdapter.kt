@@ -3,6 +3,7 @@ package com.example.projectnailsschedule.presentation.calendar.calendarRecyclerV
 import android.app.AlertDialog
 import android.content.Context
 import android.graphics.Color
+import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.util.Log
 import android.view.LayoutInflater
@@ -50,19 +51,12 @@ class CalendarRvAdapter(
     }
 
     private val log = this::class.simpleName
-    private var unselectedBackground: Int = R.drawable.calendar_recycler_view_borders
 
     private lateinit var greenImageView: ImageView
     private lateinit var yellowImageView: ImageView
     private lateinit var redImageView: ImageView
     private lateinit var blueImageView: ImageView
     private lateinit var resetImageView: ImageView
-
-    private var greenBackground: Int = R.drawable.calendar_recycler_view_borders_green
-    private var yellowBackground: Int = R.drawable.calendar_recycler_view_borders_yellow
-    private var redBackground: Int = R.drawable.calendar_recycler_view_borders_red
-    private var blueBackground: Int = R.drawable.calendar_recycler_view_borders_blue
-    private var defaultBackground: Int = R.drawable.calendar_recycler_view_borders
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -111,22 +105,21 @@ class CalendarRvAdapter(
                 val dateColor = calendarViewModel.getDateColor(ruFormatDate)
                 withContext(Dispatchers.Main) {
                     if (dateColor != null) {
-                        holder.cellLayout.setBackgroundResource(dateColor)
+                        holder.cellLayout.setBackgroundResource(mapColorToDrawable(dateColor))
                     }
                 }
             }
 
             // Set the click listener to handle cell selection
+
             holder.cellLayout.setOnClickListener {
                 if (holder != calendarViewModel.prevHolder) {
 
                     // Unselect the previously selected cell
-                    calendarViewModel.prevHolder?.cellLayout?.setBackgroundResource(
-                        unselectedBackground
-                    )
+                    calendarViewModel.prevHolder?.date?.setTypeface(null, Typeface.NORMAL)
 
                     // Select the clicked cell
-                    holder.cellLayout.setBackgroundResource(R.drawable.bold_borders_square)
+                    holder.date.setTypeface(null, Typeface.BOLD)
 
                     // Update the previous holder
                     calendarViewModel.prevHolder = holder
@@ -183,57 +176,57 @@ class CalendarRvAdapter(
         initColorsImageButtons(dialogView)
 
         greenImageView.setOnClickListener {
-            val color = greenBackground
+            val color = "green"
             paintViewHolder(holder, color)
 
             CoroutineScope(Dispatchers.IO).launch {
-                changeColorInDb(ruFormatDate = ruFormatDate, color = color, holder = holder)
+                changeColorInDb(ruFormatDate = ruFormatDate, color = color)
             }
             dialog.dismiss()
         }
 
         yellowImageView.setOnClickListener {
-            val color = yellowBackground
+            val color = "yellow"
             paintViewHolder(holder, color)
 
             CoroutineScope(Dispatchers.IO).launch {
-                changeColorInDb(ruFormatDate = ruFormatDate, color = color, holder = holder)
+                changeColorInDb(ruFormatDate = ruFormatDate, color = color)
             }
             dialog.dismiss()
         }
 
         redImageView.setOnClickListener {
-            val color = redBackground
+            val color = "red"
             paintViewHolder(holder, color)
 
             CoroutineScope(Dispatchers.IO).launch {
-                changeColorInDb(ruFormatDate = ruFormatDate, color = color, holder = holder)
+                changeColorInDb(ruFormatDate = ruFormatDate, color = color)
             }
             dialog.dismiss()
         }
 
         blueImageView.setOnClickListener {
-            val color = blueBackground
+            val color = "blue"
             paintViewHolder(holder, color)
 
             CoroutineScope(Dispatchers.IO).launch {
-                changeColorInDb(ruFormatDate = ruFormatDate, color = color, holder = holder)
+                changeColorInDb(ruFormatDate = ruFormatDate, color = color)
             }
             dialog.dismiss()
         }
 
         resetImageView.setOnClickListener {
-            val color = defaultBackground
+            val color = "default"
             paintViewHolder(holder, color)
 
             CoroutineScope(Dispatchers.IO).launch {
-                changeColorInDb(ruFormatDate = ruFormatDate, color = color, holder)
+                changeColorInDb(ruFormatDate = ruFormatDate, color = color)
             }
             dialog.dismiss()
         }
     }
 
-    private suspend fun changeColorInDb(ruFormatDate: String, color: Int, holder: ViewHolder) {
+    private suspend fun changeColorInDb(ruFormatDate: String, color: String) {
         Log.d("Color", "Changing color for $ruFormatDate")
         val id = calendarViewModel.getDateId(ruFormatDate = ruFormatDate)
 
@@ -241,7 +234,7 @@ class CalendarRvAdapter(
             // if date in not exists in database
             insertDateWithNewColor(ruFormatDate = ruFormatDate, color = color)
         } else {
-            if (color == defaultBackground) {
+            if (color == "default") {
                 // if color is deleted - delete from db
                 calendarDbDeleteObj(id = id)
             } else {
@@ -251,7 +244,7 @@ class CalendarRvAdapter(
         }
     }
 
-    private suspend fun insertDateWithNewColor(ruFormatDate: String, color: Int) {
+    private suspend fun insertDateWithNewColor(ruFormatDate: String, color: String) {
         Log.d("Color", "Insert color for date $ruFormatDate")
         val calendarDateModelDb = CalendarDateModelDb(
             date = ruFormatDate,
@@ -260,7 +253,7 @@ class CalendarRvAdapter(
         insertColorToCalendarDb(calendarDateModelDb = calendarDateModelDb)
     }
 
-    private suspend fun replaceColor(id: Int, ruFormatDate: String, color: Int) {
+    private suspend fun replaceColor(id: Int, ruFormatDate: String, color: String) {
         Log.e("Color", "Replacing color for date $ruFormatDate")
         val calendarDateModelDb = CalendarDateModelDb(
             _id = id,
@@ -287,10 +280,21 @@ class CalendarRvAdapter(
         resetImageView = dialogView.findViewById(R.id.circleReset)
     }
 
-    private fun paintViewHolder(holder: ViewHolder, color: Int) {
+    private fun paintViewHolder(holder: ViewHolder, color: String) {
         holder.cellLayout.background = AppCompatResources.getDrawable(
             context,
-            color
+            mapColorToDrawable(color)
         )
+    }
+
+    private fun mapColorToDrawable(color: String): Int {
+        return when (color) {
+            "green" -> R.drawable.calendar_recycler_view_borders_green
+            "yellow" -> R.drawable.calendar_recycler_view_borders_yellow
+            "red" -> R.drawable.calendar_recycler_view_borders_red
+            "blue" -> R.drawable.calendar_recycler_view_borders_blue
+            "default" -> R.drawable.calendar_recycler_view_borders
+            else -> R.drawable.calendar_recycler_view_borders
+        }
     }
 }

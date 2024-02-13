@@ -109,7 +109,7 @@ class CalendarViewModel @Inject constructor(
         }
     }
 
-    suspend fun getDateColor(ruFormatDate: String): Int? {
+    suspend fun getDateColor(ruFormatDate: String): String? {
         Log.d(tagDateColor, "Getting color for $ruFormatDate")
 
         val deferredColor = CoroutineScope(Dispatchers.IO).async {
