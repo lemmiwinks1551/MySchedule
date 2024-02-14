@@ -22,9 +22,6 @@ import com.example.projectnailsschedule.util.Util
 import com.example.projectnailsschedule.util.rustore.RuStoreAd
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancel
 import java.time.LocalDate
 import java.time.ZoneId
 import java.util.Calendar
@@ -46,7 +43,6 @@ class CalendarFragment : Fragment(),
     private var addButton: FloatingActionButton? = null
     private var layout: ConstraintLayout? = null
     private var currentDate: DateParams? = null
-    lateinit var coroutineScope: CoroutineScope
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -104,8 +100,8 @@ class CalendarFragment : Fragment(),
     private fun initObservers() {
         // set observer for DateParams
         calendarViewModel.selectedDate.observe(viewLifecycleOwner) {
-            Log.e(log, "Current date: ${currentDate?.date}")
-            Log.e(log, "Selected date: ${it.date}")
+            Log.i(log, "Current date: ${currentDate?.date}")
+            Log.i(log, "Selected date: ${it.date}")
 
             // if year was changed
             if (it.date!!.year != currentDate?.date?.year) {
@@ -179,7 +175,6 @@ class CalendarFragment : Fragment(),
         // get array of days from selected month
         val daysInMonth: ArrayList<String> = Util().getArrayFromMonth(selectedDate)
         // create adapter
-        coroutineScope = CoroutineScope(Dispatchers.IO)
         val calendarRvAdapter = CalendarRvAdapter(
             daysInMonth = daysInMonth,
             calendarViewModel = calendarViewModel,
@@ -257,8 +252,6 @@ class CalendarFragment : Fragment(),
             appointmentCount = null
         )
         _binding = null
-        // TODO: !!! 
-        coroutineScope.cancel()
         super.onDestroyView()
     }
 
@@ -270,17 +263,5 @@ class CalendarFragment : Fragment(),
             R.id.action_nav_calendar_to_dateFragment,
             bundle
         )
-    }
-
-    private fun getColorFromTheme(): Int {
-        return when (calendarViewModel.getUserTheme()) {
-            "Theme.Main" -> R.color.Pink6
-            "MyNewThemePink" -> R.color.MyNewThemePink6
-            "MyNewThemeGray" -> R.color.MyNewThemeGray6
-            "MyNewThemeGreen" -> R.color.MyNewThemeGreen6
-            "MyNewThemeOrange" -> R.color.MyNewThemeFall6
-            "MyNewThemeBlack" -> R.color.MyNewThemeBlack6
-            else -> R.color.Pink6
-        }
     }
 }
