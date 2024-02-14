@@ -73,7 +73,7 @@ class SelectProcedureFragment : DialogFragment() {
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 val searchQuery = "%$newText%"
-                selectProcedureViewModel!!.searchProcedures(searchQuery)
+                selectProcedureViewModel.searchProcedures(searchQuery)
                     .observe(viewLifecycleOwner) { list ->
                         inflateSearchRecyclerVIew(list)
                     }

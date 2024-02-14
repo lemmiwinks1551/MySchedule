@@ -16,7 +16,7 @@ class ProceduresViewModel @Inject constructor(
     private val insertProcedureUseCase: InsertProcedureUseCase
 ) : ViewModel() {
 
-    fun searchDatabase(searchQuery: String): LiveData<List<ProcedureModelDb>> {
+    fun searchProcedure(searchQuery: String): LiveData<List<ProcedureModelDb>> {
         return searchProcedureUseCase.execute(searchQuery)
     }
 
@@ -27,5 +27,4 @@ class ProceduresViewModel @Inject constructor(
     suspend fun saveProcedure(procedureModelDb: ProcedureModelDb) {
         insertProcedureUseCase.execute(procedureModelDb)
     }
-
 }

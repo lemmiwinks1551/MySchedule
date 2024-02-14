@@ -9,18 +9,20 @@ import com.example.projectnailsschedule.domain.repository.ProcedureRepository
 
 class ProcedureRepositoryImpl(context: Context): ProcedureRepository {
     private var procedureDb = ProceduresDb.getDb(context)
-    private var log = this::class.simpleName
 
-    override suspend fun insertProcedure(procedureModelDb: ProcedureModelDb) {
+    override suspend fun insertProcedure(procedureModelDb: ProcedureModelDb): Boolean {
         procedureDb.getDao().insert(procedureModelDb)
+        return true
     }
 
-    override suspend fun updateProcedure(procedureModelDb: ProcedureModelDb) {
+    override suspend fun updateProcedure(procedureModelDb: ProcedureModelDb): Boolean {
         procedureDb.getDao().update(procedureModelDb)
+        return true
     }
 
-    override suspend fun deleteProcedure(procedureModelDb: ProcedureModelDb) {
+    override suspend fun deleteProcedure(procedureModelDb: ProcedureModelDb): Boolean {
         procedureDb.getDao().delete(procedureModelDb)
+        return true
     }
 
     override fun searchProcedure(searchQuery: String): LiveData<List<ProcedureModelDb>> {

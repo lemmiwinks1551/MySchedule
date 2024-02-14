@@ -50,8 +50,6 @@ class SelectProcedureRVAdapter(
         }
     }
 
-    private val log = this::class.simpleName
-
     private lateinit var mListener: OnItemClickListener
 
     interface OnItemClickListener {

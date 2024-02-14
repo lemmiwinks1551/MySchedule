@@ -1,7 +1,6 @@
 package com.example.projectnailsschedule.presentation.procedures
 
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -13,7 +12,6 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -87,7 +85,7 @@ class ProceduresFragment : Fragment() {
             override fun onQueryTextChange(newText: String?): Boolean {
                 lifecycleScope.launch {
                     val searchQuery = "%$newText%"
-                    proceduresViewModel!!.searchDatabase(searchQuery)
+                    proceduresViewModel!!.searchProcedure(searchQuery)
                         .observe(viewLifecycleOwner) { list ->
                             proceduresList = list
                             inflateClientsRecyclerView(list)
