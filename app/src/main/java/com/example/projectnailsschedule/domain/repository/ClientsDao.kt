@@ -7,23 +7,23 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface ClientsDao {
     @Insert
-    fun insert(clientModelDb: ClientModelDb)
+    suspend fun insert(clientModelDb: ClientModelDb)
 
     @Query("SELECT * FROM clients")
     fun selectAllFlow(): Flow<List<ClientModelDb>>
 
     @Update
-    fun update(clientModelDb: ClientModelDb)
+    suspend fun update(clientModelDb: ClientModelDb)
 
     @Delete
-    fun delete(clientModelDb: ClientModelDb)
+    suspend fun delete(clientModelDb: ClientModelDb)
 
     @Query("SELECT * FROM clients")
-    fun selectAllList(): List<ClientModelDb>
+    suspend fun selectAllClients(): List<ClientModelDb>
 
     @Query("SELECT * FROM clients WHERE " +
             "name LIKE :searchQuery OR " +
             "phone LIKE :searchQuery OR " +
             "notes LIKE :searchQuery order by name")
-    fun searchDatabase(searchQuery: String): Flow<List<ClientModelDb>>
+    fun searchClient(searchQuery: String): Flow<List<ClientModelDb>>
 }

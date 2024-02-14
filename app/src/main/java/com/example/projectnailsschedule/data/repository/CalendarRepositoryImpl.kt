@@ -7,7 +7,6 @@ import com.example.projectnailsschedule.domain.repository.CalendarRepository
 
 class CalendarRepositoryImpl(context: Context) : CalendarRepository {
     private var calendarDb = CalendarDb.getDb(context)
-    private var log = this::class.simpleName
 
     override suspend fun insertDate(calendarDateModelDb: CalendarDateModelDb): Boolean {
         calendarDb.getDao().insert(calendarDateModelDb)

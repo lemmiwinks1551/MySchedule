@@ -175,7 +175,7 @@ class Util {
                     whatsapp = generateRandomRussianPhoneNumber(),
                     notes = null
                 )
-                clientsDb.getDao().insert(testClient)
+                //clientsDb.getDao().insert(testClient)
             }
         }
         thread.start()

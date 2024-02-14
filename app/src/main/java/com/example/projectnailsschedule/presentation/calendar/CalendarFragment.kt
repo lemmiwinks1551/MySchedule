@@ -257,6 +257,7 @@ class CalendarFragment : Fragment(),
             appointmentCount = null
         )
         _binding = null
+        // TODO: !!! 
         coroutineScope.cancel()
         super.onDestroyView()
     }

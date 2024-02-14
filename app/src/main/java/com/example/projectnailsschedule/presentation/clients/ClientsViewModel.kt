@@ -22,15 +22,15 @@ class ClientsViewModel @Inject constructor(
     private val startPhoneUc: StartPhoneUc
 ) : ViewModel() {
 
-    fun searchDatabase(searchQuery: String): LiveData<List<ClientModelDb>> {
+    suspend fun searchClient(searchQuery: String): LiveData<List<ClientModelDb>> {
         return searchClientUseCase.execute(searchQuery)
     }
 
-    fun deleteClient(clientModelDb: ClientModelDb) {
+    suspend fun deleteClient(clientModelDb: ClientModelDb) {
         deleteClientUseCase.execute(clientModelDb)
     }
 
-    fun saveClient(clientModelDb: ClientModelDb) {
+    suspend fun insertClient(clientModelDb: ClientModelDb) {
         insertClientUseCase.execute(clientModelDb)
     }
 

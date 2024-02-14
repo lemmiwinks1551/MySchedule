@@ -13,11 +13,11 @@ class ClientEditViewModel @Inject constructor(
     private val updateClientUseCase: UpdateClientUseCase
 ) : ViewModel() {
 
-    fun saveClient(clientModelDb: ClientModelDb) {
+    suspend fun saveClient(clientModelDb: ClientModelDb) {
         insertClientUseCase.execute(clientModelDb)
     }
 
-    fun updateClient(clientModelDb: ClientModelDb) {
+    suspend fun updateClient(clientModelDb: ClientModelDb) {
         updateClientUseCase.execute(clientModelDb)
     }
 }

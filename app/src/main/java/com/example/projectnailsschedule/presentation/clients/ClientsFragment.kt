@@ -1,7 +1,6 @@
 package com.example.projectnailsschedule.presentation.clients
 
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -13,7 +12,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -27,6 +26,7 @@ import com.example.projectnailsschedule.util.rustore.RuStoreAd
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ClientsFragment : Fragment() {
@@ -84,10 +84,13 @@ class ClientsFragment : Fragment() {
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 val searchQuery = "%$newText%"
-                clientsViewModel.searchDatabase(searchQuery).observe(viewLifecycleOwner) { list ->
-                    clientsList = list
-                    inflateClientsRecyclerView(list)
+                lifecycleScope.launch {
+                    clientsViewModel.searchClient(searchQuery).observe(viewLifecycleOwner) { list ->
+                        clientsList = list
+                        inflateClientsRecyclerView(list)
+                    }
                 }
+
                 return false
             }
         })
@@ -154,7 +157,9 @@ class ClientsFragment : Fragment() {
                 val position = viewHolder.adapterPosition
 
                 // delete client from Db
-                clientsViewModel.deleteClient(deleteClientModelDb)
+                lifecycleScope.launch {
+                    clientsViewModel.deleteClient(deleteClientModelDb)
+                }
 
                 clientsRVAdapter?.notifyItemRemoved(position)
                 clientsSearchView?.setQuery(null, true) // clear search bar
@@ -162,7 +167,10 @@ class ClientsFragment : Fragment() {
                 // show Snackbar
                 Snackbar.make(
                     searchClientsRV!!,
-                    requireContext().getString(R.string.deleted_client_text, deleteClientModelDb.name),
+                    requireContext().getString(
+                        R.string.deleted_client_text,
+                        deleteClientModelDb.name
+                    ),
                     Snackbar.LENGTH_LONG
                 ).setBackgroundTint(resources.getColor(R.color.yellow))
                     .setActionTextColor(resources.getColor(R.color.black))
@@ -172,7 +180,9 @@ class ClientsFragment : Fragment() {
                     ) {
                         // adding on click listener to our action of snack bar.
                         // below line is to add our item to array list with a position.
-                        clientsViewModel.saveClient(deleteClientModelDb)
+                        lifecycleScope.launch {
+                            clientsViewModel.insertClient(deleteClientModelDb)
+                        }
 
                         // below line is to notify item is
                         // added to our adapter class.
@@ -186,22 +196,36 @@ class ClientsFragment : Fragment() {
                 return super.getSwipeEscapeVelocity(defaultValue) * 10
             }
 
-            override fun onChildDraw(c: Canvas, recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean
+            override fun onChildDraw(
+                c: Canvas,
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                dX: Float,
+                dY: Float,
+                actionState: Int,
+                isCurrentlyActive: Boolean
             ) {
                 val deleteIcon: Drawable? =
                     ContextCompat.getDrawable(requireContext(), R.drawable.baseline_delete_24)!!
 
                 val itemView = viewHolder.itemView
-                val iconMarginVertical = (viewHolder.itemView.height - deleteIcon!!.intrinsicHeight) / 2
+                val iconMarginVertical =
+                    (viewHolder.itemView.height - deleteIcon!!.intrinsicHeight) / 2
 
                 val colorDrawableBackground = ColorDrawable(resources.getColor(R.color.yellow))
 
-                val left = itemView.right - deleteIcon.intrinsicWidth - deleteIcon.intrinsicWidth // 882
+                val left =
+                    itemView.right - deleteIcon.intrinsicWidth - deleteIcon.intrinsicWidth // 882
                 val right = itemView.right - deleteIcon.intrinsicWidth // 1014
                 val top = itemView.top + iconMarginVertical
                 val bottom = itemView.bottom - iconMarginVertical
 
-                colorDrawableBackground.setBounds(itemView.right + dX.toInt(), itemView.top, itemView.right, itemView.bottom)
+                colorDrawableBackground.setBounds(
+                    itemView.right + dX.toInt(),
+                    itemView.top,
+                    itemView.right,
+                    itemView.bottom
+                )
                 deleteIcon.setBounds(left, top, right, bottom)
 
                 deleteIcon.level = 0
@@ -212,12 +236,25 @@ class ClientsFragment : Fragment() {
                 if (dX > 0)
                     c.clipRect(itemView.left, itemView.top, dX.toInt(), itemView.bottom)
                 else
-                    c.clipRect(itemView.right + dX.toInt(), itemView.top, itemView.right, itemView.bottom)
+                    c.clipRect(
+                        itemView.right + dX.toInt(),
+                        itemView.top,
+                        itemView.right,
+                        itemView.bottom
+                    )
 
                 deleteIcon.draw(c)
                 c.restore()
 
-                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                super.onChildDraw(
+                    c,
+                    recyclerView,
+                    viewHolder,
+                    dX,
+                    dY,
+                    actionState,
+                    isCurrentlyActive
+                )
             }
         }).attachToRecyclerView(searchClientsRV)
     }

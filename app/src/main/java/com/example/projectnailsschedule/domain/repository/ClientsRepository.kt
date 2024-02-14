@@ -5,13 +5,13 @@ import com.example.projectnailsschedule.domain.models.ClientModelDb
 
 interface ClientsRepository {
 
-    fun insertClient(clientModelDb: ClientModelDb): Boolean
+    suspend fun insertClient(clientModelDb: ClientModelDb): Boolean
 
-    fun updateClient(clientModelDb: ClientModelDb): Boolean
+    suspend fun updateClient(clientModelDb: ClientModelDb): Boolean
 
-    fun deleteClient(clientModelDb: ClientModelDb)
+    suspend fun deleteClient(clientModelDb: ClientModelDb): Boolean
 
-    fun getAllClients(): List<ClientModelDb>
+    suspend fun selectAllClients(): List<ClientModelDb>
 
-    fun searchClient(searchQuery: String): LiveData<List<ClientModelDb>>
+    suspend fun searchClient(searchQuery: String): LiveData<List<ClientModelDb>>
 }
