@@ -25,7 +25,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.time.LocalDate
 
 class CalendarRvAdapter(
     private val daysInMonth: ArrayList<String>,
@@ -76,7 +75,8 @@ class CalendarRvAdapter(
         // set appointments count
         if (dayInHolder != "") {
             // get appointment count from date
-            val appointmentCount: Int
+            var appointmentCount: Int
+
             val dateParams = DateParams(
                 date = calendarViewModel.selectedDate.value?.date?.withDayOfMonth(
                     dayInHolder.toInt()
@@ -84,21 +84,17 @@ class CalendarRvAdapter(
             )
 
             // get date appointment count
-            appointmentCount =
-                calendarViewModel.getArrayAppointments(dateParams = dateParams).size
+            CoroutineScope(Dispatchers.IO).launch {
+                appointmentCount =
+                    calendarViewModel.getArrayAppointments(dateParams = dateParams).size
+                withContext(Dispatchers.Main) {
+                    if (appointmentCount > 0) {
+                        holder.dateAppointmentsCount.text = appointmentCount.toString()
+                    }
+                }
+            }
 
-            Log.e(log, "$dateParams")
             val ruFormatDate = Util().formatDate(dateParams.date!!)
-
-            // If appointments exists
-            if (appointmentCount > 0) {
-                holder.dateAppointmentsCount.text = appointmentCount.toString()
-            }
-
-            // If the day corresponds to today's date, set the text color to red
-            if (dateParams.date!! == LocalDate.now()) {
-                holder.date.setTextColor(Color.RED)
-            }
 
             // get date color from database
             CoroutineScope(Dispatchers.IO).launch {
@@ -124,8 +120,9 @@ class CalendarRvAdapter(
                     // Update the previous holder
                     calendarViewModel.prevHolder = holder
                 }
-
-                calendarViewModel.updateSelectedDate(day = dayInHolder.toInt())
+                CoroutineScope(Dispatchers.IO).launch {
+                    calendarViewModel.updateSelectedDate(day = dayInHolder.toInt())
+                }
                 calendarViewModel.visibility.value = true
             }
 

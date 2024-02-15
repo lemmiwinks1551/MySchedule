@@ -31,6 +31,8 @@ import com.google.android.play.core.ktx.isFlexibleUpdateAllowed
 import com.google.android.play.core.ktx.isImmediateUpdateAllowed
 import com.my.target.ads.MyTargetView
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.seconds
@@ -111,8 +113,10 @@ class MainActivity : AppCompatActivity() {
 
         ruStoreAd.interstitialAd(context = applicationContext)
 
-        // Request user's review
-        RuStoreReview(this).rateApp()
+        CoroutineScope(Dispatchers.IO).launch {
+            // Request user's review
+            RuStoreReview(this@MainActivity).rateApp()
+        }
     }
 
     override fun onResume() {

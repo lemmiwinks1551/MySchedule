@@ -5,7 +5,7 @@ import com.example.projectnailsschedule.domain.repository.ScheduleRepository
 
 class DeleteAppointmentUseCase(private val scheduleRepository: ScheduleRepository) {
 
-    fun execute(appointmentModelDb: AppointmentModelDb): Boolean {
+    suspend fun execute(appointmentModelDb: AppointmentModelDb): Boolean {
         scheduleRepository.deleteAppointment(appointmentModelDb)
         return true
     }

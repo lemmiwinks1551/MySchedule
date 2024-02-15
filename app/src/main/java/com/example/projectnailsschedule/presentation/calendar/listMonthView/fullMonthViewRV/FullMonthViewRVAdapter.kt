@@ -23,6 +23,9 @@ import com.example.projectnailsschedule.presentation.calendar.listMonthView.full
 import com.example.projectnailsschedule.presentation.calendar.listMonthView.fullMonthChildRv.FullMonthChildViewHolder
 import com.example.projectnailsschedule.util.Util
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 
 class FullMonthViewRVAdapter(
@@ -135,7 +138,9 @@ class FullMonthViewRVAdapter(
                 val posToRestore = (holder.childRv.adapter as FullMonthChildAdapter)
 
                 // delete client from Db
-                listMonthViewModel.deleteAppointment(deleteAppointmentModelDb)
+                CoroutineScope(Dispatchers.IO).launch {
+                    listMonthViewModel.deleteAppointment(deleteAppointmentModelDb)
+                }
 
                 // delete in child rv
                 (holder.childRv.adapter as FullMonthChildAdapter).appointmentsList.remove(
@@ -166,7 +171,9 @@ class FullMonthViewRVAdapter(
                         context.getString(R.string.cancel)
                     ) {
                         // restore appointment in Db
-                        listMonthViewModel.saveAppointment(deleteAppointmentModelDb)
+                        CoroutineScope(Dispatchers.IO).launch {
+                            listMonthViewModel.saveAppointment(deleteAppointmentModelDb)
+                        }
 
                         // restore appointment in child list
                         posToRestore.appointmentsList.add(

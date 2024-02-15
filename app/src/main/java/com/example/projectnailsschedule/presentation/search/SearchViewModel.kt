@@ -36,11 +36,11 @@ class SearchViewModel @Inject constructor(
         return getAllAppointmentsLiveDataUseCase.execute()
     }
 
-    fun deleteAppointment(appointmentModelDb: AppointmentModelDb) {
+    suspend fun deleteAppointment(appointmentModelDb: AppointmentModelDb) {
         deleteAppointmentUseCase.execute(appointmentModelDb)
     }
 
-    fun saveAppointment(appointmentModelDb: AppointmentModelDb) {
+    suspend fun saveAppointment(appointmentModelDb: AppointmentModelDb) {
         insertAppointmentUseCase.execute(appointmentModelDb)
     }
 

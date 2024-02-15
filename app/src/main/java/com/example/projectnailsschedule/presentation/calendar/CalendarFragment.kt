@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,6 +23,8 @@ import com.example.projectnailsschedule.util.Util
 import com.example.projectnailsschedule.util.rustore.RuStoreAd
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.ZoneId
 import java.util.Calendar
@@ -41,7 +44,6 @@ class CalendarFragment : Fragment(),
     private var calendarRecyclerView: RecyclerView? = null
     private var shortDataRecyclerView: RecyclerView? = null
     private var addButton: FloatingActionButton? = null
-    private var layout: ConstraintLayout? = null
     private var currentDate: DateParams? = null
 
     override fun onCreateView(
@@ -71,7 +73,6 @@ class CalendarFragment : Fragment(),
         monthTextView = binding.monthTextView
         yearTextView = binding.yearTextView
         addButton = binding.goIntoDate
-        layout = binding.fragmentCalendar
     }
 
     private fun initClickListeners() {
@@ -130,6 +131,7 @@ class CalendarFragment : Fragment(),
             )
         }
 
+        // set visibility on fab if click was performed
         calendarViewModel.visibility.observe(viewLifecycleOwner) {
             if (it) {
                 addButton?.visibility = View.VISIBLE
@@ -195,22 +197,31 @@ class CalendarFragment : Fragment(),
             shortDataRecyclerView!!.visibility = View.VISIBLE
         }
 
-        // create adapter for ShortDateRecyclerVIew
-        val dateShortAdapter =
-            DateShortAdapter(
-                calendarViewModel.getArrayAppointments(selectedDateParams).size,
-                selectedDateParams,
-                calendarViewModel,
-                this
-            )
+        var arrayAppointments: Int
 
-        // create layoutManager with 1 elements in a row
-        val layoutManager: RecyclerView.LayoutManager =
-            GridLayoutManager(activity, 1)
+        lifecycleScope.launch {
+            val deferredAppointments = async {
+                calendarViewModel.getArrayAppointments(selectedDateParams).size
+            }
+            arrayAppointments = deferredAppointments.await()
 
-        // set adapter and layout manager to recycler view
-        shortDataRecyclerView?.layoutManager = layoutManager
-        shortDataRecyclerView?.adapter = dateShortAdapter
+            // create adapter for ShortDateRecyclerVIew
+            val dateShortAdapter =
+                DateShortAdapter(
+                    arrayAppointments,
+                    selectedDateParams,
+                    calendarViewModel,
+                    this@CalendarFragment
+                )
+
+            // create layoutManager with 1 elements in a row
+            val layoutManager: RecyclerView.LayoutManager =
+                GridLayoutManager(activity, 1)
+
+            // set adapter and layout manager to recycler view
+            shortDataRecyclerView?.layoutManager = layoutManager
+            shortDataRecyclerView?.adapter = dateShortAdapter
+        }
     }
 
     private fun changeMonth(operator: Boolean) {

@@ -11,7 +11,6 @@ import com.example.projectnailsschedule.domain.usecase.calendarUC.InsertCalendar
 import com.example.projectnailsschedule.domain.usecase.calendarUC.LoadShortDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.SelectCalendarDateByDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.SetSelectedMonthUc
-import com.example.projectnailsschedule.domain.usecase.calendarUC.UpdateDateColorUseCase
 import com.example.projectnailsschedule.domain.usecase.dateUC.GetDateAppointmentsUseCase
 import com.example.projectnailsschedule.domain.usecase.settingsUC.GetUserThemeUseCase
 import com.example.projectnailsschedule.presentation.calendar.calendarRecyclerView.CalendarRvAdapter
@@ -31,7 +30,6 @@ class CalendarViewModel @Inject constructor(
     private val getUserThemeUseCase: GetUserThemeUseCase,
     private val selectCalendarDateByDateUseCase: SelectCalendarDateByDateUseCase,
     private val insertCalendarDateUseCase: InsertCalendarDateUseCase,
-    private val updateDateColorUseCase: UpdateDateColorUseCase,
     private val calendarDbDeleteObj: CalendarDbDeleteObj
 ) : ViewModel() {
 
@@ -51,20 +49,20 @@ class CalendarViewModel @Inject constructor(
 
     var prevHolder: CalendarRvAdapter.ViewHolder? = null
 
-    fun getArrayAppointments(dateParams: DateParams): Array<AppointmentModelDb> {
+    suspend fun getArrayAppointments(dateParams: DateParams): Array<AppointmentModelDb> {
         // get all appointments in selectedDate for recycler view adapter
         Log.e(log, "Appointments from $selectedDate unloaded from DB")
         return loadShortDateUseCase.execute(dateParams)
     }
 
-    private fun getDateAppointmentCount() {
+    private suspend fun getDateAppointmentCount() {
         // get appointments count from selectedDate
         selectedDate.value?.appointmentCount =
             getDateAppointmentsUseCase.execute(selectedDate.value!!).size
         selectedDate.value = selectedDate.value
     }
 
-    fun updateSelectedDate(day: Int) {
+    suspend fun updateSelectedDate(day: Int) {
         // set month day in selectedDayParams
         selectedDate.value?.date = selectedDate.value?.date?.withDayOfMonth(day)
         getDateAppointmentCount()

@@ -33,28 +33,28 @@ class DateViewModel @Inject constructor(
             )
         )
 
-    fun saveAppointment(appointmentModelDb: AppointmentModelDb) {
+    suspend fun saveAppointment(appointmentModelDb: AppointmentModelDb) {
         insertAppointmentUseCase.execute(appointmentModelDb)
         updateDateParams()
     }
 
-    fun updateDateParams() {
+    suspend fun updateDateParams() {
         // set day and appointmentsCount
         getDateAppointmentCount()
         selectedDateParams.value = selectedDateParams.value
     }
 
-    private fun getDateAppointmentCount() {
+    private suspend fun getDateAppointmentCount() {
         selectedDateParams.value?.appointmentCount =
             getDateAppointmentsUseCase.execute(selectedDateParams.value!!).size
         selectedDateParams.value = selectedDateParams.value
     }
 
-    fun getDateAppointments(): Array<AppointmentModelDb> {
+    suspend fun getDateAppointments(): Array<AppointmentModelDb> {
         return getDateAppointmentsUseCase.execute(dateParams = selectedDateParams.value!!)
     }
 
-    fun deleteAppointment(appointmentModelDb: AppointmentModelDb) {
+    suspend fun deleteAppointment(appointmentModelDb: AppointmentModelDb) {
         deleteAppointmentUseCase.execute(appointmentModelDb)
         updateDateParams()
     }

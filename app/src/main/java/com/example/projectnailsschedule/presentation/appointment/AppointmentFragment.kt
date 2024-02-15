@@ -22,6 +22,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentAppointmentBinding
@@ -32,6 +33,7 @@ import com.example.projectnailsschedule.presentation.appointment.selectClient.Se
 import com.example.projectnailsschedule.presentation.appointment.selectProcedure.SelectProcedureFragment
 import com.example.projectnailsschedule.util.Util
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import java.util.Calendar
 
 @AndroidEntryPoint
@@ -179,7 +181,9 @@ class AppointmentFragment : Fragment() {
                 notes = notesEt.text.toString(),
                 deleted = false
             )
-            appointmentViewModel.insertAppointment(appointmentModelDb)
+            lifecycleScope.launch {
+                appointmentViewModel.insertAppointment(appointmentModelDb)
+            }
 
             val toast: Toast = Toast.makeText(
                 context,
@@ -213,8 +217,11 @@ class AppointmentFragment : Fragment() {
                 deleted = false
             )
 
+            lifecycleScope.launch {
+                appointmentViewModel.updateAppointment(appointmentModelDb)
+            }
+
             // send to AppointmentViewModel
-            appointmentViewModel.updateAppointment(appointmentModelDb)
 
             Toast.makeText(context, getString(R.string.toast_edited), Toast.LENGTH_LONG).show()
 

@@ -17,7 +17,7 @@ internal class GetAllAppointmentsUseCaseTest {
         val testAppointment1 = AppointmentModelDb(deleted = false)
         val testList = listOf(testAppointment0, testAppointment1)
 
-        Mockito.`when`(scheduleRepository.getAllAppointments()).thenReturn(testList)
+        Mockito.`when`(scheduleRepository.selectAllAppointments()).thenReturn(testList)
 
         val actual = getAllAppointmentsUseCase.execute()
         val expected = listOf(testAppointment0, testAppointment1)

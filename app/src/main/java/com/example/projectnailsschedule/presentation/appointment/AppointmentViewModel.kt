@@ -21,11 +21,11 @@ class AppointmentViewModel @Inject constructor(
 
     val log = this::class.simpleName
 
-    fun insertAppointment(appointmentModelDb: AppointmentModelDb) : Boolean {
+    suspend fun insertAppointment(appointmentModelDb: AppointmentModelDb) : Boolean {
         return insertAppointmentUseCase.execute(appointmentModelDb)
     }
 
-    fun updateAppointment(appointmentModelDb: AppointmentModelDb) : Boolean {
+    suspend fun updateAppointment(appointmentModelDb: AppointmentModelDb) : Boolean {
         return updateAppointmentUseCase.execute(appointmentModelDb)
     }
 

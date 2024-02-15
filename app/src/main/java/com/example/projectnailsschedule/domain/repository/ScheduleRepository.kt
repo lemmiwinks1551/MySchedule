@@ -6,19 +6,19 @@ import com.example.projectnailsschedule.domain.models.DateParams
 
 interface ScheduleRepository {
 
-    fun insertAppointment(appointmentModelDb: AppointmentModelDb): Boolean
+    suspend fun insertAppointment(appointmentModelDb: AppointmentModelDb): Boolean
 
-    fun updateAppointment(appointmentModelDb: AppointmentModelDb): Boolean
+    suspend fun updateAppointment(appointmentModelDb: AppointmentModelDb): Boolean
 
-    fun getDateAppointments(dateParams: DateParams): Array<AppointmentModelDb>
+    suspend fun deleteAppointment(appointmentModelDb: AppointmentModelDb): Boolean
 
-    fun deleteAppointment(appointmentModelDb: AppointmentModelDb)
+    suspend fun getDateAppointments(dateParams: DateParams): Array<AppointmentModelDb>
 
-    fun getAllAppointments(): List<AppointmentModelDb>
+    suspend fun selectAllAppointmentsList(): List<AppointmentModelDb>
 
-    fun getAllAppointmentsLiveData(): LiveData<List<AppointmentModelDb>>
+    suspend fun getMonthAppointments(dateMonth: String): MutableList<AppointmentModelDb>
+
+    fun selectAllAppointmentsLiveData(): LiveData<List<AppointmentModelDb>>
 
     fun searchAppointment(searchQuery: String): LiveData<List<AppointmentModelDb>>
-
-    fun getMonthAppointments(dateMonth: String): MutableList<AppointmentModelDb>
 }

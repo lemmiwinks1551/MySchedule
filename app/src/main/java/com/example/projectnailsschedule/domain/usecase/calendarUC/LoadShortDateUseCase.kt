@@ -6,7 +6,7 @@ import com.example.projectnailsschedule.domain.repository.ScheduleRepository
 
 class LoadShortDateUseCase(private val scheduleRepository: ScheduleRepository) {
 
-    fun execute(selectedDateParams: DateParams): Array<AppointmentModelDb> {
+    suspend fun execute(selectedDateParams: DateParams): Array<AppointmentModelDb> {
         return scheduleRepository.getDateAppointments(dateParams = selectedDateParams)
     }
 }

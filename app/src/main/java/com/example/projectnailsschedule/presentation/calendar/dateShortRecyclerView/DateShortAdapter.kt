@@ -8,6 +8,10 @@ import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.domain.models.DateParams
 import com.example.projectnailsschedule.presentation.calendar.CalendarFragment
 import com.example.projectnailsschedule.presentation.calendar.CalendarViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 internal class DateShortAdapter(
     private val appointmentsCount: Int,
@@ -18,21 +22,24 @@ internal class DateShortAdapter(
     RecyclerView.Adapter<DateShortViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DateShortViewHolder {
-        // Set ViewHolder
         val inflater = LayoutInflater.from(parent.context)
         val view: View = inflater.inflate(R.layout.database_short_rv_item, parent, false)
         return DateShortViewHolder(view, calendarFragment)
     }
 
     override fun onBindViewHolder(holder: DateShortViewHolder, position: Int) {
-        val selectedDayParams = calendarViewModel.getArrayAppointments(selectedDayParams)
-        val currentDayAppointments = selectedDayParams[position]
-        // Set time in holder
-        holder.clientName.text = currentDayAppointments.name
-        holder.time.text = currentDayAppointments.time
-        holder.procedure.text = currentDayAppointments.procedure
-        holder.number.text = String.format("${position + 1}.")
-        holder.notes.text = currentDayAppointments.notes
+        CoroutineScope(Dispatchers.IO).launch {
+            val selectedDayParams = calendarViewModel.getArrayAppointments(selectedDayParams)
+            val currentDayAppointments = selectedDayParams[position]
+
+            withContext(Dispatchers.Main) {
+                holder.clientName.text = currentDayAppointments.name
+                holder.time.text = currentDayAppointments.time
+                holder.procedure.text = currentDayAppointments.procedure
+                holder.number.text = String.format("${position + 1}.")
+                holder.notes.text = currentDayAppointments.notes
+            }
+        }
     }
 
     override fun getItemCount(): Int {

@@ -9,14 +9,15 @@ interface ClientsDao {
     @Insert
     suspend fun insert(clientModelDb: ClientModelDb)
 
-    @Query("SELECT * FROM clients")
-    fun selectAllFlow(): Flow<List<ClientModelDb>>
-
     @Update
     suspend fun update(clientModelDb: ClientModelDb)
 
     @Delete
     suspend fun delete(clientModelDb: ClientModelDb)
+
+    @Query("SELECT * FROM clients")
+    // TODO: это используется?
+    fun selectAllFlow(): Flow<List<ClientModelDb>>
 
     @Query("SELECT * FROM clients")
     suspend fun selectAllClients(): List<ClientModelDb>

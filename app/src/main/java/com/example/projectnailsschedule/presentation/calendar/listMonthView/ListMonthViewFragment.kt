@@ -22,6 +22,9 @@ import com.example.projectnailsschedule.presentation.calendar.listMonthView.full
 import com.example.projectnailsschedule.util.Util
 import com.example.projectnailsschedule.util.rustore.RuStoreAd
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.ZoneId
@@ -82,25 +85,27 @@ class ListMonthViewFragment : Fragment() {
 
         val list = mutableListOf<DateWeekAppModel>()
 
-        for (i in 1..selectedDate.lengthOfMonth()) {
+        CoroutineScope(Dispatchers.IO).launch {
+            for (i in 1..selectedDate.lengthOfMonth()) {
 
-            val dateFormat =
-                Util().dateConverterNew(fullMonthViewVM.selectedMonth.value.toString())
-            var date = dateFormat.drop(2)
-            date = daysInMonth[i - 1] + date
-            date = Util().dateConverter(date)
+                val dateFormat =
+                    Util().dateConverterNew(fullMonthViewVM.selectedMonth.value.toString())
+                var date = dateFormat.drop(2)
+                date = daysInMonth[i - 1] + date
+                date = Util().dateConverter(date)
 
-            val localDate = Util().convertStringToLocalDate(date)
+                val localDate = Util().convertStringToLocalDate(date)
 
-            val dateParams = DateParams(_id = null, date = localDate, appointmentCount = null)
+                val dateParams = DateParams(_id = null, date = localDate, appointmentCount = null)
 
-            val addToList = DateWeekAppModel(
-                date = dateParams.date!!,
-                weekDay = Util().getDayOfWeek(date, requireContext()),
-                appointmentsList = fullMonthViewVM.getDateAppointments(dateParams)
-            )
+                val addToList = DateWeekAppModel(
+                    date = dateParams.date!!,
+                    weekDay = Util().getDayOfWeek(date, requireContext()),
+                    appointmentsList = fullMonthViewVM.getDateAppointments(dateParams)
+                )
 
-            list.add(addToList)
+                list.add(addToList)
+            }
         }
 
         // create adapter

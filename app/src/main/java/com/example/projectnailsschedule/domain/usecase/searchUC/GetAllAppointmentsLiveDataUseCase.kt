@@ -7,6 +7,6 @@ import com.example.projectnailsschedule.domain.repository.ScheduleRepository
 class GetAllAppointmentsLiveDataUseCase(private val scheduleRepository: ScheduleRepository) {
 
     fun execute(): LiveData<List<AppointmentModelDb>> {
-        return scheduleRepository.getAllAppointmentsLiveData()
+        return scheduleRepository.selectAllAppointmentsLiveData()
     }
 }

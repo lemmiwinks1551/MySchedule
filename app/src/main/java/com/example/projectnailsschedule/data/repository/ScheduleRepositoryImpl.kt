@@ -1,7 +1,6 @@
 package com.example.projectnailsschedule.data.repository
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
 import com.example.projectnailsschedule.data.storage.ScheduleDb
@@ -11,83 +10,42 @@ import com.example.projectnailsschedule.domain.repository.ScheduleRepository
 import com.example.projectnailsschedule.util.Util
 
 class ScheduleRepositoryImpl(context: Context) : ScheduleRepository {
-    private var scheduleDb = ScheduleDb.getDb(context)
-    private var log = this::class.simpleName
+    private var dao = ScheduleDb.getDb(context).getDao()
 
-    override fun insertAppointment(appointmentModelDb: AppointmentModelDb): Boolean {
-        // Save appointment in database
-        val thread = Thread {
-            scheduleDb.getDao().insert(appointmentModelDb)
-        }
-        thread.start()
-        thread.join()
-        Log.e(log, "Appointment $appointmentModelDb inserted")
+    override suspend fun insertAppointment(appointmentModelDb: AppointmentModelDb): Boolean {
+        dao.insert(appointmentModelDb = appointmentModelDb)
         return true
     }
 
-    override fun updateAppointment(appointmentModelDb: AppointmentModelDb): Boolean {
-        // Edit appointment in database
-        val thread = Thread {
-            scheduleDb.getDao().update(appointmentModelDb)
-        }
-        thread.start()
-        thread.join()
-        Log.e(log, "Appointment $appointmentModelDb updated")
+    override suspend fun updateAppointment(appointmentModelDb: AppointmentModelDb): Boolean {
+        dao.update(appointmentModelDb = appointmentModelDb)
         return true
     }
 
-    override fun getDateAppointments(dateParams: DateParams): Array<AppointmentModelDb> {
-        // TODO: Add coroutines
-
-        var arrayOfAppointmentModelDbs = arrayOf<AppointmentModelDb>()
-
-        val thread = Thread {
-            val dateToCheck = Util().dateConverterNew(dateParams.date.toString())
-            dateParams.appointmentCount = scheduleDb.getDao().getDateAppointments(dateToCheck).size
-            arrayOfAppointmentModelDbs = scheduleDb.getDao().getDateAppointments(dateToCheck)
-            Log.e(log, "$dateParams")
-        }
-        thread.start()
-        thread.join()
-
-        return arrayOfAppointmentModelDbs
+    override suspend fun deleteAppointment(appointmentModelDb: AppointmentModelDb): Boolean {
+        dao.delete(appointmentModelDb = appointmentModelDb)
+        return true
     }
 
-    override fun deleteAppointment(appointmentModelDb: AppointmentModelDb) {
-        val thread = Thread {
-            scheduleDb.getDao().delete(appointmentModelDb)
-        }
-        thread.start()
-        thread.join()
-        Log.e(log, "$appointmentModelDb deleted")
+    override suspend fun getDateAppointments(dateParams: DateParams): Array<AppointmentModelDb> {
+        val date = Util().dateConverterNew(dateParams.date!!.toString())
+        return dao.getDateAppointments(date)
     }
 
-    override fun getAllAppointments(): List<AppointmentModelDb> {
-        var arrayOfAppointmentModelDbs = listOf<AppointmentModelDb>()
-        val thread = Thread {
-            arrayOfAppointmentModelDbs = scheduleDb.getDao().selectAllList()
-        }
-        thread.start()
-        thread.join()
-
-        return arrayOfAppointmentModelDbs
+    override suspend fun selectAllAppointmentsList(): List<AppointmentModelDb> {
+        return dao.selectAllAppointmentsList()
     }
 
-    override fun getAllAppointmentsLiveData(): LiveData<List<AppointmentModelDb>> {
-        return scheduleDb.getDao().selectAll().asLiveData()
+    override suspend fun getMonthAppointments(dateMonth: String): MutableList<AppointmentModelDb> {
+        return dao.getMonthAppointments(dateMonth = dateMonth)
+    }
+
+    override fun selectAllAppointmentsLiveData(): LiveData<List<AppointmentModelDb>> {
+        return dao.selectAllAppointmentsLiveData().asLiveData()
     }
 
     override fun searchAppointment(searchQuery: String): LiveData<List<AppointmentModelDb>> {
-        return scheduleDb.getDao().searchDatabase(searchQuery).asLiveData()
+        return dao.searchAppointment(searchQuery = searchQuery).asLiveData()
     }
 
-    override fun getMonthAppointments(dateMonth: String): MutableList<AppointmentModelDb> {
-        var output: MutableList<AppointmentModelDb>? = null
-        val thread = Thread {
-            output = scheduleDb.getDao().getMonthAppointments(dateMonth)
-        }
-        thread.start()
-        thread.join()
-        return output!!
-    }
 }

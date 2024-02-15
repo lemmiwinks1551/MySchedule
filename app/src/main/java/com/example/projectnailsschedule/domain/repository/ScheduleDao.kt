@@ -7,25 +7,26 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface ScheduleDao {
     @Insert
-    fun insert(appointmentModelDb: AppointmentModelDb)
-
-    @Query("SELECT * FROM schedule")
-    fun selectAll(): Flow<List<AppointmentModelDb>>
-
-    @Query("SELECT * FROM schedule")
-    fun selectAllList(): List<AppointmentModelDb>
+    suspend fun insert(appointmentModelDb: AppointmentModelDb)
 
     @Update
-    fun update(appointmentModelDb: AppointmentModelDb)
-
-    @Query("SELECT * FROM schedule WHERE date = :date ORDER BY time")
-    fun getDateAppointments(date: String): Array<AppointmentModelDb>
-
-    @Query("SELECT * FROM schedule WHERE date LIKE :dateMonth ORDER BY date")
-    fun getMonthAppointments(dateMonth: String): MutableList<AppointmentModelDb>
+    suspend fun update(appointmentModelDb: AppointmentModelDb)
 
     @Delete
-    fun delete(appointmentModelDb: AppointmentModelDb)
+    suspend fun delete(appointmentModelDb: AppointmentModelDb)
+
+    @Query("SELECT * FROM schedule WHERE date = :date ORDER BY time")
+    suspend fun getDateAppointments(date: String): Array<AppointmentModelDb>
+
+    @Query("SELECT * FROM schedule")
+    suspend fun selectAllAppointmentsList(): List<AppointmentModelDb>
+    // TODO: можно сократить функцию?
+
+    @Query("SELECT * FROM schedule WHERE date LIKE :dateMonth ORDER BY date")
+    suspend fun getMonthAppointments(dateMonth: String): MutableList<AppointmentModelDb>
+
+    @Query("SELECT * FROM schedule")
+    fun selectAllAppointmentsLiveData(): Flow<List<AppointmentModelDb>>
 
     @Query("SELECT * FROM schedule WHERE " +
             "date LIKE :searchQuery OR " +
@@ -33,6 +34,10 @@ interface ScheduleDao {
             "time LIKE :searchQuery OR " +
             "procedure LIKE :searchQuery OR " +
             "phone LIKE :searchQuery OR " +
+            "vk LIKE :searchQuery OR " +
+            "telegram LIKE :searchQuery OR " +
+            "instagram LIKE :searchQuery OR " +
+            "whatsapp LIKE :searchQuery OR " +
             "notes LIKE :searchQuery")
-    fun searchDatabase(searchQuery: String): Flow<List<AppointmentModelDb>>
+    fun searchAppointment(searchQuery: String): Flow<List<AppointmentModelDb>>
 }

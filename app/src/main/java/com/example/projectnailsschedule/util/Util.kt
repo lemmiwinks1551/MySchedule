@@ -17,7 +17,9 @@ import com.example.projectnailsschedule.data.storage.ScheduleDb
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
 import com.example.projectnailsschedule.domain.models.ClientModelDb
 import com.example.projectnailsschedule.domain.models.ProcedureModelDb
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.text.SimpleDateFormat
@@ -292,11 +294,9 @@ class Util {
     private fun saveAppointment(appointmentModelDb: AppointmentModelDb, context: Context): Boolean {
         // Save appointment in database
         val scheduleDb = ScheduleDb.getDb(context = context)
-        val thread = Thread {
+        CoroutineScope(Dispatchers.IO).launch {
             scheduleDb.getDao().insert(appointmentModelDb)
         }
-        thread.start()
-        thread.join()
         Log.e(log, "Appointment $appointmentModelDb saved")
         scheduleDb.close()
         return true

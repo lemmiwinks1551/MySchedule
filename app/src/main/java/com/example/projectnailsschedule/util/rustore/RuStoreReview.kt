@@ -15,12 +15,12 @@ class RuStoreReview(val context: Context) {
     private val log = "RuStoreReview"
     private val minAppointments = 50
 
-    private fun getAllAppointmentsCount(): Int {
+    private suspend fun getAllAppointmentsCount(): Int {
         val scheduleRepositoryImpl = ScheduleRepositoryImpl(context)
         return GetAllAppointmentsUseCase(scheduleRepositoryImpl).execute().size
     }
 
-    fun rateApp() {
+    suspend fun rateApp() {
         val appCount = getAllAppointmentsCount()
         if (appCount > minAppointments) {
             Log.e(log, "Appointments count > 10. Ask for review")

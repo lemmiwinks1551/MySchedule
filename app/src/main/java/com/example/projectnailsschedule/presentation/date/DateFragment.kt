@@ -1,7 +1,6 @@
 package com.example.projectnailsschedule.presentation.date
 
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -11,7 +10,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -26,6 +25,8 @@ import com.example.projectnailsschedule.util.Util
 import com.example.projectnailsschedule.util.rustore.RuStoreAd
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class DateFragment : Fragment() {
@@ -65,11 +66,14 @@ class DateFragment : Fragment() {
         // set current date in viewModel
         dateViewModel.selectedDateParams.value = dateParams
 
-        // get and appointments from date
-        dateViewModel.updateDateParams()
+        lifecycleScope.launch {
+            // get and appointments from date
+            dateViewModel.updateDateParams()
 
-        // set observers
-        setObservers()
+            // set observers
+            setObservers()
+        }
+
 
         // swipe to delete
         swipeToDelete()
@@ -94,14 +98,17 @@ class DateFragment : Fragment() {
         }
     }
 
-    private fun setObservers() {
+    private suspend fun setObservers() {
         // dateParams observer
         dateViewModel.selectedDateParams.observe(viewLifecycleOwner) {
-            appointmentList = dateViewModel.getDateAppointments().toList()
+            lifecycleScope.launch {
+                appointmentList = async { dateViewModel.getDateAppointments().toList() }.await()
+            }
             if (it.appointmentCount == 0) {
                 binding.fragmentDateTitle.text = requireContext().getString(R.string.no_data_title)
             } else {
-                binding.fragmentDateTitle.text = requireContext().getString(R.string.fragment_date_title)
+                binding.fragmentDateTitle.text =
+                    requireContext().getString(R.string.fragment_date_title)
             }
             binding.fragmentDateDate.text = it.date?.format(Util().formatter)
             inflateAppointmentsRV(it)
@@ -171,11 +178,14 @@ class DateFragment : Fragment() {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 // this method is called when we swipe our item to left direction.
                 // on below line we are getting the item at a particular position.
-                val deleteAppointmentModelDb: AppointmentModelDb = appointmentList!![viewHolder.adapterPosition]
+                val deleteAppointmentModelDb: AppointmentModelDb =
+                    appointmentList!![viewHolder.adapterPosition]
                 val position = viewHolder.adapterPosition
 
                 // delete client from Db
-                dateViewModel.deleteAppointment(deleteAppointmentModelDb)
+                lifecycleScope.launch {
+                    dateViewModel.deleteAppointment(deleteAppointmentModelDb)
+                }
 
                 appointmentsRvAdapter?.notifyItemRemoved(position)
 
@@ -192,7 +202,9 @@ class DateFragment : Fragment() {
                     ) {
                         // adding on click listener to our action of snack bar.
                         // below line is to add our item to array list with a position.
-                        dateViewModel.saveAppointment(deleteAppointmentModelDb)
+                        lifecycleScope.launch {
+                            dateViewModel.saveAppointment(deleteAppointmentModelDb)
+                        }
 
                         // below line is to notify item is
                         // added to our adapter class.
@@ -204,22 +216,36 @@ class DateFragment : Fragment() {
                 return super.getSwipeEscapeVelocity(defaultValue) * 10
             }
 
-            override fun onChildDraw(c: Canvas, recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean
+            override fun onChildDraw(
+                c: Canvas,
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                dX: Float,
+                dY: Float,
+                actionState: Int,
+                isCurrentlyActive: Boolean
             ) {
                 val deleteIcon: Drawable? =
                     ContextCompat.getDrawable(requireContext(), R.drawable.baseline_delete_24)!!
 
                 val itemView = viewHolder.itemView
-                val iconMarginVertical = (viewHolder.itemView.height - deleteIcon!!.intrinsicHeight) / 2
+                val iconMarginVertical =
+                    (viewHolder.itemView.height - deleteIcon!!.intrinsicHeight) / 2
 
                 val colorDrawableBackground = ColorDrawable(resources.getColor(R.color.yellow))
 
-                val left = itemView.right - deleteIcon.intrinsicWidth - deleteIcon.intrinsicWidth // 882
+                val left =
+                    itemView.right - deleteIcon.intrinsicWidth - deleteIcon.intrinsicWidth // 882
                 val right = itemView.right - deleteIcon.intrinsicWidth // 1014
                 val top = itemView.top + iconMarginVertical
                 val bottom = itemView.bottom - iconMarginVertical
 
-                colorDrawableBackground.setBounds(itemView.right + dX.toInt(), itemView.top, itemView.right, itemView.bottom)
+                colorDrawableBackground.setBounds(
+                    itemView.right + dX.toInt(),
+                    itemView.top,
+                    itemView.right,
+                    itemView.bottom
+                )
                 deleteIcon.setBounds(left, top, right, bottom)
 
                 deleteIcon.level = 0
@@ -230,12 +256,25 @@ class DateFragment : Fragment() {
                 if (dX > 0)
                     c.clipRect(itemView.left, itemView.top, dX.toInt(), itemView.bottom)
                 else
-                    c.clipRect(itemView.right + dX.toInt(), itemView.top, itemView.right, itemView.bottom)
+                    c.clipRect(
+                        itemView.right + dX.toInt(),
+                        itemView.top,
+                        itemView.right,
+                        itemView.bottom
+                    )
 
                 deleteIcon.draw(c)
                 c.restore()
 
-                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                super.onChildDraw(
+                    c,
+                    recyclerView,
+                    viewHolder,
+                    dX,
+                    dY,
+                    actionState,
+                    isCurrentlyActive
+                )
             }
         }).attachToRecyclerView(appointmentsRv)
     }
