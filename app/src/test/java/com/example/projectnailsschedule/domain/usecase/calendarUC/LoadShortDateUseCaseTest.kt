@@ -20,9 +20,9 @@ internal class LoadShortDateUseCaseTest {
             AppointmentModelDb(deleted = false)
         )
 
-        Mockito.`when`(scheduleRepository.getDateAppointments(dateParams = testDateParams)).thenReturn(expected)
+        Mockito.`when`(scheduleRepository.getDateAppointments(date = testDateParams)).thenReturn(expected)
 
-        val actual = loadShortDateUseCase.execute(selectedDateParams = testDateParams)
+        val actual = loadShortDateUseCase.execute(date = testDateParams)
 
         Assertions.assertArrayEquals(expected, actual)
     }

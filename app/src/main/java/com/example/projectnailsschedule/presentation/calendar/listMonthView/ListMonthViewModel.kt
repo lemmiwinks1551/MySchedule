@@ -44,8 +44,8 @@ class ListMonthViewModel @Inject constructor(
         insertAppointmentUseCase.execute(appointmentModelDb)
     }
 
-    suspend fun getDateAppointments(dateParams: DateParams): MutableList<AppointmentModelDb> {
-        return getDateAppointmentsUseCase.execute(dateParams).toMutableList()
+    suspend fun getDateAppointments(date: LocalDate): MutableList<AppointmentModelDb> {
+        return getDateAppointmentsUseCase.execute(date = date).toMutableList()
     }
 
     fun changeMonth(operator: Boolean) {

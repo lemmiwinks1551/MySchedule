@@ -7,10 +7,8 @@ import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,8 +21,6 @@ import com.example.projectnailsschedule.util.Util
 import com.example.projectnailsschedule.util.rustore.RuStoreAd
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.ZoneId
 import java.util.Calendar
@@ -34,7 +30,6 @@ import java.util.Date
 class CalendarFragment : Fragment(),
     DateShortAdapter.OnItemListener {
 
-    private val log = this::class.simpleName
     private val calendarViewModel: CalendarViewModel by viewModels()
     private var _binding: FragmentCalendarBinding? = null
     private val binding get() = _binding!!
@@ -88,12 +83,12 @@ class CalendarFragment : Fragment(),
         }
 
         // set click listener on button next_month
-        binding.nextMonth.setOnClickListener {
+        binding.nextMonthButton.setOnClickListener {
             changeMonth(operator = true)
         }
 
         // set click listener on button previous_month
-        binding.prevMonth.setOnClickListener {
+        binding.prevMonthButton.setOnClickListener {
             changeMonth(operator = false)
         }
     }
@@ -101,9 +96,6 @@ class CalendarFragment : Fragment(),
     private fun initObservers() {
         // set observer for DateParams
         calendarViewModel.selectedDate.observe(viewLifecycleOwner) {
-            Log.i(log, "Current date: ${currentDate?.date}")
-            Log.i(log, "Selected date: ${it.date}")
-
             // if year was changed
             if (it.date!!.year != currentDate?.date?.year) {
                 // update yearTextView
@@ -118,7 +110,7 @@ class CalendarFragment : Fragment(),
             }
 
             // if day was changed and has appointments
-            if (it.appointmentCount != null
+            if (it.appointments != null
             ) {
                 inflateShortDateRecyclerView(it)
             }
@@ -127,7 +119,7 @@ class CalendarFragment : Fragment(),
             currentDate = DateParams(
                 _id = null,
                 date = it.date,
-                appointmentCount = null
+                appointments = null
             )
         }
 
@@ -197,31 +189,20 @@ class CalendarFragment : Fragment(),
             shortDataRecyclerView!!.visibility = View.VISIBLE
         }
 
-        var arrayAppointments: Int
+        // create adapter for ShortDateRecyclerVIew
+        val dateShortAdapter =
+            DateShortAdapter(
+                selectedDateParams,
+                this
+            )
 
-        lifecycleScope.launch {
-            val deferredAppointments = async {
-                calendarViewModel.getArrayAppointments(selectedDateParams).size
-            }
-            arrayAppointments = deferredAppointments.await()
+        // create layoutManager with 1 elements in a row
+        val layoutManager: RecyclerView.LayoutManager =
+            GridLayoutManager(activity, 1)
 
-            // create adapter for ShortDateRecyclerVIew
-            val dateShortAdapter =
-                DateShortAdapter(
-                    arrayAppointments,
-                    selectedDateParams,
-                    calendarViewModel,
-                    this@CalendarFragment
-                )
-
-            // create layoutManager with 1 elements in a row
-            val layoutManager: RecyclerView.LayoutManager =
-                GridLayoutManager(activity, 1)
-
-            // set adapter and layout manager to recycler view
-            shortDataRecyclerView?.layoutManager = layoutManager
-            shortDataRecyclerView?.adapter = dateShortAdapter
-        }
+        // set adapter and layout manager to recycler view
+        shortDataRecyclerView?.layoutManager = layoutManager
+        shortDataRecyclerView?.adapter = dateShortAdapter
     }
 
     private fun changeMonth(operator: Boolean) {
@@ -236,7 +217,6 @@ class CalendarFragment : Fragment(),
     }
 
     override fun onResume() {
-        Log.e(log, "onResume")
         RuStoreAd().banner(requireContext(), binding.root)
 
         super.onResume()
@@ -260,7 +240,7 @@ class CalendarFragment : Fragment(),
         currentDate = DateParams(
             _id = null,
             date = null,
-            appointmentCount = null
+            appointments = null
         )
         _binding = null
         super.onDestroyView()

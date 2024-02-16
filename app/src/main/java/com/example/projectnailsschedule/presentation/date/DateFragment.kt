@@ -63,17 +63,13 @@ class DateFragment : Fragment() {
         // init clickListeners
         initClickListeners()
 
-        // set current date in viewModel
-        dateViewModel.selectedDateParams.value = dateParams
-
-        lifecycleScope.launch {
-            // get and appointments from date
-            dateViewModel.updateDateParams()
-
-            // set observers
-            setObservers()
+        if (dateParams!!.appointments == 0) {
+            binding.fragmentDateTitle.text = requireContext().getString(R.string.no_data_title)
+        } else {
+            binding.fragmentDateTitle.text =
+                requireContext().getString(R.string.fragment_date_title)
+            inflateAppointmentsRV()
         }
-
 
         // swipe to delete
         swipeToDelete()
@@ -98,27 +94,9 @@ class DateFragment : Fragment() {
         }
     }
 
-    private suspend fun setObservers() {
-        // dateParams observer
-        dateViewModel.selectedDateParams.observe(viewLifecycleOwner) {
-            lifecycleScope.launch {
-                appointmentList = async { dateViewModel.getDateAppointments().toList() }.await()
-            }
-            if (it.appointmentCount == 0) {
-                binding.fragmentDateTitle.text = requireContext().getString(R.string.no_data_title)
-            } else {
-                binding.fragmentDateTitle.text =
-                    requireContext().getString(R.string.fragment_date_title)
-            }
-            binding.fragmentDateDate.text = it.date?.format(Util().formatter)
-            inflateAppointmentsRV(it)
-        }
-    }
-
-    private fun inflateAppointmentsRV(selectedDate: DateParams) {
+    private fun inflateAppointmentsRV() {
         // create adapter
         appointmentsRvAdapter = DateAdapter(
-            appointmentsCount = selectedDate.appointmentCount!!,
             appointmentsList = appointmentList!!,
             dateViewModel = dateViewModel
         )
@@ -158,7 +136,7 @@ class DateFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        // hide keyboard
+
         Util().hideKeyboard(requireActivity())
 
         RuStoreAd().banner(requireContext(), binding.root)

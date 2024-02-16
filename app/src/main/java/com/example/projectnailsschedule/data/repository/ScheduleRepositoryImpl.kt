@@ -5,9 +5,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
 import com.example.projectnailsschedule.data.storage.ScheduleDb
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
-import com.example.projectnailsschedule.domain.models.DateParams
 import com.example.projectnailsschedule.domain.repository.ScheduleRepository
 import com.example.projectnailsschedule.util.Util
+import java.time.LocalDate
 
 class ScheduleRepositoryImpl(context: Context) : ScheduleRepository {
     private var dao = ScheduleDb.getDb(context).getDao()
@@ -27,9 +27,8 @@ class ScheduleRepositoryImpl(context: Context) : ScheduleRepository {
         return true
     }
 
-    override suspend fun getDateAppointments(dateParams: DateParams): Array<AppointmentModelDb> {
-        val date = Util().dateConverterNew(dateParams.date!!.toString())
-        return dao.getDateAppointments(date)
+    override suspend fun getDateAppointments(date: LocalDate): Array<AppointmentModelDb> {
+        return dao.getDateAppointments(Util().dateConverterNew(date.toString()))
     }
 
     override suspend fun selectAllAppointmentsList(): List<AppointmentModelDb> {

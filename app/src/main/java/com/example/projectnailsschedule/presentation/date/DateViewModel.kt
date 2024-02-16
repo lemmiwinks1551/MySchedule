@@ -6,7 +6,6 @@ import com.example.projectnailsschedule.domain.models.AppointmentModelDb
 import com.example.projectnailsschedule.domain.models.DateParams
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.InsertAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.dateUC.DeleteAppointmentUseCase
-import com.example.projectnailsschedule.domain.usecase.dateUC.GetDateAppointmentsUseCase
 import com.example.projectnailsschedule.domain.usecase.socUC.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -14,49 +13,20 @@ import javax.inject.Inject
 @HiltViewModel
 class DateViewModel @Inject constructor(
     private var deleteAppointmentUseCase: DeleteAppointmentUseCase,
-    private var getDateAppointmentsUseCase: GetDateAppointmentsUseCase,
     private var insertAppointmentUseCase: InsertAppointmentUseCase,
     private val startVkUc: StartVkUc,
     private val startTelegramUc: StartTelegramUc,
     private val startInstagramUc: StartInstagramUc,
     private val startWhatsAppUc: StartWhatsAppUc,
     private val startPhoneUc: StartPhoneUc
-    ) : ViewModel() {
-
-    val log = this::class.simpleName
-    var selectedDateParams =
-        MutableLiveData(
-            DateParams(
-                _id = null,
-                date = null,
-                appointmentCount = null
-            )
-        )
+) : ViewModel() {
 
     suspend fun saveAppointment(appointmentModelDb: AppointmentModelDb) {
         insertAppointmentUseCase.execute(appointmentModelDb)
-        updateDateParams()
-    }
-
-    suspend fun updateDateParams() {
-        // set day and appointmentsCount
-        getDateAppointmentCount()
-        selectedDateParams.value = selectedDateParams.value
-    }
-
-    private suspend fun getDateAppointmentCount() {
-        selectedDateParams.value?.appointmentCount =
-            getDateAppointmentsUseCase.execute(selectedDateParams.value!!).size
-        selectedDateParams.value = selectedDateParams.value
-    }
-
-    suspend fun getDateAppointments(): Array<AppointmentModelDb> {
-        return getDateAppointmentsUseCase.execute(dateParams = selectedDateParams.value!!)
     }
 
     suspend fun deleteAppointment(appointmentModelDb: AppointmentModelDb) {
         deleteAppointmentUseCase.execute(appointmentModelDb)
-        updateDateParams()
     }
 
     fun startVk(uri: String) {

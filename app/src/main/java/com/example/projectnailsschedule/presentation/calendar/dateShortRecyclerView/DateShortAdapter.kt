@@ -7,16 +7,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.domain.models.DateParams
 import com.example.projectnailsschedule.presentation.calendar.CalendarFragment
-import com.example.projectnailsschedule.presentation.calendar.CalendarViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 internal class DateShortAdapter(
-    private val appointmentsCount: Int,
     private val selectedDayParams: DateParams,
-    private val calendarViewModel: CalendarViewModel,
     private val calendarFragment: CalendarFragment
 ) :
     RecyclerView.Adapter<DateShortViewHolder>() {
@@ -28,22 +21,17 @@ internal class DateShortAdapter(
     }
 
     override fun onBindViewHolder(holder: DateShortViewHolder, position: Int) {
-        CoroutineScope(Dispatchers.IO).launch {
-            val selectedDayParams = calendarViewModel.getArrayAppointments(selectedDayParams)
-            val currentDayAppointments = selectedDayParams[position]
-
-            withContext(Dispatchers.Main) {
-                holder.clientName.text = currentDayAppointments.name
-                holder.time.text = currentDayAppointments.time
-                holder.procedure.text = currentDayAppointments.procedure
-                holder.number.text = String.format("${position + 1}.")
-                holder.notes.text = currentDayAppointments.notes
-            }
+        with(selectedDayParams.appointmentsArray?.get(position)!!) {
+            holder.number.text = String.format("${position + 1}.")
+            holder.clientName.text = name
+            holder.time.text = time
+            holder.procedure.text = procedure
+            holder.notes.text = notes
         }
     }
 
     override fun getItemCount(): Int {
-        return appointmentsCount
+        return selectedDayParams.appointments!!
     }
 
     interface OnItemListener {

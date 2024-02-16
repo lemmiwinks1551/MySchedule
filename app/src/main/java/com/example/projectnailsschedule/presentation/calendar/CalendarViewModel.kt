@@ -18,7 +18,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
-import java.lang.Exception
 import java.time.LocalDate
 import javax.inject.Inject
 
@@ -33,7 +32,6 @@ class CalendarViewModel @Inject constructor(
     private val calendarDbDeleteObj: CalendarDbDeleteObj
 ) : ViewModel() {
 
-    private val log = this::class.simpleName
     private val tagDateColor = "DateColor"
 
     // var updates when click at day or month in calendar
@@ -41,7 +39,8 @@ class CalendarViewModel @Inject constructor(
         DateParams(
             _id = null,
             date = LocalDate.now(),
-            appointmentCount = null
+            appointments = null,
+            appointmentsArray = null
         )
     )
 
@@ -49,24 +48,17 @@ class CalendarViewModel @Inject constructor(
 
     var prevHolder: CalendarRvAdapter.ViewHolder? = null
 
-    suspend fun getArrayAppointments(dateParams: DateParams): Array<AppointmentModelDb> {
-        // get all appointments in selectedDate for recycler view adapter
-        Log.e(log, "Appointments from $selectedDate unloaded from DB")
-        return loadShortDateUseCase.execute(dateParams)
+    suspend fun getArrayAppointments(date: LocalDate): Array<AppointmentModelDb> {
+        return loadShortDateUseCase.execute(date)
     }
 
-    private suspend fun getDateAppointmentCount() {
-        // get appointments count from selectedDate
-        selectedDate.value?.appointmentCount =
-            getDateAppointmentsUseCase.execute(selectedDate.value!!).size
-        selectedDate.value = selectedDate.value
-    }
-
-    suspend fun updateSelectedDate(day: Int) {
-        // set month day in selectedDayParams
-        selectedDate.value?.date = selectedDate.value?.date?.withDayOfMonth(day)
-        getDateAppointmentCount()
-        selectedDate.value = selectedDate.value
+    fun updateSelectedDate(dateParams: DateParams) {
+        val updatedDateParams =
+            selectedDate.value?.copy(
+                date = dateParams.date,
+                appointmentsArray = dateParams.appointmentsArray
+            )
+        selectedDate.postValue(updatedDateParams)
     }
 
     fun changeMonth(operator: Boolean) {
@@ -93,7 +85,7 @@ class CalendarViewModel @Inject constructor(
         return selectCalendarDateByDateUseCase.execute(date)
     }
 
-    suspend fun getDateId(ruFormatDate: String) : Int? {
+    suspend fun getDateId(ruFormatDate: String): Int? {
         Log.d(tagDateColor, "Getting color for $ruFormatDate")
         return try {
             val deferredColor = CoroutineScope(Dispatchers.IO).async {

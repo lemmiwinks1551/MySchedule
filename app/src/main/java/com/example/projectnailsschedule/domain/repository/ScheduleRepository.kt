@@ -3,6 +3,7 @@ package com.example.projectnailsschedule.domain.repository
 import androidx.lifecycle.LiveData
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
 import com.example.projectnailsschedule.domain.models.DateParams
+import java.time.LocalDate
 
 interface ScheduleRepository {
 
@@ -12,7 +13,7 @@ interface ScheduleRepository {
 
     suspend fun deleteAppointment(appointmentModelDb: AppointmentModelDb): Boolean
 
-    suspend fun getDateAppointments(dateParams: DateParams): Array<AppointmentModelDb>
+    suspend fun getDateAppointments(date: LocalDate): Array<AppointmentModelDb>
 
     suspend fun selectAllAppointmentsList(): List<AppointmentModelDb>
 

@@ -49,8 +49,6 @@ class CalendarRvAdapter(
         }
     }
 
-    private val log = this::class.simpleName
-
     private lateinit var greenImageView: ImageView
     private lateinit var yellowImageView: ImageView
     private lateinit var redImageView: ImageView
@@ -65,7 +63,6 @@ class CalendarRvAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
         // get day to work with
         val dayInHolder = daysInMonth[position]
 
@@ -75,42 +72,40 @@ class CalendarRvAdapter(
         // set appointments count
         if (dayInHolder != "") {
             // get appointment count from date
-            var appointmentCount: Int
-
             val dateParams = DateParams(
                 date = calendarViewModel.selectedDate.value?.date?.withDayOfMonth(
                     dayInHolder.toInt()
                 )
             )
+            val ruFormatDate = Util().formatDate(dateParams.date!!)
 
-            // get date appointment count
+            // get date appointments
             CoroutineScope(Dispatchers.IO).launch {
-                appointmentCount =
-                    calendarViewModel.getArrayAppointments(dateParams = dateParams).size
+                dateParams.appointmentsArray =
+                    calendarViewModel.getArrayAppointments(date = dateParams.date!!)
                 withContext(Dispatchers.Main) {
-                    if (appointmentCount > 0) {
-                        holder.dateAppointmentsCount.text = appointmentCount.toString()
+                    // set appointments size into holder
+                    if (dateParams.appointmentsArray!!.isNotEmpty()) {
+                        holder.dateAppointmentsCount.text =
+                            dateParams.appointmentsArray!!.size.toString()
                     }
                 }
             }
-
-            val ruFormatDate = Util().formatDate(dateParams.date!!)
 
             // get date color from database
             CoroutineScope(Dispatchers.IO).launch {
                 val dateColor = calendarViewModel.getDateColor(ruFormatDate)
                 withContext(Dispatchers.Main) {
                     if (dateColor != null) {
+                        // set color to holder
                         holder.cellLayout.setBackgroundResource(mapColorToDrawable(dateColor))
                     }
                 }
             }
 
             // Set the click listener to handle cell selection
-
             holder.cellLayout.setOnClickListener {
                 if (holder != calendarViewModel.prevHolder) {
-
                     // Unselect the previously selected cell
                     calendarViewModel.prevHolder?.date?.setTypeface(null, Typeface.NORMAL)
 
@@ -120,9 +115,10 @@ class CalendarRvAdapter(
                     // Update the previous holder
                     calendarViewModel.prevHolder = holder
                 }
-                CoroutineScope(Dispatchers.IO).launch {
-                    calendarViewModel.updateSelectedDate(day = dayInHolder.toInt())
-                }
+
+                calendarViewModel.updateSelectedDate(
+                    dateParams = dateParams
+                )
                 calendarViewModel.visibility.value = true
             }
 

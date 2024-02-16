@@ -4,11 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
@@ -32,18 +29,13 @@ import java.util.*
 
 @AndroidEntryPoint
 class ListMonthViewFragment : Fragment() {
-    val log = this::class.simpleName
 
     private val fullMonthViewVM: ListMonthViewModel by viewModels()
 
     private var _binding: FragmentFullMonthViewBinding? = null
     private var fullMonthAppointmentsRV: RecyclerView? = null
 
-    private var prevMonthButton: ImageButton? = null
-    private var nextMonthButton: ImageButton? = null
-    private var monthTextView: TextView? = null
-    private var yearTextView: TextView? = null
-    lateinit var layoutManager: LayoutManager
+    private lateinit var layoutManager: LayoutManager
 
     private val binding get() = _binding!!
 
@@ -54,7 +46,7 @@ class ListMonthViewFragment : Fragment() {
     ): View {
         _binding = FragmentFullMonthViewBinding.inflate(inflater, container, false)
 
-        initWidgets()
+        initViews()
 
         setObservers()
 
@@ -63,12 +55,9 @@ class ListMonthViewFragment : Fragment() {
         return binding.root
     }
 
-    private fun initWidgets() {
+    private fun initViews() {
         fullMonthAppointmentsRV = binding.fullMonthAppointmentsRV
-        nextMonthButton = binding.nextMonth
-        prevMonthButton = binding.prevMonth
-        monthTextView = binding.monthTextView
-        yearTextView = binding.yearTextView
+
     }
 
     private fun setObservers() {
@@ -87,7 +76,6 @@ class ListMonthViewFragment : Fragment() {
 
         CoroutineScope(Dispatchers.IO).launch {
             for (i in 1..selectedDate.lengthOfMonth()) {
-
                 val dateFormat =
                     Util().dateConverterNew(fullMonthViewVM.selectedMonth.value.toString())
                 var date = dateFormat.drop(2)
@@ -96,7 +84,7 @@ class ListMonthViewFragment : Fragment() {
 
                 val localDate = Util().convertStringToLocalDate(date)
 
-                val dateParams = DateParams(_id = null, date = localDate, appointmentCount = null)
+                val dateParams = DateParams(_id = null, date = localDate, appointments = null)
 
                 val addToList = DateWeekAppModel(
                     date = dateParams.date!!,
@@ -119,10 +107,10 @@ class ListMonthViewFragment : Fragment() {
     }
 
     private fun initClickListeners() {
-        nextMonthButton!!.setOnClickListener {
+        binding.nextMonthButton.setOnClickListener {
             fullMonthViewVM.changeMonth(true)
         }
-        prevMonthButton!!.setOnClickListener {
+        binding.prevMonthButton.setOnClickListener {
             fullMonthViewVM.changeMonth(false)
         }
     }
@@ -135,8 +123,8 @@ class ListMonthViewFragment : Fragment() {
         )
         val month = SimpleDateFormat("LLLL", Locale.getDefault()).format(date).replaceFirstChar { it.uppercase() }
 
-        monthTextView!!.text = month
-        yearTextView!!.text = fullMonthViewVM.selectedMonth.value!!.year.toString()
+        binding.monthTextView.text = month
+        binding.yearTextView.text = fullMonthViewVM.selectedMonth.value!!.year.toString()
     }
 
     override fun onResume() {

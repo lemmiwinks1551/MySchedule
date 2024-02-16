@@ -9,12 +9,9 @@ import com.example.projectnailsschedule.domain.models.AppointmentModelDb
 import com.example.projectnailsschedule.presentation.date.DateViewModel
 
 class DateAdapter(
-    private var appointmentsCount: Int,
     private var appointmentsList: List<AppointmentModelDb>,
     private val dateViewModel: DateViewModel
 ) : RecyclerView.Adapter<DateViewHolder>() {
-
-    val log = this::class.simpleName
 
     private lateinit var mListener: OnItemClickListener
 
@@ -51,7 +48,6 @@ class DateAdapter(
         initClickListeners(holder)
     }
 
-
     private fun initClickListeners(holder: DateViewHolder) {
         with(holder) {
             callClientButton.setOnClickListener {
@@ -77,26 +73,26 @@ class DateAdapter(
     }
 
     override fun getItemCount(): Int {
-        return appointmentsCount
+        return appointmentsList.size
     }
 
-    private fun startVk(uri: kotlin.String) {
+    private fun startVk(uri: String) {
         dateViewModel.startVk(uri)
     }
 
-    private fun startTelegram(uri: kotlin.String) {
+    private fun startTelegram(uri: String) {
         dateViewModel.startTelegram(uri)
     }
 
-    private fun startInstagram(uri: kotlin.String) {
+    private fun startInstagram(uri: String) {
         dateViewModel.startInstagram(uri)
     }
 
-    private fun startWhatsapp(uri: kotlin.String) {
+    private fun startWhatsapp(uri: String) {
         dateViewModel.startWhatsApp(uri)
     }
 
-    private fun startPhone(phoneNum: kotlin.String) {
+    private fun startPhone(phoneNum: String) {
         dateViewModel.startPhone(phoneNum)
     }
 
