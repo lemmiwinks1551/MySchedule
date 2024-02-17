@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
@@ -19,13 +20,14 @@ import com.example.projectnailsschedule.presentation.calendar.listMonthView.full
 import com.example.projectnailsschedule.util.Util
 import com.example.projectnailsschedule.util.rustore.RuStoreAd
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.ZoneId
-import java.util.*
+import java.util.Date
+import java.util.Locale
 
 @AndroidEntryPoint
 class ListMonthViewFragment : Fragment() {
@@ -35,7 +37,7 @@ class ListMonthViewFragment : Fragment() {
     private var _binding: FragmentFullMonthViewBinding? = null
     private var fullMonthAppointmentsRV: RecyclerView? = null
 
-    private lateinit var layoutManager: LayoutManager
+    private var layoutManager: LayoutManager? = null
 
     private val binding get() = _binding!!
 
@@ -69,47 +71,48 @@ class ListMonthViewFragment : Fragment() {
 
     private fun inflateCalendarRecyclerView(selectedDate: LocalDate) {
         // get array of days from selected month
-
         val daysInMonth: ArrayList<String> = Util().getArrayFromMonth2(selectedDate)
 
         val list = mutableListOf<DateWeekAppModel>()
-
-        CoroutineScope(Dispatchers.IO).launch {
+        lifecycleScope.launch {
             for (i in 1..selectedDate.lengthOfMonth()) {
+                // формируем первый день месяца и созадем с ним DateParams
                 val dateFormat =
                     Util().dateConverterNew(fullMonthViewVM.selectedMonth.value.toString())
                 var date = dateFormat.drop(2)
                 date = daysInMonth[i - 1] + date
                 date = Util().dateConverter(date)
-
                 val localDate = Util().convertStringToLocalDate(date)
-
                 val dateParams = DateParams(_id = null, date = localDate, appointments = null)
 
+                // добавляем в лист объект DateWeekAppModel, который содержит список записей по дню
                 val addToList = DateWeekAppModel(
                     date = dateParams.date!!,
                     weekDay = Util().getDayOfWeek(date, requireContext()),
-                    appointmentsList = fullMonthViewVM.getDateAppointments(dateParams)
+                    appointmentsList = fullMonthViewVM.getDateAppointments(dateParams.date!!)
                 )
-
                 list.add(addToList)
             }
+            withContext(Dispatchers.Main) {
+                // create adapter
+                val fullMonthViewRVAdapter =
+                    FullMonthViewRVAdapter(list, requireContext(), findNavController(), fullMonthViewVM)
+
+                layoutManager = GridLayoutManager(activity, 1)
+
+                fullMonthAppointmentsRV?.layoutManager = layoutManager
+                fullMonthAppointmentsRV?.adapter = fullMonthViewRVAdapter
+                fullMonthAppointmentsRV?.scheduleLayoutAnimation()
+
+            }
         }
-
-        // create adapter
-        val fullMonthViewRVAdapter =
-            FullMonthViewRVAdapter(list, requireContext(), findNavController(), fullMonthViewVM)
-
-        layoutManager = GridLayoutManager(activity, 1)
-
-        fullMonthAppointmentsRV?.layoutManager = layoutManager
-        fullMonthAppointmentsRV?.adapter = fullMonthViewRVAdapter
     }
 
     private fun initClickListeners() {
         binding.nextMonthButton.setOnClickListener {
             fullMonthViewVM.changeMonth(true)
         }
+
         binding.prevMonthButton.setOnClickListener {
             fullMonthViewVM.changeMonth(false)
         }
@@ -130,15 +133,17 @@ class ListMonthViewFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         // scroll to previous position
-        fullMonthAppointmentsRV?.post {
-            val oldPosition = fullMonthViewVM.oldPosition
-            val smoothScroller: SmoothScroller = object : LinearSmoothScroller(context) {
-                override fun getVerticalSnapPreference(): Int {
-                    return SNAP_TO_START
+        if (layoutManager != null) {
+            fullMonthAppointmentsRV?.post {
+                val oldPosition = fullMonthViewVM.oldPosition
+                val smoothScroller: SmoothScroller = object : LinearSmoothScroller(context) {
+                    override fun getVerticalSnapPreference(): Int {
+                        return SNAP_TO_START
+                    }
                 }
+                smoothScroller.targetPosition = oldPosition
+                layoutManager!!.startSmoothScroll(smoothScroller)
             }
-            smoothScroller.targetPosition = oldPosition
-            layoutManager.startSmoothScroll(smoothScroller)
         }
         RuStoreAd().banner(requireContext(), binding.root)
     }

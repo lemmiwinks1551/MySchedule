@@ -6,5 +6,4 @@ class DateWeekAppModel(
     val date: LocalDate,
     val weekDay: String,
     val appointmentsList: MutableList<AppointmentModelDb>
-) {
-}
+)
