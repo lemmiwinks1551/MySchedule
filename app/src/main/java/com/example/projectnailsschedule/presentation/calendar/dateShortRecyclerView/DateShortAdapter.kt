@@ -31,7 +31,7 @@ internal class DateShortAdapter(
     }
 
     override fun getItemCount(): Int {
-        return selectedDayParams.appointments!!
+        return selectedDayParams.appointmentsArray?.size!!
     }
 
     interface OnItemListener {

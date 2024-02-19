@@ -29,6 +29,7 @@ import java.util.Date
 @AndroidEntryPoint
 class CalendarFragment : Fragment(),
     DateShortAdapter.OnItemListener {
+    private val log = this::class.simpleName
 
     private val calendarViewModel: CalendarViewModel by viewModels()
     private var _binding: FragmentCalendarBinding? = null
@@ -73,6 +74,7 @@ class CalendarFragment : Fragment(),
     private fun initClickListeners() {
         // set click listener on button go_into_date
         binding.goIntoDate.setOnClickListener {
+            Log.i(log, currentDate.toString())
             // start fragment with chosen date
             val bundle = Bundle()
             bundle.putParcelable("dateParams", currentDate)
@@ -110,7 +112,7 @@ class CalendarFragment : Fragment(),
             }
 
             // if day was changed and has appointments
-            if (it.appointments != null
+            if (it.appointmentsArray != null
             ) {
                 inflateShortDateRecyclerView(it)
             }
@@ -119,7 +121,7 @@ class CalendarFragment : Fragment(),
             currentDate = DateParams(
                 _id = null,
                 date = it.date,
-                appointments = null
+                appointmentsArray = it.appointmentsArray
             )
         }
 

@@ -13,6 +13,11 @@ data class DateParams(
 ) : Parcelable {
 
     override fun toString(): String {
-        return String.format("id = $_id date = $date appointmentCount = $appointments")
+        return String.format(
+            "id = $_id " +
+                    "date = $date " +
+                    "appointmentCount = $appointments, " +
+                    "appointmentsArray = ${appointmentsArray?.size}"
+        )
     }
 }

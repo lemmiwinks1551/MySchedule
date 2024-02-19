@@ -30,8 +30,6 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class DateFragment : Fragment() {
-    val log = this::class.simpleName
-
     private val dateViewModel: DateViewModel by viewModels()
     private var _binding: FragmentDateBinding? = null
     private val binding get() = _binding!!
@@ -63,7 +61,7 @@ class DateFragment : Fragment() {
         // init clickListeners
         initClickListeners()
 
-        if (dateParams!!.appointments == 0) {
+        if (dateParams!!.appointments != null) {
             binding.fragmentDateTitle.text = requireContext().getString(R.string.no_data_title)
         } else {
             binding.fragmentDateTitle.text =
