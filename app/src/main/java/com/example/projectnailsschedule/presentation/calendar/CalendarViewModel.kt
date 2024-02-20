@@ -31,18 +31,18 @@ class CalendarViewModel @Inject constructor(
     private val insertCalendarDateUseCase: InsertCalendarDateUseCase,
     private val calendarDbDeleteObj: CalendarDbDeleteObj
 ) : ViewModel() {
+    private val log = this::class.simpleName
 
     private val tagDateColor = "DateColor"
 
     // var updates when click at day or month in calendar
     var selectedDate = MutableLiveData(
         DateParams(
-            _id = null,
-            date = LocalDate.now(),
-            appointments = null,
-            appointmentsArray = null
+            date = LocalDate.now()
         )
     )
+
+    var previousDate = MutableLiveData(DateParams())
 
     var visibility = MutableLiveData(false)
 

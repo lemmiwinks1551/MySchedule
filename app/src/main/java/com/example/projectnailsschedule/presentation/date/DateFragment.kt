@@ -25,7 +25,6 @@ import com.example.projectnailsschedule.util.Util
 import com.example.projectnailsschedule.util.rustore.RuStoreAd
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -35,39 +34,29 @@ class DateFragment : Fragment() {
     private val binding get() = _binding!!
     private val bindingKey = "dateParams"
     private val bindingKeyAppointment = "appointmentParams"
-    private val dateRecyclerViewSpanCount = 1
 
-    private var appointmentList: List<AppointmentModelDb>? = null
     private var appointmentsRvAdapter: DateAdapter? = null
-
     private var dateParams: DateParams? = null
     private var appointmentsRv: RecyclerView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // get dateParams from Bundle
-        dateParams = arguments?.getParcelable(bindingKey)
+        dateViewModel.selectedDate.value = arguments?.getParcelable(bindingKey)
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-
         _binding = FragmentDateBinding.inflate(inflater, container, false)
 
         // init widgets
-        initWidgets()
+        initViews()
 
         // init clickListeners
         initClickListeners()
 
-        if (dateParams!!.appointments != null) {
-            binding.fragmentDateTitle.text = requireContext().getString(R.string.no_data_title)
-        } else {
-            binding.fragmentDateTitle.text =
-                requireContext().getString(R.string.fragment_date_title)
-            inflateAppointmentsRV()
-        }
+        inflateViews()
 
         // swipe to delete
         swipeToDelete()
@@ -75,7 +64,7 @@ class DateFragment : Fragment() {
         return binding.root
     }
 
-    private fun initWidgets() {
+    private fun initViews() {
         appointmentsRv = binding.scheduleRecyclerView
     }
 
@@ -94,13 +83,14 @@ class DateFragment : Fragment() {
 
     private fun inflateAppointmentsRV() {
         // create adapter
+        val appointmentList = dateViewModel.selectedDate.value?.appointmentsArray?.toList()!!
         appointmentsRvAdapter = DateAdapter(
-            appointmentsList = appointmentList!!,
+            appointmentsList = appointmentList,
             dateViewModel = dateViewModel
         )
 
         val layoutManager: RecyclerView.LayoutManager =
-            GridLayoutManager(activity, dateRecyclerViewSpanCount)
+            GridLayoutManager(activity, 1)
 
         appointmentsRv?.layoutManager = layoutManager
         appointmentsRv?.adapter = appointmentsRvAdapter
@@ -112,18 +102,18 @@ class DateFragment : Fragment() {
                 // edit selected appointment
                 val bundle = Bundle()
                 val appointmentModelDb = AppointmentModelDb(
-                    _id = appointmentList?.get(position)?._id,
-                    date = appointmentList?.get(position)?.date,
-                    name = appointmentList?.get(position)?.name,
-                    time = appointmentList?.get(position)?.time,
-                    procedure = appointmentList?.get(position)?.procedure,
-                    vk = appointmentList?.get(position)?.vk,
-                    telegram = appointmentList?.get(position)?.telegram,
-                    instagram = appointmentList?.get(position)?.instagram,
-                    whatsapp = appointmentList?.get(position)?.whatsapp,
-                    phone = appointmentList?.get(position)?.phone,
-                    notes = appointmentList?.get(position)?.notes,
-                    deleted = appointmentList?.get(position)!!.deleted
+                    _id = appointmentList[position]._id,
+                    date = appointmentList[position].date,
+                    name = appointmentList[position].name,
+                    time = appointmentList[position].time,
+                    procedure = appointmentList[position].procedure,
+                    vk = appointmentList[position].vk,
+                    telegram = appointmentList[position].telegram,
+                    instagram = appointmentList[position].instagram,
+                    whatsapp = appointmentList[position].whatsapp,
+                    phone = appointmentList[position].phone,
+                    notes = appointmentList[position].notes,
+                    deleted = appointmentList[position].deleted
                 )
                 val navController = findNavController()
                 bundle.putParcelable(bindingKeyAppointment, appointmentModelDb)
@@ -154,8 +144,9 @@ class DateFragment : Fragment() {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 // this method is called when we swipe our item to left direction.
                 // on below line we are getting the item at a particular position.
+                val appointmentList = dateViewModel.selectedDate.value?.appointmentsArray?.toList()!!
                 val deleteAppointmentModelDb: AppointmentModelDb =
-                    appointmentList!![viewHolder.adapterPosition]
+                    appointmentList[viewHolder.adapterPosition]
                 val position = viewHolder.adapterPosition
 
                 // delete client from Db
@@ -258,6 +249,18 @@ class DateFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun inflateViews() {
+        if (dateViewModel.selectedDate.value?.appointmentsArray?.size == null) {
+            binding.fragmentDateTitle.text = requireContext().getString(R.string.no_data_title)
+        } else {
+            binding.fragmentDateTitle.text =
+                requireContext().getString(R.string.fragment_date_title)
+            inflateAppointmentsRV()
+        }
+
+        binding.fragmentDateDate.text = Util().formatDateToRus(dateViewModel.selectedDate.value?.date!!)
     }
 }
 

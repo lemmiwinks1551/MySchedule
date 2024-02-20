@@ -25,6 +25,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.time.LocalDate
 
 class CalendarRvAdapter(
     private val daysInMonth: ArrayList<String>,
@@ -72,22 +73,22 @@ class CalendarRvAdapter(
         // set appointments count
         if (dayInHolder != "") {
             // get appointment count from date
-            val dateParams = DateParams(
+            val selectedDate = DateParams(
                 date = calendarViewModel.selectedDate.value?.date?.withDayOfMonth(
                     dayInHolder.toInt()
                 )
             )
-            val ruFormatDate = Util().formatDate(dateParams.date!!)
+            val ruFormatDate = Util().formatDateToRus(selectedDate.date!!)
 
             // get date appointments
             CoroutineScope(Dispatchers.IO).launch {
-                dateParams.appointmentsArray =
-                    calendarViewModel.getArrayAppointments(date = dateParams.date!!)
+                selectedDate.appointmentsArray =
+                    calendarViewModel.getArrayAppointments(date = selectedDate.date!!)
                 withContext(Dispatchers.Main) {
                     // set appointments size into holder
-                    if (dateParams.appointmentsArray!!.isNotEmpty()) {
+                    if (selectedDate.appointmentsArray!!.isNotEmpty()) {
                         holder.dateAppointmentsCount.text =
-                            dateParams.appointmentsArray!!.size.toString()
+                            selectedDate.appointmentsArray!!.size.toString()
                     }
                 }
             }
@@ -117,7 +118,7 @@ class CalendarRvAdapter(
                 }
 
                 calendarViewModel.updateSelectedDate(
-                    dateParams = dateParams
+                    dateParams = selectedDate
                 )
                 calendarViewModel.visibility.value = true
             }
@@ -126,6 +127,13 @@ class CalendarRvAdapter(
                 setDateColorDialog(holder, ruFormatDate)
                 true
             }
+
+            // If the day corresponds to today's date, set the text color to red
+            if (selectedDate.date!! == LocalDate.now()) {
+                holder.date.setTextColor(Color.RED)
+            }
+
+            // restoreSelection(holder)
         }
     }
 
@@ -288,6 +296,12 @@ class CalendarRvAdapter(
             "blue" -> R.drawable.calendar_recycler_view_borders_blue
             "default" -> R.drawable.calendar_recycler_view_borders
             else -> R.drawable.calendar_recycler_view_borders
+        }
+    }
+
+    private fun restoreSelection(holder: ViewHolder) {
+        if (calendarViewModel.visibility.value!!) {
+            holder.date.setTypeface(null, Typeface.BOLD)
         }
     }
 }

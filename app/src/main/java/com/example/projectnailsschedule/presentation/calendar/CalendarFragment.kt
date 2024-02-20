@@ -1,7 +1,6 @@
 package com.example.projectnailsschedule.presentation.calendar
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.View
@@ -21,7 +20,6 @@ import com.example.projectnailsschedule.util.Util
 import com.example.projectnailsschedule.util.rustore.RuStoreAd
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
-import java.time.LocalDate
 import java.time.ZoneId
 import java.util.Calendar
 import java.util.Date
@@ -40,17 +38,17 @@ class CalendarFragment : Fragment(),
     private var calendarRecyclerView: RecyclerView? = null
     private var shortDataRecyclerView: RecyclerView? = null
     private var addButton: FloatingActionButton? = null
-    private var currentDate: DateParams? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-
         // set binding
         _binding = FragmentCalendarBinding.inflate(inflater, container, false)
 
         // init all widgets
-        initWidgets()
+        initViews()
+
+        recoverPrevViewState()
 
         // init click listeners
         initClickListeners()
@@ -62,7 +60,7 @@ class CalendarFragment : Fragment(),
         return binding.root
     }
 
-    private fun initWidgets() {
+    private fun initViews() {
         // init all widgets
         calendarRecyclerView = binding.calendarRecyclerView
         shortDataRecyclerView = binding.shortDataRecyclerView
@@ -74,10 +72,9 @@ class CalendarFragment : Fragment(),
     private fun initClickListeners() {
         // set click listener on button go_into_date
         binding.goIntoDate.setOnClickListener {
-            Log.i(log, currentDate.toString())
             // start fragment with chosen date
             val bundle = Bundle()
-            bundle.putParcelable("dateParams", currentDate)
+            bundle.putParcelable("dateParams", calendarViewModel.selectedDate.value)
             binding.goIntoDate.findNavController().navigate(
                 R.id.action_nav_calendar_to_dateFragment,
                 bundle
@@ -98,28 +95,29 @@ class CalendarFragment : Fragment(),
     private fun initObservers() {
         // set observer for DateParams
         calendarViewModel.selectedDate.observe(viewLifecycleOwner) {
+            val previousDate = calendarViewModel.previousDate.value
+
             // if year was changed
-            if (it.date!!.year != currentDate?.date?.year) {
+            if (it.date!!.year != previousDate!!.date?.year) {
                 // update yearTextView
-                setYearTextView(it!!.date!!.year)
+                setYearTextView(it)
             }
 
             // if month was changed
-            if (it.date!!.monthValue != currentDate?.date?.monthValue) {
+            if (it.date!!.monthValue != previousDate.date?.monthValue) {
                 // update monthTextView
                 setMonthTextView(it)
-                inflateCalendarRecyclerView(it.date!!)
+                // update rv
+                inflateCalendarRecyclerView(it)
             }
 
             // if day was changed and has appointments
-            if (it.appointmentsArray != null
-            ) {
+            if (it.appointmentsArray != null) {
                 inflateShortDateRecyclerView(it)
             }
 
-            // update local DateParams
-            currentDate = DateParams(
-                _id = null,
+            // set previousDate
+            calendarViewModel.previousDate.value = DateParams(
                 date = it.date,
                 appointmentsArray = it.appointmentsArray
             )
@@ -159,17 +157,18 @@ class CalendarFragment : Fragment(),
         }
         val formattedMonth = getString(monthResource)
 
-        monthTextView?.text = formattedMonth
+        binding.monthTextView.text = formattedMonth
     }
 
-    private fun setYearTextView(yearValue: Int) {
+    private fun setYearTextView(selectedDateParams: DateParams) {
         // update yearTextView
-        yearTextView?.text = yearValue.toString()
+        val year = selectedDateParams.date?.year
+        yearTextView?.text = year.toString()
     }
 
-    private fun inflateCalendarRecyclerView(selectedDate: LocalDate) {
+    private fun inflateCalendarRecyclerView(selectedDateParams: DateParams) {
         // get array of days from selected month
-        val daysInMonth: ArrayList<String> = Util().getArrayFromMonth(selectedDate)
+        val daysInMonth: ArrayList<String> = Util().getArrayFromMonth(selectedDateParams.date!!)
         // create adapter
         val calendarRvAdapter = CalendarRvAdapter(
             daysInMonth = daysInMonth,
@@ -186,8 +185,13 @@ class CalendarFragment : Fragment(),
     }
 
     private fun inflateShortDateRecyclerView(selectedDateParams: DateParams) {
-        // Make View visible
-        if (shortDataRecyclerView!!.visibility == View.INVISIBLE) {
+        // Check if selectedDate has appointments
+        if (selectedDateParams.appointmentsArray == null ||
+            selectedDateParams.appointmentsArray!!.isEmpty()
+        ) {
+            shortDataRecyclerView!!.visibility = View.INVISIBLE
+            return
+        } else {
             shortDataRecyclerView!!.visibility = View.VISIBLE
         }
 
@@ -225,9 +229,6 @@ class CalendarFragment : Fragment(),
 
         // hide keyboard
         Util().hideKeyboard(requireActivity())
-
-        addButton?.visibility = View.INVISIBLE
-        shortDataRecyclerView!!.visibility = View.INVISIBLE
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
@@ -238,12 +239,6 @@ class CalendarFragment : Fragment(),
     }
 
     override fun onDestroyView() {
-        // reset local DateParams
-        currentDate = DateParams(
-            _id = null,
-            date = null,
-            appointments = null
-        )
         _binding = null
         super.onDestroyView()
     }
@@ -251,10 +246,17 @@ class CalendarFragment : Fragment(),
     override fun onItemClickShortDate() {
         // start fragment with chosen date
         val bundle = Bundle()
-        bundle.putParcelable("dateParams", currentDate)
+        bundle.putParcelable("dateParams", calendarViewModel.selectedDate.value)
         binding.goIntoDate.findNavController().navigate(
             R.id.action_nav_calendar_to_dateFragment,
             bundle
         )
+    }
+
+    private fun recoverPrevViewState() {
+        calendarViewModel.selectedDate.value?.let { inflateCalendarRecyclerView(it) }
+        calendarViewModel.selectedDate.value?.let { inflateShortDateRecyclerView(it) }
+        calendarViewModel.selectedDate.value?.let { setMonthTextView(it) }
+        calendarViewModel.selectedDate.value?.let { setYearTextView(it) }
     }
 }
