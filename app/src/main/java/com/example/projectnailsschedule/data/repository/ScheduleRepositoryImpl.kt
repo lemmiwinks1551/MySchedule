@@ -27,7 +27,7 @@ class ScheduleRepositoryImpl(context: Context) : ScheduleRepository {
         return true
     }
 
-    override suspend fun getDateAppointments(date: LocalDate): Array<AppointmentModelDb> {
+    override suspend fun getDateAppointments(date: LocalDate): MutableList<AppointmentModelDb> {
         return dao.getDateAppointments(Util().dateConverterNew(date.toString()))
     }
 

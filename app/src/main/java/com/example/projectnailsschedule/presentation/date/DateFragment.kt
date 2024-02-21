@@ -25,7 +25,10 @@ import com.example.projectnailsschedule.util.Util
 import com.example.projectnailsschedule.util.rustore.RuStoreAd
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class DateFragment : Fragment() {
@@ -41,7 +44,7 @@ class DateFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // get dateParams from Bundle
+        // set dateParams from Bundle to view model
         dateViewModel.selectedDate.value = arguments?.getParcelable(bindingKey)
     }
 
@@ -68,6 +71,19 @@ class DateFragment : Fragment() {
         appointmentsRv = binding.scheduleRecyclerView
     }
 
+    private fun inflateViews() {
+        if (dateViewModel.selectedDate.value?.appointmentsList?.size == null) {
+            binding.fragmentDateTitle.text = requireContext().getString(R.string.no_data_title)
+        } else {
+            binding.fragmentDateTitle.text =
+                requireContext().getString(R.string.fragment_date_title)
+            inflateAppointmentsRV()
+        }
+
+        binding.fragmentDateDate.text =
+            Util().formatDateToRus(dateViewModel.selectedDate.value?.date!!)
+    }
+
     private fun initClickListeners() {
         // add new appointment
         binding.fragmentDateAddButton.setOnClickListener {
@@ -83,9 +99,9 @@ class DateFragment : Fragment() {
 
     private fun inflateAppointmentsRV() {
         // create adapter
-        val appointmentList = dateViewModel.selectedDate.value?.appointmentsArray?.toList()!!
+        val appointmentList = dateViewModel.selectedDate.value?.appointmentsList
         appointmentsRvAdapter = DateAdapter(
-            appointmentsList = appointmentList,
+            appointmentsList = appointmentList!!,
             dateViewModel = dateViewModel
         )
 
@@ -144,17 +160,18 @@ class DateFragment : Fragment() {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 // this method is called when we swipe our item to left direction.
                 // on below line we are getting the item at a particular position.
-                val appointmentList = dateViewModel.selectedDate.value?.appointmentsArray?.toList()!!
-                val deleteAppointmentModelDb: AppointmentModelDb =
-                    appointmentList[viewHolder.adapterPosition]
+                val appointmentList = dateViewModel.selectedDate.value?.appointmentsList!!
+                val deleteAppointmentModelDb: AppointmentModelDb = appointmentList[viewHolder.adapterPosition]
                 val position = viewHolder.adapterPosition
 
                 // delete client from Db
-                lifecycleScope.launch {
+                CoroutineScope(Dispatchers.IO).launch {
                     dateViewModel.deleteAppointment(deleteAppointmentModelDb)
+                    dateViewModel.selectedDate.value!!.appointmentsList?.removeAt(position)
+                    withContext(Dispatchers.Main) {
+                        appointmentsRvAdapter?.notifyItemRemoved(position)
+                    }
                 }
-
-                appointmentsRvAdapter?.notifyItemRemoved(position)
 
                 // show Snackbar
                 Snackbar.make(
@@ -169,13 +186,17 @@ class DateFragment : Fragment() {
                     ) {
                         // adding on click listener to our action of snack bar.
                         // below line is to add our item to array list with a position.
-                        lifecycleScope.launch {
+
+                        CoroutineScope(Dispatchers.IO).launch {
                             dateViewModel.saveAppointment(deleteAppointmentModelDb)
+                            dateViewModel.selectedDate.value!!.appointmentsList?.add(position, deleteAppointmentModelDb)
+                            withContext(Dispatchers.Main) {
+                                appointmentsRvAdapter?.notifyDataSetChanged()
+                            }
                         }
 
                         // below line is to notify item is
                         // added to our adapter class.
-                        appointmentsRvAdapter?.notifyDataSetChanged()
                     }.show()
             }
 
@@ -249,18 +270,6 @@ class DateFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    private fun inflateViews() {
-        if (dateViewModel.selectedDate.value?.appointmentsArray?.size == null) {
-            binding.fragmentDateTitle.text = requireContext().getString(R.string.no_data_title)
-        } else {
-            binding.fragmentDateTitle.text =
-                requireContext().getString(R.string.fragment_date_title)
-            inflateAppointmentsRV()
-        }
-
-        binding.fragmentDateDate.text = Util().formatDateToRus(dateViewModel.selectedDate.value?.date!!)
     }
 }
 

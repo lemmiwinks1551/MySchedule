@@ -1,6 +1,5 @@
 package com.example.projectnailsschedule.presentation.calendar
 
-import android.graphics.Typeface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -113,14 +112,14 @@ class CalendarFragment : Fragment(),
             }
 
             // if day was changed and has appointments
-            if (it.appointmentsArray != null) {
+            if (it.appointmentsList != null) {
                 inflateShortDateRecyclerView(it)
             }
 
             // set previousDate
             calendarViewModel.previousDate.value = DateParams(
                 date = it.date,
-                appointmentsArray = it.appointmentsArray
+                appointmentsList = it.appointmentsList
             )
         }
 
@@ -189,8 +188,8 @@ class CalendarFragment : Fragment(),
 
     private fun inflateShortDateRecyclerView(selectedDateParams: DateParams) {
         // Check if selectedDate has appointments
-        if (selectedDateParams.appointmentsArray == null ||
-            selectedDateParams.appointmentsArray!!.isEmpty()
+        if (selectedDateParams.appointmentsList == null ||
+            selectedDateParams.appointmentsList!!.isEmpty()
         ) {
             shortDataRecyclerView!!.visibility = View.INVISIBLE
             return

@@ -16,7 +16,7 @@ interface ScheduleDao {
     suspend fun delete(appointmentModelDb: AppointmentModelDb)
 
     @Query("SELECT * FROM schedule WHERE date = :date ORDER BY time")
-    suspend fun getDateAppointments(date: String): Array<AppointmentModelDb>
+    suspend fun getDateAppointments(date: String): MutableList<AppointmentModelDb>
 
     @Query("SELECT * FROM schedule")
     suspend fun selectAllAppointmentsList(): List<AppointmentModelDb>

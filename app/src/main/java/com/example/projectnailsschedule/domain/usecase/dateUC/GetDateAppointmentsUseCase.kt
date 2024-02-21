@@ -6,7 +6,7 @@ import java.time.LocalDate
 
 class GetDateAppointmentsUseCase(private val scheduleRepository: ScheduleRepository) {
 
-    suspend fun execute(date: LocalDate): Array<AppointmentModelDb> {
+    suspend fun execute(date: LocalDate): List<AppointmentModelDb> {
         return scheduleRepository.getDateAppointments(date)
     }
 }

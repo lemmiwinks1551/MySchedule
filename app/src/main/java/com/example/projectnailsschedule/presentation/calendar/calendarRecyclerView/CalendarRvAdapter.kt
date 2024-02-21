@@ -82,13 +82,13 @@ class CalendarRvAdapter(
 
             // get date appointments
             CoroutineScope(Dispatchers.IO).launch {
-                selectedDate.appointmentsArray =
+                selectedDate.appointmentsList =
                     calendarViewModel.getArrayAppointments(date = selectedDate.date!!)
                 withContext(Dispatchers.Main) {
                     // set appointments size into holder
-                    if (selectedDate.appointmentsArray!!.isNotEmpty()) {
+                    if (selectedDate.appointmentsList!!.isNotEmpty()) {
                         holder.dateAppointmentsCount.text =
-                            selectedDate.appointmentsArray!!.size.toString()
+                            selectedDate.appointmentsList!!.size.toString()
                     }
                 }
             }

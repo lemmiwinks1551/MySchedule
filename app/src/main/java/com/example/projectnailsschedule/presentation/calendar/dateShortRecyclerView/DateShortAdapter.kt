@@ -21,7 +21,7 @@ internal class DateShortAdapter(
     }
 
     override fun onBindViewHolder(holder: DateShortViewHolder, position: Int) {
-        with(selectedDayParams.appointmentsArray?.get(position)!!) {
+        with(selectedDayParams.appointmentsList?.get(position)!!) {
             holder.number.text = String.format("${position + 1}.")
             holder.clientName.text = name
             holder.time.text = time
@@ -31,7 +31,7 @@ internal class DateShortAdapter(
     }
 
     override fun getItemCount(): Int {
-        return selectedDayParams.appointmentsArray?.size!!
+        return selectedDayParams.appointmentsList?.size!!
     }
 
     interface OnItemListener {

@@ -9,7 +9,7 @@ data class DateParams(
     val _id: Int? = null,
     var date: LocalDate? = null,
     var appointments: Int? = null,
-    var appointmentsArray: Array<AppointmentModelDb>? = null
+    var appointmentsList: MutableList<AppointmentModelDb>? = null
 ) : Parcelable {
 
     override fun toString(): String {
@@ -17,7 +17,7 @@ data class DateParams(
             "id = $_id " +
                     "date = $date " +
                     "appointmentCount = $appointments, " +
-                    "appointmentsArray = ${appointmentsArray?.size}"
+                    "appointmentsArray = ${appointmentsList?.size}"
         )
     }
 }

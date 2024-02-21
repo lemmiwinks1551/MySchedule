@@ -41,7 +41,7 @@ class CalendarViewModel @Inject constructor(
 
     var prevHolder: CalendarRvAdapter.ViewHolder? = null
 
-    suspend fun getArrayAppointments(date: LocalDate): Array<AppointmentModelDb> {
+    suspend fun getArrayAppointments(date: LocalDate): MutableList<AppointmentModelDb> {
         return loadShortDateUseCase.execute(date)
     }
 
@@ -49,7 +49,7 @@ class CalendarViewModel @Inject constructor(
         val updatedDateParams =
             selectedDate.value?.copy(
                 date = dateParams.date,
-                appointmentsArray = dateParams.appointmentsArray
+                appointmentsList = dateParams.appointmentsList
             )
         selectedDate.postValue(updatedDateParams)
     }

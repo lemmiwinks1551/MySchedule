@@ -6,7 +6,7 @@ import java.time.LocalDate
 
 class LoadShortDateUseCase(private val scheduleRepository: ScheduleRepository) {
 
-    suspend fun execute(date: LocalDate): Array<AppointmentModelDb> {
+    suspend fun execute(date: LocalDate): MutableList<AppointmentModelDb> {
         return scheduleRepository.getDateAppointments(date = date)
     }
 }

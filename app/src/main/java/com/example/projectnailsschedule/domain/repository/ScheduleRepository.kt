@@ -13,7 +13,7 @@ interface ScheduleRepository {
 
     suspend fun deleteAppointment(appointmentModelDb: AppointmentModelDb): Boolean
 
-    suspend fun getDateAppointments(date: LocalDate): Array<AppointmentModelDb>
+    suspend fun getDateAppointments(date: LocalDate): MutableList<AppointmentModelDb>
 
     suspend fun selectAllAppointmentsList(): List<AppointmentModelDb>
 
