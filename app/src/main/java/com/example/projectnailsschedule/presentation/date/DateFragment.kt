@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -19,7 +18,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentDateBinding
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
-import com.example.projectnailsschedule.domain.models.DateParams
 import com.example.projectnailsschedule.presentation.date.dateRecyclerView.DateAdapter
 import com.example.projectnailsschedule.util.Util
 import com.example.projectnailsschedule.util.rustore.RuStoreAd
@@ -39,11 +37,11 @@ class DateFragment : Fragment() {
     private val bindingKeyAppointment = "appointmentParams"
 
     private var appointmentsRvAdapter: DateAdapter? = null
-    private var dateParams: DateParams? = null
     private var appointmentsRv: RecyclerView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         // set dateParams from Bundle to view model
         dateViewModel.selectedDate.value = arguments?.getParcelable(bindingKey)
     }
@@ -88,7 +86,7 @@ class DateFragment : Fragment() {
         // add new appointment
         binding.fragmentDateAddButton.setOnClickListener {
             val appointmentParams = AppointmentModelDb(
-                date = Util().dateConverterNew(dateParams?.date.toString()),
+                date = Util().dateConverterNew(dateViewModel.selectedDate.value?.date.toString()),
                 deleted = false
             )
             val bundle = Bundle()
@@ -161,7 +159,8 @@ class DateFragment : Fragment() {
                 // this method is called when we swipe our item to left direction.
                 // on below line we are getting the item at a particular position.
                 val appointmentList = dateViewModel.selectedDate.value?.appointmentsList!!
-                val deleteAppointmentModelDb: AppointmentModelDb = appointmentList[viewHolder.adapterPosition]
+                val deleteAppointmentModelDb: AppointmentModelDb =
+                    appointmentList[viewHolder.adapterPosition]
                 val position = viewHolder.adapterPosition
 
                 // delete client from Db
@@ -189,14 +188,14 @@ class DateFragment : Fragment() {
 
                         CoroutineScope(Dispatchers.IO).launch {
                             dateViewModel.saveAppointment(deleteAppointmentModelDb)
-                            dateViewModel.selectedDate.value!!.appointmentsList?.add(position, deleteAppointmentModelDb)
+                            dateViewModel.selectedDate.value!!.appointmentsList?.add(
+                                position,
+                                deleteAppointmentModelDb
+                            )
                             withContext(Dispatchers.Main) {
-                                appointmentsRvAdapter?.notifyDataSetChanged()
+                                appointmentsRvAdapter?.notifyItemInserted(position)
                             }
                         }
-
-                        // below line is to notify item is
-                        // added to our adapter class.
                     }.show()
             }
 

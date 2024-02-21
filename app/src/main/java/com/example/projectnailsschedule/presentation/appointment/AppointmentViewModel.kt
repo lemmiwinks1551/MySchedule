@@ -1,5 +1,6 @@
 package com.example.projectnailsschedule.presentation.appointment
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.InsertAppointmentUseCase
@@ -20,6 +21,8 @@ class AppointmentViewModel @Inject constructor(
 ) : ViewModel() {
 
     val log = this::class.simpleName
+
+    var selectedAppointment = MutableLiveData(AppointmentModelDb(deleted = false))
 
     suspend fun insertAppointment(appointmentModelDb: AppointmentModelDb) : Boolean {
         return insertAppointmentUseCase.execute(appointmentModelDb)

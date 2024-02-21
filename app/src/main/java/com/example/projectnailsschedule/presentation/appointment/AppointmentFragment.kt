@@ -1,16 +1,9 @@
 package com.example.projectnailsschedule.presentation.appointment
 
-import android.Manifest
 import android.app.DatePickerDialog
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.app.TimePickerDialog
 import android.app.TimePickerDialog.OnTimeSetListener
-import android.content.Context
-import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
@@ -18,8 +11,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.app.ActivityCompat
-import androidx.core.app.NotificationCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -39,7 +30,7 @@ import java.util.Calendar
 @AndroidEntryPoint
 class AppointmentFragment : Fragment() {
     val log = this::class.simpleName
-    private val bindingKey = "appointmentParams"
+    private val bindingKeyAppointment = "appointmentParams"
 
     private val appointmentViewModel: AppointmentViewModel by viewModels()
     private var _binding: FragmentAppointmentBinding? = null
@@ -47,24 +38,20 @@ class AppointmentFragment : Fragment() {
 
     private lateinit var saveToolbarButton: MenuItem
 
-    private var appointmentParams: AppointmentModelDb? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // get appointmentParams from arguments
-        appointmentParams = arguments?.getParcelable(bindingKey)
+        // set dateParams from Bundle to view model
+        appointmentViewModel.selectedAppointment.value = arguments?.getParcelable(bindingKeyAppointment)
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-
-        // set binding
         _binding = FragmentAppointmentBinding.inflate(inflater, container, false)
 
         // set current appointmentParams form DateFragment binding object
-        setAppointmentCurrentParams()
+        inflateViews()
 
         // set title text
         setTitle()
@@ -115,7 +102,7 @@ class AppointmentFragment : Fragment() {
 
     private fun setClickListeners() {
         saveToolbarButton.setOnMenuItemClickListener {
-            if (appointmentParams?._id == null) {
+            if (appointmentViewModel.selectedAppointment.value?._id == null) {
                 // no _id - add new Appointment
                 createAppointment()
                 // createNotification()
@@ -152,14 +139,14 @@ class AppointmentFragment : Fragment() {
         val title: TextView = binding.fragmentAppointmentTitle
         val titleDate: TextView = binding.fragmentAppointmentDate
 
-        if (appointmentParams?._id == null) {
+        if (appointmentViewModel.selectedAppointment.value?._id == null) {
             // no _id - add new Appointment
             title.text = getString(R.string.new_appointment_text)
         } else {
             // _id - edit Appointment
             title.text = getString(R.string.change_appointment_text)
         }
-        titleDate.text = appointmentParams?.date
+        titleDate.text = appointmentViewModel.selectedAppointment.value?.date
     }
 
     private fun createAppointment() {
@@ -181,6 +168,7 @@ class AppointmentFragment : Fragment() {
                 notes = notesEt.text.toString(),
                 deleted = false
             )
+
             lifecycleScope.launch {
                 appointmentViewModel.insertAppointment(appointmentModelDb)
             }
@@ -203,7 +191,7 @@ class AppointmentFragment : Fragment() {
         // create appointmentParams object
         with(binding) {
             val appointmentModelDb = AppointmentModelDb(
-                _id = appointmentParams?._id,
+                _id = appointmentViewModel.selectedAppointment.value?._id,
                 date = dayEditText.text.toString(),
                 name = nameEt.text.toString(),
                 time = timeEditText.text.toString(),
@@ -229,20 +217,19 @@ class AppointmentFragment : Fragment() {
         }
     }
 
-    private fun setAppointmentCurrentParams() {
+    private fun inflateViews() {
         // set current appointmentParams from DateFragment binding object
-
-        with(binding) {
-            dayEditText.text = appointmentParams?.date
-            timeEditText.text = appointmentParams?.time
-            procedureEt.setText(appointmentParams?.procedure)
-            nameEt.setText(appointmentParams?.name)
-            phoneEt.setText(appointmentParams?.phone)
-            clientVkLinkEt.setText(appointmentParams?.vk)
-            clientTelegramLinkEt.setText(appointmentParams?.telegram)
-            clientInstagramLinkEt.setText(appointmentParams?.instagram)
-            clientWhatsappLinkEt.setText(appointmentParams?.whatsapp)
-            notesEt.setText(appointmentParams?.notes)
+        with(appointmentViewModel.selectedAppointment.value) {
+            binding.dayEditText.text = this?.date
+            binding.timeEditText.text = this?.time
+            binding.procedureEt.setText(this?.procedure)
+            binding.nameEt.setText(this?.name)
+            binding.phoneEt.setText(this?.phone)
+            binding.clientVkLinkEt.setText(this?.vk)
+            binding.clientTelegramLinkEt.setText(this?.telegram)
+            binding.clientInstagramLinkEt.setText(this?.instagram)
+            binding.clientWhatsappLinkEt.setText(this?.whatsapp)
+            binding.notesEt.setText(this?.notes)
         }
     }
 
@@ -306,54 +293,5 @@ class AppointmentFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    private fun createNotification() {
-        try {
-            // Create the NotificationChannel, but only on API 26+ because
-            // the NotificationChannel class is not in the Support Library.
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                val channelId = "1"
-                val notificationId = 1
-
-                val builder = NotificationCompat.Builder(requireContext(), channelId)
-                    .setSmallIcon(R.mipmap.ic_launcher)
-                    .setContentTitle("Title")
-                    .setContentText("Text")
-                    .setAutoCancel(true)
-                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-
-                val name = "chanel"
-                val descriptionText = "description"
-                val importance = NotificationManager.IMPORTANCE_DEFAULT
-                val channel = NotificationChannel(channelId, name, importance).apply {
-                    description = descriptionText
-                }
-
-                // Register the channel with the system.
-                val notificationManager: NotificationManager =
-                    requireContext().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-                notificationManager.createNotificationChannel(channel)
-
-                if (ActivityCompat.checkSelfPermission(
-                        requireContext(),
-                        Manifest.permission.POST_NOTIFICATIONS
-                    ) != PackageManager.PERMISSION_GRANTED
-                ) {
-                    Log.e(log, "Notification permission missed")
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
-                    return
-                }
-                notificationManager.notify(notificationId, builder.build())
-            }
-        } catch (e: Exception) {
-            Log.e(log, "Notifications error $e")
-        }
     }
 }

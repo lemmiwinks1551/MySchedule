@@ -26,11 +26,7 @@ class DateViewModel @Inject constructor(
     private val startPhoneUc: StartPhoneUc
 ) : ViewModel() {
 
-    var selectedDate = MutableLiveData(
-        DateParams(
-            date = LocalDate.now()
-        )
-    )
+    var selectedDate = MutableLiveData(DateParams())
 
     suspend fun saveAppointment(appointmentModelDb: AppointmentModelDb) {
         insertAppointmentUseCase.execute(appointmentModelDb)
