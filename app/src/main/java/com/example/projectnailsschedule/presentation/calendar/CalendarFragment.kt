@@ -1,5 +1,6 @@
 package com.example.projectnailsschedule.presentation.calendar
 
+import android.graphics.Typeface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -123,11 +124,13 @@ class CalendarFragment : Fragment(),
             )
         }
 
-        // set visibility on fab if click was performed
-        calendarViewModel.visibility.observe(viewLifecycleOwner) {
+        // set date details (fab and shortDateRv) visibility if click was performed
+        calendarViewModel.dateDetailsVisibility.observe(viewLifecycleOwner) {
             if (it) {
+                shortDataRecyclerView?.visibility = View.VISIBLE
                 addButton?.visibility = View.VISIBLE
             } else {
+                shortDataRecyclerView?.visibility = View.INVISIBLE
                 addButton?.visibility = View.INVISIBLE
             }
         }
@@ -212,14 +215,7 @@ class CalendarFragment : Fragment(),
     }
 
     private fun changeMonth(operator: Boolean) {
-        // hide go_into_date button
-        addButton?.visibility = View.INVISIBLE
-
-        // make calculations in ViewModel
         calendarViewModel.changeMonth(operator = operator)
-
-        // clear DateShort RecyclerView
-        shortDataRecyclerView?.adapter = null
     }
 
     override fun onResume() {

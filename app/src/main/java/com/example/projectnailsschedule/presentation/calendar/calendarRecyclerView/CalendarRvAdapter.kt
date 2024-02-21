@@ -104,36 +104,14 @@ class CalendarRvAdapter(
                 }
             }
 
-            // Set the click listener to handle cell selection
-            holder.cellLayout.setOnClickListener {
-                if (holder != calendarViewModel.prevHolder) {
-                    // Unselect the previously selected cell
-                    calendarViewModel.prevHolder?.date?.setTypeface(null, Typeface.NORMAL)
+            setOnCalendarClickListener(holder, selectedDate)
 
-                    // Select the clicked cell
-                    holder.date.setTypeface(null, Typeface.BOLD)
-
-                    // Update the previous holder
-                    calendarViewModel.prevHolder = holder
-                }
-
-                calendarViewModel.updateSelectedDate(
-                    dateParams = selectedDate
-                )
-                calendarViewModel.visibility.value = true
-            }
-
-            holder.cellLayout.setOnLongClickListener {
-                setDateColorDialog(holder, ruFormatDate)
-                true
-            }
+            setOnCalendarLongClickListener(holder, ruFormatDate)
 
             // If the day corresponds to today's date, set the text color to red
-            if (selectedDate.date!! == LocalDate.now()) {
-                holder.date.setTextColor(Color.RED)
-            }
+            setCurrentDateRedColor(holder, selectedDate)
 
-            // restoreSelection(holder)
+            restoreSelection(holder)
         }
     }
 
@@ -300,8 +278,49 @@ class CalendarRvAdapter(
     }
 
     private fun restoreSelection(holder: ViewHolder) {
-        if (calendarViewModel.visibility.value!!) {
-            holder.date.setTypeface(null, Typeface.BOLD)
+        if (calendarViewModel.dateDetailsVisibility.value!!) {
+            val holderDate = holder.date.text
+            val prevHolderDate = calendarViewModel.prevHolder?.date?.text
+
+            if (holderDate == prevHolderDate) {
+                holder.date.setTypeface(null, Typeface.BOLD)
+
+                calendarViewModel.prevHolder = holder
+            }
+        }
+    }
+
+    private fun setOnCalendarClickListener(holder: ViewHolder, selectedDate: DateParams) {
+        // Set the click listener to handle cell selection
+        holder.cellLayout.setOnClickListener {
+            if (holder != calendarViewModel.prevHolder) {
+                // Unselect the previously selected cell
+                calendarViewModel.prevHolder?.date?.setTypeface(null, Typeface.NORMAL)
+
+                // Select the clicked cell
+                holder.date.setTypeface(null, Typeface.BOLD)
+
+                // Update the previous holder
+                calendarViewModel.prevHolder = holder
+
+                calendarViewModel.updateSelectedDate(
+                    dateParams = selectedDate
+                )
+                calendarViewModel.dateDetailsVisibility.value = true
+            }
+        }
+    }
+
+    private fun setOnCalendarLongClickListener(holder: ViewHolder, ruFormatDate: String) {
+        holder.cellLayout.setOnLongClickListener {
+            setDateColorDialog(holder, ruFormatDate)
+            true
+        }
+    }
+
+    private fun setCurrentDateRedColor(holder: ViewHolder, selectedDate: DateParams) {
+        if (selectedDate.date!! == LocalDate.now()) {
+            holder.date.setTextColor(Color.RED)
         }
     }
 }

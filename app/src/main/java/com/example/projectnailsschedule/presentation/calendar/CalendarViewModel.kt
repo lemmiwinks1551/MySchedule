@@ -10,9 +10,6 @@ import com.example.projectnailsschedule.domain.usecase.calendarUC.CalendarDbDele
 import com.example.projectnailsschedule.domain.usecase.calendarUC.InsertCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.LoadShortDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.SelectCalendarDateByDateUseCase
-import com.example.projectnailsschedule.domain.usecase.calendarUC.SetSelectedMonthUc
-import com.example.projectnailsschedule.domain.usecase.dateUC.GetDateAppointmentsUseCase
-import com.example.projectnailsschedule.domain.usecase.settingsUC.GetUserThemeUseCase
 import com.example.projectnailsschedule.presentation.calendar.calendarRecyclerView.CalendarRvAdapter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -24,14 +21,10 @@ import javax.inject.Inject
 @HiltViewModel
 class CalendarViewModel @Inject constructor(
     private val loadShortDateUseCase: LoadShortDateUseCase,
-    private var getDateAppointmentsUseCase: GetDateAppointmentsUseCase,
-    private var setSelectedMonthUc: SetSelectedMonthUc,
-    private val getUserThemeUseCase: GetUserThemeUseCase,
     private val selectCalendarDateByDateUseCase: SelectCalendarDateByDateUseCase,
     private val insertCalendarDateUseCase: InsertCalendarDateUseCase,
     private val calendarDbDeleteObj: CalendarDbDeleteObj
 ) : ViewModel() {
-    private val log = this::class.simpleName
 
     private val tagDateColor = "DateColor"
 
@@ -44,7 +37,7 @@ class CalendarViewModel @Inject constructor(
 
     var previousDate = MutableLiveData(DateParams())
 
-    var visibility = MutableLiveData(false)
+    var dateDetailsVisibility = MutableLiveData(false)
 
     var prevHolder: CalendarRvAdapter.ViewHolder? = null
 
@@ -62,23 +55,18 @@ class CalendarViewModel @Inject constructor(
     }
 
     fun changeMonth(operator: Boolean) {
-        // change current month
-        when (operator) {
-            true -> selectedDate.value?.date = selectedDate.value?.date?.plusMonths(1)
-            false -> selectedDate.value?.date = selectedDate.value?.date?.minusMonths(1)
+        val updatedDateParams: DateParams = when (operator) {
+            true -> selectedDate.value?.copy(
+                date = selectedDate.value?.date?.plusMonths(1)
+            )!!
+
+            false -> selectedDate.value?.copy(
+                date = selectedDate.value?.date?.minusMonths(1)
+            )!!
         }
-        selectedDate.value = selectedDate.value
 
-        // set date in shared prefs
-        setSelectedMonth(selectedDate.value?.date!!)
-    }
-
-    private fun setSelectedMonth(date: LocalDate) {
-        setSelectedMonthUc.execute(date)
-    }
-
-    fun getUserTheme(): String {
-        return getUserThemeUseCase.execute()
+        selectedDate.postValue(updatedDateParams)
+        dateDetailsVisibility.postValue(false)
     }
 
     private suspend fun selectCalendarDateByDate(date: String): CalendarDateModelDb {
