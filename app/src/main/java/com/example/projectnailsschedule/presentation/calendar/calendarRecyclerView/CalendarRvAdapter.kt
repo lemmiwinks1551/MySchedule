@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.domain.models.CalendarDateModelDb
 import com.example.projectnailsschedule.domain.models.DateParams
-import com.example.projectnailsschedule.presentation.calendar.CalendarViewModel
+import com.example.projectnailsschedule.presentation.calendar.DateParamsViewModel
 import com.example.projectnailsschedule.util.Util
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -29,7 +29,7 @@ import java.time.LocalDate
 
 class CalendarRvAdapter(
     private val daysInMonth: ArrayList<String>,
-    private val calendarViewModel: CalendarViewModel,
+    private val calendarViewModel: DateParamsViewModel,
     private val context: Context
 ) : RecyclerView.Adapter<CalendarRvAdapter.ViewHolder>() {
     inner class ViewHolder(itemView: View) :

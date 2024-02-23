@@ -9,7 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentDateBinding
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
+import com.example.projectnailsschedule.presentation.calendar.DateParamsViewModel
 import com.example.projectnailsschedule.presentation.date.dateRecyclerView.DateAdapter
 import com.example.projectnailsschedule.util.Util
 import com.example.projectnailsschedule.util.rustore.RuStoreAd
@@ -30,36 +31,25 @@ import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class DateFragment : Fragment() {
-    private val dateViewModel: DateViewModel by viewModels()
+    private val dateParamsViewModel: DateParamsViewModel by activityViewModels()
+
     private var _binding: FragmentDateBinding? = null
     private val binding get() = _binding!!
-    private val bindingKey = "dateParams"
-    private val bindingKeyAppointment = "appointmentParams"
 
     private var appointmentsRvAdapter: DateAdapter? = null
     private var appointmentsRv: RecyclerView? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        // set dateParams from Bundle to view model
-        dateViewModel.selectedDate.value = arguments?.getParcelable(bindingKey)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentDateBinding.inflate(inflater, container, false)
 
-        // init widgets
         initViews()
-
-        // init clickListeners
-        initClickListeners()
 
         inflateViews()
 
-        // swipe to delete
+        initClickListeners()
+
         swipeToDelete()
 
         return binding.root
@@ -70,7 +60,7 @@ class DateFragment : Fragment() {
     }
 
     private fun inflateViews() {
-        if (dateViewModel.selectedDate.value?.appointmentsList?.size == null) {
+        if (dateParamsViewModel.selectedDate.value?.appointmentsList?.size == null) {
             binding.fragmentDateTitle.text = requireContext().getString(R.string.no_data_title)
         } else {
             binding.fragmentDateTitle.text =
@@ -79,28 +69,23 @@ class DateFragment : Fragment() {
         }
 
         binding.fragmentDateDate.text =
-            Util().formatDateToRus(dateViewModel.selectedDate.value?.date!!)
+            Util().formatDateToRus(dateParamsViewModel.selectedDate.value?.date!!)
     }
 
     private fun initClickListeners() {
         // add new appointment
         binding.fragmentDateAddButton.setOnClickListener {
-            val appointmentParams = AppointmentModelDb(
-                date = Util().dateConverterNew(dateViewModel.selectedDate.value?.date.toString()),
-                deleted = false
-            )
-            val bundle = Bundle()
-            bundle.putParcelable(bindingKeyAppointment, appointmentParams)
-            it.findNavController().navigate(R.id.action_dateFragment_to_appointmentFragment, bundle)
+            dateParamsViewModel.appointmentPosition = null
+            it.findNavController().navigate(R.id.action_dateFragment_to_appointmentFragment)
         }
     }
 
     private fun inflateAppointmentsRV() {
         // create adapter
-        val appointmentList = dateViewModel.selectedDate.value?.appointmentsList
+        val appointmentList = dateParamsViewModel.selectedDate.value?.appointmentsList
         appointmentsRvAdapter = DateAdapter(
             appointmentsList = appointmentList!!,
-            dateViewModel = dateViewModel
+            dateParamsViewModel = dateParamsViewModel
         )
 
         val layoutManager: RecyclerView.LayoutManager =
@@ -114,24 +99,8 @@ class DateFragment : Fragment() {
         appointmentsRvAdapter!!.setOnItemClickListener(object : DateAdapter.OnItemClickListener {
             override fun onItemClick(position: Int) {
                 // edit selected appointment
-                val bundle = Bundle()
-                val appointmentModelDb = AppointmentModelDb(
-                    _id = appointmentList[position]._id,
-                    date = appointmentList[position].date,
-                    name = appointmentList[position].name,
-                    time = appointmentList[position].time,
-                    procedure = appointmentList[position].procedure,
-                    vk = appointmentList[position].vk,
-                    telegram = appointmentList[position].telegram,
-                    instagram = appointmentList[position].instagram,
-                    whatsapp = appointmentList[position].whatsapp,
-                    phone = appointmentList[position].phone,
-                    notes = appointmentList[position].notes,
-                    deleted = appointmentList[position].deleted
-                )
-                val navController = findNavController()
-                bundle.putParcelable(bindingKeyAppointment, appointmentModelDb)
-                navController.navigate(R.id.action_dateFragment_to_appointmentFragment, bundle)
+                dateParamsViewModel.appointmentPosition = position
+                findNavController().navigate(R.id.action_dateFragment_to_appointmentFragment)
             }
         })
     }
@@ -158,15 +127,15 @@ class DateFragment : Fragment() {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 // this method is called when we swipe our item to left direction.
                 // on below line we are getting the item at a particular position.
-                val appointmentList = dateViewModel.selectedDate.value?.appointmentsList!!
+                val appointmentList = dateParamsViewModel.selectedDate.value?.appointmentsList!!
                 val deleteAppointmentModelDb: AppointmentModelDb =
                     appointmentList[viewHolder.adapterPosition]
                 val position = viewHolder.adapterPosition
 
                 // delete client from Db
                 CoroutineScope(Dispatchers.IO).launch {
-                    dateViewModel.deleteAppointment(deleteAppointmentModelDb)
-                    dateViewModel.selectedDate.value!!.appointmentsList?.removeAt(position)
+                    dateParamsViewModel.deleteAppointment(deleteAppointmentModelDb)
+                    dateParamsViewModel.selectedDate.value!!.appointmentsList?.removeAt(position)
                     withContext(Dispatchers.Main) {
                         appointmentsRvAdapter?.notifyItemRemoved(position)
                     }
@@ -187,8 +156,8 @@ class DateFragment : Fragment() {
                         // below line is to add our item to array list with a position.
 
                         CoroutineScope(Dispatchers.IO).launch {
-                            dateViewModel.saveAppointment(deleteAppointmentModelDb)
-                            dateViewModel.selectedDate.value!!.appointmentsList?.add(
+                            dateParamsViewModel.insertAppointment(deleteAppointmentModelDb)
+                            dateParamsViewModel.selectedDate.value!!.appointmentsList?.add(
                                 position,
                                 deleteAppointmentModelDb
                             )

@@ -14,7 +14,7 @@ class SearchViewHolder internal constructor(
 ) :
     RecyclerView.ViewHolder(itemView) {
 
-    var appointmentId: Int? = null
+    var appointmentId: Long? = null
     var appointmentDate: String? = null
     var appointmentModelDb: AppointmentModelDb? = null
     var position: Int? = null

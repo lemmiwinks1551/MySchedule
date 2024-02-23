@@ -46,7 +46,6 @@ internal class SearchRvAdapter(
             this.appointmentModelDb = appointmentModelDb
             appointmentId = appointmentsList[position]._id
             appointmentDate = appointmentModelDb.date
-
             date.text = appointmentModelDb.date
             time.text = appointmentModelDb.time
             procedure.text = appointmentModelDb.procedure

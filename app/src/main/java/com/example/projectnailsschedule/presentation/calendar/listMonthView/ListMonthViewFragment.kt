@@ -83,7 +83,7 @@ class ListMonthViewFragment : Fragment() {
                 date = daysInMonth[i - 1] + date
                 date = Util().dateConverter(date)
                 val localDate = Util().convertStringToLocalDate(date)
-                val dateParams = DateParams(_id = null, date = localDate, appointments = null)
+                val dateParams = DateParams(_id = null, date = localDate)
 
                 // добавляем в лист объект DateWeekAppModel, который содержит список записей по дню
                 val addToList = DateWeekAppModel(

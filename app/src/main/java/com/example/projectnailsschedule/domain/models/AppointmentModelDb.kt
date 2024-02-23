@@ -17,7 +17,7 @@ import java.time.LocalTime
 @Entity(tableName = "schedule")
 data class AppointmentModelDb(
     @PrimaryKey(autoGenerate = true)
-    val _id: Int? = null,
+    var _id: Long? = null,
 
     @ColumnInfo(name = "date")
     val date: String? = null,

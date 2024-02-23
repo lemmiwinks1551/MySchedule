@@ -7,14 +7,14 @@ import com.example.projectnailsschedule.data.storage.ScheduleDb
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
 import com.example.projectnailsschedule.domain.repository.ScheduleRepository
 import com.example.projectnailsschedule.util.Util
+import com.google.android.exoplayer2.util.Log
 import java.time.LocalDate
 
 class ScheduleRepositoryImpl(context: Context) : ScheduleRepository {
     private var dao = ScheduleDb.getDb(context).getDao()
 
-    override suspend fun insertAppointment(appointmentModelDb: AppointmentModelDb): Boolean {
-        dao.insert(appointmentModelDb = appointmentModelDb)
-        return true
+    override suspend fun insertAppointment(appointmentModelDb: AppointmentModelDb): Long {
+        return dao.insert(appointmentModelDb = appointmentModelDb)
     }
 
     override suspend fun updateAppointment(appointmentModelDb: AppointmentModelDb): Boolean {

@@ -6,11 +6,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
-import com.example.projectnailsschedule.presentation.date.DateViewModel
+import com.example.projectnailsschedule.presentation.calendar.DateParamsViewModel
 
 class DateAdapter(
     private var appointmentsList: List<AppointmentModelDb>,
-    private val dateViewModel: DateViewModel
+    private val dateParamsViewModel: DateParamsViewModel
 ) : RecyclerView.Adapter<DateViewHolder>() {
 
     private lateinit var mListener: OnItemClickListener
@@ -77,23 +77,23 @@ class DateAdapter(
     }
 
     private fun startVk(uri: String) {
-        dateViewModel.startVk(uri)
+        dateParamsViewModel.startVk(uri)
     }
 
     private fun startTelegram(uri: String) {
-        dateViewModel.startTelegram(uri)
+        dateParamsViewModel.startTelegram(uri)
     }
 
     private fun startInstagram(uri: String) {
-        dateViewModel.startInstagram(uri)
+        dateParamsViewModel.startInstagram(uri)
     }
 
     private fun startWhatsapp(uri: String) {
-        dateViewModel.startWhatsApp(uri)
+        dateParamsViewModel.startWhatsApp(uri)
     }
 
     private fun startPhone(phoneNum: String) {
-        dateViewModel.startPhone(phoneNum)
+        dateParamsViewModel.startPhone(phoneNum)
     }
 
     private fun hideEmptyViews(holder: DateViewHolder, position: Int) {

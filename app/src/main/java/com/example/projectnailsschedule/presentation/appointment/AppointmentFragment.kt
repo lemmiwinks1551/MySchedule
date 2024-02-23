@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.app.TimePickerDialog.OnTimeSetListener
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
@@ -12,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -22,6 +24,7 @@ import com.example.projectnailsschedule.domain.models.ClientModelDb
 import com.example.projectnailsschedule.domain.models.ProcedureModelDb
 import com.example.projectnailsschedule.presentation.appointment.selectClient.SelectClientFragment
 import com.example.projectnailsschedule.presentation.appointment.selectProcedure.SelectProcedureFragment
+import com.example.projectnailsschedule.presentation.calendar.DateParamsViewModel
 import com.example.projectnailsschedule.util.Util
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -30,27 +33,24 @@ import java.util.Calendar
 @AndroidEntryPoint
 class AppointmentFragment : Fragment() {
     val log = this::class.simpleName
-    private val bindingKeyAppointment = "appointmentParams"
 
-    private val appointmentViewModel: AppointmentViewModel by viewModels()
+    private val dateParamsViewModel: DateParamsViewModel by activityViewModels()
+
+    private lateinit var currentAppointment: AppointmentModelDb
+
     private var _binding: FragmentAppointmentBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var saveToolbarButton: MenuItem
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        // set dateParams from Bundle to view model
-        appointmentViewModel.selectedAppointment.value = arguments?.getParcelable(bindingKeyAppointment)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentAppointmentBinding.inflate(inflater, container, false)
 
-        // set current appointmentParams form DateFragment binding object
+        defineAppointment()
+
+        // set current appointmentParams
         inflateViews()
 
         // set title text
@@ -63,9 +63,9 @@ class AppointmentFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // select client results
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<ClientModelDb>("client")
             ?.observe(viewLifecycleOwner) { result ->
-                // здесь обрабатываем результат после выбора клиента
                 with(binding) {
                     nameEt.setText(result.name)
                     phoneEt.setText(result.phone)
@@ -84,6 +84,7 @@ class AppointmentFragment : Fragment() {
                 }
             }
 
+        // select procedure results
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<ProcedureModelDb>("procedure")
             ?.observe(viewLifecycleOwner) { result ->
                 with(binding) {
@@ -94,24 +95,26 @@ class AppointmentFragment : Fragment() {
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
+        // add save button
         saveToolbarButton = menu.findItem(R.id.save_toolbar_button)
         saveToolbarButton.isVisible = true
+
         setClickListeners()
         super.onPrepareOptionsMenu(menu)
     }
 
     private fun setClickListeners() {
         saveToolbarButton.setOnMenuItemClickListener {
-            if (appointmentViewModel.selectedAppointment.value?._id == null) {
-                // no _id - add new Appointment
+            if (currentAppointment._id == null) {
+                // new Appointment
                 createAppointment()
-                // createNotification()
             } else {
-                // _id - edit Appointment
+                // edit Appointment
                 editAppointment()
             }
             true
         }
+
         with(binding) {
             // set ClickListener on day_edit_text
             dayEditText.setOnClickListener {
@@ -137,24 +140,22 @@ class AppointmentFragment : Fragment() {
 
     private fun setTitle() {
         val title: TextView = binding.fragmentAppointmentTitle
-        val titleDate: TextView = binding.fragmentAppointmentDate
+        val date: TextView = binding.fragmentAppointmentDate
+        date.text = Util().formatDateToRus(dateParamsViewModel.selectedDate.value?.date!!)
 
-        if (appointmentViewModel.selectedAppointment.value?._id == null) {
+        if (currentAppointment._id == null) {
             // no _id - add new Appointment
             title.text = getString(R.string.new_appointment_text)
         } else {
             // _id - edit Appointment
             title.text = getString(R.string.change_appointment_text)
         }
-        titleDate.text = appointmentViewModel.selectedAppointment.value?.date
     }
 
     private fun createAppointment() {
-        /** Send params to ViewModel */
-
         // create appointmentParams object
         with(binding) {
-            val appointmentModelDb = AppointmentModelDb(
+            currentAppointment = AppointmentModelDb(
                 _id = null,
                 date = dayEditText.text.toString(),
                 name = nameEt.text.toString(),
@@ -170,12 +171,13 @@ class AppointmentFragment : Fragment() {
             )
 
             lifecycleScope.launch {
-                appointmentViewModel.insertAppointment(appointmentModelDb)
+                currentAppointment._id = dateParamsViewModel.insertAppointment(currentAppointment)
+                dateParamsViewModel.selectedDate.value?.appointmentsList?.add(currentAppointment)
             }
 
             val toast: Toast = Toast.makeText(
                 context,
-                "${appointmentModelDb.date}\n${getString(R.string.toast_created)}",
+                "${currentAppointment.date}\n${getString(R.string.toast_created)}",
                 Toast.LENGTH_LONG
             )
             toast.show()
@@ -186,12 +188,10 @@ class AppointmentFragment : Fragment() {
     }
 
     private fun editAppointment() {
-        /** Send params to ViewModel */
-
         // create appointmentParams object
         with(binding) {
-            val appointmentModelDb = AppointmentModelDb(
-                _id = appointmentViewModel.selectedAppointment.value?._id,
+            currentAppointment = AppointmentModelDb(
+                _id = currentAppointment._id,
                 date = dayEditText.text.toString(),
                 name = nameEt.text.toString(),
                 time = timeEditText.text.toString(),
@@ -206,10 +206,12 @@ class AppointmentFragment : Fragment() {
             )
 
             lifecycleScope.launch {
-                appointmentViewModel.updateAppointment(appointmentModelDb)
+                dateParamsViewModel.updateAppointment(currentAppointment)
+                dateParamsViewModel.selectedDate.value?.appointmentsList?.set(
+                    dateParamsViewModel.appointmentPosition!!,
+                    currentAppointment
+                )
             }
-
-            // send to AppointmentViewModel
 
             Toast.makeText(context, getString(R.string.toast_edited), Toast.LENGTH_LONG).show()
 
@@ -218,18 +220,23 @@ class AppointmentFragment : Fragment() {
     }
 
     private fun inflateViews() {
-        // set current appointmentParams from DateFragment binding object
-        with(appointmentViewModel.selectedAppointment.value) {
-            binding.dayEditText.text = this?.date
-            binding.timeEditText.text = this?.time
-            binding.procedureEt.setText(this?.procedure)
-            binding.nameEt.setText(this?.name)
-            binding.phoneEt.setText(this?.phone)
-            binding.clientVkLinkEt.setText(this?.vk)
-            binding.clientTelegramLinkEt.setText(this?.telegram)
-            binding.clientInstagramLinkEt.setText(this?.instagram)
-            binding.clientWhatsappLinkEt.setText(this?.whatsapp)
-            binding.notesEt.setText(this?.notes)
+        // if appointment position != null - inflate view
+        if (dateParamsViewModel.appointmentPosition != null) {
+            with(currentAppointment) {
+                binding.dayEditText.text = this.date
+                binding.timeEditText.text = this.time
+                binding.procedureEt.setText(this.procedure)
+                binding.nameEt.setText(this.name)
+                binding.phoneEt.setText(this.phone)
+                binding.clientVkLinkEt.setText(this.vk)
+                binding.clientTelegramLinkEt.setText(this.telegram)
+                binding.clientInstagramLinkEt.setText(this.instagram)
+                binding.clientWhatsappLinkEt.setText(this.whatsapp)
+                binding.notesEt.setText(this.notes)
+            }
+        } else {
+            binding.dayEditText.text =
+                Util().formatDateToRus(dateParamsViewModel.selectedDate.value?.date!!)
         }
     }
 
@@ -293,5 +300,17 @@ class AppointmentFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun defineAppointment() {
+        // set current appointmentParams
+        if (dateParamsViewModel.appointmentPosition != null) {
+            // if AppointmentModelDb already exists
+            currentAppointment =
+                dateParamsViewModel.selectedDate.value!!.appointmentsList!![dateParamsViewModel.appointmentPosition!!]
+        } else {
+            // new AppointmentModelDb
+            currentAppointment = AppointmentModelDb(deleted = false)
+        }
     }
 }

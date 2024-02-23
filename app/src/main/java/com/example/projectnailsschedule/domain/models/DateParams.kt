@@ -8,7 +8,6 @@ import java.time.LocalDate
 data class DateParams(
     val _id: Int? = null,
     var date: LocalDate? = null,
-    var appointments: Int? = null,
     var appointmentsList: MutableList<AppointmentModelDb>? = null
 ) : Parcelable {
 
@@ -16,7 +15,6 @@ data class DateParams(
         return String.format(
             "id = $_id " +
                     "date = $date " +
-                    "appointmentCount = $appointments, " +
                     "appointmentsArray = ${appointmentsList?.size}"
         )
     }

@@ -1,12 +1,14 @@
 package com.example.projectnailsschedule.presentation.calendar
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -29,7 +31,8 @@ class CalendarFragment : Fragment(),
     DateShortAdapter.OnItemListener {
     private val log = this::class.simpleName
 
-    private val calendarViewModel: CalendarViewModel by viewModels()
+    private val dateParamsViewModel: DateParamsViewModel by activityViewModels()
+
     private var _binding: FragmentCalendarBinding? = null
     private val binding get() = _binding!!
 
@@ -72,12 +75,9 @@ class CalendarFragment : Fragment(),
     private fun initClickListeners() {
         // set click listener on button go_into_date
         binding.goIntoDate.setOnClickListener {
-            // start fragment with chosen date
-            val bundle = Bundle()
-            bundle.putParcelable("dateParams", calendarViewModel.selectedDate.value)
+            // start fragment with chosen date )
             binding.goIntoDate.findNavController().navigate(
-                R.id.action_nav_calendar_to_dateFragment,
-                bundle
+                R.id.action_nav_calendar_to_dateFragment
             )
         }
 
@@ -94,8 +94,8 @@ class CalendarFragment : Fragment(),
 
     private fun initObservers() {
         // set observer for DateParams
-        calendarViewModel.selectedDate.observe(viewLifecycleOwner) {
-            val previousDate = calendarViewModel.previousDate.value
+        dateParamsViewModel.selectedDate.observe(viewLifecycleOwner) {
+            val previousDate = dateParamsViewModel.previousDate.value
 
             // if year was changed
             if (it.date!!.year != previousDate!!.date?.year) {
@@ -117,14 +117,14 @@ class CalendarFragment : Fragment(),
             }
 
             // set previousDate
-            calendarViewModel.previousDate.value = DateParams(
+            dateParamsViewModel.previousDate.value = DateParams(
                 date = it.date,
                 appointmentsList = it.appointmentsList
             )
         }
 
         // set date details (fab and shortDateRv) visibility if click was performed
-        calendarViewModel.dateDetailsVisibility.observe(viewLifecycleOwner) {
+        dateParamsViewModel.dateDetailsVisibility.observe(viewLifecycleOwner) {
             if (it) {
                 shortDataRecyclerView?.visibility = View.VISIBLE
                 addButton?.visibility = View.VISIBLE
@@ -174,7 +174,7 @@ class CalendarFragment : Fragment(),
         // create adapter
         val calendarRvAdapter = CalendarRvAdapter(
             daysInMonth = daysInMonth,
-            calendarViewModel = calendarViewModel,
+            calendarViewModel = dateParamsViewModel,
             context = requireContext()
         )
 
@@ -214,7 +214,7 @@ class CalendarFragment : Fragment(),
     }
 
     private fun changeMonth(operator: Boolean) {
-        calendarViewModel.changeMonth(operator = operator)
+        dateParamsViewModel.changeMonth(operator = operator)
     }
 
     override fun onResume() {
@@ -241,7 +241,7 @@ class CalendarFragment : Fragment(),
     override fun onItemClickShortDate() {
         // start fragment with chosen date
         val bundle = Bundle()
-        bundle.putParcelable("dateParams", calendarViewModel.selectedDate.value)
+        bundle.putParcelable("dateParams", dateParamsViewModel.selectedDate.value)
         binding.goIntoDate.findNavController().navigate(
             R.id.action_nav_calendar_to_dateFragment,
             bundle
@@ -249,9 +249,9 @@ class CalendarFragment : Fragment(),
     }
 
     private fun recoverPrevViewState() {
-        calendarViewModel.selectedDate.value?.let { inflateCalendarRecyclerView(it) }
-        calendarViewModel.selectedDate.value?.let { inflateShortDateRecyclerView(it) }
-        calendarViewModel.selectedDate.value?.let { setMonthTextView(it) }
-        calendarViewModel.selectedDate.value?.let { setYearTextView(it) }
+        dateParamsViewModel.selectedDate.value?.let { inflateCalendarRecyclerView(it) }
+        dateParamsViewModel.selectedDate.value?.let { inflateShortDateRecyclerView(it) }
+        dateParamsViewModel.selectedDate.value?.let { setMonthTextView(it) }
+        dateParamsViewModel.selectedDate.value?.let { setYearTextView(it) }
     }
 }

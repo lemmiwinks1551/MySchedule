@@ -7,7 +7,7 @@ import java.time.LocalDate
 
 interface ScheduleRepository {
 
-    suspend fun insertAppointment(appointmentModelDb: AppointmentModelDb): Boolean
+    suspend fun insertAppointment(appointmentModelDb: AppointmentModelDb): Long
 
     suspend fun updateAppointment(appointmentModelDb: AppointmentModelDb): Boolean
 

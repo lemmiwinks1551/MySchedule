@@ -6,10 +6,18 @@ import androidx.lifecycle.ViewModel
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
 import com.example.projectnailsschedule.domain.models.CalendarDateModelDb
 import com.example.projectnailsschedule.domain.models.DateParams
+import com.example.projectnailsschedule.domain.usecase.appointmentUC.InsertAppointmentUseCase
+import com.example.projectnailsschedule.domain.usecase.appointmentUC.UpdateAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.CalendarDbDeleteObj
 import com.example.projectnailsschedule.domain.usecase.calendarUC.InsertCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.LoadShortDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.SelectCalendarDateByDateUseCase
+import com.example.projectnailsschedule.domain.usecase.dateUC.DeleteAppointmentUseCase
+import com.example.projectnailsschedule.domain.usecase.socUC.StartInstagramUc
+import com.example.projectnailsschedule.domain.usecase.socUC.StartPhoneUc
+import com.example.projectnailsschedule.domain.usecase.socUC.StartTelegramUc
+import com.example.projectnailsschedule.domain.usecase.socUC.StartVkUc
+import com.example.projectnailsschedule.domain.usecase.socUC.StartWhatsAppUc
 import com.example.projectnailsschedule.presentation.calendar.calendarRecyclerView.CalendarRvAdapter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -19,13 +27,20 @@ import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
-class CalendarViewModel @Inject constructor(
+class DateParamsViewModel @Inject constructor(
     private val loadShortDateUseCase: LoadShortDateUseCase,
     private val selectCalendarDateByDateUseCase: SelectCalendarDateByDateUseCase,
     private val insertCalendarDateUseCase: InsertCalendarDateUseCase,
-    private val calendarDbDeleteObj: CalendarDbDeleteObj
+    private val calendarDbDeleteObj: CalendarDbDeleteObj,
+    private var insertAppointmentUseCase: InsertAppointmentUseCase,
+    private val updateAppointmentUseCase: UpdateAppointmentUseCase,
+    private var deleteAppointmentUseCase: DeleteAppointmentUseCase,
+    private val startVkUc: StartVkUc,
+    private val startTelegramUc: StartTelegramUc,
+    private val startInstagramUc: StartInstagramUc,
+    private val startWhatsAppUc: StartWhatsAppUc,
+    private val startPhoneUc: StartPhoneUc
 ) : ViewModel() {
-
     private val tagDateColor = "DateColor"
 
     // var updates when click at day or month in calendar
@@ -34,6 +49,12 @@ class CalendarViewModel @Inject constructor(
             date = LocalDate.now()
         )
     )
+
+    // position of appointments in selectedDate.appointmentsList to edit
+    // if position == null - create new appointment
+    var appointmentPosition: Int? = null
+
+    var text = MutableLiveData(String())
 
     var previousDate = MutableLiveData(DateParams())
 
@@ -104,5 +125,37 @@ class CalendarViewModel @Inject constructor(
 
     suspend fun calendarDbDeleteObj(calendarDateModelDb: CalendarDateModelDb): Boolean {
         return calendarDbDeleteObj.execute(calendarDateModelDb)
+    }
+
+    suspend fun insertAppointment(appointmentModelDb: AppointmentModelDb): Long {
+        return insertAppointmentUseCase.execute(appointmentModelDb)
+    }
+
+    suspend fun updateAppointment(appointmentModelDb: AppointmentModelDb) : Boolean {
+        return updateAppointmentUseCase.execute(appointmentModelDb)
+    }
+
+    suspend fun deleteAppointment(appointmentModelDb: AppointmentModelDb) {
+        deleteAppointmentUseCase.execute(appointmentModelDb)
+    }
+
+    fun startVk(uri: String) {
+        startVkUc.execute(uri)
+    }
+
+    fun startTelegram(uri: String) {
+        startTelegramUc.execute(uri)
+    }
+
+    fun startInstagram(uri: String) {
+        startInstagramUc.execute(uri)
+    }
+
+    fun startWhatsApp(uri: String) {
+        startWhatsAppUc.execute(uri)
+    }
+
+    fun startPhone(phoneNum: String) {
+        startPhoneUc.execute(phoneNum)
     }
 }

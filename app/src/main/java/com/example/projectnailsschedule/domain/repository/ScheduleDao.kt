@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface ScheduleDao {
     @Insert
-    suspend fun insert(appointmentModelDb: AppointmentModelDb)
+    suspend fun insert(appointmentModelDb: AppointmentModelDb): Long
 
     @Update
     suspend fun update(appointmentModelDb: AppointmentModelDb)

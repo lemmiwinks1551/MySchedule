@@ -5,8 +5,7 @@ import com.example.projectnailsschedule.domain.repository.ScheduleRepository
 
 class InsertAppointmentUseCase(private val scheduleRepository: ScheduleRepository) {
 
-    suspend fun execute(appointmentModelDb: AppointmentModelDb): Boolean {
-        scheduleRepository.insertAppointment(appointmentModelDb)
-        return true
+    suspend fun execute(appointmentModelDb: AppointmentModelDb): Long {
+        return scheduleRepository.insertAppointment(appointmentModelDb)
     }
 }
