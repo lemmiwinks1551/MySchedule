@@ -280,12 +280,12 @@ class CalendarRvAdapter(
     private fun restoreSelection(holder: ViewHolder) {
         if (calendarViewModel.dateDetailsVisibility.value!!) {
             val holderDate = holder.date.text
-            val prevHolderDate = calendarViewModel.prevHolder?.date?.text
+            val prevHolderDate = calendarViewModel.prevCalendarRvHolder?.date?.text
 
             if (holderDate == prevHolderDate) {
                 holder.date.setTypeface(null, Typeface.BOLD)
 
-                calendarViewModel.prevHolder = holder
+                calendarViewModel.prevCalendarRvHolder = holder
             }
         }
     }
@@ -293,15 +293,15 @@ class CalendarRvAdapter(
     private fun setOnCalendarClickListener(holder: ViewHolder, selectedDate: DateParams) {
         // Set the click listener to handle cell selection
         holder.cellLayout.setOnClickListener {
-            if (holder != calendarViewModel.prevHolder) {
+            if (holder != calendarViewModel.prevCalendarRvHolder) {
                 // Unselect the previously selected cell
-                calendarViewModel.prevHolder?.date?.setTypeface(null, Typeface.NORMAL)
+                calendarViewModel.prevCalendarRvHolder?.date?.setTypeface(null, Typeface.NORMAL)
 
                 // Select the clicked cell
                 holder.date.setTypeface(null, Typeface.BOLD)
 
                 // Update the previous holder
-                calendarViewModel.prevHolder = holder
+                calendarViewModel.prevCalendarRvHolder = holder
 
                 calendarViewModel.updateSelectedDate(
                     dateParams = selectedDate

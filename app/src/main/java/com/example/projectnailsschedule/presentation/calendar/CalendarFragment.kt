@@ -1,7 +1,6 @@
 package com.example.projectnailsschedule.presentation.calendar
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.View
@@ -9,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -51,7 +49,7 @@ class CalendarFragment : Fragment(),
         // init all widgets
         initViews()
 
-        recoverPrevViewState()
+        recoverViewState()
 
         // init click listeners
         initClickListeners()
@@ -248,7 +246,7 @@ class CalendarFragment : Fragment(),
         )
     }
 
-    private fun recoverPrevViewState() {
+    private fun recoverViewState() {
         dateParamsViewModel.selectedDate.value?.let { inflateCalendarRecyclerView(it) }
         dateParamsViewModel.selectedDate.value?.let { inflateShortDateRecyclerView(it) }
         dateParamsViewModel.selectedDate.value?.let { setMonthTextView(it) }

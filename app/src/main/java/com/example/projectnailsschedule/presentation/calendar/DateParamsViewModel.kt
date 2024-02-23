@@ -54,13 +54,11 @@ class DateParamsViewModel @Inject constructor(
     // if position == null - create new appointment
     var appointmentPosition: Int? = null
 
-    var text = MutableLiveData(String())
-
     var previousDate = MutableLiveData(DateParams())
 
     var dateDetailsVisibility = MutableLiveData(false)
 
-    var prevHolder: CalendarRvAdapter.ViewHolder? = null
+    var prevCalendarRvHolder: CalendarRvAdapter.ViewHolder? = null
 
     suspend fun getArrayAppointments(date: LocalDate): MutableList<AppointmentModelDb> {
         return loadShortDateUseCase.execute(date)
@@ -128,10 +126,15 @@ class DateParamsViewModel @Inject constructor(
     }
 
     suspend fun insertAppointment(appointmentModelDb: AppointmentModelDb): Long {
+        selectedDate.value?.appointmentsList?.add(appointmentModelDb)
         return insertAppointmentUseCase.execute(appointmentModelDb)
     }
 
     suspend fun updateAppointment(appointmentModelDb: AppointmentModelDb) : Boolean {
+        selectedDate.value?.appointmentsList?.set(
+            appointmentPosition!!,
+            appointmentModelDb
+        )
         return updateAppointmentUseCase.execute(appointmentModelDb)
     }
 

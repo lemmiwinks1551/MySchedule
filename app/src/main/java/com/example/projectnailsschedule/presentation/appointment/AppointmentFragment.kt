@@ -172,7 +172,7 @@ class AppointmentFragment : Fragment() {
 
             lifecycleScope.launch {
                 currentAppointment._id = dateParamsViewModel.insertAppointment(currentAppointment)
-                dateParamsViewModel.selectedDate.value?.appointmentsList?.add(currentAppointment)
+                // dateParamsViewModel.selectedDate.value?.appointmentsList?.add(currentAppointment)
             }
 
             val toast: Toast = Toast.makeText(
@@ -207,10 +207,10 @@ class AppointmentFragment : Fragment() {
 
             lifecycleScope.launch {
                 dateParamsViewModel.updateAppointment(currentAppointment)
-                dateParamsViewModel.selectedDate.value?.appointmentsList?.set(
+/*                dateParamsViewModel.selectedDate.value?.appointmentsList?.set(
                     dateParamsViewModel.appointmentPosition!!,
                     currentAppointment
-                )
+                )*/
             }
 
             Toast.makeText(context, getString(R.string.toast_edited), Toast.LENGTH_LONG).show()
@@ -304,13 +304,12 @@ class AppointmentFragment : Fragment() {
 
     private fun defineAppointment() {
         // set current appointmentParams
-        if (dateParamsViewModel.appointmentPosition != null) {
+        currentAppointment = if (dateParamsViewModel.appointmentPosition != null) {
             // if AppointmentModelDb already exists
-            currentAppointment =
-                dateParamsViewModel.selectedDate.value!!.appointmentsList!![dateParamsViewModel.appointmentPosition!!]
+            dateParamsViewModel.selectedDate.value!!.appointmentsList!![dateParamsViewModel.appointmentPosition!!]
         } else {
             // new AppointmentModelDb
-            currentAppointment = AppointmentModelDb(deleted = false)
+            AppointmentModelDb(deleted = false)
         }
     }
 }
