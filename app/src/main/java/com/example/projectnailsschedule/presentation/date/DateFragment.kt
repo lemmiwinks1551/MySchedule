@@ -134,8 +134,7 @@ class DateFragment : Fragment() {
 
                 // delete client from Db
                 CoroutineScope(Dispatchers.IO).launch {
-                    dateParamsViewModel.deleteAppointment(deleteAppointmentModelDb)
-                    dateParamsViewModel.selectedDate.value!!.appointmentsList?.removeAt(position)
+                    dateParamsViewModel.deleteAppointment(deleteAppointmentModelDb, position)
                     withContext(Dispatchers.Main) {
                         appointmentsRvAdapter?.notifyItemRemoved(position)
                     }
@@ -156,11 +155,7 @@ class DateFragment : Fragment() {
                         // below line is to add our item to array list with a position.
 
                         CoroutineScope(Dispatchers.IO).launch {
-                            dateParamsViewModel.insertAppointment(deleteAppointmentModelDb)
-                            dateParamsViewModel.selectedDate.value!!.appointmentsList?.add(
-                                position,
-                                deleteAppointmentModelDb
-                            )
+                            dateParamsViewModel.insertAppointment(deleteAppointmentModelDb, position)
                             withContext(Dispatchers.Main) {
                                 appointmentsRvAdapter?.notifyItemInserted(position)
                             }

@@ -125,12 +125,22 @@ class DateParamsViewModel @Inject constructor(
         return calendarDbDeleteObj.execute(calendarDateModelDb)
     }
 
-    suspend fun insertAppointment(appointmentModelDb: AppointmentModelDb): Long {
-        selectedDate.value?.appointmentsList?.add(appointmentModelDb)
+    suspend fun insertAppointment(
+        appointmentModelDb: AppointmentModelDb,
+        position: Int = -1
+    ): Long {
+        if (position == -1) {
+            selectedDate.value?.appointmentsList?.add(appointmentModelDb)
+        } else {
+            selectedDate.value!!.appointmentsList?.add(
+                position,
+                appointmentModelDb
+            )
+        }
         return insertAppointmentUseCase.execute(appointmentModelDb)
     }
 
-    suspend fun updateAppointment(appointmentModelDb: AppointmentModelDb) : Boolean {
+    suspend fun updateAppointment(appointmentModelDb: AppointmentModelDb): Boolean {
         selectedDate.value?.appointmentsList?.set(
             appointmentPosition!!,
             appointmentModelDb
@@ -138,8 +148,13 @@ class DateParamsViewModel @Inject constructor(
         return updateAppointmentUseCase.execute(appointmentModelDb)
     }
 
-    suspend fun deleteAppointment(appointmentModelDb: AppointmentModelDb) {
+    suspend fun deleteAppointment(appointmentModelDb: AppointmentModelDb, position: Int = -1) {
         deleteAppointmentUseCase.execute(appointmentModelDb)
+        if (position == -1 ) {
+            selectedDate.value!!.appointmentsList?.removeAt(position)
+        } else {
+            selectedDate.value!!.appointmentsList?.remove(appointmentModelDb)
+        }
     }
 
     fun startVk(uri: String) {
