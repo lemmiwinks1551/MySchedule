@@ -172,7 +172,6 @@ class AppointmentFragment : Fragment() {
 
             lifecycleScope.launch {
                 currentAppointment._id = dateParamsViewModel.insertAppointment(currentAppointment)
-                // dateParamsViewModel.selectedDate.value?.appointmentsList?.add(currentAppointment)
             }
 
             val toast: Toast = Toast.makeText(
@@ -207,10 +206,6 @@ class AppointmentFragment : Fragment() {
 
             lifecycleScope.launch {
                 dateParamsViewModel.updateAppointment(currentAppointment)
-/*                dateParamsViewModel.selectedDate.value?.appointmentsList?.set(
-                    dateParamsViewModel.appointmentPosition!!,
-                    currentAppointment
-                )*/
             }
 
             Toast.makeText(context, getString(R.string.toast_edited), Toast.LENGTH_LONG).show()

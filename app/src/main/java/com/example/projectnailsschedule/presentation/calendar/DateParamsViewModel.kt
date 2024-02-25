@@ -137,6 +137,7 @@ class DateParamsViewModel @Inject constructor(
                 appointmentModelDb
             )
         }
+        selectedDate.postValue(selectedDate.value)
         return insertAppointmentUseCase.execute(appointmentModelDb)
     }
 
@@ -145,16 +146,21 @@ class DateParamsViewModel @Inject constructor(
             appointmentPosition!!,
             appointmentModelDb
         )
+        selectedDate.postValue(selectedDate.value)
         return updateAppointmentUseCase.execute(appointmentModelDb)
     }
 
-    suspend fun deleteAppointment(appointmentModelDb: AppointmentModelDb, position: Int = -1) {
+    suspend fun deleteAppointment(
+        appointmentModelDb: AppointmentModelDb,
+        position: Int = -1
+    ) {
         deleteAppointmentUseCase.execute(appointmentModelDb)
-        if (position == -1 ) {
+        if (position == -1) {
             selectedDate.value!!.appointmentsList?.removeAt(position)
         } else {
             selectedDate.value!!.appointmentsList?.remove(appointmentModelDb)
         }
+        selectedDate.postValue(selectedDate.value)
     }
 
     fun startVk(uri: String) {
