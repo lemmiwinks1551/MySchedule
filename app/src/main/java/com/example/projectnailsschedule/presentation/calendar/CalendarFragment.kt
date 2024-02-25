@@ -112,7 +112,6 @@ class CalendarFragment : Fragment(),
             // if day was changed and has appointments
             if (it.appointmentsList != null) {
                 inflateShortDateRecyclerView(it)
-                updateAppointmentsCount(it)
             }
 
             // set previousDate
@@ -252,12 +251,5 @@ class CalendarFragment : Fragment(),
         dateParamsViewModel.selectedDate.value?.let { inflateShortDateRecyclerView(it) }
         dateParamsViewModel.selectedDate.value?.let { setMonthTextView(it) }
         dateParamsViewModel.selectedDate.value?.let { setYearTextView(it) }
-    }
-
-    private fun updateAppointmentsCount(selectedDateParams: DateParams) {
-        if (selectedDateParams.appointmentsList!!.size > 0) {
-            dateParamsViewModel.prevCalendarRvHolder?.dateAppointmentsCount!!.text =
-                selectedDateParams.appointmentsList!!.size.toString()
-        }
     }
 }

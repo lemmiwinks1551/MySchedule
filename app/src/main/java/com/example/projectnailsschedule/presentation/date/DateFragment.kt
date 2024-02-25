@@ -39,6 +39,8 @@ class DateFragment : Fragment() {
     private var appointmentsRvAdapter: DateAdapter? = null
     private var appointmentsRv: RecyclerView? = null
 
+    private var snackbar: Snackbar? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -141,7 +143,7 @@ class DateFragment : Fragment() {
                 }
 
                 // show Snackbar
-                Snackbar.make(
+                snackbar = Snackbar.make(
                     appointmentsRv!!,
                     getString(R.string.deleted_appointment_text, deleteAppointmentModelDb.name),
                     Snackbar.LENGTH_LONG
@@ -155,12 +157,16 @@ class DateFragment : Fragment() {
                         // below line is to add our item to array list with a position.
 
                         CoroutineScope(Dispatchers.IO).launch {
-                            dateParamsViewModel.insertAppointment(deleteAppointmentModelDb, position)
+                            dateParamsViewModel.insertAppointment(
+                                deleteAppointmentModelDb,
+                                position
+                            )
                             withContext(Dispatchers.Main) {
                                 appointmentsRvAdapter?.notifyItemInserted(position)
                             }
                         }
-                    }.show()
+                    }
+                snackbar!!.show()
             }
 
             override fun getSwipeEscapeVelocity(defaultValue: Float): Float {
@@ -232,6 +238,7 @@ class DateFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        snackbar?.dismiss()
         _binding = null
     }
 }

@@ -294,18 +294,17 @@ class CalendarRvAdapter(
         // Set the click listener to handle cell selection
         holder.cellLayout.setOnClickListener {
             if (holder != calendarViewModel.prevCalendarRvHolder) {
-                // Unselect the previously selected cell
-                calendarViewModel.prevCalendarRvHolder?.date?.setTypeface(null, Typeface.NORMAL)
 
-                // Select the clicked cell
-                holder.date.setTypeface(null, Typeface.BOLD)
+                unSelectPreviousHolder()
 
-                // Update the previous holder
+                selectDate(holder)
+
                 calendarViewModel.prevCalendarRvHolder = holder
 
                 calendarViewModel.updateSelectedDate(
                     dateParams = selectedDate
                 )
+
                 calendarViewModel.dateDetailsVisibility.value = true
             }
         }
@@ -322,5 +321,14 @@ class CalendarRvAdapter(
         if (selectedDate.date!! == LocalDate.now()) {
             holder.date.setTextColor(Color.RED)
         }
+    }
+
+    private fun unSelectPreviousHolder() {
+        calendarViewModel.prevCalendarRvHolder?.date?.setTypeface(null, Typeface.NORMAL)
+    }
+
+    private fun selectDate(holder: ViewHolder) {
+        // Make selected date bold
+        holder.date.setTypeface(null, Typeface.BOLD)
     }
 }
