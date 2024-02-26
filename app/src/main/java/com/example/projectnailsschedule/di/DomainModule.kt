@@ -10,11 +10,9 @@ import com.example.projectnailsschedule.domain.usecase.appointmentUC.InsertAppoi
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.UpdateAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.CalendarDbDeleteObj
 import com.example.projectnailsschedule.domain.usecase.calendarUC.SelectCalendarDateByDateUseCase
-import com.example.projectnailsschedule.domain.usecase.calendarUC.GetSelectedMonthUc
 import com.example.projectnailsschedule.domain.usecase.calendarUC.LoadShortDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.InsertCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.SetSelectedDateUseCase
-import com.example.projectnailsschedule.domain.usecase.calendarUC.SetSelectedMonthUc
 import com.example.projectnailsschedule.domain.usecase.calendarUC.UpdateDateColorUseCase
 import com.example.projectnailsschedule.domain.usecase.clientsUC.DeleteClientUseCase
 import com.example.projectnailsschedule.domain.usecase.clientsUC.InsertClientUseCase
@@ -115,16 +113,6 @@ class DomainModule {
     @Provides
     fun provideGetDateAppointmentsUseCase(repository: ScheduleRepository): GetDateAppointmentsUseCase {
         return GetDateAppointmentsUseCase(repository)
-    }
-
-    @Provides
-    fun provideSetSelectedMonthUseCase(repository: SettingsRepository): SetSelectedMonthUc {
-        return SetSelectedMonthUc(repository)
-    }
-
-    @Provides
-    fun provideGetSelectedMonthUseCase(repository: SettingsRepository): GetSelectedMonthUc {
-        return GetSelectedMonthUc(repository)
     }
 
     @Provides
