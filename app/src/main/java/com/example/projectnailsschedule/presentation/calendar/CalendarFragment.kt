@@ -162,8 +162,8 @@ class CalendarFragment : Fragment(),
 
     private fun setYearTextView(selectedDateParams: DateParams) {
         // update yearTextView
-        val year = selectedDateParams.date?.year
-        yearTextView?.text = year.toString()
+        val year = selectedDateParams.date?.year.toString()
+        yearTextView?.text = year
     }
 
     private fun inflateCalendarRecyclerView(selectedDateParams: DateParams) {

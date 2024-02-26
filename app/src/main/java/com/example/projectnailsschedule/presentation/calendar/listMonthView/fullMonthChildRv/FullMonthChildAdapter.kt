@@ -8,12 +8,12 @@ import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
-import com.example.projectnailsschedule.presentation.calendar.listMonthView.ListMonthViewModel
+import com.example.projectnailsschedule.presentation.calendar.DateParamsViewModel
 
 class FullMonthChildAdapter(
     val appointmentsList: MutableList<AppointmentModelDb>,
     private val navController: NavController,
-    private val listMonthViewModel: ListMonthViewModel
+    private val dateParamsViewModel: DateParamsViewModel
 ) : RecyclerView.Adapter<FullMonthChildViewHolder>() {
 
     private val bindingKeyAppointment = "appointmentParams"
@@ -119,22 +119,22 @@ class FullMonthChildAdapter(
     }
 
     private fun startVk(uri: String) {
-        listMonthViewModel.startVk(uri)
+        dateParamsViewModel.startVk(uri)
     }
 
     private fun startTelegram(uri: String) {
-        listMonthViewModel.startTelegram(uri)
+        dateParamsViewModel.startTelegram(uri)
     }
 
     private fun startInstagram(uri: String) {
-        listMonthViewModel.startInstagram(uri)
+        dateParamsViewModel.startInstagram(uri)
     }
 
     private fun startWhatsapp(uri: String) {
-        listMonthViewModel.startWhatsApp(uri)
+        dateParamsViewModel.startWhatsApp(uri)
     }
 
     private fun startPhone(phoneNum: String) {
-        listMonthViewModel.startPhone(phoneNum)
+        dateParamsViewModel.startPhone(phoneNum)
     }
 }

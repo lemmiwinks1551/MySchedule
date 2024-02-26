@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -13,26 +14,27 @@ import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import androidx.recyclerview.widget.RecyclerView.SmoothScroller
+import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentFullMonthViewBinding
 import com.example.projectnailsschedule.domain.models.DateParams
 import com.example.projectnailsschedule.domain.models.DateWeekAppModel
+import com.example.projectnailsschedule.presentation.calendar.DateParamsViewModel
 import com.example.projectnailsschedule.presentation.calendar.listMonthView.fullMonthViewRV.FullMonthViewRVAdapter
 import com.example.projectnailsschedule.util.Util
 import com.example.projectnailsschedule.util.rustore.RuStoreAd
+import com.google.android.exoplayer2.util.Log
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.ZoneId
+import java.util.Calendar
 import java.util.Date
-import java.util.Locale
 
 @AndroidEntryPoint
 class ListMonthViewFragment : Fragment() {
-
-    private val fullMonthViewVM: ListMonthViewModel by viewModels()
+    private val dateParamsViewModel: DateParamsViewModel by activityViewModels()
 
     private var _binding: FragmentFullMonthViewBinding? = null
     private var fullMonthAppointmentsRV: RecyclerView? = null
@@ -50,7 +52,7 @@ class ListMonthViewFragment : Fragment() {
 
         initViews()
 
-        setObservers()
+        initObservers()
 
         initClickListeners()
 
@@ -62,26 +64,50 @@ class ListMonthViewFragment : Fragment() {
 
     }
 
-    private fun setObservers() {
-        fullMonthViewVM.selectedMonth.observe(viewLifecycleOwner) { selectedMonth ->
-            inflateCalendarRecyclerView(selectedMonth)
-            setMonthAndYear() // update year and month in text view
+    private fun initObservers() {
+        dateParamsViewModel.selectedDate.observe(viewLifecycleOwner) {
+            val previousDate = dateParamsViewModel.previousDate.value
+
+            // if year was changed
+            if (it.date!!.year != previousDate!!.date?.year) {
+                // update yearTextView
+                setYearTextView(it)
+            }
+
+            // if month was changed
+            if (it.date!!.monthValue != previousDate.date?.monthValue) {
+                // update monthTextView
+                setMonthTextView(it)
+                // update rv
+                inflateCalendarRecyclerView(it)
+            }
+
+            // set previousDate
+            dateParamsViewModel.previousDate.value = DateParams(
+                date = it.date,
+                appointmentsList = it.appointmentsList
+            )
         }
     }
 
-    private fun inflateCalendarRecyclerView(selectedDate: LocalDate) {
+    private fun inflateCalendarRecyclerView(selectedDate: DateParams) {
         // get array of days from selected month
-        val daysInMonth: ArrayList<String> = Util().getArrayFromMonth2(selectedDate)
+        val daysInMonth: ArrayList<String> = Util().getArrayFromMonth2(selectedDate.date!!)
 
         val list = mutableListOf<DateWeekAppModel>()
+
         lifecycleScope.launch {
-            for (i in 1..selectedDate.lengthOfMonth()) {
+            for (i in 1..selectedDate.date!!.lengthOfMonth()) {
                 // формируем первый день месяца и созадем с ним DateParams
                 val dateFormat =
-                    Util().dateConverterNew(fullMonthViewVM.selectedMonth.value.toString())
+                    Util().dateConverterNew(dateParamsViewModel.getSelectedMonth().toString())
                 var date = dateFormat.drop(2)
+
                 date = daysInMonth[i - 1] + date
                 date = Util().dateConverter(date)
+
+                Log.d("ListMonthMutableList", date)
+
                 val localDate = Util().convertStringToLocalDate(date)
                 val dateParams = DateParams(_id = null, date = localDate)
 
@@ -89,45 +115,37 @@ class ListMonthViewFragment : Fragment() {
                 val addToList = DateWeekAppModel(
                     date = dateParams.date!!,
                     weekDay = Util().getDayOfWeek(date, requireContext()),
-                    appointmentsList = fullMonthViewVM.getDateAppointments(dateParams.date!!)
+                    appointmentsList = dateParamsViewModel.getArrayAppointments(dateParams.date!!)
                 )
                 list.add(addToList)
             }
             withContext(Dispatchers.Main) {
                 // create adapter
                 val fullMonthViewRVAdapter =
-                    FullMonthViewRVAdapter(list, requireContext(), findNavController(), fullMonthViewVM)
+                    FullMonthViewRVAdapter(
+                        list,
+                        requireContext(),
+                        findNavController(),
+                        dateParamsViewModel
+                    )
 
                 layoutManager = GridLayoutManager(activity, 1)
 
                 fullMonthAppointmentsRV?.layoutManager = layoutManager
                 fullMonthAppointmentsRV?.adapter = fullMonthViewRVAdapter
                 fullMonthAppointmentsRV?.scheduleLayoutAnimation()
-
             }
         }
     }
 
     private fun initClickListeners() {
         binding.nextMonthButton.setOnClickListener {
-            fullMonthViewVM.changeMonth(true)
+            changeMonth(operator = true)
         }
 
         binding.prevMonthButton.setOnClickListener {
-            fullMonthViewVM.changeMonth(false)
+            changeMonth(operator = false)
         }
-    }
-
-    private fun setMonthAndYear() {
-        // set month name
-        val date = Date.from(
-            fullMonthViewVM.selectedMonth.value!!.atStartOfDay(ZoneId.systemDefault())
-                ?.toInstant()
-        )
-        val month = SimpleDateFormat("LLLL", Locale.getDefault()).format(date).replaceFirstChar { it.uppercase() }
-
-        binding.monthTextView.text = month
-        binding.yearTextView.text = fullMonthViewVM.selectedMonth.value!!.year.toString()
     }
 
     override fun onResume() {
@@ -135,7 +153,7 @@ class ListMonthViewFragment : Fragment() {
         // scroll to previous position
         if (layoutManager != null) {
             fullMonthAppointmentsRV?.post {
-                val oldPosition = fullMonthViewVM.oldPosition
+                val oldPosition = dateParamsViewModel.oldPosition
                 val smoothScroller: SmoothScroller = object : LinearSmoothScroller(context) {
                     override fun getVerticalSnapPreference(): Int {
                         return SNAP_TO_START
@@ -146,5 +164,49 @@ class ListMonthViewFragment : Fragment() {
             }
         }
         RuStoreAd().banner(requireContext(), binding.root)
+
+        recoverViewState()
+    }
+
+    private fun setYearTextView(selectedDateParams: DateParams) {
+        val year = selectedDateParams.date?.year.toString()
+        binding.yearTextView.text = year
+    }
+
+    private fun setMonthTextView(selectedDateParams: DateParams) {
+        // update monthTextView
+        val date =
+            Date.from(selectedDateParams.date?.atStartOfDay(ZoneId.systemDefault())?.toInstant())
+
+        val calendar = Calendar.getInstance()
+        calendar.time = date
+        val monthResource = when (calendar.get(Calendar.MONTH)) {
+            Calendar.JANUARY -> R.string.january
+            Calendar.FEBRUARY -> R.string.february
+            Calendar.MARCH -> R.string.march
+            Calendar.APRIL -> R.string.april
+            Calendar.MAY -> R.string.may
+            Calendar.JUNE -> R.string.june
+            Calendar.JULY -> R.string.july
+            Calendar.AUGUST -> R.string.august
+            Calendar.SEPTEMBER -> R.string.september
+            Calendar.OCTOBER -> R.string.october
+            Calendar.NOVEMBER -> R.string.november
+            Calendar.DECEMBER -> R.string.december
+            else -> 0
+        }
+        val formattedMonth = getString(monthResource)
+
+        binding.monthTextView.text = formattedMonth
+    }
+
+    private fun changeMonth(operator: Boolean) {
+        dateParamsViewModel.changeMonth(operator = operator)
+    }
+
+    private fun recoverViewState() {
+        dateParamsViewModel.selectedDate.value?.let { inflateCalendarRecyclerView(it) }
+        dateParamsViewModel.selectedDate.value?.let { setMonthTextView(it) }
+        dateParamsViewModel.selectedDate.value?.let { setYearTextView(it) }
     }
 }

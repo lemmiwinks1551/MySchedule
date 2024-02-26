@@ -43,6 +43,8 @@ class DateParamsViewModel @Inject constructor(
 ) : ViewModel() {
     private val tagDateColor = "DateColor"
 
+    var oldPosition: Int = 0
+
     // var updates when click at day or month in calendar
     var selectedDate = MutableLiveData(
         DateParams(
@@ -181,5 +183,9 @@ class DateParamsViewModel @Inject constructor(
 
     fun startPhone(phoneNum: String) {
         startPhoneUc.execute(phoneNum)
+    }
+
+    fun getSelectedMonth(): LocalDate? {
+        return selectedDate.value?.date
     }
 }

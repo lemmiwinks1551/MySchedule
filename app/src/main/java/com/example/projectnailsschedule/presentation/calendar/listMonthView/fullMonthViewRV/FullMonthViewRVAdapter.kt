@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
 import com.example.projectnailsschedule.domain.models.DateWeekAppModel
-import com.example.projectnailsschedule.presentation.calendar.listMonthView.ListMonthViewModel
+import com.example.projectnailsschedule.presentation.calendar.DateParamsViewModel
 import com.example.projectnailsschedule.presentation.calendar.listMonthView.fullMonthChildRv.FullMonthChildAdapter
 import com.example.projectnailsschedule.presentation.calendar.listMonthView.fullMonthChildRv.FullMonthChildViewHolder
 import com.example.projectnailsschedule.util.Util
@@ -32,7 +32,7 @@ class FullMonthViewRVAdapter(
     private val monthDatesList: MutableList<DateWeekAppModel>,
     private val context: Context,
     private val navController: NavController,
-    private val listMonthViewModel: ListMonthViewModel
+    private val dateParamsViewModel: DateParamsViewModel
 ) : RecyclerView.Adapter<FullMonthViewRVViewHolder>(
 ) {
     lateinit var fullMonthChildAdapter: FullMonthChildAdapter
@@ -107,7 +107,7 @@ class FullMonthViewRVAdapter(
                 FullMonthChildAdapter(
                     parentItem.appointmentsList,
                     navController,
-                    listMonthViewModel
+                    dateParamsViewModel
                 )
             childRv.adapter = fullMonthChildAdapter
         }
@@ -139,7 +139,7 @@ class FullMonthViewRVAdapter(
 
                 // delete client from Db
                 CoroutineScope(Dispatchers.IO).launch {
-                    listMonthViewModel.deleteAppointment(deleteAppointmentModelDb)
+                    dateParamsViewModel.deleteAppointment(deleteAppointmentModelDb)
                 }
 
                 // delete in child rv
@@ -172,7 +172,7 @@ class FullMonthViewRVAdapter(
                     ) {
                         // restore appointment in Db
                         CoroutineScope(Dispatchers.IO).launch {
-                            listMonthViewModel.saveAppointment(deleteAppointmentModelDb)
+                            dateParamsViewModel.insertAppointment(deleteAppointmentModelDb)
                         }
 
                         // restore appointment in child list
@@ -221,7 +221,8 @@ class FullMonthViewRVAdapter(
                 val iconMarginVertical =
                     (viewHolder.itemView.height - deleteIcon!!.intrinsicHeight) / 2
 
-                val colorDrawableBackground = ColorDrawable(context.resources.getColor(R.color.yellow))
+                val colorDrawableBackground =
+                    ColorDrawable(context.resources.getColor(R.color.yellow))
 
                 val left =
                     itemView.right - deleteIcon.intrinsicWidth - deleteIcon.intrinsicWidth // 882
@@ -272,7 +273,7 @@ class FullMonthViewRVAdapter(
         // create new appointment button
         with(holder) {
             addAppointmentFab.setOnClickListener {
-                listMonthViewModel.oldPosition = adapterPosition
+                dateParamsViewModel.oldPosition = adapterPosition
                 val bundle = Bundle()
                 val newAppointment = AppointmentModelDb(
                     date = Util().dateConverterNew(
@@ -281,7 +282,7 @@ class FullMonthViewRVAdapter(
                 )
 
                 // set old position to scroll
-                listMonthViewModel.oldPosition = holder.adapterPosition
+                dateParamsViewModel.oldPosition = holder.adapterPosition
 
                 bundle.putParcelable(bindingKeyAppointment, newAppointment)
                 navController.navigate(R.id.action_fullMonthViewFragment_to_nav_appointment, bundle)
