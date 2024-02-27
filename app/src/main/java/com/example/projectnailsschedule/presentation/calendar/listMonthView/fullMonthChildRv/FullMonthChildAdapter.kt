@@ -1,6 +1,5 @@
 package com.example.projectnailsschedule.presentation.calendar.listMonthView.fullMonthChildRv
 
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,15 +7,16 @@ import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
+import com.example.projectnailsschedule.domain.models.DateParams
+import com.example.projectnailsschedule.domain.models.DateWeekAppModel
 import com.example.projectnailsschedule.presentation.calendar.DateParamsViewModel
 
 class FullMonthChildAdapter(
     val appointmentsList: MutableList<AppointmentModelDb>,
     private val navController: NavController,
-    private val dateParamsViewModel: DateParamsViewModel
+    private val dateParamsViewModel: DateParamsViewModel,
+    private val dateWeekAppModel: DateWeekAppModel
 ) : RecyclerView.Adapter<FullMonthChildViewHolder>() {
-
-    private val bindingKeyAppointment = "appointmentParams"
 
     override fun getItemCount(): Int {
         return appointmentsList.size
@@ -32,7 +32,9 @@ class FullMonthChildAdapter(
 
     override fun onBindViewHolder(holder: FullMonthChildViewHolder, position: Int) {
         holder.appointmentModelDb = appointmentsList[position]
+
         setOnClickListeners(holder, position)
+
         fillTextViews(holder)
     }
 
@@ -74,6 +76,17 @@ class FullMonthChildAdapter(
 
     private fun setOnClickListeners(holder: FullMonthChildViewHolder, position: Int) {
         with(holder) {
+
+            itemView.setOnClickListener {
+                dateParamsViewModel.appointmentPosition = position
+                val selectedDate = DateParams(
+                    date = dateWeekAppModel.date,
+                    appointmentsList = appointmentsList
+                )
+                dateParamsViewModel.updateSelectedDate(selectedDate)
+                navController.navigate(R.id.action_fullMonthViewFragment_to_nav_appointment)
+            }
+
             expandButton.setOnClickListener {
                 expandButton.visibility = View.INVISIBLE
                 collapseButton.visibility = View.VISIBLE
@@ -106,14 +119,6 @@ class FullMonthChildAdapter(
 
             whatsAppImageButton.setOnClickListener {
                 startWhatsapp(holder.appointmentClientWhatsApp.text.toString().trim())
-            }
-
-            itemView.setOnClickListener {
-                val bundle = Bundle()
-                val selectedAppointment = appointmentsList[position]
-
-                bundle.putParcelable(bindingKeyAppointment, selectedAppointment)
-                navController.navigate(R.id.action_fullMonthViewFragment_to_nav_appointment, bundle)
             }
         }
     }

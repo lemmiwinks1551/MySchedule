@@ -29,7 +29,7 @@ import java.time.LocalDate
 
 class CalendarRvAdapter(
     private val daysInMonth: ArrayList<String>,
-    private val calendarViewModel: DateParamsViewModel,
+    private val dateParamsViewModel: DateParamsViewModel,
     private val context: Context
 ) : RecyclerView.Adapter<CalendarRvAdapter.ViewHolder>() {
     inner class ViewHolder(itemView: View) :
@@ -74,7 +74,7 @@ class CalendarRvAdapter(
         if (dayInHolder != "") {
             // get appointment count from date
             val selectedDate = DateParams(
-                date = calendarViewModel.selectedDate.value?.date?.withDayOfMonth(
+                date = dateParamsViewModel.selectedDate.value?.date?.withDayOfMonth(
                     dayInHolder.toInt()
                 )
             )
@@ -83,7 +83,7 @@ class CalendarRvAdapter(
             // get date appointments
             CoroutineScope(Dispatchers.IO).launch {
                 selectedDate.appointmentsList =
-                    calendarViewModel.getArrayAppointments(date = selectedDate.date!!)
+                    dateParamsViewModel.getArrayAppointments(date = selectedDate.date!!)
                 withContext(Dispatchers.Main) {
                     // set appointments size into holder
                     if (selectedDate.appointmentsList!!.isNotEmpty()) {
@@ -95,7 +95,7 @@ class CalendarRvAdapter(
 
             // get date color from database
             CoroutineScope(Dispatchers.IO).launch {
-                val dateColor = calendarViewModel.getDateColor(ruFormatDate)
+                val dateColor = dateParamsViewModel.getDateColor(ruFormatDate)
                 withContext(Dispatchers.Main) {
                     if (dateColor != null) {
                         // set color to holder
@@ -207,7 +207,7 @@ class CalendarRvAdapter(
 
     private suspend fun changeColorInDb(ruFormatDate: String, color: String) {
         Log.d("Color", "Changing color for $ruFormatDate")
-        val id = calendarViewModel.getDateId(ruFormatDate = ruFormatDate)
+        val id = dateParamsViewModel.getDateId(ruFormatDate = ruFormatDate)
 
         if (id == null) {
             // if date in not exists in database
@@ -244,11 +244,11 @@ class CalendarRvAdapter(
 
     private suspend fun calendarDbDeleteObj(id: Int) {
         val calendarDbObj = CalendarDateModelDb(_id = id)
-        calendarViewModel.calendarDbDeleteObj(calendarDbObj)
+        dateParamsViewModel.calendarDbDeleteObj(calendarDbObj)
     }
 
     private suspend fun insertColorToCalendarDb(calendarDateModelDb: CalendarDateModelDb) {
-        calendarViewModel.insertCalendarDate(calendarDateModelDb)
+        dateParamsViewModel.insertCalendarDate(calendarDateModelDb)
     }
 
     private fun initColorsImageButtons(dialogView: View) {
@@ -278,14 +278,14 @@ class CalendarRvAdapter(
     }
 
     private fun restoreSelection(holder: ViewHolder) {
-        if (calendarViewModel.dateDetailsVisibility.value!!) {
+        if (dateParamsViewModel.dateDetailsVisibility.value!!) {
             val holderDate = holder.date.text
-            val prevHolderDate = calendarViewModel.prevCalendarRvHolder?.date?.text
+            val prevHolderDate = dateParamsViewModel.prevCalendarRvHolder?.date?.text
 
             if (holderDate == prevHolderDate) {
                 holder.date.setTypeface(null, Typeface.BOLD)
 
-                calendarViewModel.prevCalendarRvHolder = holder
+                dateParamsViewModel.prevCalendarRvHolder = holder
             }
         }
     }
@@ -293,19 +293,19 @@ class CalendarRvAdapter(
     private fun setOnCalendarClickListener(holder: ViewHolder, selectedDate: DateParams) {
         // Set the click listener to handle cell selection
         holder.cellLayout.setOnClickListener {
-            if (holder != calendarViewModel.prevCalendarRvHolder) {
+            if (holder != dateParamsViewModel.prevCalendarRvHolder) {
 
                 unSelectPreviousHolder()
 
                 selectDate(holder)
 
-                calendarViewModel.prevCalendarRvHolder = holder
+                dateParamsViewModel.prevCalendarRvHolder = holder
 
-                calendarViewModel.updateSelectedDate(
+                dateParamsViewModel.updateSelectedDate(
                     dateParams = selectedDate
                 )
 
-                calendarViewModel.dateDetailsVisibility.value = true
+                dateParamsViewModel.dateDetailsVisibility.value = true
             }
         }
     }
@@ -324,7 +324,7 @@ class CalendarRvAdapter(
     }
 
     private fun unSelectPreviousHolder() {
-        calendarViewModel.prevCalendarRvHolder?.date?.setTypeface(null, Typeface.NORMAL)
+        dateParamsViewModel.prevCalendarRvHolder?.date?.setTypeface(null, Typeface.NORMAL)
     }
 
     private fun selectDate(holder: ViewHolder) {

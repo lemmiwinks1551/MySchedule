@@ -63,7 +63,7 @@ class FullMonthViewRVAdapter(
         } else {
             // if appointments exists in current date
             fillAppointmentsExistsTv(holder)
-            inflateChildRv(holder, position)
+            inflateChildRv(holder, position, monthDatesList[position])
         }
     }
 
@@ -96,7 +96,11 @@ class FullMonthViewRVAdapter(
         }
     }
 
-    private fun inflateChildRv(holder: FullMonthViewRVViewHolder, position: Int) {
+    private fun inflateChildRv(
+        holder: FullMonthViewRVViewHolder,
+        position: Int,
+        dateWeekAppModel: DateWeekAppModel
+    ) {
         val parentItem = monthDatesList[position]
 
         with(holder) {
@@ -107,7 +111,8 @@ class FullMonthViewRVAdapter(
                 FullMonthChildAdapter(
                     parentItem.appointmentsList,
                     navController,
-                    dateParamsViewModel
+                    dateParamsViewModel,
+                    dateWeekAppModel
                 )
             childRv.adapter = fullMonthChildAdapter
         }

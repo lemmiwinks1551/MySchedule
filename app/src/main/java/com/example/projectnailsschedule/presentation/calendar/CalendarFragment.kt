@@ -172,7 +172,7 @@ class CalendarFragment : Fragment(),
         // create adapter
         val calendarRvAdapter = CalendarRvAdapter(
             daysInMonth = daysInMonth,
-            calendarViewModel = dateParamsViewModel,
+            dateParamsViewModel = dateParamsViewModel,
             context = requireContext()
         )
 
