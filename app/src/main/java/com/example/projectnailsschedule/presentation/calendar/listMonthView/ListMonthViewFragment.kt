@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import androidx.recyclerview.widget.RecyclerView.SmoothScroller
 import com.example.projectnailsschedule.R
@@ -38,6 +39,7 @@ class ListMonthViewFragment : Fragment() {
 
     private var _binding: FragmentFullMonthViewBinding? = null
     private var fullMonthAppointmentsRV: RecyclerView? = null
+    private var fullMonthAppointmentsRVAdapter: FullMonthViewRVAdapter? = null
 
     private var layoutManager: LayoutManager? = null
 
@@ -121,7 +123,7 @@ class ListMonthViewFragment : Fragment() {
             }
             withContext(Dispatchers.Main) {
                 // create adapter
-                val fullMonthViewRVAdapter =
+                fullMonthAppointmentsRVAdapter =
                     FullMonthViewRVAdapter(
                         list,
                         requireContext(),
@@ -132,7 +134,7 @@ class ListMonthViewFragment : Fragment() {
                 layoutManager = GridLayoutManager(activity, 1)
 
                 fullMonthAppointmentsRV?.layoutManager = layoutManager
-                fullMonthAppointmentsRV?.adapter = fullMonthViewRVAdapter
+                fullMonthAppointmentsRV?.adapter = fullMonthAppointmentsRVAdapter
                 fullMonthAppointmentsRV?.scheduleLayoutAnimation()
             }
         }
@@ -208,5 +210,10 @@ class ListMonthViewFragment : Fragment() {
         dateParamsViewModel.selectedDate.value?.let { inflateCalendarRecyclerView(it) }
         dateParamsViewModel.selectedDate.value?.let { setMonthTextView(it) }
         dateParamsViewModel.selectedDate.value?.let { setYearTextView(it) }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        fullMonthAppointmentsRVAdapter?.snackbar?.dismiss()
     }
 }

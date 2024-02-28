@@ -5,7 +5,6 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,11 +16,11 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
+import com.example.projectnailsschedule.domain.models.DateParams
 import com.example.projectnailsschedule.domain.models.DateWeekAppModel
 import com.example.projectnailsschedule.presentation.calendar.DateParamsViewModel
 import com.example.projectnailsschedule.presentation.calendar.listMonthView.fullMonthChildRv.FullMonthChildAdapter
 import com.example.projectnailsschedule.presentation.calendar.listMonthView.fullMonthChildRv.FullMonthChildViewHolder
-import com.example.projectnailsschedule.util.Util
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -32,12 +31,12 @@ class FullMonthViewRVAdapter(
     private val monthDatesList: MutableList<DateWeekAppModel>,
     private val context: Context,
     private val navController: NavController,
-    private val dateParamsViewModel: DateParamsViewModel
+    private val dateParamsViewModel: DateParamsViewModel,
 ) : RecyclerView.Adapter<FullMonthViewRVViewHolder>(
 ) {
     lateinit var fullMonthChildAdapter: FullMonthChildAdapter
     lateinit var view: View
-    private val bindingKeyAppointment = "appointmentParams"
+    var snackbar: Snackbar? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FullMonthViewRVViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -162,7 +161,7 @@ class FullMonthViewRVAdapter(
                 )
 
                 // show Snackbar
-                Snackbar.make(
+                snackbar = Snackbar.make(
                     holder.childRv,
                     context.getString(
                         R.string.deleted_appointment_text,
@@ -203,7 +202,8 @@ class FullMonthViewRVAdapter(
                             ),
                             Toast.LENGTH_LONG
                         ).show()
-                    }.show()
+                    }
+                snackbar!!.show()
             }
 
             override fun getSwipeEscapeVelocity(defaultValue: Float): Float {
@@ -278,19 +278,15 @@ class FullMonthViewRVAdapter(
         // create new appointment button
         with(holder) {
             addAppointmentFab.setOnClickListener {
-                dateParamsViewModel.oldPosition = adapterPosition
-                val bundle = Bundle()
-                val newAppointment = AppointmentModelDb(
-                    date = Util().dateConverterNew(
-                        monthDatesList[adapterPosition].date.toString()
-                    ), deleted = false
-                )
-
                 // set old position to scroll
                 dateParamsViewModel.oldPosition = holder.adapterPosition
-
-                bundle.putParcelable(bindingKeyAppointment, newAppointment)
-                navController.navigate(R.id.action_fullMonthViewFragment_to_nav_appointment, bundle)
+                val selectedDate = DateParams(
+                    date = monthDatesList[position].date,
+                    appointmentsList = monthDatesList[position].appointmentsList
+                )
+                dateParamsViewModel.appointmentPosition = null
+                dateParamsViewModel.updateSelectedDate(selectedDate)
+                navController.navigate(R.id.action_fullMonthViewFragment_to_nav_appointment)
             }
         }
     }

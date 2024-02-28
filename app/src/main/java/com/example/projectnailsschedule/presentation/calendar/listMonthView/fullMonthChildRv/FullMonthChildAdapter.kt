@@ -76,7 +76,6 @@ class FullMonthChildAdapter(
 
     private fun setOnClickListeners(holder: FullMonthChildViewHolder, position: Int) {
         with(holder) {
-
             itemView.setOnClickListener {
                 dateParamsViewModel.appointmentPosition = position
                 val selectedDate = DateParams(
