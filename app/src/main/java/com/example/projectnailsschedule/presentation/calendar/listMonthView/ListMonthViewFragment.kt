@@ -111,7 +111,7 @@ class ListMonthViewFragment : Fragment() {
                 Log.d("ListMonthMutableList", date)
 
                 val localDate = Util().convertStringToLocalDate(date)
-                val dateParams = DateParams(_id = null, date = localDate)
+                val dateParams = DateParams(date = localDate)
 
                 // добавляем в лист объект DateWeekAppModel, который содержит список записей по дню
                 val addToList = DateWeekAppModel(
