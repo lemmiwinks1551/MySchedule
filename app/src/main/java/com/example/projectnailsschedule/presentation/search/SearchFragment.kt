@@ -11,7 +11,7 @@ import android.widget.TextView
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -20,7 +20,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentSearchBinding
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
+import com.example.projectnailsschedule.domain.models.DateParams
+import com.example.projectnailsschedule.presentation.calendar.DateParamsViewModel
 import com.example.projectnailsschedule.presentation.search.searchRecyclerVIew.SearchRvAdapter
+import com.example.projectnailsschedule.util.Util
 import com.example.projectnailsschedule.util.rustore.RuStoreAd
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,18 +31,18 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class SearchFragment : Fragment() {
-    private val log = this::class.simpleName
-    private val searchViewModel: SearchViewModel by viewModels()
+    private val dateParamsViewModel: DateParamsViewModel by activityViewModels()
 
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
     private var searchTextView: SearchView? = null
     private var searchRecyclerView: RecyclerView? = null
     private var appointmentCount: TextView? = null
-    private val bindingKeyAppointment = "appointmentParams"
 
-    private var appointmentList: List<AppointmentModelDb>? = null
+    private var appointmentList: MutableList<AppointmentModelDb>? = null
     private var searchRvAdapter: SearchRvAdapter? = null
+
+    private var snackbar: Snackbar? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -71,9 +74,9 @@ class SearchFragment : Fragment() {
     }
 
     private fun initObservers() {
-        searchViewModel.appointmentsTotalCount.observe(viewLifecycleOwner) {
-            appointmentCount?.text = getString(R.string.appointments_count, it)
-        }
+        /*        searchViewModel.appointmentsTotalCount.observe(viewLifecycleOwner) {
+                    appointmentCount?.text = getString(R.string.appointments_count, it)
+                }*/
     }
 
     private fun initClickListeners() {
@@ -86,21 +89,23 @@ class SearchFragment : Fragment() {
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 val searchQuery = "%$newText%"
-                searchViewModel.searchDatabase(searchQuery).observe(viewLifecycleOwner) { list ->
-                    inflateSearchRecyclerVIew(list)
-                    appointmentList = list
-                }
+                dateParamsViewModel.searchDatabase(searchQuery)
+                    .observe(viewLifecycleOwner) { list ->
+                        inflateSearchRecyclerVIew(list)
+
+                        appointmentList = list
+                    }
                 return false
             }
         })
     }
 
-    private fun inflateSearchRecyclerVIew(appointmentsList: List<AppointmentModelDb>) {
+    private fun inflateSearchRecyclerVIew(appointmentsList: MutableList<AppointmentModelDb>) {
         // create adapter
         searchRvAdapter = SearchRvAdapter(
             appointmentCount = appointmentsList.size,
             appointmentsList = appointmentsList,
-            searchViewModel = searchViewModel
+            dateParamsViewModel = dateParamsViewModel
         )
 
         val layoutManager: RecyclerView.LayoutManager =
@@ -112,24 +117,13 @@ class SearchFragment : Fragment() {
         searchRvAdapter!!.setOnItemClickListener(object : SearchRvAdapter.OnItemClickListener {
             override fun onItemClick(position: Int) {
                 // edit selected appointment
-                val bundle = Bundle()
-                val appointmentModelDb = AppointmentModelDb(
-                    _id = appointmentList?.get(position)?._id,
-                    date = appointmentList?.get(position)?.date,
-                    name = appointmentList?.get(position)?.name,
-                    time = appointmentList?.get(position)?.time,
-                    procedure = appointmentList?.get(position)?.procedure,
-                    phone = appointmentList?.get(position)?.phone,
-                    telegram = appointmentList?.get(position)?.telegram,
-                    instagram = appointmentList?.get(position)?.instagram,
-                    vk = appointmentList?.get(position)?.vk,
-                    whatsapp = appointmentList?.get(position)?.whatsapp,
-                    notes = appointmentList?.get(position)?.notes,
-                    deleted = appointmentList?.get(position)!!.deleted
+                dateParamsViewModel.appointmentPosition = position
+                val selectedDate = DateParams(
+                    date = Util().convertStringToLocalDate(appointmentList?.get(position)?.date!!),
+                    appointmentsList = appointmentsList
                 )
-                val navController = findNavController()
-                bundle.putParcelable(bindingKeyAppointment, appointmentModelDb)
-                navController.navigate(R.id.action_nav_search_to_nav_appointment, bundle)
+                dateParamsViewModel.updateSelectedDate(selectedDate)
+                findNavController().navigate(R.id.action_nav_search_to_nav_appointment)
             }
         })
     }
@@ -154,13 +148,13 @@ class SearchFragment : Fragment() {
 
                 // delete client from Db
                 lifecycleScope.launch {
-                    searchViewModel.deleteAppointment(deleteAppointmentModelDb)
+                    dateParamsViewModel.deleteAppointment(deleteAppointmentModelDb)
                 }
 
                 searchRvAdapter?.notifyItemRemoved(position)
 
                 // show Snackbar
-                Snackbar.make(
+                snackbar = Snackbar.make(
                     searchRecyclerView!!,
                     getString(R.string.deleted_appointment_text, deleteAppointmentModelDb.name),
                     Snackbar.LENGTH_LONG
@@ -173,13 +167,14 @@ class SearchFragment : Fragment() {
                         // adding on click listener to our action of snack bar.
                         // below line is to add our item to array list with a position.
                         lifecycleScope.launch {
-                            searchViewModel.saveAppointment(deleteAppointmentModelDb)
+                            dateParamsViewModel.insertAppointment(deleteAppointmentModelDb)
                         }
 
                         // below line is to notify item is
                         // added to our adapter class.
                         searchRvAdapter?.notifyDataSetChanged()
-                    }.show()
+                    }
+                snackbar!!.show()
             }
 
             override fun getSwipeEscapeVelocity(defaultValue: Float): Float {
@@ -264,5 +259,6 @@ class SearchFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        snackbar?.dismiss()
     }
 }

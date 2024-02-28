@@ -6,7 +6,7 @@ import com.example.projectnailsschedule.domain.repository.ScheduleRepository
 
 class SearchAppointmentUseCase(private val scheduleRepository: ScheduleRepository) {
 
-    fun execute(searchQuery: String): LiveData<List<AppointmentModelDb>> {
+    fun execute(searchQuery: String): LiveData<MutableList<AppointmentModelDb>> {
         return scheduleRepository.searchAppointment(searchQuery)
     }
 }

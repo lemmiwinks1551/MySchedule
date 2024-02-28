@@ -6,12 +6,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
+import com.example.projectnailsschedule.presentation.calendar.DateParamsViewModel
 import com.example.projectnailsschedule.presentation.search.SearchViewModel
 
 internal class SearchRvAdapter(
     private var appointmentCount: Int,
     private var appointmentsList: List<AppointmentModelDb>,
-    private val searchViewModel: SearchViewModel
+    private val dateParamsViewModel: DateParamsViewModel
 ) :
     RecyclerView.Adapter<SearchViewHolder>() {
     val log = this::class.simpleName
@@ -66,9 +67,9 @@ internal class SearchRvAdapter(
     }
 
     override fun getItemCount(): Int {
-        // set current appointment count
-        searchViewModel.appointmentsTotalCount.value = appointmentCount
-        searchViewModel.getAllAppointmentsLiveData()
+/*        // set current appointment count
+        dateParamsViewModel.appointmentsTotalCount.value = appointmentCount
+        dateParamsViewModel.getAllAppointmentsLiveData()*/
         return appointmentCount
     }
 
@@ -135,22 +136,22 @@ internal class SearchRvAdapter(
     }
 
     private fun startVk(uri: String) {
-        searchViewModel.startVk(uri)
+        dateParamsViewModel.startVk(uri)
     }
 
     private fun startTelegram(uri: String) {
-        searchViewModel.startTelegram(uri)
+        dateParamsViewModel.startTelegram(uri)
     }
 
     private fun startInstagram(uri: String) {
-        searchViewModel.startInstagram(uri)
+        dateParamsViewModel.startInstagram(uri)
     }
 
     private fun startWhatsapp(uri: String) {
-        searchViewModel.startWhatsApp(uri)
+        dateParamsViewModel.startWhatsApp(uri)
     }
 
     private fun startPhone(phoneNum: String) {
-        searchViewModel.startPhone(phoneNum)
+        dateParamsViewModel.startPhone(phoneNum)
     }
 }

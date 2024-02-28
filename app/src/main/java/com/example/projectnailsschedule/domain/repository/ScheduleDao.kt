@@ -39,5 +39,5 @@ interface ScheduleDao {
             "instagram LIKE :searchQuery OR " +
             "whatsapp LIKE :searchQuery OR " +
             "notes LIKE :searchQuery")
-    fun searchAppointment(searchQuery: String): Flow<List<AppointmentModelDb>>
+    fun searchAppointment(searchQuery: String): Flow<MutableList<AppointmentModelDb>>
 }

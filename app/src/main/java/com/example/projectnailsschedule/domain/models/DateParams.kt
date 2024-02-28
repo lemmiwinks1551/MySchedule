@@ -6,6 +6,7 @@ import java.time.LocalDate
 
 @Parcelize
 data class DateParams(
+    // TODO: Зачем ему айди? 
     val _id: Int? = null,
     var date: LocalDate? = null,
     var appointmentsList: MutableList<AppointmentModelDb>? = null

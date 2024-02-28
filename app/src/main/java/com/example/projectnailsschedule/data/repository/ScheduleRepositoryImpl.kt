@@ -43,7 +43,7 @@ class ScheduleRepositoryImpl(context: Context) : ScheduleRepository {
         return dao.selectAllAppointmentsLiveData().asLiveData()
     }
 
-    override fun searchAppointment(searchQuery: String): LiveData<List<AppointmentModelDb>> {
+    override fun searchAppointment(searchQuery: String): LiveData<MutableList<AppointmentModelDb>> {
         return dao.searchAppointment(searchQuery = searchQuery).asLiveData()
     }
 

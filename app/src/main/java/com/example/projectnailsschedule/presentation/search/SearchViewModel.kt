@@ -27,7 +27,7 @@ class SearchViewModel @Inject constructor(
 
     var appointmentsTotalCount = MutableLiveData<Int>()
 
-    fun searchDatabase(searchQuery: String): LiveData<List<AppointmentModelDb>> {
+    fun searchDatabase(searchQuery: String): LiveData<MutableList<AppointmentModelDb>> {
         return searchAppointmentUseCase.execute(searchQuery)
     }
 

@@ -13,6 +13,8 @@ interface ScheduleRepository {
 
     suspend fun deleteAppointment(appointmentModelDb: AppointmentModelDb): Boolean
 
+    fun searchAppointment(searchQuery: String): LiveData<MutableList<AppointmentModelDb>>
+
     suspend fun getDateAppointments(date: LocalDate): MutableList<AppointmentModelDb>
 
     suspend fun selectAllAppointmentsList(): List<AppointmentModelDb>
@@ -21,5 +23,4 @@ interface ScheduleRepository {
 
     fun selectAllAppointmentsLiveData(): LiveData<List<AppointmentModelDb>>
 
-    fun searchAppointment(searchQuery: String): LiveData<List<AppointmentModelDb>>
 }
