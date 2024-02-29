@@ -12,7 +12,6 @@ import com.example.projectnailsschedule.domain.usecase.calendarUC.CalendarDbDele
 import com.example.projectnailsschedule.domain.usecase.calendarUC.SelectCalendarDateByDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.LoadShortDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.InsertCalendarDateUseCase
-import com.example.projectnailsschedule.domain.usecase.calendarUC.SetSelectedDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.UpdateDateColorUseCase
 import com.example.projectnailsschedule.domain.usecase.clientsUC.DeleteClientUseCase
 import com.example.projectnailsschedule.domain.usecase.clientsUC.InsertClientUseCase
@@ -153,11 +152,6 @@ class DomainModule {
     @Provides
     fun provideExportIseCase(context: Context): ExportUseCase {
         return ExportUseCase(context)
-    }
-
-    @Provides
-    fun provideSetSelectedDateUseCase(repository: SettingsRepository): SetSelectedDateUseCase {
-        return SetSelectedDateUseCase(repository)
     }
 
     @Provides

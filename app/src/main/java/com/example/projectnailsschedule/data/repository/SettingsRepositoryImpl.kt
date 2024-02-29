@@ -10,7 +10,6 @@ class SettingsRepositoryImpl(context: Context?) : SettingsRepository {
     private val CUSTOM_PREF_NAME = "Settings"
     private val themeKey = "theme"
     private val monthKey = "month"
-    private val selectedDateKey = "selectedDate"
     private val languageKey = "language"
     private val userTheme = "theme"
 
@@ -33,25 +32,6 @@ class SettingsRepositoryImpl(context: Context?) : SettingsRepository {
         return sharedPreference.getBoolean(themeKey, false)
     }
 
-    override fun getSelectedMonth(): LocalDate {
-        return LocalDate.parse(sharedPreference.getString(monthKey, LocalDate.now().toString()))
-    }
-
-    override fun setSelectedMonth(selectedDate: LocalDate) {
-        val editor = sharedPreference.edit()
-        editor.putString(monthKey, selectedDate.toString())
-        editor.apply()
-    }
-
-    override fun setSelectedDate(selectedDate: LocalDate) {
-        val editor = sharedPreference.edit()
-        editor.putString(selectedDateKey, selectedDate.toString())
-        editor.apply()
-    }
-
-    override fun getSelectedDate(): LocalDate {
-        return LocalDate.parse(sharedPreference.getString(selectedDateKey, LocalDate.now().toString()))
-    }
 
     override fun setLanguage(language: String) {
         val editor = sharedPreference.edit()
