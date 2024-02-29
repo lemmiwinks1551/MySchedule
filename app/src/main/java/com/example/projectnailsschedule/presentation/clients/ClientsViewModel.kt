@@ -6,15 +6,21 @@ import com.example.projectnailsschedule.domain.models.ClientModelDb
 import com.example.projectnailsschedule.domain.usecase.clientsUC.DeleteClientUseCase
 import com.example.projectnailsschedule.domain.usecase.clientsUC.InsertClientUseCase
 import com.example.projectnailsschedule.domain.usecase.clientsUC.SearchClientUseCase
-import com.example.projectnailsschedule.domain.usecase.socUC.*
+import com.example.projectnailsschedule.domain.usecase.clientsUC.UpdateClientUseCase
+import com.example.projectnailsschedule.domain.usecase.socUC.StartInstagramUc
+import com.example.projectnailsschedule.domain.usecase.socUC.StartPhoneUc
+import com.example.projectnailsschedule.domain.usecase.socUC.StartTelegramUc
+import com.example.projectnailsschedule.domain.usecase.socUC.StartVkUc
+import com.example.projectnailsschedule.domain.usecase.socUC.StartWhatsAppUc
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class ClientsViewModel @Inject constructor(
-    private val searchClientUseCase: SearchClientUseCase,
-    private val deleteClientUseCase: DeleteClientUseCase,
     private val insertClientUseCase: InsertClientUseCase,
+    private val updateClientUseCase: UpdateClientUseCase,
+    private val deleteClientUseCase: DeleteClientUseCase,
+    private val searchClientUseCase: SearchClientUseCase,
     private val startVkUc: StartVkUc,
     private val startTelegramUc: StartTelegramUc,
     private val startInstagramUc: StartInstagramUc,
@@ -22,16 +28,20 @@ class ClientsViewModel @Inject constructor(
     private val startPhoneUc: StartPhoneUc
 ) : ViewModel() {
 
-    suspend fun searchClient(searchQuery: String): LiveData<List<ClientModelDb>> {
-        return searchClientUseCase.execute(searchQuery)
+    suspend fun insertClient(clientModelDb: ClientModelDb) {
+        insertClientUseCase.execute(clientModelDb)
+    }
+
+    suspend fun updateClient(clientModelDb: ClientModelDb) {
+        updateClientUseCase.execute(clientModelDb)
     }
 
     suspend fun deleteClient(clientModelDb: ClientModelDb) {
         deleteClientUseCase.execute(clientModelDb)
     }
 
-    suspend fun insertClient(clientModelDb: ClientModelDb) {
-        insertClientUseCase.execute(clientModelDb)
+    suspend fun searchClient(searchQuery: String): LiveData<List<ClientModelDb>> {
+        return searchClientUseCase.execute(searchQuery)
     }
 
     fun startVk(uri: String) {
