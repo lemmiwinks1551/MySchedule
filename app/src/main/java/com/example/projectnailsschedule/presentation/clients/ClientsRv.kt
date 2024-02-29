@@ -1,19 +1,76 @@
-package com.example.projectnailsschedule.presentation.clients.clientsRecyclerView
+package com.example.projectnailsschedule.presentation.clients
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
+import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.domain.models.ClientModelDb
-import com.example.projectnailsschedule.presentation.clients.ClientsViewModel
 
-class ClientsAdapter(
+class ClientsRv(
     private var clientsCount: Int,
     private var clientsList: List<ClientModelDb>,
     private var clientsViewModel: ClientsViewModel
-) : RecyclerView.Adapter<ClientsViewHolder>(
-) {
+) : RecyclerView.Adapter<ClientsRv.ViewHolder>() {
+    inner class ViewHolder(
+        itemView: View,
+        listener: OnItemClickListener
+    ) : RecyclerView.ViewHolder(itemView) {
+        var name: TextView
+        var phone: TextView
+        var vk: TextView
+        var telegram: TextView
+        var instagram: TextView
+        var whatsapp: TextView
+        var notes: TextView
+
+        var callClientButton: ImageButton
+        var vkImageButton: ImageButton
+        var telegramImageButton: ImageButton
+        var instagramImageButton: ImageButton
+        var whatsappImageButton: ImageButton
+
+        var clientNameCl: ConstraintLayout
+        var clientPhoneCl: ConstraintLayout
+        var clientVkCl: ConstraintLayout
+        var clientTelegramCl: ConstraintLayout
+        var clientInstagramCl: ConstraintLayout
+        var clientWhatsappCl: ConstraintLayout
+        var clientNotesCl: ConstraintLayout
+
+        init {
+            with(itemView) {
+                name = findViewById(R.id.client_select_name)
+                phone = findViewById(R.id.client_select_phone)
+                vk = findViewById(R.id.client_select_vk_link_tv)
+                telegram = findViewById(R.id.client_select_telegram_link_tv)
+                instagram = findViewById(R.id.client_select_instagram_link_tv)
+                whatsapp = findViewById(R.id.client_select_whatsapp_link_tv)
+                notes = findViewById(R.id.client_select_notes)
+
+                callClientButton = findViewById(R.id.call_client_button_select_button)
+                vkImageButton = findViewById(R.id.vk_logo_imageButton_select_client)
+                telegramImageButton = findViewById(R.id.telegram_logo_imageButton_select_client)
+                instagramImageButton = findViewById(R.id.instagram_logo_imageButton_select_client)
+                whatsappImageButton = findViewById(R.id.whatsapp_logo_imageButton_select_client)
+
+                clientNameCl = findViewById(R.id.client_name_cl)
+                clientPhoneCl = findViewById(R.id.client_phone_cl)
+                clientVkCl = findViewById(R.id.client_vk_cl)
+                clientTelegramCl = findViewById(R.id.client_telegram_cl)
+                clientInstagramCl = findViewById(R.id.client_instagram_cl)
+                clientWhatsappCl = findViewById(R.id.client_whatsapp_cl)
+                clientNotesCl = findViewById(R.id.client_notes_cl)
+            }
+
+            itemView.setOnClickListener {
+                listener.onItemClick(adapterPosition)
+            }
+        }
+    }
 
     private lateinit var mListener: OnItemClickListener
 
@@ -26,24 +83,24 @@ class ClientsAdapter(
         mListener = listener
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ClientsViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val view: View = inflater.inflate(R.layout.client_select_rv_item, parent, false)
 
-        return ClientsViewHolder(view, mListener)
+        return ViewHolder(view, mListener)
     }
 
     override fun getItemCount(): Int {
         return clientsCount
     }
 
-    override fun onBindViewHolder(holder: ClientsViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         clearViews(holder)
         setTextViews(holder)
         setClickListeners(holder)
     }
 
-    private fun setTextViews(holder: ClientsViewHolder) {
+    private fun setTextViews(holder: ViewHolder) {
         with(clientsList[holder.adapterPosition]) {
             holder.name.text = name
             holder.phone.text = phone
@@ -57,7 +114,7 @@ class ClientsAdapter(
         hideEmptyViews(holder, holder.adapterPosition)
     }
 
-    private fun setClickListeners(holder: ClientsViewHolder) {
+    private fun setClickListeners(holder: ViewHolder) {
         with(holder) {
             callClientButton.setOnClickListener {
                 startPhone(holder.phone.text.toString())
@@ -101,7 +158,7 @@ class ClientsAdapter(
         clientsViewModel.startPhone(phoneNum)
     }
 
-    private fun hideEmptyViews(holder: ClientsViewHolder, position: Int) {
+    private fun hideEmptyViews(holder: ViewHolder, position: Int) {
         with(clientsList[position]) {
             if (name.isNullOrEmpty()) {
                 holder.clientNameCl.visibility = View.GONE
@@ -127,7 +184,7 @@ class ClientsAdapter(
         }
     }
 
-    private fun clearViews(holder: ClientsViewHolder) {
+    private fun clearViews(holder: ViewHolder) {
         with(holder) {
             clientNameCl.visibility = View.VISIBLE
             clientPhoneCl.visibility = View.VISIBLE

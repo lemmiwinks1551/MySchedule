@@ -21,7 +21,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentClientsBinding
 import com.example.projectnailsschedule.domain.models.ClientModelDb
-import com.example.projectnailsschedule.presentation.clients.clientsRecyclerView.ClientsAdapter
 import com.example.projectnailsschedule.util.rustore.RuStoreAd
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
@@ -37,7 +36,7 @@ class ClientsFragment : Fragment() {
     private val clientsViewModel: ClientsViewModel by viewModels()
 
     private var clientsList: List<ClientModelDb>? = null
-    private var clientsRVAdapter: ClientsAdapter? = null
+    private var clientsRVAdapter: ClientsRv? = null
 
     private var clientsSearchView: SearchView? = null
     private var searchClientsRV: RecyclerView? = null
@@ -105,7 +104,7 @@ class ClientsFragment : Fragment() {
 
     private fun inflateClientsRecyclerView(clientsList: List<ClientModelDb>) {
         // create adapter
-        clientsRVAdapter = ClientsAdapter(
+        clientsRVAdapter = ClientsRv(
             clientsCount = clientsList.size,
             clientsList = clientsList,
             clientsViewModel = clientsViewModel
@@ -118,7 +117,7 @@ class ClientsFragment : Fragment() {
         searchClientsRV?.adapter = clientsRVAdapter
 
         // set clickListener on clientsRV
-        clientsRVAdapter?.setOnItemClickListener(object : ClientsAdapter.OnItemClickListener {
+        clientsRVAdapter?.setOnItemClickListener(object : ClientsRv.OnItemClickListener {
             override fun onItemClick(position: Int) {
                 // edit selected client
                 val bundle = Bundle()

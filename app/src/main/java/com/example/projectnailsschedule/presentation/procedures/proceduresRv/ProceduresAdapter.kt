@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.domain.models.ProcedureModelDb
-import com.example.projectnailsschedule.presentation.clients.clientsRecyclerView.ClientsViewHolder
 
 class ProceduresAdapter(
     private var proceduresCount: Int,
