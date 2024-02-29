@@ -127,12 +127,10 @@ class DateFragment : Fragment() {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                // this method is called when we swipe our item to left direction.
-                // on below line we are getting the item at a particular position.
+                val position = viewHolder.adapterPosition
                 val appointmentList = dateParamsViewModel.selectedDate.value?.appointmentsList!!
                 val deleteAppointmentModelDb: AppointmentModelDb =
-                    appointmentList[viewHolder.adapterPosition]
-                val position = viewHolder.adapterPosition
+                    appointmentList[position]
 
                 // delete client from Db
                 CoroutineScope(Dispatchers.IO).launch {
@@ -153,9 +151,6 @@ class DateFragment : Fragment() {
                     .setAction(
                         getString(R.string.cancel)
                     ) {
-                        // adding on click listener to our action of snack bar.
-                        // below line is to add our item to array list with a position.
-
                         CoroutineScope(Dispatchers.IO).launch {
                             dateParamsViewModel.insertAppointment(
                                 deleteAppointmentModelDb,

@@ -10,7 +10,6 @@ import com.example.projectnailsschedule.presentation.calendar.DateParamsViewMode
 import com.example.projectnailsschedule.presentation.search.SearchViewModel
 
 internal class SearchRvAdapter(
-    private var appointmentCount: Int,
     private var appointmentsList: List<AppointmentModelDb>,
     private val dateParamsViewModel: DateParamsViewModel
 ) :
@@ -70,7 +69,7 @@ internal class SearchRvAdapter(
 /*        // set current appointment count
         dateParamsViewModel.appointmentsTotalCount.value = appointmentCount
         dateParamsViewModel.getAllAppointmentsLiveData()*/
-        return appointmentCount
+        return appointmentsList.size
     }
 
     private fun hideEmptyViews(holder: SearchViewHolder, position: Int) {

@@ -55,13 +55,13 @@ class SearchFragment : Fragment() {
         // init widgets
         initWidgets()
 
-        // init observers
-        initObservers()
-
         // init click listeners
         initClickListeners()
 
         swipeToDelete()
+
+        // init inflate recycler view
+        searchTextView?.setQuery(null, true)
 
         return binding.root
     }
@@ -71,12 +71,6 @@ class SearchFragment : Fragment() {
         searchRecyclerView = binding.searchRecyclerView
         appointmentCount = binding.appointmentsCountTextView
 
-    }
-
-    private fun initObservers() {
-        /*        searchViewModel.appointmentsTotalCount.observe(viewLifecycleOwner) {
-                    appointmentCount?.text = getString(R.string.appointments_count, it)
-                }*/
     }
 
     private fun initClickListeners() {
@@ -91,6 +85,8 @@ class SearchFragment : Fragment() {
                 val searchQuery = "%$newText%"
                 dateParamsViewModel.searchDatabase(searchQuery)
                     .observe(viewLifecycleOwner) { list ->
+                        appointmentCount?.text = getString(R.string.appointments_count, list.size)
+
                         inflateSearchRecyclerVIew(list)
 
                         appointmentList = list
@@ -103,7 +99,6 @@ class SearchFragment : Fragment() {
     private fun inflateSearchRecyclerVIew(appointmentsList: MutableList<AppointmentModelDb>) {
         // create adapter
         searchRvAdapter = SearchRvAdapter(
-            appointmentCount = appointmentsList.size,
             appointmentsList = appointmentsList,
             dateParamsViewModel = dateParamsViewModel
         )
@@ -144,14 +139,11 @@ class SearchFragment : Fragment() {
                 // on below line we are getting the item at a particular position.
                 val deleteAppointmentModelDb: AppointmentModelDb =
                     appointmentList!![viewHolder.adapterPosition]
-                val position = viewHolder.adapterPosition
 
                 // delete client from Db
                 lifecycleScope.launch {
                     dateParamsViewModel.deleteAppointment(deleteAppointmentModelDb)
                 }
-
-                searchRvAdapter?.notifyItemRemoved(position)
 
                 // show Snackbar
                 snackbar = Snackbar.make(
@@ -164,15 +156,9 @@ class SearchFragment : Fragment() {
                     .setAction(
                         getString(R.string.cancel)
                     ) {
-                        // adding on click listener to our action of snack bar.
-                        // below line is to add our item to array list with a position.
                         lifecycleScope.launch {
                             dateParamsViewModel.insertAppointment(deleteAppointmentModelDb)
                         }
-
-                        // below line is to notify item is
-                        // added to our adapter class.
-                        searchRvAdapter?.notifyDataSetChanged()
                     }
                 snackbar!!.show()
             }
@@ -246,14 +232,9 @@ class SearchFragment : Fragment() {
     }
 
     override fun onResume() {
-        searchTextView?.setQuery("", true) // clear search bar
+        // searchTextView?.setQuery("", true) // clear search bar
         super.onResume()
         RuStoreAd().banner(requireContext(), binding.root)
-    }
-
-    override fun onPause() {
-        searchTextView?.setQuery("", true) // clear search bar
-        super.onPause()
     }
 
     override fun onDestroyView() {
