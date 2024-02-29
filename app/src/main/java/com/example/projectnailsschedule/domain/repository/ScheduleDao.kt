@@ -20,7 +20,6 @@ interface ScheduleDao {
 
     @Query("SELECT * FROM schedule")
     suspend fun selectAllAppointmentsList(): List<AppointmentModelDb>
-    // TODO: можно сократить функцию?
 
     @Query("SELECT * FROM schedule WHERE date LIKE :dateMonth ORDER BY date")
     suspend fun getMonthAppointments(dateMonth: String): MutableList<AppointmentModelDb>
@@ -38,6 +37,6 @@ interface ScheduleDao {
             "telegram LIKE :searchQuery OR " +
             "instagram LIKE :searchQuery OR " +
             "whatsapp LIKE :searchQuery OR " +
-            "notes LIKE :searchQuery")
+            "notes LIKE :searchQuery ORDER BY _id DESC")
     fun searchAppointment(searchQuery: String): Flow<MutableList<AppointmentModelDb>>
 }

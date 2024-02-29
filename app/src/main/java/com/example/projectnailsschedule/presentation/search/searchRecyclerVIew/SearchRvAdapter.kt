@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
 import com.example.projectnailsschedule.presentation.calendar.DateParamsViewModel
-import com.example.projectnailsschedule.presentation.search.SearchViewModel
 
 internal class SearchRvAdapter(
     private var appointmentsList: List<AppointmentModelDb>,
