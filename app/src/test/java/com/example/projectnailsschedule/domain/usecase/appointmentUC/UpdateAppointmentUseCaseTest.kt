@@ -10,7 +10,7 @@ internal class UpdateAppointmentUseCaseTest {
     private val scheduleRepository = mock<ScheduleRepository>()
 
     @Test
-    fun `should update appointment in Schedule repository and return true`() {
+    suspend fun `should update appointment in Schedule repository and return true`() {
         val updateAppointmentUseCase = UpdateAppointmentUseCase(scheduleRepository = scheduleRepository)
         val testAppointment = AppointmentModelDb(_id = null, deleted = false)
 

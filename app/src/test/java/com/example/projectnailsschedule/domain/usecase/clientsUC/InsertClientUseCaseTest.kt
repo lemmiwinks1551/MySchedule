@@ -10,7 +10,7 @@ internal class InsertClientUseCaseTest {
     private val clientsRepository = mock<ClientsRepository>()
 
     @Test
-    fun `should insert client into Clients repository and return true`() {
+    suspend fun `should insert client into Clients repository and return true`() {
         val insertClientUseCase = InsertClientUseCase(clientsRepository = clientsRepository)
         val testClient = ClientModelDb()
         val expected = true

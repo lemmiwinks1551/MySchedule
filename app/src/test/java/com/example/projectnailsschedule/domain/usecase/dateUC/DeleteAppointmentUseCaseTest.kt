@@ -10,7 +10,7 @@ internal class DeleteAppointmentUseCaseTest {
     private val scheduleRepository = mock<ScheduleRepository>()
 
     @Test
-    fun `should delete Appointment from Schedule repository and return true`() {
+    suspend fun `should delete Appointment from Schedule repository and return true`() {
         val deleteAppointmentUseCase = DeleteAppointmentUseCase(scheduleRepository = scheduleRepository)
         val testAppointment = AppointmentModelDb(deleted = false)
         val expected = true

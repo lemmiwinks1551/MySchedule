@@ -11,7 +11,7 @@ import com.example.projectnailsschedule.domain.usecase.appointmentUC.InsertAppoi
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.UpdateAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.CalendarDbDeleteObj
 import com.example.projectnailsschedule.domain.usecase.calendarUC.InsertCalendarDateUseCase
-import com.example.projectnailsschedule.domain.usecase.calendarUC.LoadShortDateUseCase
+import com.example.projectnailsschedule.domain.usecase.calendarUC.GetDateAppointments
 import com.example.projectnailsschedule.domain.usecase.calendarUC.SelectCalendarDateByDateUseCase
 import com.example.projectnailsschedule.domain.usecase.dateUC.DeleteAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.searchUC.SearchAppointmentUseCase
@@ -30,7 +30,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DateParamsViewModel @Inject constructor(
-    private val loadShortDateUseCase: LoadShortDateUseCase,
+    private val getDateAppointments: GetDateAppointments,
     private val selectCalendarDateByDateUseCase: SelectCalendarDateByDateUseCase,
     private val insertCalendarDateUseCase: InsertCalendarDateUseCase,
     private val calendarDbDeleteObj: CalendarDbDeleteObj,
@@ -66,7 +66,7 @@ class DateParamsViewModel @Inject constructor(
     var prevCalendarRvHolder: CalendarRvAdapter.ViewHolder? = null
 
     suspend fun getArrayAppointments(date: LocalDate): MutableList<AppointmentModelDb> {
-        return loadShortDateUseCase.execute(date)
+        return getDateAppointments.execute(date)
     }
 
     fun updateSelectedDate(dateParams: DateParams) {

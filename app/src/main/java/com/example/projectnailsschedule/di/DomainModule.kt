@@ -10,7 +10,7 @@ import com.example.projectnailsschedule.domain.usecase.appointmentUC.InsertAppoi
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.UpdateAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.CalendarDbDeleteObj
 import com.example.projectnailsschedule.domain.usecase.calendarUC.SelectCalendarDateByDateUseCase
-import com.example.projectnailsschedule.domain.usecase.calendarUC.LoadShortDateUseCase
+import com.example.projectnailsschedule.domain.usecase.calendarUC.GetDateAppointments
 import com.example.projectnailsschedule.domain.usecase.calendarUC.InsertCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.UpdateDateColorUseCase
 import com.example.projectnailsschedule.domain.usecase.clientsUC.DeleteClientUseCase
@@ -105,8 +105,8 @@ class DomainModule {
     }
 
     @Provides
-    fun provideLoadShortDateUseCase(repository: ScheduleRepository): LoadShortDateUseCase {
-        return LoadShortDateUseCase(repository)
+    fun gateDateAppointmentsUseCase(repository: ScheduleRepository): GetDateAppointments {
+        return GetDateAppointments(repository)
     }
 
     @Provides

@@ -10,7 +10,7 @@ internal class DeleteClientUseCaseTest {
     private val clientsRepository = mock<ClientsRepository>()
 
     @Test
-    fun `should delete Client from Clients repository and return true`() {
+    suspend fun `should delete Client from Clients repository and return true`() {
         val deleteClientUseCase = DeleteClientUseCase(clientsRepository = clientsRepository)
         val testClient = ClientModelDb()
         val expected = true

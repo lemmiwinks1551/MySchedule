@@ -10,7 +10,7 @@ internal class UpdateClientUseCaseTest {
     private val clientsRepository = mock<ClientsRepository>()
 
     @Test
-    fun `should update Client in Clients repository and return true`() {
+    suspend fun `should update Client in Clients repository and return true`() {
         val updateClientUseCase = UpdateClientUseCase(clientsRepository = clientsRepository)
         val testClient = ClientModelDb()
 
