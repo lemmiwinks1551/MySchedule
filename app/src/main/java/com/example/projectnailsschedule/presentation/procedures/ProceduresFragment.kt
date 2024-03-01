@@ -11,6 +11,7 @@ import android.widget.TextView
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
@@ -21,7 +22,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentProceduresBinding
 import com.example.projectnailsschedule.domain.models.ProcedureModelDb
-import com.example.projectnailsschedule.presentation.procedures.proceduresRv.ProceduresAdapter
 import com.example.projectnailsschedule.util.rustore.RuStoreAd
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
@@ -30,21 +30,19 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ProceduresFragment : Fragment() {
-    val log = this::class.simpleName
-    private val proceduresViewModel: ProceduresViewModel by viewModels()
+    private val proceduresViewModel: ProceduresViewModel by activityViewModels()
 
     private var _binding: FragmentProceduresBinding? = null
     private val binding get() = _binding!!
 
     private var proceduresList: List<ProcedureModelDb>? = null
-    private var proceduresRVAdapter: ProceduresAdapter? = null
+    private var proceduresRVAdapter: ProceduresRv? = null
 
     private var proceduresSearchView: SearchView? = null
     private var searchProceduresRV: RecyclerView? = null
     private var addButton: FloatingActionButton? = null
     private var proceduresCountTextView: TextView? = null
-
-    private var bindingKeyClientProcedure = "editProcedure"
+    private var snackbar: Snackbar? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,19 +52,19 @@ class ProceduresFragment : Fragment() {
 
         _binding = FragmentProceduresBinding.inflate(inflater, container, false)
 
-        // init widgets
-        initWidgets()
+        initViews()
 
-        // swipe to delete
         swipeToDelete()
 
-        // initClickListeners
         initClickListeners()
+
+        // init inflate recycler view
+        proceduresSearchView?.setQuery(null, true)
 
         return binding.root
     }
 
-    private fun initWidgets() {
+    private fun initViews() {
         proceduresSearchView = binding.proceduresSearchView
         searchProceduresRV = binding.proceduresRecyclerView
         addButton = binding.fragmentProceduresAddButton
@@ -83,9 +81,9 @@ class ProceduresFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
+                val searchQuery = "%$newText%"
                 lifecycleScope.launch {
-                    val searchQuery = "%$newText%"
-                    proceduresViewModel!!.searchProcedure(searchQuery)
+                    proceduresViewModel.searchProcedure(searchQuery)
                         .observe(viewLifecycleOwner) { list ->
                             proceduresList = list
                             inflateClientsRecyclerView(list)
@@ -105,8 +103,7 @@ class ProceduresFragment : Fragment() {
 
     private fun inflateClientsRecyclerView(procedureModelDbList: List<ProcedureModelDb>) {
         // create adapter
-        proceduresRVAdapter = ProceduresAdapter(
-            proceduresCount = procedureModelDbList.size,
+        proceduresRVAdapter = ProceduresRv(
             proceduresList = procedureModelDbList
         )
 
@@ -117,19 +114,16 @@ class ProceduresFragment : Fragment() {
         searchProceduresRV?.adapter = proceduresRVAdapter
 
         // set clickListener on proceduresRV
-        proceduresRVAdapter?.setOnItemClickListener(object : ProceduresAdapter.OnItemClickListener {
+        proceduresRVAdapter?.setOnItemClickListener(object : ProceduresRv.OnItemClickListener {
             override fun onItemClick(position: Int) {
-                // edit selected client
-                val bundle = Bundle()
-                val procedureModelDb = ProcedureModelDb(
+                // edit selected procedure
+                proceduresViewModel.selectedProcedure = ProcedureModelDb(
                     _id = procedureModelDbList[position]._id,
                     procedureName = procedureModelDbList[position].procedureName,
                     procedurePrice = procedureModelDbList[position].procedurePrice,
                     procedureNotes = procedureModelDbList[position].procedureNotes
                 )
-                val navController = findNavController()
-                bundle.putParcelable(bindingKeyClientProcedure, procedureModelDb)
-                navController.navigate(R.id.action_nav_procedures_to_nav_procedure_edit, bundle)
+                findNavController().navigate(R.id.action_nav_procedures_to_nav_procedure_edit)
             }
         })
     }
@@ -146,23 +140,16 @@ class ProceduresFragment : Fragment() {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                // this method is called when we swipe our item to left direction.
-                // on below line we are getting the item at a particular position.
                 val deleteProcedureModelDb: ProcedureModelDb =
                     proceduresList!![viewHolder.adapterPosition]
-                val position = viewHolder.adapterPosition
 
                 // delete client from Db
-
-                lifecycleScope.launch() {
+                lifecycleScope.launch {
                     proceduresViewModel.deleteProcedure(deleteProcedureModelDb)
                 }
 
-                proceduresRVAdapter?.notifyItemRemoved(position)
-                proceduresSearchView?.setQuery(null, true) // clear search bar
-
                 // show Snackbar
-                Snackbar.make(
+                snackbar = Snackbar.make(
                     searchProceduresRV!!,
                     getString(R.string.procedure_deleted, deleteProcedureModelDb.procedureName),
                     Snackbar.LENGTH_LONG
@@ -172,18 +159,12 @@ class ProceduresFragment : Fragment() {
                     .setAction(
                         getString(R.string.cancel)
                     ) {
-                        // adding on click listener to our action of snack bar.
-                        // below line is to add our item to array list with a position.
                         lifecycleScope.launch {
-                            proceduresViewModel.saveProcedure(deleteProcedureModelDb)
+                            proceduresViewModel.insertProcedure(deleteProcedureModelDb)
+                            proceduresSearchView?.setQuery(null, true) // clear search bar
                         }
-
-                        // below line is to notify item is
-                        // added to our adapter class.
-
-                        proceduresRVAdapter?.notifyDataSetChanged()
-                    }.show()
-
+                    }
+                snackbar!!.show()
             }
 
             override fun getSwipeEscapeVelocity(defaultValue: Float): Float {
@@ -254,18 +235,13 @@ class ProceduresFragment : Fragment() {
     }
 
     override fun onResume() {
-        proceduresSearchView?.setQuery(null, true) // clear search bar
         super.onResume()
         RuStoreAd().banner(requireContext(), binding.root)
-    }
-
-    override fun onPause() {
-        proceduresSearchView?.setQuery(null, true) // clear search bar
-        super.onPause()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        snackbar?.dismiss()
     }
 }

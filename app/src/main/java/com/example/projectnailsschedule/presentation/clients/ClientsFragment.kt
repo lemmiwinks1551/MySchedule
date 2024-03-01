@@ -31,8 +31,6 @@ import kotlinx.coroutines.launch
 class ClientsFragment : Fragment() {
     private val clientsViewModel: ClientsViewModel by activityViewModels()
 
-    val log = this::class.simpleName
-
     private var _binding: FragmentClientsBinding? = null
     private val binding get() = _binding!!
 
@@ -53,13 +51,10 @@ class ClientsFragment : Fragment() {
 
         _binding = FragmentClientsBinding.inflate(inflater, container, false)
 
-        // init widgets
         initViews()
 
-        // swipe to delete
         swipeToDelete()
 
-        // initClickListeners
         initClickListeners()
 
         // init inflate recycler view
@@ -92,7 +87,6 @@ class ClientsFragment : Fragment() {
                         inflateClientsRecyclerView(list)
                     }
                 }
-
                 return false
             }
         })
@@ -150,15 +144,11 @@ class ClientsFragment : Fragment() {
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val deleteClientModelDb: ClientModelDb = clientsList!![viewHolder.adapterPosition]
-                val position = viewHolder.adapterPosition
 
                 // delete client from Db
                 lifecycleScope.launch {
                     clientsViewModel.deleteClient(deleteClientModelDb)
                 }
-
-                clientsRVAdapter?.notifyItemRemoved(position)
-                clientsSearchView?.setQuery(null, true) // clear search bar
 
                 // show Snackbar
                 snackbar = Snackbar.make(
@@ -174,16 +164,10 @@ class ClientsFragment : Fragment() {
                     .setAction(
                         getString(R.string.cancel)
                     ) {
-                        // adding on click listener to our action of snack bar.
-                        // below line is to add our item to array list with a position.
                         lifecycleScope.launch {
                             clientsViewModel.insertClient(deleteClientModelDb)
+                            clientsSearchView?.setQuery(null, true) // clear search bar
                         }
-
-                        // below line is to notify item is
-                        // added to our adapter class.
-
-                        clientsRVAdapter?.notifyDataSetChanged()
                     }
                 snackbar!!.show()
             }

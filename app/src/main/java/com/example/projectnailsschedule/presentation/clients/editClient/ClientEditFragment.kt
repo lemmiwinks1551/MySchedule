@@ -105,7 +105,6 @@ class ClientEditFragment : Fragment() {
             )
             toast.show()
 
-            // Return to previous screen
             findNavController().popBackStack()
         }
 
