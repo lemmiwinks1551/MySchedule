@@ -11,7 +11,6 @@ import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.domain.models.ClientModelDb
 
 class ClientsRv(
-    private var clientsCount: Int,
     private var clientsList: List<ClientModelDb>,
     private var clientsViewModel: ClientsViewModel
 ) : RecyclerView.Adapter<ClientsRv.ViewHolder>() {
@@ -91,7 +90,7 @@ class ClientsRv(
     }
 
     override fun getItemCount(): Int {
-        return clientsCount
+        return clientsList.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

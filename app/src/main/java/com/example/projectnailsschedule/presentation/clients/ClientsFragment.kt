@@ -108,7 +108,6 @@ class ClientsFragment : Fragment() {
     private fun inflateClientsRecyclerView(clientsList: List<ClientModelDb>) {
         // create adapter
         clientsRVAdapter = ClientsRv(
-            clientsCount = clientsList.size,
             clientsList = clientsList,
             clientsViewModel = clientsViewModel
         )
