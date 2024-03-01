@@ -28,6 +28,8 @@ class ClientsViewModel @Inject constructor(
     private val startPhoneUc: StartPhoneUc
 ) : ViewModel() {
 
+    var selectedClient: ClientModelDb? = null
+
     suspend fun insertClient(clientModelDb: ClientModelDb) {
         insertClientUseCase.execute(clientModelDb)
     }

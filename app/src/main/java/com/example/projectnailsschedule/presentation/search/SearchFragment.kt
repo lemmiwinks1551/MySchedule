@@ -232,7 +232,6 @@ class SearchFragment : Fragment() {
     }
 
     override fun onResume() {
-        // searchTextView?.setQuery("", true) // clear search bar
         super.onResume()
         RuStoreAd().banner(requireContext(), binding.root)
     }

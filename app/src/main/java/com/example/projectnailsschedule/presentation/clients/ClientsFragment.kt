@@ -12,7 +12,6 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -22,7 +21,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentClientsBinding
 import com.example.projectnailsschedule.domain.models.ClientModelDb
-import com.example.projectnailsschedule.presentation.calendar.DateParamsViewModel
 import com.example.projectnailsschedule.util.rustore.RuStoreAd
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
@@ -45,8 +43,7 @@ class ClientsFragment : Fragment() {
     private var searchClientsRV: RecyclerView? = null
     private var addButton: FloatingActionButton? = null
     private var clientsCountTextView: TextView? = null
-
-    private var bindingKeyClientEdit = "editClient"
+    private var snackbar: Snackbar? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,7 +54,7 @@ class ClientsFragment : Fragment() {
         _binding = FragmentClientsBinding.inflate(inflater, container, false)
 
         // init widgets
-        initWidgets()
+        initViews()
 
         // swipe to delete
         swipeToDelete()
@@ -65,10 +62,13 @@ class ClientsFragment : Fragment() {
         // initClickListeners
         initClickListeners()
 
+        // init inflate recycler view
+        clientsSearchView?.setQuery(null, true)
+
         return binding.root
     }
 
-    private fun initWidgets() {
+    private fun initViews() {
         clientsSearchView = binding.clientsSearchView
         searchClientsRV = binding.clientsRecyclerView
         addButton = binding.fragmentClientsAddButton
@@ -123,8 +123,7 @@ class ClientsFragment : Fragment() {
         clientsRVAdapter?.setOnItemClickListener(object : ClientsRv.OnItemClickListener {
             override fun onItemClick(position: Int) {
                 // edit selected client
-                val bundle = Bundle()
-                val clientModelDb = ClientModelDb(
+                clientsViewModel.selectedClient = ClientModelDb(
                     _id = clientsList[position]._id,
                     name = clientsList[position].name,
                     phone = clientsList[position].phone,
@@ -134,9 +133,7 @@ class ClientsFragment : Fragment() {
                     whatsapp = clientsList[position].whatsapp,
                     notes = clientsList[position].notes
                 )
-                val navController = findNavController()
-                bundle.putParcelable(bindingKeyClientEdit, clientModelDb)
-                navController.navigate(R.id.action_nav_clients_to_nav_client_edit_fragment, bundle)
+                findNavController().navigate(R.id.action_nav_clients_to_nav_client_edit_fragment)
             }
         })
     }
@@ -153,8 +150,6 @@ class ClientsFragment : Fragment() {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                // this method is called when we swipe our item to left direction.
-                // on below line we are getting the item at a particular position.
                 val deleteClientModelDb: ClientModelDb = clientsList!![viewHolder.adapterPosition]
                 val position = viewHolder.adapterPosition
 
@@ -167,7 +162,7 @@ class ClientsFragment : Fragment() {
                 clientsSearchView?.setQuery(null, true) // clear search bar
 
                 // show Snackbar
-                Snackbar.make(
+                snackbar = Snackbar.make(
                     searchClientsRV!!,
                     requireContext().getString(
                         R.string.deleted_client_text,
@@ -190,8 +185,8 @@ class ClientsFragment : Fragment() {
                         // added to our adapter class.
 
                         clientsRVAdapter?.notifyDataSetChanged()
-                    }.show()
-
+                    }
+                snackbar!!.show()
             }
 
             override fun getSwipeEscapeVelocity(defaultValue: Float): Float {
@@ -262,18 +257,13 @@ class ClientsFragment : Fragment() {
     }
 
     override fun onResume() {
-        clientsSearchView?.setQuery(null, true) // clear search bar
         super.onResume()
         RuStoreAd().banner(requireContext(), binding.root)
     }
 
-    override fun onPause() {
-        clientsSearchView?.setQuery(null, true) // clear search bar
-        super.onPause()
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
+        snackbar?.dismiss()
         _binding = null
     }
 }
