@@ -146,6 +146,7 @@ class ProceduresFragment : Fragment() {
                 // delete client from Db
                 lifecycleScope.launch {
                     proceduresViewModel.deleteProcedure(deleteProcedureModelDb)
+                    clearSearchBar()
                 }
 
                 // show Snackbar
@@ -161,7 +162,7 @@ class ProceduresFragment : Fragment() {
                     ) {
                         lifecycleScope.launch {
                             proceduresViewModel.insertProcedure(deleteProcedureModelDb)
-                            proceduresSearchView?.setQuery(null, true) // clear search bar
+                            clearSearchBar()
                         }
                     }
                 snackbar!!.show()
@@ -243,5 +244,9 @@ class ProceduresFragment : Fragment() {
         super.onDestroyView()
         _binding = null
         snackbar?.dismiss()
+    }
+
+    private fun clearSearchBar() {
+        proceduresSearchView?.setQuery(null, true) // clear search bar
     }
 }

@@ -17,6 +17,6 @@ interface ProcedureDao {
 
     @Query("SELECT * FROM procedures WHERE " +
             "procedureName LIKE :searchQuery OR " +
-            "procedurePrice LIKE :searchQuery")
+            "procedurePrice LIKE :searchQuery order by procedureName")
     fun searchDatabase(searchQuery: String): Flow<List<ProcedureModelDb>>
 }

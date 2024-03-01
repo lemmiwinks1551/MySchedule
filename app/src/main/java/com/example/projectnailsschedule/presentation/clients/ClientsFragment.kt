@@ -4,6 +4,7 @@ import android.graphics.Canvas
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -83,6 +84,8 @@ class ClientsFragment : Fragment() {
                 val searchQuery = "%$newText%"
                 lifecycleScope.launch {
                     clientsViewModel.searchClient(searchQuery).observe(viewLifecycleOwner) { list ->
+                        Log.i("searchQuery", searchQuery)
+                        // TODO: он удаляет по символам, поэтому вызывает 5 раз метод, поправить 
                         clientsList = list
                         inflateClientsRecyclerView(list)
                     }
@@ -166,7 +169,6 @@ class ClientsFragment : Fragment() {
                     ) {
                         lifecycleScope.launch {
                             clientsViewModel.insertClient(deleteClientModelDb)
-                            clientsSearchView?.setQuery(null, true) // clear search bar
                         }
                     }
                 snackbar!!.show()
@@ -248,5 +250,9 @@ class ClientsFragment : Fragment() {
         super.onDestroyView()
         snackbar?.dismiss()
         _binding = null
+    }
+
+    private fun clearSearchBar() {
+        clientsSearchView?.setQuery(null, true) // clear search bar
     }
 }

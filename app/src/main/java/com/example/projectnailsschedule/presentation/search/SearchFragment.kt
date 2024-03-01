@@ -143,6 +143,7 @@ class SearchFragment : Fragment() {
                 // delete client from Db
                 lifecycleScope.launch {
                     dateParamsViewModel.deleteAppointment(deleteAppointmentModelDb)
+                    clearSearchBar()
                 }
 
                 // show Snackbar
@@ -158,6 +159,7 @@ class SearchFragment : Fragment() {
                     ) {
                         lifecycleScope.launch {
                             dateParamsViewModel.insertAppointment(deleteAppointmentModelDb)
+                            clearSearchBar()
                         }
                     }
                 snackbar!!.show()
@@ -240,5 +242,9 @@ class SearchFragment : Fragment() {
         super.onDestroyView()
         _binding = null
         snackbar?.dismiss()
+    }
+
+    private fun clearSearchBar() {
+        searchTextView?.setQuery(null, true) // clear search bar
     }
 }
