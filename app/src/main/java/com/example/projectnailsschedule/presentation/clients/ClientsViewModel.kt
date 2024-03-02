@@ -1,6 +1,5 @@
 package com.example.projectnailsschedule.presentation.clients
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.example.projectnailsschedule.domain.models.ClientModelDb
 import com.example.projectnailsschedule.domain.usecase.clientsUC.DeleteClientUseCase
@@ -13,6 +12,7 @@ import com.example.projectnailsschedule.domain.usecase.socUC.StartTelegramUc
 import com.example.projectnailsschedule.domain.usecase.socUC.StartVkUc
 import com.example.projectnailsschedule.domain.usecase.socUC.StartWhatsAppUc
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import javax.inject.Inject
 
 @HiltViewModel
@@ -42,7 +42,7 @@ class ClientsViewModel @Inject constructor(
         deleteClientUseCase.execute(clientModelDb)
     }
 
-    suspend fun searchClient(searchQuery: String): LiveData<List<ClientModelDb>> {
+    suspend fun searchClient(searchQuery: String): MutableList<ClientModelDb> {
         return searchClientUseCase.execute(searchQuery)
     }
 

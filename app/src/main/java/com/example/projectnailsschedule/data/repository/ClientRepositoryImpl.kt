@@ -25,12 +25,7 @@ class ClientRepositoryImpl(context: Context) : ClientsRepository {
         return true
     }
 
-    override suspend fun selectAllClients(): List<ClientModelDb> {
-        return clientsDb.getDao().selectAllClients()
-
-    }
-
-    override suspend fun searchClient(searchQuery: String): LiveData<List<ClientModelDb>> {
-        return clientsDb.getDao().searchClient(searchQuery).asLiveData()
+    override suspend fun searchClient(searchQuery: String): MutableList<ClientModelDb> {
+        return clientsDb.getDao().searchClient(searchQuery)
     }
 }

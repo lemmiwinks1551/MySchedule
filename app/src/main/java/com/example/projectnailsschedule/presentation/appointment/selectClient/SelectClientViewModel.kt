@@ -18,7 +18,7 @@ class SelectClientViewModel @Inject constructor(
     private val startPhoneUc: StartPhoneUc
 ): ViewModel() {
 
-    suspend fun searchClients(searchQuery: String): LiveData<List<ClientModelDb>> {
+    suspend fun searchClients(searchQuery: String): List<ClientModelDb> {
         return searchClientUseCase.execute(searchQuery)
     }
 

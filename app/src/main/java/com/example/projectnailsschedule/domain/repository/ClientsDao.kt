@@ -15,13 +15,6 @@ interface ClientsDao {
     @Delete
     suspend fun delete(clientModelDb: ClientModelDb)
 
-    @Query("SELECT * FROM clients")
-    // TODO: это используется?
-    fun selectAllFlow(): Flow<List<ClientModelDb>>
-
-    @Query("SELECT * FROM clients")
-    suspend fun selectAllClients(): List<ClientModelDb>
-
     @Query("SELECT * FROM clients WHERE " +
             "name LIKE :searchQuery OR " +
             "phone LIKE :searchQuery OR " +
@@ -30,5 +23,5 @@ interface ClientsDao {
             "vk LIKE :searchQuery OR " +
             "whatsapp LIKE :searchQuery OR " +
             "notes LIKE :searchQuery order by name")
-    fun searchClient(searchQuery: String): Flow<List<ClientModelDb>>
+    fun searchClient(searchQuery: String): MutableList<ClientModelDb>
 }

@@ -4,7 +4,6 @@ import android.graphics.Canvas
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,7 +25,10 @@ import com.example.projectnailsschedule.util.rustore.RuStoreAd
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class ClientsFragment : Fragment() {
@@ -35,7 +37,7 @@ class ClientsFragment : Fragment() {
     private var _binding: FragmentClientsBinding? = null
     private val binding get() = _binding!!
 
-    private var clientsList: List<ClientModelDb>? = null
+    private var clientsList: MutableList<ClientModelDb>? = null
     private var clientsRVAdapter: ClientsRv? = null
 
     private var clientsSearchView: SearchView? = null
@@ -49,7 +51,6 @@ class ClientsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         _binding = FragmentClientsBinding.inflate(inflater, container, false)
 
         initViews()
@@ -57,9 +58,6 @@ class ClientsFragment : Fragment() {
         swipeToDelete()
 
         initClickListeners()
-
-        // init inflate recycler view
-        clientsSearchView?.setQuery(null, true)
 
         return binding.root
     }
@@ -82,12 +80,10 @@ class ClientsFragment : Fragment() {
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 val searchQuery = "%$newText%"
-                lifecycleScope.launch {
-                    clientsViewModel.searchClient(searchQuery).observe(viewLifecycleOwner) { list ->
-                        Log.i("searchQuery", searchQuery)
-                        // TODO: он удаляет по символам, поэтому вызывает 5 раз метод, поправить 
-                        clientsList = list
-                        inflateClientsRecyclerView(list)
+                lifecycleScope.launch(Dispatchers.IO) {
+                    clientsList = async { clientsViewModel.searchClient(searchQuery) }.await()
+                    withContext(Dispatchers.Main) {
+                        inflateClientsRecyclerView(clientsList!!)
                     }
                 }
                 return false
@@ -146,11 +142,16 @@ class ClientsFragment : Fragment() {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.adapterPosition
                 val deleteClientModelDb: ClientModelDb = clientsList!![viewHolder.adapterPosition]
 
                 // delete client from Db
-                lifecycleScope.launch {
+                lifecycleScope.launch(Dispatchers.IO) {
                     clientsViewModel.deleteClient(deleteClientModelDb)
+                    withContext(Dispatchers.Main) {
+                        clientsList!!.removeAt(position)
+                        clientsRVAdapter?.notifyItemRemoved(position)
+                    }
                 }
 
                 // show Snackbar
@@ -167,8 +168,12 @@ class ClientsFragment : Fragment() {
                     .setAction(
                         getString(R.string.cancel)
                     ) {
-                        lifecycleScope.launch {
+                        lifecycleScope.launch(Dispatchers.IO) {
                             clientsViewModel.insertClient(deleteClientModelDb)
+                            withContext(Dispatchers.Main) {
+                                clientsList!!.add(position, deleteClientModelDb)
+                                clientsRVAdapter?.notifyItemInserted(position)
+                            }
                         }
                     }
                 snackbar!!.show()
@@ -250,9 +255,5 @@ class ClientsFragment : Fragment() {
         super.onDestroyView()
         snackbar?.dismiss()
         _binding = null
-    }
-
-    private fun clearSearchBar() {
-        clientsSearchView?.setQuery(null, true) // clear search bar
     }
 }

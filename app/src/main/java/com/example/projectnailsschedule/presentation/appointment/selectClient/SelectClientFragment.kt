@@ -77,10 +77,7 @@ class SelectClientFragment : DialogFragment() {
             override fun onQueryTextChange(newText: String?): Boolean {
                 val searchQuery = "%$newText%"
                 lifecycleScope.launch {
-                    selectClientViewModel.searchClients(searchQuery)
-                        .observe(viewLifecycleOwner) { list ->
-                            inflateSearchRecyclerVIew(list)
-                        }
+                    inflateSearchRecyclerVIew(selectClientViewModel.searchClients(searchQuery))
                 }
                 return false
             }
