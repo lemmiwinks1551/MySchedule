@@ -241,7 +241,7 @@ class ProceduresFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
         snackbar?.dismiss()
+        _binding = null
     }
 }
