@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
@@ -40,10 +41,9 @@ class ClientsFragment : Fragment() {
     private var clientsList: MutableList<ClientModelDb>? = null
     private var clientsRVAdapter: ClientsRv? = null
 
-    private var clientsSearchView: SearchView? = null
+    private var searchView: SearchView? = null
     private var searchClientsRV: RecyclerView? = null
     private var addButton: FloatingActionButton? = null
-    private var clientsCountTextView: TextView? = null
     private var snackbar: Snackbar? = null
 
     override fun onCreateView(
@@ -59,19 +59,20 @@ class ClientsFragment : Fragment() {
 
         initClickListeners()
 
+        clearSearchView()
+
         return binding.root
     }
 
     private fun initViews() {
-        clientsSearchView = binding.clientsSearchView
+        searchView = binding.clientsSearchView
         searchClientsRV = binding.clientsRecyclerView
         addButton = binding.fragmentClientsAddButton
-        clientsCountTextView = binding.clientsCountTextView
     }
 
     private fun initClickListeners() {
         // search panel listener
-        clientsSearchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
+        searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
             android.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 // search only after button Search pressed on keyboard
@@ -89,6 +90,15 @@ class ClientsFragment : Fragment() {
                 return false
             }
         })
+
+        val searchCloseButtonId =
+            searchView?.findViewById<View>(androidx.appcompat.R.id.search_close_btn)?.id
+        if (searchCloseButtonId != null) {
+            searchView?.findViewById<ImageView>(searchCloseButtonId)?.setOnClickListener {
+                clearSearchView()
+                snackbar?.dismiss()
+            }
+        }
 
         // add new client
         binding.fragmentClientsAddButton.setOnClickListener {
@@ -244,6 +254,10 @@ class ClientsFragment : Fragment() {
                 )
             }
         }).attachToRecyclerView(searchClientsRV)
+    }
+
+    private fun clearSearchView() {
+        searchView?.setQuery(null, true)
     }
 
     override fun onResume() {
