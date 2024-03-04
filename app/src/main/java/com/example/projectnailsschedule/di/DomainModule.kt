@@ -12,22 +12,19 @@ import com.example.projectnailsschedule.domain.usecase.calendarUC.CalendarDbDele
 import com.example.projectnailsschedule.domain.usecase.calendarUC.SelectCalendarDateByDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.GetDateAppointments
 import com.example.projectnailsschedule.domain.usecase.calendarUC.InsertCalendarDateUseCase
-import com.example.projectnailsschedule.domain.usecase.calendarUC.UpdateDateColorUseCase
 import com.example.projectnailsschedule.domain.usecase.clientsUC.DeleteClientUseCase
 import com.example.projectnailsschedule.domain.usecase.clientsUC.InsertClientUseCase
 import com.example.projectnailsschedule.domain.usecase.clientsUC.SearchClientUseCase
 import com.example.projectnailsschedule.domain.usecase.clientsUC.UpdateClientUseCase
-import com.example.projectnailsschedule.domain.usecase.dateUC.DeleteAppointmentUseCase
-import com.example.projectnailsschedule.domain.usecase.dateUC.GetDateAppointmentsUseCase
+import com.example.projectnailsschedule.domain.usecase.appointmentUC.DeleteAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.importExportUC.ExportUseCase
 import com.example.projectnailsschedule.domain.usecase.importExportUC.ImportUseCase
-import com.example.projectnailsschedule.domain.usecase.importExportUC.RestartAppUseCase
+import com.example.projectnailsschedule.domain.usecase.util.RestartAppUseCase
 import com.example.projectnailsschedule.domain.usecase.proceduresUC.DeleteProcedureUseCase
 import com.example.projectnailsschedule.domain.usecase.proceduresUC.InsertProcedureUseCase
 import com.example.projectnailsschedule.domain.usecase.proceduresUC.SearchProcedureUseCase
 import com.example.projectnailsschedule.domain.usecase.proceduresUC.UpdateProcedureUseCase
-import com.example.projectnailsschedule.domain.usecase.searchUC.GetAllAppointmentsLiveDataUseCase
-import com.example.projectnailsschedule.domain.usecase.searchUC.SearchAppointmentUseCase
+import com.example.projectnailsschedule.domain.usecase.appointmentUC.SearchAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.settingsUC.*
 import com.example.projectnailsschedule.domain.usecase.socUC.*
 import dagger.Module
@@ -38,6 +35,8 @@ import dagger.hilt.android.components.ViewModelComponent
 @Module
 @InstallIn(ViewModelComponent::class)
 class DomainModule {
+
+    // Appointments
 
     @Provides
     fun provideInsertAppointmentUseCase(repository: ScheduleRepository): InsertAppointmentUseCase {
@@ -60,9 +59,11 @@ class DomainModule {
     }
 
     @Provides
-    fun provideGetAllAppointmentsLiveDataUseCase(repository: ScheduleRepository): GetAllAppointmentsLiveDataUseCase {
-        return GetAllAppointmentsLiveDataUseCase(repository)
+    fun gateDateAppointmentsUseCase(repository: ScheduleRepository): GetDateAppointments {
+        return GetDateAppointments(repository)
     }
+
+    // Clients
 
     @Provides
     fun provideInsertClientUseCase(repository: ClientsRepository): InsertClientUseCase {
@@ -78,6 +79,13 @@ class DomainModule {
     fun provideDeleteClientUseCase(repository: ClientsRepository): DeleteClientUseCase {
         return DeleteClientUseCase(repository)
     }
+
+    @Provides
+    fun provideSearchClientUseCase(repository: ClientsRepository): SearchClientUseCase {
+        return SearchClientUseCase(repository)
+    }
+
+    // Procedures
 
     @Provides
     fun provideInsertProcedureUseCase(repository: ProcedureRepository): InsertProcedureUseCase {
@@ -99,20 +107,7 @@ class DomainModule {
         return SearchProcedureUseCase(repository)
     }
 
-    @Provides
-    fun provideSearchClientUseCase(repository: ClientsRepository): SearchClientUseCase {
-        return SearchClientUseCase(repository)
-    }
-
-    @Provides
-    fun gateDateAppointmentsUseCase(repository: ScheduleRepository): GetDateAppointments {
-        return GetDateAppointments(repository)
-    }
-
-    @Provides
-    fun provideGetDateAppointmentsUseCase(repository: ScheduleRepository): GetDateAppointmentsUseCase {
-        return GetDateAppointmentsUseCase(repository)
-    }
+    // Soc
 
     @Provides
     fun provideStartVkUc(context: Context): StartVkUc {
@@ -139,10 +134,7 @@ class DomainModule {
         return StartPhoneUc(context)
     }
 
-    @Provides
-    fun provideRestartAppUseCase(context: Context): RestartAppUseCase {
-        return RestartAppUseCase(context)
-    }
+    // Import Export
 
     @Provides
     fun provideImportUseCase(context: Context): ImportUseCase {
@@ -150,9 +142,28 @@ class DomainModule {
     }
 
     @Provides
-    fun provideExportIseCase(context: Context): ExportUseCase {
+    fun provideExportUseCase(context: Context): ExportUseCase {
         return ExportUseCase(context)
     }
+
+    // Date colors
+
+    @Provides
+    fun provideGetDateColorUseCase(repository: CalendarRepository): SelectCalendarDateByDateUseCase {
+        return SelectCalendarDateByDateUseCase(repository)
+    }
+
+    @Provides
+    fun provideSetDateColorUseCase(repository: CalendarRepository): InsertCalendarDateUseCase {
+        return InsertCalendarDateUseCase(repository)
+    }
+
+    @Provides
+    fun provideDeleteCalendarObj(repository: CalendarRepository): CalendarDbDeleteObj {
+        return CalendarDbDeleteObj(repository)
+    }
+
+    // Settings
 
     @Provides
     fun provideGetLanguageUseCase(repository: SettingsRepository): GetLanguageUseCase {
@@ -189,23 +200,10 @@ class DomainModule {
         return GetUserThemeUseCase(repository)
     }
 
-    @Provides
-    fun provideGetDateColorUseCase(repository: CalendarRepository): SelectCalendarDateByDateUseCase {
-        return SelectCalendarDateByDateUseCase(repository)
-    }
+    // Util
 
     @Provides
-    fun provideSetDateColorUseCase(repository: CalendarRepository): InsertCalendarDateUseCase {
-        return InsertCalendarDateUseCase(repository)
-    }
-
-    @Provides
-    fun provideUpdateDateColorUseCase(repository: CalendarRepository): UpdateDateColorUseCase {
-        return UpdateDateColorUseCase(repository)
-    }
-
-    @Provides
-    fun provideDeleteCalendarObj(repository: CalendarRepository): CalendarDbDeleteObj {
-        return CalendarDbDeleteObj(repository)
+    fun provideRestartAppUseCase(context: Context): RestartAppUseCase {
+        return RestartAppUseCase(context)
     }
 }

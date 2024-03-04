@@ -1,7 +1,7 @@
 package com.example.projectnailsschedule.presentation.settings
 
 import androidx.lifecycle.ViewModel
-import com.example.projectnailsschedule.domain.usecase.importExportUC.RestartAppUseCase
+import com.example.projectnailsschedule.domain.usecase.util.RestartAppUseCase
 import com.example.projectnailsschedule.domain.usecase.settingsUC.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

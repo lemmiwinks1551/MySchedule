@@ -26,7 +26,10 @@ import com.example.projectnailsschedule.util.Util
 import com.example.projectnailsschedule.util.rustore.RuStoreAd
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class SearchFragment : Fragment() {
@@ -82,20 +85,18 @@ class SearchFragment : Fragment() {
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 val searchQuery = "%$newText%"
-                dateParamsViewModel.searchDatabase(searchQuery)
-                    .observe(viewLifecycleOwner) { list ->
-                        appointmentCount?.text = getString(R.string.appointments_count, list.size)
-
-                        inflateSearchRecyclerVIew(list)
-
-                        appointmentList = list
+                lifecycleScope.launch(Dispatchers.IO) {
+                    appointmentList = async { dateParamsViewModel.searchAppointment(searchQuery) }.await()
+                    withContext(Dispatchers.Main) {
+                        inflateRecyclerVIew(appointmentList!!)
                     }
+                }
                 return false
             }
         })
     }
 
-    private fun inflateSearchRecyclerVIew(appointmentsList: MutableList<AppointmentModelDb>) {
+    private fun inflateRecyclerVIew(appointmentsList: MutableList<AppointmentModelDb>) {
         // create adapter
         searchRv = SearchRv(
             appointmentsList = appointmentsList,

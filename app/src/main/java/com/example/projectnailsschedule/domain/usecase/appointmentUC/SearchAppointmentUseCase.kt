@@ -3,9 +3,9 @@ package com.example.projectnailsschedule.domain.usecase.appointmentUC
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
 import com.example.projectnailsschedule.domain.repository.ScheduleRepository
 
-class GetAllAppointmentsUseCase(private val scheduleRepository: ScheduleRepository) {
+class SearchAppointmentUseCase(private val scheduleRepository: ScheduleRepository) {
 
-    suspend fun execute(): List<AppointmentModelDb> {
-        return scheduleRepository.selectAllAppointmentsList()
+    suspend fun execute(searchQuery: String): MutableList<AppointmentModelDb> {
+        return scheduleRepository.searchAppointment(searchQuery)
     }
 }

@@ -3,7 +3,7 @@ package com.example.projectnailsschedule.util.rustore
 import android.content.Context
 import android.util.Log
 import com.example.projectnailsschedule.data.repository.ScheduleRepositoryImpl
-import com.example.projectnailsschedule.domain.usecase.appointmentUC.GetAllAppointmentsUseCase
+import com.example.projectnailsschedule.domain.usecase.appointmentUC.SearchAppointmentUseCase
 import ru.rustore.sdk.core.tasks.OnCompleteListener
 import ru.vk.store.sdk.review.RuStoreReviewManagerFactory
 import ru.vk.store.sdk.review.model.ReviewInfo
@@ -17,7 +17,7 @@ class RuStoreReview(val context: Context) {
 
     private suspend fun getAllAppointmentsCount(): Int {
         val scheduleRepositoryImpl = ScheduleRepositoryImpl(context)
-        return GetAllAppointmentsUseCase(scheduleRepositoryImpl).execute().size
+        return SearchAppointmentUseCase(scheduleRepositoryImpl).execute("").size
     }
 
     suspend fun rateApp() {

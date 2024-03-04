@@ -1,4 +1,4 @@
-package com.example.projectnailsschedule.domain.usecase.importExportUC
+package com.example.projectnailsschedule.domain.usecase.util
 
 import android.app.Activity
 import android.content.Context

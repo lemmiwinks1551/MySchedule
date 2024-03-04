@@ -1,7 +1,6 @@
 package com.example.projectnailsschedule.presentation.calendar
 
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
@@ -13,8 +12,8 @@ import com.example.projectnailsschedule.domain.usecase.calendarUC.CalendarDbDele
 import com.example.projectnailsschedule.domain.usecase.calendarUC.InsertCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.GetDateAppointments
 import com.example.projectnailsschedule.domain.usecase.calendarUC.SelectCalendarDateByDateUseCase
-import com.example.projectnailsschedule.domain.usecase.dateUC.DeleteAppointmentUseCase
-import com.example.projectnailsschedule.domain.usecase.searchUC.SearchAppointmentUseCase
+import com.example.projectnailsschedule.domain.usecase.appointmentUC.DeleteAppointmentUseCase
+import com.example.projectnailsschedule.domain.usecase.appointmentUC.SearchAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.socUC.StartInstagramUc
 import com.example.projectnailsschedule.domain.usecase.socUC.StartPhoneUc
 import com.example.projectnailsschedule.domain.usecase.socUC.StartTelegramUc
@@ -155,7 +154,7 @@ class DateParamsViewModel @Inject constructor(
         return updateAppointmentUseCase.execute(appointmentModelDb)
     }
 
-    fun searchDatabase(searchQuery: String): LiveData<MutableList<AppointmentModelDb>> {
+    suspend fun searchAppointment(searchQuery: String): MutableList<AppointmentModelDb> {
         return searchAppointmentUseCase.execute(searchQuery)
     }
 

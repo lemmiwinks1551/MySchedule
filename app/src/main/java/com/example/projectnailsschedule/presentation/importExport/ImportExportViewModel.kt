@@ -4,7 +4,7 @@ import android.net.Uri
 import androidx.lifecycle.ViewModel
 import com.example.projectnailsschedule.domain.usecase.importExportUC.ExportUseCase
 import com.example.projectnailsschedule.domain.usecase.importExportUC.ImportUseCase
-import com.example.projectnailsschedule.domain.usecase.importExportUC.RestartAppUseCase
+import com.example.projectnailsschedule.domain.usecase.util.RestartAppUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

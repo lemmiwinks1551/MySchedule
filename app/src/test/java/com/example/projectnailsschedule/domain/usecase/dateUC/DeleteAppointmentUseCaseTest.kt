@@ -2,6 +2,7 @@ package com.example.projectnailsschedule.domain.usecase.dateUC
 
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
 import com.example.projectnailsschedule.domain.repository.ScheduleRepository
+import com.example.projectnailsschedule.domain.usecase.appointmentUC.DeleteAppointmentUseCase
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.mock

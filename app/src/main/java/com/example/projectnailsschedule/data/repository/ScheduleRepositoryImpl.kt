@@ -31,20 +31,8 @@ class ScheduleRepositoryImpl(context: Context) : ScheduleRepository {
         return dao.getDateAppointments(Util().dateConverterNew(date.toString()))
     }
 
-    override suspend fun selectAllAppointmentsList(): List<AppointmentModelDb> {
-        return dao.selectAllAppointmentsList()
-    }
-
-    override suspend fun getMonthAppointments(dateMonth: String): MutableList<AppointmentModelDb> {
-        return dao.getMonthAppointments(dateMonth = dateMonth)
-    }
-
-    override fun selectAllAppointmentsLiveData(): LiveData<List<AppointmentModelDb>> {
-        return dao.selectAllAppointmentsLiveData().asLiveData()
-    }
-
-    override fun searchAppointment(searchQuery: String): LiveData<MutableList<AppointmentModelDb>> {
-        return dao.searchAppointment(searchQuery = searchQuery).asLiveData()
+    override suspend fun searchAppointment(searchQuery: String): MutableList<AppointmentModelDb> {
+        return dao.searchAppointment(searchQuery = searchQuery)
     }
 
 }
