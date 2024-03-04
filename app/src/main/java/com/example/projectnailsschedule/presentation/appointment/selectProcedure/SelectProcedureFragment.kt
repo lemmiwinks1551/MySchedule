@@ -8,6 +8,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,6 +17,7 @@ import com.example.projectnailsschedule.databinding.FragmentSelectProcedureBindi
 import com.example.projectnailsschedule.domain.models.ProcedureModelDb
 import com.example.projectnailsschedule.presentation.appointment.selectProcedure.selectProcedureRV.SelectProcedureRVAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class SelectProcedureFragment : DialogFragment() {
@@ -73,10 +75,9 @@ class SelectProcedureFragment : DialogFragment() {
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 val searchQuery = "%$newText%"
-                selectProcedureViewModel.searchProcedures(searchQuery)
-                    .observe(viewLifecycleOwner) { list ->
-                        inflateSearchRecyclerVIew(list)
-                    }
+                lifecycleScope.launch {
+                    inflateSearchRecyclerVIew(selectProcedureViewModel.searchProcedures(searchQuery))
+                }
                 return false
             }
         })

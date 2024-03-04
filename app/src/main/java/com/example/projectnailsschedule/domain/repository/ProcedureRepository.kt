@@ -1,6 +1,5 @@
 package com.example.projectnailsschedule.domain.repository
 
-import androidx.lifecycle.LiveData
 import com.example.projectnailsschedule.domain.models.ProcedureModelDb
 
 interface ProcedureRepository {
@@ -11,5 +10,5 @@ interface ProcedureRepository {
 
     suspend fun deleteProcedure(procedureModelDb: ProcedureModelDb): Boolean
 
-    fun searchProcedure(searchQuery: String): LiveData<List<ProcedureModelDb>>
+    suspend fun searchProcedure(searchQuery: String): MutableList<ProcedureModelDb>
 }

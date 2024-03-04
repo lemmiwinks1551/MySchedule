@@ -7,12 +7,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import android.widget.ImageView
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -26,7 +25,10 @@ import com.example.projectnailsschedule.util.rustore.RuStoreAd
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class ProceduresFragment : Fragment() {
@@ -35,21 +37,17 @@ class ProceduresFragment : Fragment() {
     private var _binding: FragmentProceduresBinding? = null
     private val binding get() = _binding!!
 
-    private var proceduresList: List<ProcedureModelDb>? = null
+    private var proceduresList: MutableList<ProcedureModelDb>? = null
     private var proceduresRVAdapter: ProceduresRv? = null
 
-    private var proceduresSearchView: SearchView? = null
+    private var searchView: SearchView? = null
     private var searchProceduresRV: RecyclerView? = null
     private var addButton: FloatingActionButton? = null
-    private var proceduresCountTextView: TextView? = null
     private var snackbar: Snackbar? = null
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-
         _binding = FragmentProceduresBinding.inflate(inflater, container, false)
 
         initViews()
@@ -58,22 +56,20 @@ class ProceduresFragment : Fragment() {
 
         initClickListeners()
 
-        // init inflate recycler view
-        proceduresSearchView?.setQuery(null, true)
+        clearSearchView()
 
         return binding.root
     }
 
     private fun initViews() {
-        proceduresSearchView = binding.proceduresSearchView
+        searchView = binding.proceduresSearchView
         searchProceduresRV = binding.proceduresRecyclerView
         addButton = binding.fragmentProceduresAddButton
-        proceduresCountTextView = binding.proceduresCountTextView
     }
 
     private fun initClickListeners() {
         // search panel listener
-        proceduresSearchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
+        searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
             android.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 // search only after button Search pressed on keyboard
@@ -82,16 +78,25 @@ class ProceduresFragment : Fragment() {
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 val searchQuery = "%$newText%"
-                lifecycleScope.launch {
-                    proceduresViewModel.searchProcedure(searchQuery)
-                        .observe(viewLifecycleOwner) { list ->
-                            proceduresList = list
-                            inflateClientsRecyclerView(list)
-                        }
+                lifecycleScope.launch(Dispatchers.IO) {
+                    proceduresList =
+                        async { proceduresViewModel.searchProcedure(searchQuery) }.await()
+                    withContext(Dispatchers.Main) {
+                        inflateClientsRecyclerView(proceduresList!!)
+                    }
                 }
                 return false
             }
         })
+
+        val searchCloseButtonId =
+            searchView?.findViewById<View>(androidx.appcompat.R.id.search_close_btn)?.id
+        if (searchCloseButtonId != null) {
+            searchView?.findViewById<ImageView>(searchCloseButtonId)?.setOnClickListener {
+                clearSearchView()
+                snackbar?.dismiss()
+            }
+        }
 
         // add new procedure
         binding.fragmentProceduresAddButton.setOnClickListener {
@@ -101,14 +106,13 @@ class ProceduresFragment : Fragment() {
         }
     }
 
-    private fun inflateClientsRecyclerView(procedureModelDbList: List<ProcedureModelDb>) {
+    private fun inflateClientsRecyclerView(proceduresList: List<ProcedureModelDb>) {
         // create adapter
         proceduresRVAdapter = ProceduresRv(
-            proceduresList = procedureModelDbList
+            proceduresList = proceduresList
         )
 
-        val layoutManager: RecyclerView.LayoutManager =
-            GridLayoutManager(activity, 1)
+        val layoutManager: RecyclerView.LayoutManager = GridLayoutManager(activity, 1)
 
         searchProceduresRV?.layoutManager = layoutManager
         searchProceduresRV?.adapter = proceduresRVAdapter
@@ -118,10 +122,10 @@ class ProceduresFragment : Fragment() {
             override fun onItemClick(position: Int) {
                 // edit selected procedure
                 proceduresViewModel.selectedProcedure = ProcedureModelDb(
-                    _id = procedureModelDbList[position]._id,
-                    procedureName = procedureModelDbList[position].procedureName,
-                    procedurePrice = procedureModelDbList[position].procedurePrice,
-                    procedureNotes = procedureModelDbList[position].procedureNotes
+                    _id = proceduresList[position]._id,
+                    procedureName = proceduresList[position].procedureName,
+                    procedurePrice = proceduresList[position].procedurePrice,
+                    procedureNotes = proceduresList[position].procedureNotes
                 )
                 findNavController().navigate(R.id.action_nav_procedures_to_nav_procedure_edit)
             }
@@ -140,29 +144,34 @@ class ProceduresFragment : Fragment() {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val deleteProcedureModelDb: ProcedureModelDb =
-                    proceduresList!![viewHolder.adapterPosition]
+                val position = viewHolder.adapterPosition
+                val deleteProcedure: ProcedureModelDb = proceduresList!![viewHolder.adapterPosition]
 
                 // delete client from Db
-                lifecycleScope.launch {
-                    proceduresViewModel.deleteProcedure(deleteProcedureModelDb)
-                    clearSearchBar()
+                lifecycleScope.launch(Dispatchers.IO) {
+                    proceduresViewModel.deleteProcedure(deleteProcedure)
+                    withContext(Dispatchers.Main) {
+                        proceduresList!!.removeAt(position)
+                        proceduresRVAdapter?.notifyItemRemoved(position)
+                    }
                 }
 
                 // show Snackbar
                 snackbar = Snackbar.make(
-                    searchProceduresRV!!,
-                    getString(R.string.procedure_deleted, deleteProcedureModelDb.procedureName),
-                    Snackbar.LENGTH_LONG
+                    searchProceduresRV!!, requireContext().getString(
+                        R.string.procedure_deleted, deleteProcedure.procedureName
+                    ), Snackbar.LENGTH_LONG
                 ).setBackgroundTint(resources.getColor(R.color.yellow))
                     .setActionTextColor(resources.getColor(R.color.black))
-                    .setTextColor(resources.getColor(R.color.black))
-                    .setAction(
+                    .setTextColor(resources.getColor(R.color.black)).setAction(
                         getString(R.string.cancel)
                     ) {
-                        lifecycleScope.launch {
-                            proceduresViewModel.insertProcedure(deleteProcedureModelDb)
-                            clearSearchBar()
+                        lifecycleScope.launch(Dispatchers.IO) {
+                            proceduresViewModel.insertProcedure(deleteProcedure)
+                            withContext(Dispatchers.Main) {
+                                proceduresList!!.add(position, deleteProcedure)
+                                proceduresRVAdapter?.notifyItemInserted(position)
+                            }
                         }
                     }
                 snackbar!!.show()
@@ -197,10 +206,7 @@ class ProceduresFragment : Fragment() {
                 val bottom = itemView.bottom - iconMarginVertical
 
                 colorDrawableBackground.setBounds(
-                    itemView.right + dX.toInt(),
-                    itemView.top,
-                    itemView.right,
-                    itemView.bottom
+                    itemView.right + dX.toInt(), itemView.top, itemView.right, itemView.bottom
                 )
                 deleteIcon.setBounds(left, top, right, bottom)
 
@@ -209,30 +215,23 @@ class ProceduresFragment : Fragment() {
                 colorDrawableBackground.draw(c)
                 c.save()
 
-                if (dX > 0)
-                    c.clipRect(itemView.left, itemView.top, dX.toInt(), itemView.bottom)
-                else
-                    c.clipRect(
-                        itemView.right + dX.toInt(),
-                        itemView.top,
-                        itemView.right,
-                        itemView.bottom
-                    )
+                if (dX > 0) c.clipRect(itemView.left, itemView.top, dX.toInt(), itemView.bottom)
+                else c.clipRect(
+                    itemView.right + dX.toInt(), itemView.top, itemView.right, itemView.bottom
+                )
 
                 deleteIcon.draw(c)
                 c.restore()
 
                 super.onChildDraw(
-                    c,
-                    recyclerView,
-                    viewHolder,
-                    dX,
-                    dY,
-                    actionState,
-                    isCurrentlyActive
+                    c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive
                 )
             }
         }).attachToRecyclerView(searchProceduresRV)
+    }
+
+    private fun clearSearchView() {
+        searchView?.setQuery(null, true)
     }
 
     override fun onResume() {
@@ -244,9 +243,5 @@ class ProceduresFragment : Fragment() {
         super.onDestroyView()
         _binding = null
         snackbar?.dismiss()
-    }
-
-    private fun clearSearchBar() {
-        proceduresSearchView?.setQuery(null, true) // clear search bar
     }
 }

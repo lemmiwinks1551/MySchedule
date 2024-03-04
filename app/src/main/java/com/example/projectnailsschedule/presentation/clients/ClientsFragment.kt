@@ -152,11 +152,11 @@ class ClientsFragment : Fragment() {
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.adapterPosition
-                val deleteClientModelDb: ClientModelDb = clientsList!![viewHolder.adapterPosition]
+                val deleteClient: ClientModelDb = clientsList!![viewHolder.adapterPosition]
 
                 // delete client from Db
                 lifecycleScope.launch(Dispatchers.IO) {
-                    clientsViewModel.deleteClient(deleteClientModelDb)
+                    clientsViewModel.deleteClient(deleteClient)
                     withContext(Dispatchers.Main) {
                         clientsList!!.removeAt(position)
                         clientsRVAdapter?.notifyItemRemoved(position)
@@ -168,7 +168,7 @@ class ClientsFragment : Fragment() {
                     searchClientsRV!!,
                     requireContext().getString(
                         R.string.deleted_client_text,
-                        deleteClientModelDb.name
+                        deleteClient.name
                     ),
                     Snackbar.LENGTH_LONG
                 ).setBackgroundTint(resources.getColor(R.color.yellow))
@@ -178,9 +178,9 @@ class ClientsFragment : Fragment() {
                         getString(R.string.cancel)
                     ) {
                         lifecycleScope.launch(Dispatchers.IO) {
-                            clientsViewModel.insertClient(deleteClientModelDb)
+                            clientsViewModel.insertClient(deleteClient)
                             withContext(Dispatchers.Main) {
-                                clientsList!!.add(position, deleteClientModelDb)
+                                clientsList!!.add(position, deleteClient)
                                 clientsRVAdapter?.notifyItemInserted(position)
                             }
                         }

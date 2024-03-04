@@ -1,6 +1,5 @@
 package com.example.projectnailsschedule.presentation.procedures
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.example.projectnailsschedule.domain.models.ProcedureModelDb
 import com.example.projectnailsschedule.domain.usecase.proceduresUC.DeleteProcedureUseCase
@@ -32,7 +31,7 @@ class ProceduresViewModel @Inject constructor(
         deleteProcedureUseCase.execute(procedureModelDb)
     }
 
-    fun searchProcedure(searchQuery: String): LiveData<List<ProcedureModelDb>> {
+    suspend fun searchProcedure(searchQuery: String): MutableList<ProcedureModelDb> {
         return searchProcedureUseCase.execute(searchQuery)
     }
 }

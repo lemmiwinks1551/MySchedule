@@ -25,7 +25,7 @@ class ProcedureRepositoryImpl(context: Context): ProcedureRepository {
         return true
     }
 
-    override fun searchProcedure(searchQuery: String): LiveData<List<ProcedureModelDb>> {
-        return procedureDb.getDao().searchDatabase(searchQuery).asLiveData()
+    override suspend fun searchProcedure(searchQuery: String): MutableList<ProcedureModelDb> {
+        return procedureDb.getDao().searchDatabase(searchQuery)
     }
 }
