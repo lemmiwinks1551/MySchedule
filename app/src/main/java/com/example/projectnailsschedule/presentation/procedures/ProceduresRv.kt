@@ -11,7 +11,6 @@ import com.example.projectnailsschedule.domain.models.ProcedureModelDb
 
 class ProceduresRv(
     private var proceduresList: List<ProcedureModelDb>
-
 ) : RecyclerView.Adapter<ProceduresRv.ViewHolder>() {
     inner class ViewHolder(
         itemView: View,

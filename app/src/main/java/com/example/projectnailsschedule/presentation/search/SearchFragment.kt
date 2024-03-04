@@ -22,7 +22,6 @@ import com.example.projectnailsschedule.databinding.FragmentSearchBinding
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
 import com.example.projectnailsschedule.domain.models.DateParams
 import com.example.projectnailsschedule.presentation.calendar.DateParamsViewModel
-import com.example.projectnailsschedule.presentation.search.searchRecyclerVIew.SearchRvAdapter
 import com.example.projectnailsschedule.util.Util
 import com.example.projectnailsschedule.util.rustore.RuStoreAd
 import com.google.android.material.snackbar.Snackbar
@@ -40,7 +39,7 @@ class SearchFragment : Fragment() {
     private var appointmentCount: TextView? = null
 
     private var appointmentList: MutableList<AppointmentModelDb>? = null
-    private var searchRvAdapter: SearchRvAdapter? = null
+    private var searchRv: SearchRv? = null
 
     private var snackbar: Snackbar? = null
 
@@ -98,7 +97,7 @@ class SearchFragment : Fragment() {
 
     private fun inflateSearchRecyclerVIew(appointmentsList: MutableList<AppointmentModelDb>) {
         // create adapter
-        searchRvAdapter = SearchRvAdapter(
+        searchRv = SearchRv(
             appointmentsList = appointmentsList,
             dateParamsViewModel = dateParamsViewModel
         )
@@ -107,9 +106,9 @@ class SearchFragment : Fragment() {
             GridLayoutManager(activity, 1)
 
         searchRecyclerView?.layoutManager = layoutManager
-        searchRecyclerView?.adapter = searchRvAdapter
+        searchRecyclerView?.adapter = searchRv
 
-        searchRvAdapter!!.setOnItemClickListener(object : SearchRvAdapter.OnItemClickListener {
+        searchRv!!.setOnItemClickListener(object : SearchRv.OnItemClickListener {
             override fun onItemClick(position: Int) {
                 // edit selected appointment
                 dateParamsViewModel.appointmentPosition = position
