@@ -20,8 +20,6 @@ import com.example.projectnailsschedule.databinding.FragmentAppointmentBinding
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
 import com.example.projectnailsschedule.domain.models.ClientModelDb
 import com.example.projectnailsschedule.domain.models.ProcedureModelDb
-import com.example.projectnailsschedule.presentation.appointment.selectClient.SelectClientFragment
-import com.example.projectnailsschedule.presentation.appointment.selectProcedure.SelectProcedureFragment
 import com.example.projectnailsschedule.presentation.calendar.DateParamsViewModel
 import com.example.projectnailsschedule.util.Util
 import dagger.hilt.android.AndroidEntryPoint

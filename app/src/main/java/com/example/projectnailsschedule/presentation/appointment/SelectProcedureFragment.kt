@@ -1,4 +1,4 @@
-package com.example.projectnailsschedule.presentation.appointment.selectClient
+package com.example.projectnailsschedule.presentation.appointment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,10 +12,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
-import com.example.projectnailsschedule.databinding.FragmentClientsBinding
-import com.example.projectnailsschedule.domain.models.ClientModelDb
-import com.example.projectnailsschedule.presentation.clients.ClientsRvAdapter
-import com.example.projectnailsschedule.presentation.clients.ClientsViewModel
+import com.example.projectnailsschedule.databinding.FragmentProceduresBinding
+import com.example.projectnailsschedule.domain.models.ProcedureModelDb
+import com.example.projectnailsschedule.presentation.procedures.ProceduresRvAdapter
+import com.example.projectnailsschedule.presentation.procedures.ProceduresViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -23,17 +23,17 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
-class SelectClientFragment : DialogFragment() {
-    private val clientsViewModel: ClientsViewModel by activityViewModels()
+class SelectProcedureFragment : DialogFragment() {
+    private val proceduresViewModel: ProceduresViewModel by activityViewModels()
 
-    private var _binding: FragmentClientsBinding? = null
+    private var _binding: FragmentProceduresBinding? = null
     private val binding get() = _binding!!
 
-    private var clientsList: MutableList<ClientModelDb>? = null
-    private var clientsRvAdapter: ClientsRvAdapter? = null
+    private var proceduresList: MutableList<ProcedureModelDb>? = null
+    private var proceduresRVAdapter: ProceduresRvAdapter? = null
 
     private var searchView: SearchView? = null
-    private var searchClientsRV: RecyclerView? = null
+    private var searchProceduresRV: RecyclerView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,7 +53,7 @@ class SelectClientFragment : DialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentClientsBinding.inflate(inflater, container, false)
+        _binding = FragmentProceduresBinding.inflate(inflater, container, false)
 
         initViews()
 
@@ -65,13 +65,13 @@ class SelectClientFragment : DialogFragment() {
     }
 
     private fun initViews() {
-        searchView = binding.clientsSearchView
-        searchClientsRV = binding.clientsRecyclerView
-        binding.fragmentClientsAddButton.visibility = View.GONE
+        searchView = binding.proceduresSearchView
+        searchProceduresRV = binding.proceduresRecyclerView
+        binding.fragmentProceduresAddButton.visibility = View.GONE
     }
 
     private fun initClickListeners() {
-        binding.clientsSearchView.setOnQueryTextListener(object :
+        binding.proceduresSearchView.setOnQueryTextListener(object :
             SearchView.OnQueryTextListener,
             android.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -82,9 +82,10 @@ class SelectClientFragment : DialogFragment() {
             override fun onQueryTextChange(newText: String?): Boolean {
                 val searchQuery = "%$newText%"
                 lifecycleScope.launch(Dispatchers.IO) {
-                    clientsList = async { clientsViewModel.searchClient(searchQuery) }.await()
+                    proceduresList =
+                        async { proceduresViewModel.searchProcedure(searchQuery) }.await()
                     withContext(Dispatchers.Main) {
-                        inflateRecyclerView(clientsList!!)
+                        inflateRecyclerView(proceduresList!!)
                     }
                 }
                 return false
@@ -92,36 +93,31 @@ class SelectClientFragment : DialogFragment() {
         })
     }
 
-    private fun inflateRecyclerView(clientsList: List<ClientModelDb>) {
+    private fun inflateRecyclerView(procedureModelDbList: List<ProcedureModelDb>) {
         // create adapter
-        clientsRvAdapter = ClientsRvAdapter(
-            clientsList = clientsList,
-            clientsViewModel = clientsViewModel
+        proceduresRVAdapter = ProceduresRvAdapter(
+            proceduresList = procedureModelDbList
         )
 
         val layoutManager: RecyclerView.LayoutManager =
             GridLayoutManager(activity, 1)
 
-        searchClientsRV?.layoutManager = layoutManager
-        searchClientsRV?.adapter = clientsRvAdapter
+        searchProceduresRV?.layoutManager = layoutManager
+        searchProceduresRV?.adapter = proceduresRVAdapter
 
         // set clickListener on clientsRV
-        clientsRvAdapter?.setOnItemClickListener(object :
-            ClientsRvAdapter.OnItemClickListener {
+        proceduresRVAdapter?.setOnItemClickListener(object :
+            ProceduresRvAdapter.OnItemClickListener {
             override fun onItemClick(position: Int) {
                 // client selected
-                val clientModelDb = ClientModelDb(
-                    _id = clientsList[position]._id,
-                    name = clientsList[position].name,
-                    phone = clientsList[position].phone,
-                    vk = clientsList[position].vk,
-                    telegram = clientsList[position].telegram,
-                    instagram = clientsList[position].instagram,
-                    whatsapp = clientsList[position].whatsapp,
-                    notes = clientsList[position].notes
+                val procedureModelDb = ProcedureModelDb(
+                    _id = procedureModelDbList[position]._id,
+                    procedureName = procedureModelDbList[position].procedureName,
+                    procedurePrice = procedureModelDbList[position].procedurePrice,
+                    procedureNotes = procedureModelDbList[position].procedureNotes
                 )
 
-                findNavController().currentBackStackEntry?.savedStateHandle?.set("client", clientModelDb)
+                findNavController().currentBackStackEntry?.savedStateHandle?.set("procedure", procedureModelDb)
                 dismiss() // закрыть диалоговое окно после передачи данных
             }
         })

@@ -121,7 +121,7 @@
         tools:layout="@layout/fragment_client_edit" />
     <fragment
         android:id="@+id/selectClient"
-        android:name="com.example.projectnailsschedule.presentation.appointment.selectClient.SelectClientFragment"
+        android:name="com.example.projectnailsschedule.presentation.appointment.SelectClientFragment"
         android:label="fragment_select_client"
         tools:layout="@layout/fragment_select_client">
         <action

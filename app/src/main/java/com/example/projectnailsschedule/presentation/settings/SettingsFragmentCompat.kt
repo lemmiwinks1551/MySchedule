@@ -3,11 +3,9 @@ package com.example.projectnailsschedule.presentation.settings
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.viewModels
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.example.projectnailsschedule.R
-import com.example.projectnailsschedule.presentation.appointment.selectClient.SelectClientFragment
 import com.example.projectnailsschedule.presentation.settings.themesRV.SelectThemeDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="8dp"
-    tools:context=".presentation.appointment.selectProcedure.SelectProcedureFragment">
+    tools:context=".presentation.appointment.SelectProcedureFragment">
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/select_procedure_search_view_select_procedure"
