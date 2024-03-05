@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentSearchBinding
+import com.example.projectnailsschedule.databinding.SelectUnifBinding
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
 import com.example.projectnailsschedule.domain.models.DateParams
 import com.example.projectnailsschedule.presentation.calendar.DateParamsViewModel
@@ -35,7 +36,7 @@ import kotlinx.coroutines.withContext
 class SearchFragment : Fragment() {
     private val dateParamsViewModel: DateParamsViewModel by activityViewModels()
 
-    private var _binding: FragmentSearchBinding? = null
+    private var _binding: SelectUnifBinding? = null
     private val binding get() = _binding!!
 
     private var appointmentList: MutableList<AppointmentModelDb>? = null
@@ -50,7 +51,7 @@ class SearchFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentSearchBinding.inflate(inflater, container, false)
+        _binding = SelectUnifBinding.inflate(inflater, container, false)
 
         initViews()
 
@@ -65,8 +66,8 @@ class SearchFragment : Fragment() {
 
     private fun initViews() {
         searchView = binding.searchView
-        searchRv = binding.searchRecyclerView
-
+        searchRv = binding.recyclerView
+        binding.floatingActionButton.visibility = View.GONE
     }
 
     private fun initClickListeners() {

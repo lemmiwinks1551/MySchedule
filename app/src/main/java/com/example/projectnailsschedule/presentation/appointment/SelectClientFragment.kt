@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentClientsBinding
+import com.example.projectnailsschedule.databinding.SelectUnifBinding
 import com.example.projectnailsschedule.domain.models.ClientModelDb
 import com.example.projectnailsschedule.presentation.clients.ClientsRvAdapter
 import com.example.projectnailsschedule.presentation.clients.ClientsViewModel
@@ -26,7 +27,7 @@ import kotlinx.coroutines.withContext
 class SelectClientFragment : DialogFragment() {
     private val clientsViewModel: ClientsViewModel by activityViewModels()
 
-    private var _binding: FragmentClientsBinding? = null
+    private var _binding: SelectUnifBinding? = null
     private val binding get() = _binding!!
 
     private var clientsList: MutableList<ClientModelDb>? = null
@@ -53,7 +54,7 @@ class SelectClientFragment : DialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentClientsBinding.inflate(inflater, container, false)
+        _binding = SelectUnifBinding.inflate(inflater, container, false)
 
         initViews()
 
@@ -65,13 +66,13 @@ class SelectClientFragment : DialogFragment() {
     }
 
     private fun initViews() {
-        searchView = binding.clientsSearchView
-        searchClientsRV = binding.clientsRecyclerView
-        binding.fragmentClientsAddButton.visibility = View.GONE
+        searchView = binding.searchView
+        searchClientsRV = binding.recyclerView
+        binding.floatingActionButton.visibility = View.GONE
     }
 
     private fun initClickListeners() {
-        binding.clientsSearchView.setOnQueryTextListener(object :
+        binding.searchView.setOnQueryTextListener(object :
             SearchView.OnQueryTextListener,
             android.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {

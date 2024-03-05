@@ -13,13 +13,12 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
-import com.example.projectnailsschedule.databinding.FragmentProceduresBinding
+import com.example.projectnailsschedule.databinding.SelectUnifBinding
 import com.example.projectnailsschedule.domain.models.ProcedureModelDb
 import com.example.projectnailsschedule.util.rustore.RuStoreAd
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -34,7 +33,7 @@ import kotlinx.coroutines.withContext
 class ProceduresFragment : Fragment() {
     private val proceduresViewModel: ProceduresViewModel by activityViewModels()
 
-    private var _binding: FragmentProceduresBinding? = null
+    private var _binding: SelectUnifBinding? = null
     private val binding get() = _binding!!
 
     private var proceduresList: MutableList<ProcedureModelDb>? = null
@@ -48,7 +47,7 @@ class ProceduresFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentProceduresBinding.inflate(inflater, container, false)
+        _binding = SelectUnifBinding.inflate(inflater, container, false)
 
         initViews()
 
@@ -62,9 +61,9 @@ class ProceduresFragment : Fragment() {
     }
 
     private fun initViews() {
-        searchView = binding.proceduresSearchView
-        searchProceduresRV = binding.proceduresRecyclerView
-        addButton = binding.fragmentProceduresAddButton
+        searchView = binding.searchView
+        searchProceduresRV = binding.recyclerView
+        addButton = binding.floatingActionButton
     }
 
     private fun initClickListeners() {
@@ -99,8 +98,8 @@ class ProceduresFragment : Fragment() {
         }
 
         // add new procedure
-        binding.fragmentProceduresAddButton.setOnClickListener {
-            binding.fragmentProceduresAddButton.findNavController().navigate(
+        binding.floatingActionButton.setOnClickListener {
+            findNavController().navigate(
                 R.id.action_nav_procedures_to_nav_procedure_edit
             )
         }
@@ -118,7 +117,8 @@ class ProceduresFragment : Fragment() {
         searchProceduresRV?.adapter = proceduresRVAdapter
 
         // set clickListener on proceduresRV
-        proceduresRVAdapter?.setOnItemClickListener(object : ProceduresRvAdapter.OnItemClickListener {
+        proceduresRVAdapter?.setOnItemClickListener(object :
+            ProceduresRvAdapter.OnItemClickListener {
             override fun onItemClick(position: Int) {
                 // edit selected procedure
                 proceduresViewModel.selectedProcedure = ProcedureModelDb(

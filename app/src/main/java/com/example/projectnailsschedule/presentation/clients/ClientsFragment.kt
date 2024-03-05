@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentClientsBinding
+import com.example.projectnailsschedule.databinding.SelectUnifBinding
 import com.example.projectnailsschedule.domain.models.ClientModelDb
 import com.example.projectnailsschedule.util.rustore.RuStoreAd
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -34,7 +35,7 @@ import kotlinx.coroutines.withContext
 class ClientsFragment : Fragment() {
     private val clientsViewModel: ClientsViewModel by activityViewModels()
 
-    private var _binding: FragmentClientsBinding? = null
+    private var _binding: SelectUnifBinding? = null
     private val binding get() = _binding!!
 
     private var clientsList: MutableList<ClientModelDb>? = null
@@ -50,7 +51,7 @@ class ClientsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentClientsBinding.inflate(inflater, container, false)
+        _binding = SelectUnifBinding.inflate(inflater, container, false)
 
         initViews()
 
@@ -64,9 +65,9 @@ class ClientsFragment : Fragment() {
     }
 
     private fun initViews() {
-        searchView = binding.clientsSearchView
-        searchClientsRV = binding.clientsRecyclerView
-        addButton = binding.fragmentClientsAddButton
+        searchView = binding.searchView
+        searchClientsRV = binding.recyclerView
+        addButton = binding.floatingActionButton
     }
 
     private fun initClickListeners() {
@@ -99,8 +100,8 @@ class ClientsFragment : Fragment() {
         }
 
         // add new client
-        binding.fragmentClientsAddButton.setOnClickListener {
-            binding.fragmentClientsAddButton.findNavController().navigate(
+        binding.floatingActionButton.setOnClickListener {
+            findNavController().navigate(
                 R.id.action_nav_clients_to_nav_client_edit_fragment
             )
         }

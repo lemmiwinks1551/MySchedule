@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentProceduresBinding
+import com.example.projectnailsschedule.databinding.SelectUnifBinding
 import com.example.projectnailsschedule.domain.models.ProcedureModelDb
 import com.example.projectnailsschedule.presentation.procedures.ProceduresRvAdapter
 import com.example.projectnailsschedule.presentation.procedures.ProceduresViewModel
@@ -26,7 +27,7 @@ import kotlinx.coroutines.withContext
 class SelectProcedureFragment : DialogFragment() {
     private val proceduresViewModel: ProceduresViewModel by activityViewModels()
 
-    private var _binding: FragmentProceduresBinding? = null
+    private var _binding: SelectUnifBinding? = null
     private val binding get() = _binding!!
 
     private var proceduresList: MutableList<ProcedureModelDb>? = null
@@ -53,7 +54,7 @@ class SelectProcedureFragment : DialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentProceduresBinding.inflate(inflater, container, false)
+        _binding = SelectUnifBinding.inflate(inflater, container, false)
 
         initViews()
 
@@ -65,13 +66,13 @@ class SelectProcedureFragment : DialogFragment() {
     }
 
     private fun initViews() {
-        searchView = binding.proceduresSearchView
-        searchProceduresRV = binding.proceduresRecyclerView
-        binding.fragmentProceduresAddButton.visibility = View.GONE
+        searchView = binding.searchView
+        searchProceduresRV = binding.recyclerView
+        binding.floatingActionButton.visibility = View.GONE
     }
 
     private fun initClickListeners() {
-        binding.proceduresSearchView.setOnQueryTextListener(object :
+        binding.searchView.setOnQueryTextListener(object :
             SearchView.OnQueryTextListener,
             android.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
