@@ -10,10 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.domain.models.ClientModelDb
 
-class ClientsRv(
+class ClientsRvAdapter(
     private var clientsList: List<ClientModelDb>,
     private var clientsViewModel: ClientsViewModel
-) : RecyclerView.Adapter<ClientsRv.ViewHolder>() {
+) : RecyclerView.Adapter<ClientsRvAdapter.ViewHolder>() {
     inner class ViewHolder(
         itemView: View,
         listener: OnItemClickListener

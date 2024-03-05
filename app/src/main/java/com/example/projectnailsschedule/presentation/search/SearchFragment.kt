@@ -7,7 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import android.widget.ImageView
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -37,13 +37,12 @@ class SearchFragment : Fragment() {
 
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
-    private var searchTextView: SearchView? = null
-    private var searchRecyclerView: RecyclerView? = null
-    private var appointmentCount: TextView? = null
 
     private var appointmentList: MutableList<AppointmentModelDb>? = null
-    private var searchRv: SearchRv? = null
+    private var searchRvAdapter: SearchRvAdapter? = null
 
+    private var searchView: SearchView? = null
+    private var searchRv: RecyclerView? = null
     private var snackbar: Snackbar? = null
 
     override fun onCreateView(
@@ -51,32 +50,27 @@ class SearchFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
 
-        // init widgets
-        initWidgets()
-
-        // init click listeners
-        initClickListeners()
+        initViews()
 
         swipeToDelete()
 
-        // init inflate recycler view
-        searchTextView?.setQuery(null, true)
+        initClickListeners()
+
+        clearSearchView()
 
         return binding.root
     }
 
-    private fun initWidgets() {
-        searchTextView = binding.searchView
-        searchRecyclerView = binding.searchRecyclerView
-        appointmentCount = binding.appointmentsCountTextView
+    private fun initViews() {
+        searchView = binding.searchView
+        searchRv = binding.searchRecyclerView
 
     }
 
     private fun initClickListeners() {
-        searchTextView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
+        searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
             android.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 // search only after button Search pressed on keyboard
@@ -86,7 +80,8 @@ class SearchFragment : Fragment() {
             override fun onQueryTextChange(newText: String?): Boolean {
                 val searchQuery = "%$newText%"
                 lifecycleScope.launch(Dispatchers.IO) {
-                    appointmentList = async { dateParamsViewModel.searchAppointment(searchQuery) }.await()
+                    appointmentList =
+                        async { dateParamsViewModel.searchAppointment(searchQuery) }.await()
                     withContext(Dispatchers.Main) {
                         inflateRecyclerVIew(appointmentList!!)
                     }
@@ -94,11 +89,20 @@ class SearchFragment : Fragment() {
                 return false
             }
         })
+
+        val searchCloseButtonId =
+            searchView?.findViewById<View>(androidx.appcompat.R.id.search_close_btn)?.id
+        if (searchCloseButtonId != null) {
+            searchView?.findViewById<ImageView>(searchCloseButtonId)?.setOnClickListener {
+                clearSearchView()
+                snackbar?.dismiss()
+            }
+        }
     }
 
     private fun inflateRecyclerVIew(appointmentsList: MutableList<AppointmentModelDb>) {
         // create adapter
-        searchRv = SearchRv(
+        searchRvAdapter = SearchRvAdapter(
             appointmentsList = appointmentsList,
             dateParamsViewModel = dateParamsViewModel
         )
@@ -106,10 +110,10 @@ class SearchFragment : Fragment() {
         val layoutManager: RecyclerView.LayoutManager =
             GridLayoutManager(activity, 1)
 
-        searchRecyclerView?.layoutManager = layoutManager
-        searchRecyclerView?.adapter = searchRv
+        searchRv?.layoutManager = layoutManager
+        searchRv?.adapter = searchRvAdapter
 
-        searchRv!!.setOnItemClickListener(object : SearchRv.OnItemClickListener {
+        searchRvAdapter!!.setOnItemClickListener(object : SearchRvAdapter.OnItemClickListener {
             override fun onItemClick(position: Int) {
                 // edit selected appointment
                 dateParamsViewModel.appointmentPosition = position
@@ -135,21 +139,23 @@ class SearchFragment : Fragment() {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                // this method is called when we swipe our item to left direction.
-                // on below line we are getting the item at a particular position.
-                val deleteAppointmentModelDb: AppointmentModelDb =
-                    appointmentList!![viewHolder.adapterPosition]
+                val position = viewHolder.adapterPosition
+                val deleteAppointment: AppointmentModelDb =
+                    appointmentList!![position]
 
                 // delete client from Db
-                lifecycleScope.launch {
-                    dateParamsViewModel.deleteAppointment(deleteAppointmentModelDb)
-                    clearSearchBar()
+                lifecycleScope.launch(Dispatchers.IO) {
+                    dateParamsViewModel.deleteAppointment(deleteAppointment)
+                    withContext(Dispatchers.Main) {
+                        appointmentList!!.removeAt(position)
+                        searchRvAdapter?.notifyItemRemoved(position)
+                    }
                 }
 
                 // show Snackbar
                 snackbar = Snackbar.make(
-                    searchRecyclerView!!,
-                    getString(R.string.deleted_appointment_text, deleteAppointmentModelDb.name),
+                    searchRv!!,
+                    getString(R.string.deleted_appointment_text, deleteAppointment.name),
                     Snackbar.LENGTH_LONG
                 ).setBackgroundTint(resources.getColor(R.color.yellow))
                     .setActionTextColor(resources.getColor(R.color.black))
@@ -157,9 +163,12 @@ class SearchFragment : Fragment() {
                     .setAction(
                         getString(R.string.cancel)
                     ) {
-                        lifecycleScope.launch {
-                            dateParamsViewModel.insertAppointment(deleteAppointmentModelDb)
-                            clearSearchBar()
+                        lifecycleScope.launch(Dispatchers.IO) {
+                            dateParamsViewModel.insertAppointment(deleteAppointment)
+                            withContext(Dispatchers.Main) {
+                                appointmentList!!.add(position, deleteAppointment)
+                                searchRvAdapter?.notifyItemInserted(position)
+                            }
                         }
                     }
                 snackbar!!.show()
@@ -230,7 +239,11 @@ class SearchFragment : Fragment() {
                     isCurrentlyActive
                 )
             }
-        }).attachToRecyclerView(searchRecyclerView)
+        }).attachToRecyclerView(searchRv)
+    }
+
+    private fun clearSearchView() {
+        searchView?.setQuery(null, true)
     }
 
     override fun onResume() {
@@ -240,11 +253,7 @@ class SearchFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
         snackbar?.dismiss()
-    }
-
-    private fun clearSearchBar() {
-        searchTextView?.setQuery(null, true) // clear search bar
+        _binding = null
     }
 }

@@ -21,16 +21,6 @@
         app:queryHint="@string/appointments_search_hint"
         app:searchIcon="@android:drawable/ic_menu_search" />
 
-    <TextView
-        android:id="@+id/appointments_count_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toTopOf="@+id/search_recycler_view"
-        app:layout_constraintEnd_toEndOf="@+id/search_recycler_view"
-        app:layout_constraintTop_toBottomOf="@+id/search_view" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/search_recycler_view"
         android:layout_width="0dp"

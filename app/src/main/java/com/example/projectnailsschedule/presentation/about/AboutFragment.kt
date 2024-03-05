@@ -11,7 +11,9 @@ import com.example.projectnailsschedule.BuildConfig
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentAboutBinding
 import com.example.projectnailsschedule.util.Util
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class AboutFragment : Fragment() {
 
@@ -34,7 +36,9 @@ class AboutFragment : Fragment() {
 
         setVersionTextView()
 
-        //addTestData()
+/*        CoroutineScope(Dispatchers.IO).launch {
+            addTestData()
+        }*/
 
         return binding.root
     }
@@ -54,13 +58,11 @@ class AboutFragment : Fragment() {
         _binding = null
     }
 
-    private fun addTestData() {
+    private suspend fun addTestData() {
         /** for test only !!!
          * add fake appointments */
         Util().addTestData(requireContext())
         Util().createTestClients(requireContext())
-        runBlocking {
-            Util().createTestProcedures(requireContext())
-        }
+        Util().createTestProcedures(requireContext())
     }
 }

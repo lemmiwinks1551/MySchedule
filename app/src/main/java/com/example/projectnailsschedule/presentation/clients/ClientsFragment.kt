@@ -38,7 +38,7 @@ class ClientsFragment : Fragment() {
     private val binding get() = _binding!!
 
     private var clientsList: MutableList<ClientModelDb>? = null
-    private var clientsRVAdapter: ClientsRv? = null
+    private var clientsRvAdapter: ClientsRvAdapter? = null
 
     private var searchView: SearchView? = null
     private var searchClientsRV: RecyclerView? = null
@@ -70,7 +70,6 @@ class ClientsFragment : Fragment() {
     }
 
     private fun initClickListeners() {
-        // search panel listener
         searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
             android.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -83,7 +82,7 @@ class ClientsFragment : Fragment() {
                 lifecycleScope.launch(Dispatchers.IO) {
                     clientsList = async { clientsViewModel.searchClient(searchQuery) }.await()
                     withContext(Dispatchers.Main) {
-                        inflateClientsRecyclerView(clientsList!!)
+                        inflateRecyclerView(clientsList!!)
                     }
                 }
                 return false
@@ -107,9 +106,9 @@ class ClientsFragment : Fragment() {
         }
     }
 
-    private fun inflateClientsRecyclerView(clientsList: List<ClientModelDb>) {
+    private fun inflateRecyclerView(clientsList: List<ClientModelDb>) {
         // create adapter
-        clientsRVAdapter = ClientsRv(
+        clientsRvAdapter = ClientsRvAdapter(
             clientsList = clientsList,
             clientsViewModel = clientsViewModel
         )
@@ -118,10 +117,10 @@ class ClientsFragment : Fragment() {
             GridLayoutManager(activity, 1)
 
         searchClientsRV?.layoutManager = layoutManager
-        searchClientsRV?.adapter = clientsRVAdapter
+        searchClientsRV?.adapter = clientsRvAdapter
 
         // set clickListener on clientsRV
-        clientsRVAdapter?.setOnItemClickListener(object : ClientsRv.OnItemClickListener {
+        clientsRvAdapter?.setOnItemClickListener(object : ClientsRvAdapter.OnItemClickListener {
             override fun onItemClick(position: Int) {
                 // edit selected client
                 clientsViewModel.selectedClient = ClientModelDb(
@@ -159,7 +158,7 @@ class ClientsFragment : Fragment() {
                     clientsViewModel.deleteClient(deleteClient)
                     withContext(Dispatchers.Main) {
                         clientsList!!.removeAt(position)
-                        clientsRVAdapter?.notifyItemRemoved(position)
+                        clientsRvAdapter?.notifyItemRemoved(position)
                     }
                 }
 
@@ -181,7 +180,7 @@ class ClientsFragment : Fragment() {
                             clientsViewModel.insertClient(deleteClient)
                             withContext(Dispatchers.Main) {
                                 clientsList!!.add(position, deleteClient)
-                                clientsRVAdapter?.notifyItemInserted(position)
+                                clientsRvAdapter?.notifyItemInserted(position)
                             }
                         }
                     }

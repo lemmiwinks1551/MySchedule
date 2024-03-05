@@ -162,10 +162,9 @@ class Util {
         }
     }
 
-    fun createTestClients(context: Context) {
+    suspend fun createTestClients(context: Context) {
         val clientsDb = ClientsDb.getDb(context)
-
-        val thread = Thread {
+        CoroutineScope(Dispatchers.IO).launch {
             repeat(50) {
                 val testClient = ClientModelDb(
                     _id = null,
@@ -177,11 +176,9 @@ class Util {
                     whatsapp = generateRandomRussianPhoneNumber(),
                     notes = null
                 )
-                //clientsDb.getDao().insert(testClient)
+                clientsDb.getDao().insert(testClient)
             }
         }
-        thread.start()
-        thread.join()
         clientsDb.close()
     }
 

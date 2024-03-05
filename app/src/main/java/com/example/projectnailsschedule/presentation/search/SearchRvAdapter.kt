@@ -11,10 +11,10 @@ import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
 import com.example.projectnailsschedule.presentation.calendar.DateParamsViewModel
 
-class SearchRv(
+class SearchRvAdapter(
     private var appointmentsList: List<AppointmentModelDb>,
     private val dateParamsViewModel: DateParamsViewModel
-) : RecyclerView.Adapter<SearchRv.ViewHolder>() {
+) : RecyclerView.Adapter<SearchRvAdapter.ViewHolder>() {
     inner class ViewHolder(
         itemView: View,
         listener: OnItemClickListener
@@ -134,14 +134,17 @@ class SearchRv(
     }
 
     override fun getItemCount(): Int {
-        /*        // set current appointment count
-                dateParamsViewModel.appointmentsTotalCount.value = appointmentCount
-                dateParamsViewModel.getAllAppointmentsLiveData()*/
         return appointmentsList.size
     }
 
     private fun hideEmptyViews(holder: ViewHolder, position: Int) {
         with(appointmentsList[position]) {
+            if (time.isNullOrEmpty()) {
+                holder.time.visibility = View.GONE
+            }
+            if (name.isNullOrEmpty()) {
+                holder.name.visibility = View.GONE
+            }
             if (procedure.isNullOrEmpty()) {
                 holder.procedureCl.visibility = View.GONE
             }

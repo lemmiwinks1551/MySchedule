@@ -38,7 +38,7 @@ class ProceduresFragment : Fragment() {
     private val binding get() = _binding!!
 
     private var proceduresList: MutableList<ProcedureModelDb>? = null
-    private var proceduresRVAdapter: ProceduresRv? = null
+    private var proceduresRVAdapter: ProceduresRvAdapter? = null
 
     private var searchView: SearchView? = null
     private var searchProceduresRV: RecyclerView? = null
@@ -82,7 +82,7 @@ class ProceduresFragment : Fragment() {
                     proceduresList =
                         async { proceduresViewModel.searchProcedure(searchQuery) }.await()
                     withContext(Dispatchers.Main) {
-                        inflateClientsRecyclerView(proceduresList!!)
+                        inflateRecyclerView(proceduresList!!)
                     }
                 }
                 return false
@@ -106,9 +106,9 @@ class ProceduresFragment : Fragment() {
         }
     }
 
-    private fun inflateClientsRecyclerView(proceduresList: List<ProcedureModelDb>) {
+    private fun inflateRecyclerView(proceduresList: List<ProcedureModelDb>) {
         // create adapter
-        proceduresRVAdapter = ProceduresRv(
+        proceduresRVAdapter = ProceduresRvAdapter(
             proceduresList = proceduresList
         )
 
@@ -118,7 +118,7 @@ class ProceduresFragment : Fragment() {
         searchProceduresRV?.adapter = proceduresRVAdapter
 
         // set clickListener on proceduresRV
-        proceduresRVAdapter?.setOnItemClickListener(object : ProceduresRv.OnItemClickListener {
+        proceduresRVAdapter?.setOnItemClickListener(object : ProceduresRvAdapter.OnItemClickListener {
             override fun onItemClick(position: Int) {
                 // edit selected procedure
                 proceduresViewModel.selectedProcedure = ProcedureModelDb(

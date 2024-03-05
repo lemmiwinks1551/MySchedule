@@ -9,9 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.domain.models.ProcedureModelDb
 
-class ProceduresRv(
+class ProceduresRvAdapter(
     private var proceduresList: List<ProcedureModelDb>
-) : RecyclerView.Adapter<ProceduresRv.ViewHolder>() {
+) : RecyclerView.Adapter<ProceduresRvAdapter.ViewHolder>() {
     inner class ViewHolder(
         itemView: View,
         listener: OnItemClickListener
