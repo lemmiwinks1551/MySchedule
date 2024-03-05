@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/fragment_clients"
+    android:id="@+id/select_unif"
     tools:context=".presentation.clients.ClientsFragment">
 
     <androidx.appcompat.widget.SearchView
