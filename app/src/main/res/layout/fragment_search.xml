@@ -27,6 +27,8 @@
         android:layout_height="0dp"
         android:layout_margin="8dp"
         android:fadeScrollbars="false"
+        android:scrollbars="vertical"
+        android:verticalScrollbarPosition="left"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
