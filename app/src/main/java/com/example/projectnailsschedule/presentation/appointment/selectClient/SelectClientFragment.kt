@@ -6,30 +6,34 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
-import com.example.projectnailsschedule.databinding.FragmentSelectClientBinding
+import com.example.projectnailsschedule.databinding.FragmentClientsBinding
 import com.example.projectnailsschedule.domain.models.ClientModelDb
-import com.example.projectnailsschedule.presentation.appointment.selectClient.selectClientRV.SelectClientRVAdapter
+import com.example.projectnailsschedule.presentation.clients.ClientsRvAdapter
+import com.example.projectnailsschedule.presentation.clients.ClientsViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class SelectClientFragment : DialogFragment() {
-    val log = this::class.simpleName
+    private val clientsViewModel: ClientsViewModel by activityViewModels()
 
-    private val selectClientViewModel: SelectClientViewModel by viewModels()
-
-    private var _binding: FragmentSelectClientBinding? = null
-    private var clientSearchRV: RecyclerView? = null
-    private var clientsSearchView: SearchView? = null
-
+    private var _binding: FragmentClientsBinding? = null
     private val binding get() = _binding!!
+
+    private var clientsList: MutableList<ClientModelDb>? = null
+    private var clientsRvAdapter: ClientsRvAdapter? = null
+
+    private var searchView: SearchView? = null
+    private var searchClientsRV: RecyclerView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,24 +53,25 @@ class SelectClientFragment : DialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        _binding = FragmentClientsBinding.inflate(inflater, container, false)
 
-        // set binding
-        _binding = FragmentSelectClientBinding.inflate(inflater, container, false)
-
-        initWidgets()
+        initViews()
 
         initClickListeners()
+
+        clearSearchView()
 
         return binding.root
     }
 
-    private fun initWidgets() {
-        clientSearchRV = binding.clientsRecyclerView
-        clientsSearchView = binding.selectClientSearchView
+    private fun initViews() {
+        searchView = binding.clientsSearchView
+        searchClientsRV = binding.clientsRecyclerView
+        binding.fragmentClientsAddButton.visibility = View.GONE
     }
 
     private fun initClickListeners() {
-        binding.selectClientSearchView.setOnQueryTextListener(object :
+        binding.clientsSearchView.setOnQueryTextListener(object :
             SearchView.OnQueryTextListener,
             android.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -76,31 +81,33 @@ class SelectClientFragment : DialogFragment() {
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 val searchQuery = "%$newText%"
-                lifecycleScope.launch {
-                    inflateSearchRecyclerVIew(selectClientViewModel.searchClients(searchQuery))
+                lifecycleScope.launch(Dispatchers.IO) {
+                    clientsList = async { clientsViewModel.searchClient(searchQuery) }.await()
+                    withContext(Dispatchers.Main) {
+                        inflateRecyclerView(clientsList!!)
+                    }
                 }
                 return false
             }
         })
     }
 
-    private fun inflateSearchRecyclerVIew(clientsList: List<ClientModelDb>) {
+    private fun inflateRecyclerView(clientsList: List<ClientModelDb>) {
         // create adapter
-        val selectClientRVAdapter = SelectClientRVAdapter(
-            clientsCount = clientsList.size,
+        clientsRvAdapter = ClientsRvAdapter(
             clientsList = clientsList,
-            selectClientViewModel = selectClientViewModel
+            clientsViewModel = clientsViewModel
         )
 
         val layoutManager: RecyclerView.LayoutManager =
             GridLayoutManager(activity, 1)
 
-        clientSearchRV?.layoutManager = layoutManager
-        clientSearchRV?.adapter = selectClientRVAdapter
+        searchClientsRV?.layoutManager = layoutManager
+        searchClientsRV?.adapter = clientsRvAdapter
 
         // set clickListener on clientsRV
-        selectClientRVAdapter.setOnItemClickListener(object :
-            SelectClientRVAdapter.OnItemClickListener {
+        clientsRvAdapter?.setOnItemClickListener(object :
+            ClientsRvAdapter.OnItemClickListener {
             override fun onItemClick(position: Int) {
                 // client selected
                 val clientModelDb = ClientModelDb(
@@ -120,13 +127,7 @@ class SelectClientFragment : DialogFragment() {
         })
     }
 
-    override fun onResume() {
-        clientsSearchView?.setQuery(null, true) // clear search bar
-        super.onResume()
-    }
-
-    override fun onPause() {
-        clientsSearchView?.setQuery(null, true) // clear search bar
-        super.onPause()
+    private fun clearSearchView() {
+        searchView?.setQuery(null, true)
     }
 }
