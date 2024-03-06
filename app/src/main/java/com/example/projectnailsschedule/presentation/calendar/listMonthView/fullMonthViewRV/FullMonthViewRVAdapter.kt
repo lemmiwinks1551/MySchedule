@@ -131,7 +131,6 @@ class FullMonthViewRVAdapter(
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-
                 val childPosition = viewHolder.adapterPosition
                 val parentPosition = holder.adapterPosition
 
@@ -143,7 +142,7 @@ class FullMonthViewRVAdapter(
 
                 // delete client from Db
                 CoroutineScope(Dispatchers.IO).launch {
-                    dateParamsViewModel.deleteAppointment(deleteAppointmentModelDb)
+                    dateParamsViewModel.deleteAppointment(deleteAppointmentModelDb, childPosition)
                 }
 
                 // delete in child rv
@@ -176,7 +175,7 @@ class FullMonthViewRVAdapter(
                     ) {
                         // restore appointment in Db
                         CoroutineScope(Dispatchers.IO).launch {
-                            dateParamsViewModel.insertAppointment(deleteAppointmentModelDb)
+                            dateParamsViewModel.insertAppointment(deleteAppointmentModelDb, childPosition)
                         }
 
                         // restore appointment in child list

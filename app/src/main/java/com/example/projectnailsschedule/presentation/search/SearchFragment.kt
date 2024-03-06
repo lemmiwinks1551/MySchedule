@@ -140,12 +140,11 @@ class SearchFragment : Fragment() {
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.adapterPosition
-                val deleteAppointment: AppointmentModelDb =
-                    appointmentList!![position]
+                val deleteAppointment: AppointmentModelDb = appointmentList!![position]
 
                 // delete client from Db
                 lifecycleScope.launch(Dispatchers.IO) {
-                    dateParamsViewModel.deleteAppointment(deleteAppointment)
+                    dateParamsViewModel.deleteAppointment(deleteAppointment, position)
                     withContext(Dispatchers.Main) {
                         appointmentList!!.removeAt(position)
                         searchRvAdapter?.notifyItemRemoved(position)
@@ -164,7 +163,7 @@ class SearchFragment : Fragment() {
                         getString(R.string.cancel)
                     ) {
                         lifecycleScope.launch(Dispatchers.IO) {
-                            dateParamsViewModel.insertAppointment(deleteAppointment)
+                            dateParamsViewModel.insertAppointment(deleteAppointment, position)
                             withContext(Dispatchers.Main) {
                                 appointmentList!!.add(position, deleteAppointment)
                                 searchRvAdapter?.notifyItemInserted(position)
