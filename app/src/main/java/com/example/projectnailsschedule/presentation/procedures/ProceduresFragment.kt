@@ -40,7 +40,7 @@ class ProceduresFragment : Fragment() {
     private var proceduresRVAdapter: ProceduresRvAdapter? = null
 
     private var searchView: SearchView? = null
-    private var searchProceduresRV: RecyclerView? = null
+    private var recyclerView: RecyclerView? = null
     private var addButton: FloatingActionButton? = null
     private var snackbar: Snackbar? = null
 
@@ -62,7 +62,7 @@ class ProceduresFragment : Fragment() {
 
     private fun initViews() {
         searchView = binding.searchView
-        searchProceduresRV = binding.recyclerView
+        recyclerView = binding.recyclerView
         addButton = binding.floatingActionButton
     }
 
@@ -113,8 +113,8 @@ class ProceduresFragment : Fragment() {
 
         val layoutManager: RecyclerView.LayoutManager = GridLayoutManager(activity, 1)
 
-        searchProceduresRV?.layoutManager = layoutManager
-        searchProceduresRV?.adapter = proceduresRVAdapter
+        recyclerView?.layoutManager = layoutManager
+        recyclerView?.adapter = proceduresRVAdapter
 
         // set clickListener on proceduresRV
         proceduresRVAdapter?.setOnItemClickListener(object :
@@ -158,7 +158,7 @@ class ProceduresFragment : Fragment() {
 
                 // show Snackbar
                 snackbar = Snackbar.make(
-                    searchProceduresRV!!, requireContext().getString(
+                    recyclerView!!, requireContext().getString(
                         R.string.procedure_deleted, deleteProcedure.procedureName
                     ), Snackbar.LENGTH_LONG
                 ).setBackgroundTint(resources.getColor(R.color.yellow))
@@ -171,6 +171,7 @@ class ProceduresFragment : Fragment() {
                             withContext(Dispatchers.Main) {
                                 proceduresList!!.add(position, deleteProcedure)
                                 proceduresRVAdapter?.notifyItemInserted(position)
+                                recyclerView!!.smoothScrollToPosition(position)
                             }
                         }
                     }
@@ -227,7 +228,7 @@ class ProceduresFragment : Fragment() {
                     c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive
                 )
             }
-        }).attachToRecyclerView(searchProceduresRV)
+        }).attachToRecyclerView(recyclerView)
     }
 
     private fun clearSearchView() {

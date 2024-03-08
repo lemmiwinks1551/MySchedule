@@ -165,6 +165,7 @@ class SearchFragment : Fragment() {
                         lifecycleScope.launch(Dispatchers.IO) {
                             dateParamsViewModel.insertAppointment(deleteAppointment, position)
                             withContext(Dispatchers.Main) {
+                                searchRv!!.smoothScrollToPosition(position)
                                 appointmentList!!.add(position, deleteAppointment)
                                 searchRvAdapter?.notifyItemInserted(position)
                             }

@@ -40,7 +40,7 @@ class ClientsFragment : Fragment() {
     private var clientsRvAdapter: ClientsRvAdapter? = null
 
     private var searchView: SearchView? = null
-    private var searchClientsRV: RecyclerView? = null
+    private var recyclerView: RecyclerView? = null
     private var addButton: FloatingActionButton? = null
     private var snackbar: Snackbar? = null
 
@@ -64,7 +64,7 @@ class ClientsFragment : Fragment() {
 
     private fun initViews() {
         searchView = binding.searchView
-        searchClientsRV = binding.recyclerView
+        recyclerView = binding.recyclerView
         addButton = binding.floatingActionButton
     }
 
@@ -115,8 +115,8 @@ class ClientsFragment : Fragment() {
         val layoutManager: RecyclerView.LayoutManager =
             GridLayoutManager(activity, 1)
 
-        searchClientsRV?.layoutManager = layoutManager
-        searchClientsRV?.adapter = clientsRvAdapter
+        recyclerView?.layoutManager = layoutManager
+        recyclerView?.adapter = clientsRvAdapter
 
         // set clickListener on clientsRV
         clientsRvAdapter?.setOnItemClickListener(object : ClientsRvAdapter.OnItemClickListener {
@@ -163,7 +163,7 @@ class ClientsFragment : Fragment() {
 
                 // show Snackbar
                 snackbar = Snackbar.make(
-                    searchClientsRV!!,
+                    recyclerView!!,
                     requireContext().getString(
                         R.string.deleted_client_text,
                         deleteClient.name
@@ -178,6 +178,7 @@ class ClientsFragment : Fragment() {
                         lifecycleScope.launch(Dispatchers.IO) {
                             clientsViewModel.insertClient(deleteClient)
                             withContext(Dispatchers.Main) {
+                                recyclerView!!.smoothScrollToPosition(position)
                                 clientsList!!.add(position, deleteClient)
                                 clientsRvAdapter?.notifyItemInserted(position)
                             }
@@ -250,7 +251,7 @@ class ClientsFragment : Fragment() {
                     isCurrentlyActive
                 )
             }
-        }).attachToRecyclerView(searchClientsRV)
+        }).attachToRecyclerView(recyclerView)
     }
 
     private fun clearSearchView() {
