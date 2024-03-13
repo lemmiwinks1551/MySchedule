@@ -3,11 +3,12 @@ package com.example.projectnailsschedule.util.rustore
 import android.content.Context
 import android.util.Log
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.example.projectnailsschedule.BuildConfig
 import com.my.target.ads.InterstitialAd
 import com.my.target.ads.MyTargetView
-import com.my.target.common.MyTargetManager
 
 class RuStoreAd {
+    val log = "Ads"
 
     // Banner
     lateinit var adView: MyTargetView
@@ -42,7 +43,12 @@ class RuStoreAd {
         })
 
         // Запускаем загрузку данных
-        interstitialAd.load()
+        if (BuildConfig.DEBUG) {
+            Log.d(log, "Debug")
+        } else {
+            Log.d(log, "Prod")
+            interstitialAd.load()
+        }
     }
 
     fun banner(
@@ -84,19 +90,28 @@ class RuStoreAd {
                 Log.e(log, "onLoad")
                 layout.addView(adView)
             }
+
             override fun onNoAd(reason: String, myTargetView: MyTargetView) {
                 Log.e(log, "onNoAd")
             }
+
             override fun onShow(myTargetView: MyTargetView) {
                 Log.e(log, "onShow")
             }
+
             override fun onClick(myTargetView: MyTargetView) {
                 Log.e(log, "onClick")
             }
         }
 
         // Запускаем загрузку данных
-        adView.load()
+        if (BuildConfig.DEBUG) {
+            Log.d(log, "Debug")
+        } else {
+            // Код для продакшн версии
+            Log.d(log, "Prod")
+            adView.load()
+        }
     }
 
     fun destroyAd() {

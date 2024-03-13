@@ -11,14 +11,14 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.projectnailsschedule.BuildConfig
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentAboutBinding
-import com.example.projectnailsschedule.domain.repository.isDayOffApi
+import com.example.projectnailsschedule.domain.repository.ProductionCalendarApi
 import com.example.projectnailsschedule.util.Util
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import retrofit2.HttpException
 import retrofit2.Retrofit
-import retrofit2.converter.scalars.ScalarsConverterFactory
+import retrofit2.converter.gson.GsonConverterFactory
 
 class AboutFragment : Fragment() {
 
@@ -47,18 +47,20 @@ class AboutFragment : Fragment() {
 
         // retrofit test
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://isdayoff.ru")
-            .addConverterFactory(ScalarsConverterFactory.create()).build()
-        val isDayOffApi = retrofit.create(isDayOffApi::class.java)
+            .baseUrl("https://production-calendar.ru")
+            .addConverterFactory(GsonConverterFactory.create()).build()
+        val productionCalendarApi = retrofit.create(ProductionCalendarApi::class.java)
 
         CoroutineScope(Dispatchers.IO).launch {
             Log.i("Retrofit", "Start")
-            val response = isDayOffApi.getDayStatus()
-            val result = response.use { it.string() }
-            withContext(Dispatchers.Main) {
-                Log.i("Retrofit", result.toString())
+            try {
+                val result = productionCalendarApi.getDateStatus("09.05.2024")
+                Log.i("Retrofit", result.days[0].toString())
+            } catch (e: HttpException) {
+                Log.i("Retrofit", e.message!!)
+            } finally {
+                Log.i("Retrofit", "End")
             }
-            Log.i("Retrofit", "End")
         }
 
         return binding.root
