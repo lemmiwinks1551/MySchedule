@@ -7,5 +7,7 @@ import retrofit2.http.Path
 
 interface ProductionCalendarApi {
     @GET("get/ru/{date}/json")
-    suspend fun getDateStatus(@Path("date") date: String): ResponseData
+    suspend fun getDateStatus(
+        @Path("date") date: String
+    ): ResponseData
 }

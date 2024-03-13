@@ -16,7 +16,8 @@ import com.example.projectnailsschedule.util.Util
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -45,23 +46,7 @@ class AboutFragment : Fragment() {
                     addTestData()
                 }*/
 
-        // retrofit test
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://production-calendar.ru")
-            .addConverterFactory(GsonConverterFactory.create()).build()
-        val productionCalendarApi = retrofit.create(ProductionCalendarApi::class.java)
-
-        CoroutineScope(Dispatchers.IO).launch {
-            Log.i("Retrofit", "Start")
-            try {
-                val result = productionCalendarApi.getDateStatus("09.05.2024")
-                Log.i("Retrofit", result.days[0].toString())
-            } catch (e: HttpException) {
-                Log.i("Retrofit", e.message!!)
-            } finally {
-                Log.i("Retrofit", "End")
-            }
-        }
+        retrofitTest()
 
         return binding.root
     }
@@ -82,10 +67,37 @@ class AboutFragment : Fragment() {
     }
 
     private suspend fun addTestData() {
-        /** for test only !!!
-         * add fake appointments */
-        Util().addTestData(requireContext())
-        Util().createTestClients(requireContext())
-        Util().createTestProcedures(requireContext())
+        // Запускаем загрузку данных
+        if (BuildConfig.DEBUG) {
+            Log.d("Test", "Debug")
+            /** for test only !!!
+             * add fake appointments */
+            Util().addTestData(requireContext())
+            Util().createTestClients(requireContext())
+            Util().createTestProcedures(requireContext())
+        } else {
+            Log.d("Test", "Prod")
+        }
+    }
+
+    private fun retrofitTest() {
+        // add interceptor for logs
+        val interceptor = HttpLoggingInterceptor()
+        interceptor.level = HttpLoggingInterceptor.Level.BODY
+
+        val client = OkHttpClient.Builder()
+            .addInterceptor(interceptor)
+            .build()
+
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://production-calendar.ru")
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create()).build()
+        val productionCalendarApi = retrofit.create(ProductionCalendarApi::class.java)
+
+        CoroutineScope(Dispatchers.IO).launch {
+            val result = productionCalendarApi.getDateStatus("09.05.2024")
+            Log.i("Retrofit", result.days[0].toString())
+        }
     }
 }
