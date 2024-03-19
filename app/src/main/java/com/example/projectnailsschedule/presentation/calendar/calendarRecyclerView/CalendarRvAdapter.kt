@@ -5,6 +5,9 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +15,7 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -19,13 +23,27 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.domain.models.CalendarDateModelDb
 import com.example.projectnailsschedule.domain.models.DateParams
+import com.example.projectnailsschedule.domain.repository.ProductionCalendarApi
 import com.example.projectnailsschedule.presentation.calendar.DateParamsViewModel
 import com.example.projectnailsschedule.util.Util
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.time.delay
 import kotlinx.coroutines.withContext
+import okhttp3.Cache
+import okhttp3.CacheControl
+import okhttp3.Interceptor
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Response
+import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import java.io.File
 import java.time.LocalDate
+import java.util.concurrent.TimeUnit
 
 class CalendarRvAdapter(
     private val daysInMonth: ArrayList<String>,
@@ -38,6 +56,8 @@ class CalendarRvAdapter(
         lateinit var date: TextView
         lateinit var dateAppointmentsCount: TextView
         lateinit var cellLayout: ConstraintLayout
+        lateinit var dayOffStar: ImageView
+        lateinit var progressBar: ProgressBar
 
         init {
             inflateViews()
@@ -47,6 +67,7 @@ class CalendarRvAdapter(
             date = itemView.findViewById(R.id.date_cell)
             dateAppointmentsCount = itemView.findViewById(R.id.date_appointments_text_view)
             cellLayout = itemView.findViewById(R.id.calendarRecyclerViewCell)
+            dayOffStar = itemView.findViewById(R.id.day_off_star)
         }
     }
 
@@ -110,6 +131,23 @@ class CalendarRvAdapter(
 
             // If the day corresponds to today's date, set the text color to red
             setCurrentDateRedColor(holder, selectedDate)
+
+            //  Day off
+            CoroutineScope(Dispatchers.IO).launch {
+                // TODO: здесь такая проблема, из за слишком частых запросов ловится ошибка
+                //  <-- HTTP FAILED: java.net.SocketTimeoutException:
+                //  failed to connect to production-calendar.ru/77.222.40.105 (port 443)
+                //  from /10.0.2.16 (port 36706) after 10000ms
+                val dayOffStatus = getDayOffStatus(ruFormatDate)
+                if (dayOffStatus == 3 || dayOffStatus == 6) {
+                    Log.i("DayOffStatus", "$ruFormatDate is Day-off")
+                    withContext(Dispatchers.Main) {
+                        holder.dayOffStar.visibility = View.VISIBLE
+                    }
+                } else {
+                    Log.i("DayOffStatus", "$ruFormatDate is not Day-off")
+                }
+            }
 
             restoreSelection(holder)
         }
@@ -330,5 +368,77 @@ class CalendarRvAdapter(
     private fun selectDate(holder: ViewHolder) {
         // Make selected date bold
         holder.date.setTypeface(null, Typeface.BOLD)
+    }
+
+    private suspend fun getDayOffStatus(date: String): Int {
+        // add interceptor for logs
+        val interceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+
+        class CacheInterceptor : Interceptor {
+            override fun intercept(chain: Interceptor.Chain): Response {
+                val response: Response = chain.proceed(chain.request())
+                val cacheControl = CacheControl.Builder()
+                    .maxAge(
+                        10,
+                        TimeUnit.DAYS
+                    ) // Устанавливаем максимальный возраст кэшированных данных
+                    .build()
+                return response.newBuilder()
+                    .header("Cache-Control", cacheControl.toString())
+                    .build()
+            }
+        }
+
+        class ForceCacheInterceptor : Interceptor {
+            override fun intercept(chain: Interceptor.Chain): Response {
+                val builder: Request.Builder = chain.request().newBuilder()
+                if (!isInternetAvailable()) { // Функция для проверки доступности интернета
+                    builder.cacheControl(CacheControl.FORCE_CACHE)
+                }
+                return chain.proceed(builder.build())
+            }
+        }
+
+        val client = OkHttpClient.Builder()
+            .addInterceptor(interceptor)
+            .addNetworkInterceptor(CacheInterceptor())
+            .addInterceptor(ForceCacheInterceptor())
+            .cache(createOkHttpClient().cache)
+            .build()
+
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://production-calendar.ru")
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        val productionCalendarApi = retrofit.create(ProductionCalendarApi::class.java)
+
+        return productionCalendarApi.getDateStatus(date).days[0].type_id
+    }
+
+    private fun createOkHttpClient(): OkHttpClient {
+        // Размер кэша - 100 МБ
+        val cacheSize = 100 * 1024 * 1024
+        val cacheDirectory = File(context.cacheDir, "http-cache")
+        val cache = Cache(cacheDirectory, cacheSize.toLong())
+
+        return OkHttpClient.Builder()
+            .cache(cache)
+            .build()
+    }
+
+    fun isInternetAvailable(): Boolean {
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            val network = connectivityManager.activeNetwork ?: return false
+            val capabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
+            return capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+        } else {
+            @Suppress("DEPRECATION")
+            val networkInfo = connectivityManager.activeNetworkInfo
+            return networkInfo?.isConnected ?: false
+        }
     }
 }
