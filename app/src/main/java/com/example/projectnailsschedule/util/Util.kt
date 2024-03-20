@@ -339,4 +339,12 @@ class Util {
         val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy", Locale("ru"))
         return date.format(formatter)
     }
+
+    fun getDayOfYear(dateString: String): Int {
+        val dateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+        val date = dateFormat.parse(dateString)
+        val calendar = Calendar.getInstance()
+        calendar.time = date
+        return calendar.get(Calendar.DAY_OF_YEAR)
+    }
 }

@@ -20,6 +20,9 @@ import com.example.projectnailsschedule.util.Util
 import com.example.projectnailsschedule.util.rustore.RuStoreAd
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.time.ZoneId
 import java.util.Calendar
 import java.util.Date
@@ -39,6 +42,13 @@ class CalendarFragment : Fragment(),
     private var calendarRecyclerView: RecyclerView? = null
     private var shortDataRecyclerView: RecyclerView? = null
     private var addButton: FloatingActionButton? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        CoroutineScope(Dispatchers.IO).launch {
+            dateParamsViewModel.getDataInfo(requireContext())
+        }
+        super.onCreate(savedInstanceState)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -129,6 +139,16 @@ class CalendarFragment : Fragment(),
             } else {
                 shortDataRecyclerView?.visibility = View.INVISIBLE
                 addButton?.visibility = View.INVISIBLE
+            }
+        }
+
+        // set if selected day is day off observer
+        dateParamsViewModel.dayOffInfo.observe(viewLifecycleOwner) {
+            if (it != null) {
+                binding.dayOffCl.visibility = View.VISIBLE
+                binding.dayOffInfo.text = it
+            } else {
+                binding.dayOffCl.visibility = View.GONE
             }
         }
     }
