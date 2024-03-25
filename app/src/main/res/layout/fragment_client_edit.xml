@@ -2,319 +2,295 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/fragment_appointment"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:fadeScrollbars="false"
-    android:focusableInTouchMode="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     tools:context=".presentation.clients.editClient.ClientEditFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/client_status"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        tools:context=".presentation.clients.editClient.ClientEditFragment">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/fragment_appointment_title"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/client_avatar_cl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/client_avatar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/client_avatar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/camera"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:src="@drawable/photo_camera"
+                app:layout_constraintBottom_toBottomOf="@+id/client_avatar"
+                app:layout_constraintEnd_toEndOf="@+id/client_avatar" />
+
+            <EditText
+                android:id="@+id/client_name_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/rectangle_2"
+                android:hint="Введите имя клиента"
+                android:src="@drawable/rectangle_2"
+                android:textAlignment="center"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/client_avatar" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/client_appointments_and_stats_cl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/client_avatar_cl">
+
+            <ImageButton
+                android:id="@+id/show_all_appointments"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rectangle_1"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:src="@drawable/appointments_icon"
+                app:layout_constraintBottom_toBottomOf="@+id/show_all_appointments"
+                app:layout_constraintStart_toStartOf="@+id/show_all_appointments"
+                app:layout_constraintTop_toTopOf="@+id/show_all_appointments" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Все записи"
+                app:layout_constraintBottom_toBottomOf="@+id/show_all_appointments"
+                app:layout_constraintEnd_toEndOf="@+id/show_all_appointments"
+                app:layout_constraintStart_toEndOf="@+id/imageView"
+                app:layout_constraintTop_toTopOf="@+id/show_all_appointments" />
+
+            <ImageButton
+                android:id="@+id/show_stats"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rectangle_1"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:src="@drawable/statistic_icon"
+                app:layout_constraintBottom_toBottomOf="@+id/show_stats"
+                app:layout_constraintStart_toStartOf="@+id/show_stats"
+                app:layout_constraintTop_toTopOf="@+id/show_stats" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Статистика"
+                app:layout_constraintBottom_toBottomOf="@+id/show_stats"
+                app:layout_constraintEnd_toEndOf="@+id/show_stats"
+                app:layout_constraintStart_toEndOf="@+id/imageView2"
+                app:layout_constraintTop_toTopOf="@+id/show_stats" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/client_sm_cl"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rectangle_3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/client_appointments_and_stats_cl">
+
+            <ImageView
+                android:id="@+id/phone_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:src="@drawable/baseline_call_24"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/client_phone_et"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/rectangle_2"
+                android:hint="Введите номер телефона"
+                android:inputType="phone"
+                android:maxLines="1"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:src="@drawable/rectangle_2"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/phone_icon"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/vk_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:src="@drawable/vk_logo"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/client_phone_et" />
+
+            <EditText
+                android:id="@+id/client_vk_et"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/rectangle_2"
+                android:hint="Введите адрес страницы Вконтакте"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:src="@drawable/rectangle_2"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/vk_icon"
+                app:layout_constraintTop_toBottomOf="@+id/client_phone_et" />
+
+            <ImageView
+                android:id="@+id/instagram_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:src="@drawable/instagram_logo"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/client_vk_et" />
+
+            <EditText
+                android:id="@+id/client_instagram_et"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/rectangle_2"
+                android:hint="Введите адрес страницы Instagram"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:src="@drawable/rectangle_2"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/instagram_icon"
+                app:layout_constraintTop_toBottomOf="@+id/client_vk_et" />
+
+            <ImageView
+                android:id="@+id/tg_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:src="@drawable/telegram_logo"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/client_instagram_et" />
+
+            <EditText
+                android:id="@+id/client_tg_et"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/rectangle_2"
+                android:hint="Введите номер телефона"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:src="@drawable/rectangle_2"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/tg_icon"
+                app:layout_constraintTop_toBottomOf="@+id/client_instagram_et" />
+
+            <ImageView
+                android:id="@+id/whatsapp_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:src="@drawable/whatsapp_logo"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/client_tg_et" />
+
+            <EditText
+                android:id="@+id/client_whatsapp_et"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/rectangle_2"
+                android:hint="Введите номер телефона"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:src="@drawable/rectangle_2"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/whatsapp_icon"
+                app:layout_constraintTop_toBottomOf="@+id/client_tg_et" />
+
+            <ImageView
+                android:id="@+id/note_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:src="@drawable/note"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/client_whatsapp_et" />
+
+            <EditText
+                android:id="@+id/client_note_et"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/rectangle_2"
+                android:hint="Заметки"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:src="@drawable/rectangle_2"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/note_icon"
+                app:layout_constraintTop_toBottomOf="@+id/client_whatsapp_et" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ImageView
+            android:id="@+id/edit_client_bottom_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/add_client_title"
-            android:textSize="24sp"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:src="@drawable/edit_client_bottom_image"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/fragment_appointment_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Добавление/изменение клиента в базе"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/fragment_appointment_title" />
-
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/client_time_cl_date_appointment_rv_item"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:background="@drawable/calendar_recycler_view_borders"
-            app:layout_constraintBottom_toTopOf="@+id/client_procedure_appointment_month_rv_child"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fragment_appointment_date">
-
-            <TextView
-                android:id="@+id/client_name"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="@string/name"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/client_name_edit_text"
-                app:layout_constraintHorizontal_weight="3"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <EditText
-                android:id="@+id/client_name_edit_text"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:background="@null"
-                android:hint="@string/example_client"
-                android:imeOptions="actionDone"
-                android:inputType="textCapWords"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_weight="7"
-                app:layout_constraintStart_toEndOf="@+id/client_name"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/client_procedure_appointment_month_rv_child"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/calendar_recycler_view_borders"
-            app:layout_constraintBottom_toTopOf="@+id/client_phone_appointment_month_rv_child"
-            app:layout_constraintTop_toBottomOf="@+id/client_time_cl_date_appointment_rv_item">
-
-            <TextView
-                android:id="@+id/client_phone"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="@string/phone"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/client_phone_edit_text"
-                app:layout_constraintHorizontal_weight="3"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <EditText
-                android:id="@+id/client_phone_edit_text"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:autofillHints="phone"
-                android:background="@null"
-                android:hint="@string/example_phone"
-                android:imeOptions="actionDone"
-                android:inputType="phone"
-                android:maxLength="15"
-                android:singleLine="true"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_weight="7"
-                app:layout_constraintStart_toEndOf="@id/client_phone"
-                app:layout_constraintTop_toTopOf="parent" />
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/client_phone_appointment_month_rv_child"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/calendar_recycler_view_borders"
-            app:layout_constraintBottom_toTopOf="@+id/client_vk_appointment_month_rv_child"
-            app:layout_constraintTop_toBottomOf="@+id/client_procedure_appointment_month_rv_child">
-
-            <TextView
-                android:id="@+id/client_vk_link_tv"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="@string/vk_text"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/client_vk_link_et"
-                app:layout_constraintHorizontal_weight="3"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <EditText
-                android:id="@+id/client_vk_link_et"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:background="@null"
-                android:hint="@string/vk_link_hint"
-                android:imeOptions="actionDone"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_weight="7"
-                app:layout_constraintStart_toEndOf="@id/client_vk_link_tv"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/client_vk_appointment_month_rv_child"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/calendar_recycler_view_borders"
-            app:layout_constraintBottom_toTopOf="@+id/client_telegram_appointment_month_rv_child"
-            app:layout_constraintTop_toBottomOf="@+id/client_phone_appointment_month_rv_child">
-
-            <TextView
-                android:id="@+id/client_telegram_link_tv"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="@string/telegram_text"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/client_telegram_link_et"
-                app:layout_constraintHorizontal_weight="3"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <EditText
-                android:id="@+id/client_telegram_link_et"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:background="@null"
-                android:hint="@string/telegram_hint"
-                android:imeOptions="actionDone"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_weight="7"
-                app:layout_constraintStart_toEndOf="@id/client_telegram_link_tv"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/client_telegram_appointment_month_rv_child"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/calendar_recycler_view_borders"
-            app:layout_constraintBottom_toTopOf="@+id/client_instagram_appointment_month_rv_child"
-            app:layout_constraintTop_toBottomOf="@+id/client_vk_appointment_month_rv_child">
-
-            <TextView
-                android:id="@+id/client_instagram_link_tv"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="@string/instagram_text"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-
-                app:layout_constraintEnd_toStartOf="@id/client_instagram_link_et"
-                app:layout_constraintHorizontal_weight="3"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <EditText
-                android:id="@+id/client_instagram_link_et"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:background="@null"
-                android:hint="@string/instagram_link_hint"
-                android:imeOptions="actionDone"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_weight="7"
-                app:layout_constraintStart_toEndOf="@id/client_instagram_link_tv"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/client_instagram_appointment_month_rv_child"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/calendar_recycler_view_borders"
-            app:layout_constraintBottom_toTopOf="@+id/client_whatsapp_appointment_month_rv_child"
-            app:layout_constraintTop_toBottomOf="@+id/client_telegram_appointment_month_rv_child">
-
-            <TextView
-                android:id="@+id/client_whatsapp_link_tv"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="@string/whatsapp_text"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/client_whatsapp_link_et"
-                app:layout_constraintHorizontal_weight="3"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <EditText
-                android:id="@+id/client_whatsapp_link_et"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:autofillHints="phone"
-                android:background="@null"
-                android:hint="@string/example_phone"
-                android:imeOptions="actionDone"
-                android:inputType="phone"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_weight="7"
-                app:layout_constraintStart_toEndOf="@id/client_whatsapp_link_tv"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/client_whatsapp_appointment_month_rv_child"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/calendar_recycler_view_borders"
-            app:layout_constraintTop_toBottomOf="@+id/client_instagram_appointment_month_rv_child">
-
-            <TextView
-                android:id="@+id/client_notes"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="@string/notes"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/client_notes_edit_text"
-                app:layout_constraintHorizontal_weight="3"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <EditText
-                android:id="@+id/client_notes_edit_text"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:background="@null"
-                android:hint="@string/example_notes"
-                android:imeOptions="actionDone"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_weight="7"
-                app:layout_constraintStart_toEndOf="@id/client_notes"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            app:layout_constraintTop_toBottomOf="@+id/client_sm_cl" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -53,13 +53,13 @@ class ClientEditFragment : Fragment() {
     }
 
     private fun initViews() {
-        nameEt = binding.clientNameEditText
-        phoneEt = binding.clientPhoneEditText
-        vkEditText = binding.clientVkLinkEt
-        telegramEt = binding.clientTelegramLinkEt
-        instagramEt = binding.clientInstagramLinkEt
-        whatsappEt = binding.clientWhatsappLinkEt
-        notesEt = binding.clientNotesEditText
+        nameEt = binding.clientNameEt
+        phoneEt = binding.clientPhoneEt
+        vkEditText = binding.clientVkEt
+        telegramEt = binding.clientTgEt
+        instagramEt = binding.clientInstagramEt
+        whatsappEt = binding.clientWhatsappEt
+        notesEt = binding.clientNoteEt
     }
 
     private fun inflateViews() {
@@ -107,8 +107,6 @@ class ClientEditFragment : Fragment() {
 
             findNavController().popBackStack()
         }
-
-        binding.clientPhoneEditText.addTextChangedListener(PhoneNumberFormattingTextWatcher())
     }
 
     override fun onDestroyView() {
