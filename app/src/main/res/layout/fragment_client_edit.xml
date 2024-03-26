@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:fillViewport="true"
     android:layout_height="match_parent"
     tools:context=".presentation.clients.editClient.ClientEditFragment">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/client_avatar_cl"
@@ -139,8 +135,9 @@
                 android:id="@+id/phone_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
+                android:layout_margin="16dp"
                 android:src="@drawable/baseline_call_24"
+                app:layout_constraintBottom_toTopOf="@+id/vk_icon"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -150,13 +147,13 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:background="@drawable/rectangle_2"
-                android:hint="Введите номер телефона"
+                android:hint="Номер телефона"
                 android:inputType="phone"
                 android:maxLines="1"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
                 android:src="@drawable/rectangle_2"
-                android:textSize="16sp"
+                android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/phone_icon"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -165,8 +162,10 @@
                 android:id="@+id/vk_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
+                android:layout_margin="16dp"
+                android:layout_marginBottom="2dp"
                 android:src="@drawable/vk_logo"
+                app:layout_constraintBottom_toTopOf="@+id/instagram_icon"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/client_phone_et" />
 
@@ -174,13 +173,13 @@
                 android:id="@+id/client_vk_et"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
+                android:layout_margin="16dp"
                 android:background="@drawable/rectangle_2"
-                android:hint="Введите адрес страницы Вконтакте"
+                android:hint="Адрес страницы Вконтакте"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
                 android:src="@drawable/rectangle_2"
-                android:textSize="16sp"
+                android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/vk_icon"
                 app:layout_constraintTop_toBottomOf="@+id/client_phone_et" />
@@ -189,8 +188,9 @@
                 android:id="@+id/instagram_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
+                android:layout_margin="16dp"
                 android:src="@drawable/instagram_logo"
+                app:layout_constraintBottom_toTopOf="@+id/tg_icon"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/client_vk_et" />
 
@@ -198,13 +198,13 @@
                 android:id="@+id/client_instagram_et"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
+                android:layout_margin="16dp"
                 android:background="@drawable/rectangle_2"
-                android:hint="Введите адрес страницы Instagram"
+                android:hint="Адрес страницы Instagram"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
                 android:src="@drawable/rectangle_2"
-                android:textSize="16sp"
+                android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/instagram_icon"
                 app:layout_constraintTop_toBottomOf="@+id/client_vk_et" />
@@ -213,8 +213,10 @@
                 android:id="@+id/tg_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
+                android:layout_margin="16dp"
+                android:layout_marginBottom="2dp"
                 android:src="@drawable/telegram_logo"
+                app:layout_constraintBottom_toTopOf="@+id/whatsapp_icon"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/client_instagram_et" />
 
@@ -222,13 +224,13 @@
                 android:id="@+id/client_tg_et"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
+                android:layout_margin="16dp"
                 android:background="@drawable/rectangle_2"
-                android:hint="Введите номер телефона"
+                android:hint="Telegram"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
                 android:src="@drawable/rectangle_2"
-                android:textSize="16sp"
+                android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/tg_icon"
                 app:layout_constraintTop_toBottomOf="@+id/client_instagram_et" />
@@ -237,7 +239,7 @@
                 android:id="@+id/whatsapp_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
+                android:layout_margin="16dp"
                 android:src="@drawable/whatsapp_logo"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/client_tg_et" />
@@ -246,13 +248,13 @@
                 android:id="@+id/client_whatsapp_et"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
+                android:layout_margin="16dp"
                 android:background="@drawable/rectangle_2"
-                android:hint="Введите номер телефона"
+                android:hint="Whatsapp"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
                 android:src="@drawable/rectangle_2"
-                android:textSize="16sp"
+                android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/whatsapp_icon"
                 app:layout_constraintTop_toBottomOf="@+id/client_tg_et" />
@@ -261,26 +263,36 @@
                 android:id="@+id/note_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
+                android:layout_margin="16dp"
                 android:src="@drawable/note"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/client_whatsapp_et" />
 
-            <EditText
-                android:id="@+id/client_note_et"
+            <ScrollView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:background="@drawable/rectangle_2"
-                android:hint="Заметки"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
-                android:src="@drawable/rectangle_2"
-                android:textSize="16sp"
+                android:layout_margin="16dp"
+                app:layout_constraintTop_toBottomOf="@+id/client_whatsapp_et"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/note_icon"
-                app:layout_constraintTop_toBottomOf="@+id/client_whatsapp_et" />
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <EditText
+                    android:id="@+id/client_note_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rectangle_2"
+                    android:hint="Заметки"
+                    android:maxLines="5"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:imeOptions="actionDone"
+                    android:scrollbars="vertical"
+                    android:textSize="20sp" />
+
+            </ScrollView>
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -290,9 +302,6 @@
             android:layout_height="wrap_content"
             android:src="@drawable/edit_client_bottom_image"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/client_sm_cl" />
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-</ScrollView>
