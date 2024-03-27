@@ -331,7 +331,8 @@ class Util {
     }
 
     fun isDarkModeEnabled(context: Context): Boolean {
-        val currentNightMode = context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+        val currentNightMode =
+            context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
         return currentNightMode == Configuration.UI_MODE_NIGHT_YES
     }
 
@@ -346,5 +347,13 @@ class Util {
         val calendar = Calendar.getInstance()
         calendar.time = date
         return calendar.get(Calendar.DAY_OF_YEAR)
+    }
+
+    fun extractVkUsername(vkUrl: String): String {
+        return vkUrl.replace("https://", "")
+    }
+
+    fun extractInstagramUsername(instUrl: String): String {
+        return instUrl.replace("https://www.", "")
     }
 }

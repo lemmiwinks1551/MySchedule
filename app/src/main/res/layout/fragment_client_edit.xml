@@ -47,6 +47,8 @@
                 android:layout_marginTop="16dp"
                 android:background="@drawable/rectangle_2"
                 android:hint="Введите имя клиента"
+                android:imeOptions="actionDone"
+                android:inputType="textCapWords"
                 android:src="@drawable/rectangle_2"
                 android:textAlignment="center"
                 android:textSize="16sp"
@@ -136,12 +138,13 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/client_appointments_and_stats_cl">
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/phone_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:src="@drawable/baseline_call_24"
+                android:background="@drawable/baseline_call_24"
                 app:layout_constraintBottom_toTopOf="@+id/vk_icon"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -153,10 +156,11 @@
                 android:layout_margin="16dp"
                 android:background="@drawable/rectangle_2"
                 android:hint="Номер телефона"
+                android:imeOptions="actionDone"
                 android:inputType="phone"
-                android:maxLines="1"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
+                android:maxLines="2"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
                 android:src="@drawable/rectangle_2"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -179,8 +183,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
+                android:layout_marginTop="16dp"
                 android:background="@drawable/rectangle_2"
                 android:hint="Адрес страницы Вконтакте"
+                android:imeOptions="actionDone"
+                android:maxLines="1"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
                 android:src="@drawable/rectangle_2"
@@ -206,6 +213,8 @@
                 android:layout_margin="16dp"
                 android:background="@drawable/rectangle_2"
                 android:hint="Адрес страницы Instagram"
+                android:imeOptions="actionDone"
+                android:maxLines="2"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
                 android:src="@drawable/rectangle_2"
@@ -232,6 +241,8 @@
                 android:layout_margin="16dp"
                 android:background="@drawable/rectangle_2"
                 android:hint="Telegram"
+                android:imeOptions="actionDone"
+                android:maxLines="1"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
                 android:src="@drawable/rectangle_2"
@@ -256,6 +267,8 @@
                 android:layout_margin="16dp"
                 android:background="@drawable/rectangle_2"
                 android:hint="Whatsapp"
+                android:imeOptions="actionDone"
+                android:maxLines="1"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
                 android:src="@drawable/rectangle_2"
@@ -288,6 +301,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/rectangle_2"
+                    android:fadeScrollbars="false"
+                    android:focusable="true"
                     android:hint="Заметки"
                     android:imeOptions="actionDone"
                     android:maxLines="5"
@@ -300,16 +315,16 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <ImageView
-            android:id="@+id/edit_client_bottom_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            android:src="@drawable/edit_client_bottom_image"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/client_sm_cl" />
+        <!--        <ImageView
+                    android:id="@+id/edit_client_bottom_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:src="@drawable/edit_client_bottom_image"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/client_sm_cl" />-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

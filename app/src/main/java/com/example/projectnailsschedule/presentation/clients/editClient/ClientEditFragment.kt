@@ -17,6 +17,7 @@ import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentClientEditBinding
 import com.example.projectnailsschedule.domain.models.ClientModelDb
 import com.example.projectnailsschedule.presentation.clients.ClientsViewModel
+import com.example.projectnailsschedule.util.Util
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -48,6 +49,8 @@ class ClientEditFragment : Fragment() {
 
         inflateViews()
 
+        replaceUrls()
+
         setHasOptionsMenu(true)
         return binding.root
     }
@@ -73,6 +76,18 @@ class ClientEditFragment : Fragment() {
                 instagramEt.setText(instagram)
                 whatsappEt.setText(whatsapp)
                 notesEt.setText(notes)
+            }
+        }
+
+        vkEditText.setOnFocusChangeListener { v, hasFocus ->
+            if (vkEditText.text.toString().contains("https://vk.com/")) {
+                val shortUrl = Util().extractVkUsername(vkEditText.text.toString())
+                vkEditText.setText(shortUrl)
+            }
+
+            if (instagramEt.text.toString().contains("https://www.instagram.com/")) {
+                val shortUrl = Util().extractInstagramUsername(instagramEt.text.toString())
+                instagramEt.setText(shortUrl)
             }
         }
     }
@@ -120,5 +135,17 @@ class ClientEditFragment : Fragment() {
         saveToolbarButton.isVisible = true
         setClickListeners()
         super.onPrepareOptionsMenu(menu)
+    }
+
+    private fun replaceUrls() {
+        if (vkEditText.text.toString().contains("https://vk.com/")) {
+            val shortUrl = Util().extractVkUsername(vkEditText.text.toString())
+            vkEditText.setText(shortUrl)
+        }
+
+        if (instagramEt.text.toString().contains("https://www.instagram.com/")) {
+            val shortUrl = Util().extractInstagramUsername(instagramEt.text.toString())
+            instagramEt.setText(shortUrl)
+        }
     }
 }
