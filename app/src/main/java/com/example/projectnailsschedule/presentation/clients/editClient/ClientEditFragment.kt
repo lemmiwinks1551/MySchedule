@@ -1,7 +1,6 @@
 package com.example.projectnailsschedule.presentation.clients.editClient
 
 import android.os.Bundle
-import android.telephony.PhoneNumberFormattingTextWatcher
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
@@ -122,6 +121,30 @@ class ClientEditFragment : Fragment() {
 
             findNavController().popBackStack()
         }
+
+        phoneEt.setOnClickListener {
+            clientsViewModel.startPhone(phoneEt.text.toString())
+        }
+
+        vkEditText.setOnClickListener {
+            clientsViewModel.startVk("https://${vkEditText.text}")
+        }
+
+        instagramEt.setOnClickListener {
+            clientsViewModel.startInstagram("https://${instagramEt.text}")
+        }
+
+        telegramEt.setOnClickListener {
+            if (telegramEt.text.toString().contains("https://t.me/")) {
+                clientsViewModel.startTelegram("https://t.me/" + telegramEt.text.toString())
+            } else {
+                clientsViewModel.startTelegram(telegramEt.text.toString())
+            }
+        }
+
+        whatsappEt.setOnClickListener {
+            clientsViewModel.startWhatsApp(whatsappEt.text.toString())
+        }
     }
 
     override fun onDestroyView() {
@@ -146,6 +169,11 @@ class ClientEditFragment : Fragment() {
         if (instagramEt.text.toString().contains("https://www.instagram.com/")) {
             val shortUrl = Util().extractInstagramUsername(instagramEt.text.toString())
             instagramEt.setText(shortUrl)
+        }
+
+        if (telegramEt.text.toString().contains("https://t.me/")) {
+            val shortUrl = Util().extractTelegramUsername(telegramEt.text.toString())
+            telegramEt.setText(shortUrl)
         }
     }
 }

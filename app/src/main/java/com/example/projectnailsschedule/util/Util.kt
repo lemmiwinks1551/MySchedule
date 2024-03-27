@@ -356,4 +356,8 @@ class Util {
     fun extractInstagramUsername(instUrl: String): String {
         return instUrl.replace("https://www.", "")
     }
+
+    fun extractTelegramUsername(tgUrl: String): String {
+        return tgUrl.replace("https://t.me/", "")
+    }
 }
