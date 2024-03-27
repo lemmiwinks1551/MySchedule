@@ -138,14 +138,12 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/client_appointments_and_stats_cl">
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/phone_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:src="@drawable/baseline_call_24"
-                android:background="@drawable/baseline_call_24"
-                app:layout_constraintBottom_toTopOf="@+id/vk_icon"
+                android:src="@drawable/phone_icon"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -163,27 +161,36 @@
                 android:paddingEnd="8dp"
                 android:src="@drawable/rectangle_2"
                 android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/phone_call_icon"
                 app:layout_constraintStart_toEndOf="@+id/phone_icon"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/phone_call_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:background="@color/transparent"
+                android:src="@drawable/phone_call"
+                app:layout_constraintBottom_toBottomOf="@+id/client_phone_et"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/client_phone_et" />
 
             <ImageView
                 android:id="@+id/vk_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:layout_marginBottom="2dp"
                 android:src="@drawable/vk_logo"
-                app:layout_constraintBottom_toTopOf="@+id/instagram_icon"
+                app:layout_constraintBottom_toBottomOf="@+id/client_vk_et"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/client_phone_et" />
+                app:layout_constraintTop_toTopOf="@+id/client_vk_et" />
 
             <EditText
                 android:id="@+id/client_vk_et"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:layout_marginTop="16dp"
                 android:background="@drawable/rectangle_2"
                 android:hint="Адрес страницы Вконтакте"
                 android:imeOptions="actionDone"
@@ -192,9 +199,20 @@
                 android:paddingEnd="8dp"
                 android:src="@drawable/rectangle_2"
                 android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/vk_go_icon"
                 app:layout_constraintStart_toEndOf="@+id/vk_icon"
                 app:layout_constraintTop_toBottomOf="@+id/client_phone_et" />
+
+            <ImageButton
+                android:id="@+id/vk_go_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:background="@color/transparent"
+                android:src="@drawable/link_open"
+                app:layout_constraintBottom_toBottomOf="@+id/client_vk_et"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/client_vk_et" />
 
             <ImageView
                 android:id="@+id/instagram_icon"
@@ -202,9 +220,9 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:src="@drawable/instagram_logo"
-                app:layout_constraintBottom_toTopOf="@+id/tg_icon"
+                app:layout_constraintBottom_toBottomOf="@+id/client_instagram_et"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/client_vk_et" />
+                app:layout_constraintTop_toTopOf="@+id/client_instagram_et" />
 
             <EditText
                 android:id="@+id/client_instagram_et"
@@ -219,18 +237,28 @@
                 android:paddingEnd="8dp"
                 android:src="@drawable/rectangle_2"
                 android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/instagram_go_icon"
                 app:layout_constraintStart_toEndOf="@+id/instagram_icon"
                 app:layout_constraintTop_toBottomOf="@+id/client_vk_et" />
+
+            <ImageButton
+                android:id="@+id/instagram_go_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:background="@color/transparent"
+                android:src="@drawable/link_open"
+                app:layout_constraintBottom_toBottomOf="@+id/client_instagram_et"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/client_instagram_et" />
 
             <ImageView
                 android:id="@+id/tg_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:layout_marginBottom="2dp"
                 android:src="@drawable/telegram_logo"
-                app:layout_constraintBottom_toTopOf="@+id/whatsapp_icon"
+                app:layout_constraintBottom_toTopOf="@+id/client_whatsapp_et"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/client_instagram_et" />
 
@@ -257,6 +285,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:src="@drawable/whatsapp_logo"
+                app:layout_constraintBottom_toTopOf="@+id/scrollView2"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/client_tg_et" />
 
@@ -283,11 +312,12 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:src="@drawable/note"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/scrollView2"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/client_whatsapp_et" />
+                app:layout_constraintTop_toTopOf="@+id/scrollView2" />
 
             <ScrollView
+                android:id="@+id/scrollView2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
