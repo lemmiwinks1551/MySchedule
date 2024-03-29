@@ -32,7 +32,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
-                android:id="@+id/camera"
+                android:id="@+id/camera_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
@@ -157,24 +157,23 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:src="@drawable/baseline_call_24"
-                app:layout_constraintBottom_toTopOf="@+id/client_vk_et"
+                app:layout_constraintBottom_toTopOf="@+id/client_vk_tv"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
-                android:id="@+id/client_phone_et"
+                android:id="@+id/client_phone_tv"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:background="@drawable/rectangle_2"
                 android:hint="Номер телефона"
-                android:imeOptions="actionDone"
+                android:focusableInTouchMode="false"
                 android:inputType="phone"
-                android:maxLines="2"
+                android:imeOptions="actionDone"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
                 android:src="@drawable/rectangle_2"
-                android:textColor="@color/hyperlink"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/phone_icon"
@@ -186,27 +185,27 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:src="@drawable/vk_logo"
-                app:layout_constraintBottom_toTopOf="@+id/client_instagram_et"
+                app:layout_constraintBottom_toTopOf="@+id/client_instagram_tv"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/client_phone_et" />
+                app:layout_constraintTop_toBottomOf="@+id/client_phone_tv" />
 
             <EditText
-                android:id="@+id/client_vk_et"
+                android:id="@+id/client_vk_tv"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:background="@drawable/rectangle_2"
+                android:focusableInTouchMode="false"
                 android:hint="Адрес страницы Вконтакте"
                 android:imeOptions="actionDone"
-                android:maxLines="2"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
+                android:singleLine="true"
                 android:src="@drawable/rectangle_2"
-                android:textColor="@color/hyperlink"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/vk_icon"
-                app:layout_constraintTop_toBottomOf="@+id/client_phone_et" />
+                app:layout_constraintTop_toBottomOf="@+id/client_phone_tv" />
 
             <ImageView
                 android:id="@+id/instagram_icon"
@@ -214,27 +213,27 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:src="@drawable/instagram_logo"
-                app:layout_constraintBottom_toTopOf="@+id/client_tg_et"
+                app:layout_constraintBottom_toTopOf="@+id/client_tg_tv"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/client_vk_et" />
+                app:layout_constraintTop_toBottomOf="@+id/client_vk_tv" />
 
             <EditText
-                android:id="@+id/client_instagram_et"
+                android:id="@+id/client_instagram_tv"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:background="@drawable/rectangle_2"
+                android:focusableInTouchMode="false"
                 android:hint="Адрес страницы Instagram"
                 android:imeOptions="actionDone"
-                android:maxLines="2"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
+                android:singleLine="true"
                 android:src="@drawable/rectangle_2"
-                android:textColor="@color/hyperlink"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/instagram_icon"
-                app:layout_constraintTop_toBottomOf="@+id/client_vk_et" />
+                app:layout_constraintTop_toBottomOf="@+id/client_vk_tv" />
 
             <ImageView
                 android:id="@+id/tg_icon"
@@ -242,27 +241,28 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:src="@drawable/telegram_logo"
-                app:layout_constraintBottom_toTopOf="@+id/client_whatsapp_et"
+                app:layout_constraintBottom_toTopOf="@+id/client_whatsapp_tv"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/client_instagram_et" />
+                app:layout_constraintTop_toBottomOf="@+id/client_instagram_tv" />
 
             <EditText
-                android:id="@+id/client_tg_et"
+                android:id="@+id/client_tg_tv"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
+                android:layout_marginTop="12dp"
                 android:background="@drawable/rectangle_2"
+                android:focusableInTouchMode="false"
                 android:hint="Telegram"
                 android:imeOptions="actionDone"
-                android:maxLines="1"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
+                android:singleLine="true"
                 android:src="@drawable/rectangle_2"
-                android:textColor="@color/hyperlink"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/tg_icon"
-                app:layout_constraintTop_toBottomOf="@+id/client_instagram_et" />
+                app:layout_constraintTop_toBottomOf="@+id/client_instagram_tv" />
 
             <ImageView
                 android:id="@+id/whatsapp_icon"
@@ -272,26 +272,27 @@
                 android:src="@drawable/whatsapp_logo"
                 app:layout_constraintBottom_toTopOf="@+id/scrollView2"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/client_tg_et" />
+                app:layout_constraintTop_toBottomOf="@+id/client_tg_tv" />
 
             <EditText
-                android:id="@+id/client_whatsapp_et"
+                android:id="@+id/client_whatsapp_tv"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:background="@drawable/rectangle_2"
+                android:focusableInTouchMode="false"
                 android:hint="Whatsapp"
                 android:imeOptions="actionDone"
                 android:inputType="phone"
                 android:maxLines="1"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
+                android:singleLine="true"
                 android:src="@drawable/rectangle_2"
-                android:textColor="@color/hyperlink"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/whatsapp_icon"
-                app:layout_constraintTop_toBottomOf="@+id/client_tg_et" />
+                app:layout_constraintTop_toBottomOf="@+id/client_tg_tv" />
 
             <ImageView
                 android:id="@+id/note_icon"
@@ -301,7 +302,7 @@
                 android:src="@drawable/note"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/client_whatsapp_et" />
+                app:layout_constraintTop_toBottomOf="@+id/client_whatsapp_tv" />
 
             <ScrollView
                 android:id="@+id/scrollView2"
@@ -311,17 +312,15 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/note_icon"
-                app:layout_constraintTop_toBottomOf="@+id/client_whatsapp_et">
+                app:layout_constraintTop_toBottomOf="@+id/client_whatsapp_tv">
 
                 <EditText
-                    android:id="@+id/client_note_et"
+                    android:id="@+id/client_note_tv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/rectangle_2"
                     android:fadeScrollbars="false"
-                    android:focusable="true"
                     android:hint="Заметки"
-                    android:imeOptions="actionDone"
                     android:maxLines="5"
                     android:paddingStart="8dp"
                     android:paddingEnd="8dp"
