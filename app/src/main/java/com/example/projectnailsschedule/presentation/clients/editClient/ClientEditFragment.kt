@@ -194,6 +194,17 @@ class ClientEditFragment : Fragment() {
             false
         }
 
+        vk.setOnFocusChangeListener { v, hasFocus ->
+            if (!hasFocus) {
+                vk.clearFocus()
+                vk.isFocusableInTouchMode = false
+
+                vk.setOnClickListener {
+                    showOptionsDialog(vk)
+                }
+            }
+        }
+
         instagram.setOnEditorActionListener { _, i, _ ->
             if (i == EditorInfo.IME_ACTION_DONE || i == EditorInfo.IME_ACTION_NONE) {
                 instagram.clearFocus()
@@ -204,6 +215,17 @@ class ClientEditFragment : Fragment() {
                 }
             }
             false
+        }
+
+        instagram.setOnFocusChangeListener { v, hasFocus ->
+            if (!hasFocus) {
+                instagram.clearFocus()
+                instagram.isFocusableInTouchMode = false
+
+                instagram.setOnClickListener {
+                    showOptionsDialog(instagram)
+                }
+            }
         }
 
         telegram.setOnEditorActionListener { _, i, _ ->
@@ -218,6 +240,17 @@ class ClientEditFragment : Fragment() {
             false
         }
 
+        telegram.setOnFocusChangeListener { v, hasFocus ->
+            if (!hasFocus) {
+                telegram.clearFocus()
+                telegram.isFocusableInTouchMode = false
+
+                telegram.setOnClickListener {
+                    showOptionsDialog(telegram)
+                }
+            }
+        }
+
         whatsapp.setOnEditorActionListener { _, i, _ ->
             if (i == EditorInfo.IME_ACTION_DONE || i == EditorInfo.IME_ACTION_NONE) {
                 whatsapp.clearFocus()
@@ -228,6 +261,17 @@ class ClientEditFragment : Fragment() {
                 }
             }
             false
+        }
+
+        whatsapp.setOnFocusChangeListener { v, hasFocus ->
+            if (!hasFocus) {
+                whatsapp.clearFocus()
+                whatsapp.isFocusableInTouchMode = false
+
+                whatsapp.setOnClickListener {
+                    showOptionsDialog(whatsapp)
+                }
+            }
         }
     }
 
