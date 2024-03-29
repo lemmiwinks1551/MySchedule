@@ -1,6 +1,5 @@
 package com.example.projectnailsschedule.presentation.clients.editClient
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,7 +8,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
@@ -25,7 +23,6 @@ import com.example.projectnailsschedule.util.Util
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-
 
 @AndroidEntryPoint
 class ClientEditFragment : Fragment() {
@@ -131,6 +128,8 @@ class ClientEditFragment : Fragment() {
             findNavController().popBackStack()
         }
 
+        // OnCLickListener
+
         phone.setOnClickListener {
             //clientsViewModel.startPhone(phone.text.toString())
             showOptionsDialog(phone)
@@ -159,119 +158,48 @@ class ClientEditFragment : Fragment() {
             showOptionsDialog(whatsapp)
         }
 
+        // OnEditorActionListener
+
         phone.setOnEditorActionListener { _, i, _ ->
-            if (i == EditorInfo.IME_ACTION_DONE) {
-                phone.clearFocus()
-                phone.isFocusableInTouchMode = false
-
-                phone.setOnClickListener {
-                    showOptionsDialog(phone)
-                }
-            }
-            false
-        }
-
-        phone.setOnFocusChangeListener { v, hasFocus ->
-            if (!hasFocus) {
-                phone.clearFocus()
-                phone.isFocusableInTouchMode = false
-
-                phone.setOnClickListener {
-                    showOptionsDialog(phone)
-                }
-            }
+            onEditorActionListener(i, phone)
         }
 
         vk.setOnEditorActionListener { _, i, _ ->
-            if (i == EditorInfo.IME_ACTION_DONE || i == EditorInfo.IME_ACTION_NONE) {
-                vk.clearFocus()
-                vk.isFocusableInTouchMode = false
-
-                vk.setOnClickListener {
-                    showOptionsDialog(vk)
-                }
-            }
-            false
-        }
-
-        vk.setOnFocusChangeListener { v, hasFocus ->
-            if (!hasFocus) {
-                vk.clearFocus()
-                vk.isFocusableInTouchMode = false
-
-                vk.setOnClickListener {
-                    showOptionsDialog(vk)
-                }
-            }
+            onEditorActionListener(i, vk)
         }
 
         instagram.setOnEditorActionListener { _, i, _ ->
-            if (i == EditorInfo.IME_ACTION_DONE || i == EditorInfo.IME_ACTION_NONE) {
-                instagram.clearFocus()
-                instagram.isFocusableInTouchMode = false
-
-                instagram.setOnClickListener {
-                    showOptionsDialog(instagram)
-                }
-            }
-            false
-        }
-
-        instagram.setOnFocusChangeListener { v, hasFocus ->
-            if (!hasFocus) {
-                instagram.clearFocus()
-                instagram.isFocusableInTouchMode = false
-
-                instagram.setOnClickListener {
-                    showOptionsDialog(instagram)
-                }
-            }
+            onEditorActionListener(i, instagram)
         }
 
         telegram.setOnEditorActionListener { _, i, _ ->
-            if (i == EditorInfo.IME_ACTION_DONE || i == EditorInfo.IME_ACTION_NONE) {
-                telegram.clearFocus()
-                telegram.isFocusableInTouchMode = false
-
-                telegram.setOnClickListener {
-                    showOptionsDialog(telegram)
-                }
-            }
-            false
-        }
-
-        telegram.setOnFocusChangeListener { v, hasFocus ->
-            if (!hasFocus) {
-                telegram.clearFocus()
-                telegram.isFocusableInTouchMode = false
-
-                telegram.setOnClickListener {
-                    showOptionsDialog(telegram)
-                }
-            }
+            onEditorActionListener(i, telegram)
         }
 
         whatsapp.setOnEditorActionListener { _, i, _ ->
-            if (i == EditorInfo.IME_ACTION_DONE || i == EditorInfo.IME_ACTION_NONE) {
-                whatsapp.clearFocus()
-                whatsapp.isFocusableInTouchMode = false
-
-                whatsapp.setOnClickListener {
-                    showOptionsDialog(whatsapp)
-                }
-            }
-            false
+            onEditorActionListener(i, whatsapp)
         }
 
-        whatsapp.setOnFocusChangeListener { v, hasFocus ->
-            if (!hasFocus) {
-                whatsapp.clearFocus()
-                whatsapp.isFocusableInTouchMode = false
+        // OnFocusChangeListener
 
-                whatsapp.setOnClickListener {
-                    showOptionsDialog(whatsapp)
-                }
-            }
+        phone.setOnFocusChangeListener { _, hasFocus ->
+            onFocusChangeListener(hasFocus, phone)
+        }
+
+        vk.setOnFocusChangeListener { _, hasFocus ->
+            onFocusChangeListener(hasFocus, vk)
+        }
+
+        instagram.setOnFocusChangeListener { _, hasFocus ->
+            onFocusChangeListener(hasFocus, instagram)
+        }
+
+        telegram.setOnFocusChangeListener { _, hasFocus ->
+            onFocusChangeListener(hasFocus, telegram)
+        }
+
+        whatsapp.setOnFocusChangeListener { _, hasFocus ->
+            onFocusChangeListener(hasFocus, whatsapp)
         }
     }
 
@@ -321,15 +249,19 @@ class ClientEditFragment : Fragment() {
             phone.id -> {
                 Log.i("EditViewClicked", "${phone.id} - phone")
             }
+
             vk.id -> {
                 Log.i("EditViewClicked", "${vk.id} - vk")
             }
+
             telegram.id -> {
                 Log.i("EditViewClicked", "${telegram.id} - tg")
             }
+
             instagram.id -> {
                 Log.i("EditViewClicked", "${instagram.id} - inst")
             }
+
             whatsapp.id -> {
                 Log.i("EditViewClicked", "${whatsapp.id} - whtsa")
             }
@@ -340,7 +272,7 @@ class ClientEditFragment : Fragment() {
             clickedView.isFocusableInTouchMode = true
             clickedView.requestFocus()
 
-            showKeyboard()
+            Util().showKeyboard(requireContext())
 
             clickedView.setOnClickListener(null)
             bottomSheetDialog.dismiss()
@@ -349,16 +281,26 @@ class ClientEditFragment : Fragment() {
         bottomSheetDialog.show()
     }
 
-    private fun showKeyboard() {
-        val inputMethodManager =
-            requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
+    private fun onEditorActionListener(i: Int, et: EditText): Boolean {
+        if (i == EditorInfo.IME_ACTION_DONE || i == EditorInfo.IME_ACTION_NONE) {
+            et.clearFocus()
+            et.isFocusableInTouchMode = false
+
+            et.setOnClickListener {
+                showOptionsDialog(vk)
+            }
+        }
+        return false
     }
 
-    fun closeKeyboard() {
-        val inputMethodManager =
-            requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
+    private fun onFocusChangeListener(hasFocus: Boolean, et: EditText) {
+        if (!hasFocus) {
+            et.clearFocus()
+            et.isFocusableInTouchMode = false
+
+            et.setOnClickListener {
+                showOptionsDialog(et)
+            }
+        }
     }
 }
-

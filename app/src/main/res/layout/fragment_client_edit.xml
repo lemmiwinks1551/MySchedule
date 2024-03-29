@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fadeScrollbars="false"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     android:fillViewport="true"
     tools:context=".presentation.clients.editClient.ClientEditFragment">
 
@@ -167,10 +169,10 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:background="@drawable/rectangle_2"
-                android:hint="Номер телефона"
                 android:focusableInTouchMode="false"
-                android:inputType="phone"
+                android:hint="Номер телефона"
                 android:imeOptions="actionDone"
+                android:inputType="phone"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
                 android:src="@drawable/rectangle_2"
@@ -284,7 +286,6 @@
                 android:hint="Whatsapp"
                 android:imeOptions="actionDone"
                 android:inputType="phone"
-                android:maxLines="1"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
                 android:singleLine="true"
@@ -309,6 +310,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/note_icon"
@@ -324,6 +327,7 @@
                     android:maxLines="5"
                     android:paddingStart="8dp"
                     android:paddingEnd="8dp"
+                    android:imeOptions="actionDone"
                     android:scrollbars="vertical"
                     android:textSize="20sp" />
 

@@ -360,4 +360,10 @@ class Util {
     fun extractTelegramUsername(tgUrl: String): String {
         return tgUrl.replace("https://t.me/", "")
     }
+
+    fun showKeyboard(context: Context) {
+        val inputMethodManager =
+            context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
+    }
 }
