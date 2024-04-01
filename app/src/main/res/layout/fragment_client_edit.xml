@@ -5,8 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fadeScrollbars="false"
-    android:focusable="true"
-    android:focusableInTouchMode="true"
     android:fillViewport="true"
     tools:context=".presentation.clients.editClient.ClientEditFragment">
 
@@ -256,6 +254,7 @@
                 android:background="@drawable/rectangle_2"
                 android:focusableInTouchMode="false"
                 android:hint="Telegram"
+                android:inputType="phone"
                 android:imeOptions="actionDone"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"

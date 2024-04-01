@@ -10,7 +10,7 @@
         android:clickable="true"
         android:focusable="true"
         android:padding="16dp"
-        android:text="Вызов"
+        android:text="Перейти"
         android:textSize="18sp" />
 
     <TextView
@@ -20,7 +20,7 @@
         android:clickable="true"
         android:focusable="true"
         android:padding="16dp"
-        android:text="Редикатировать"
+        android:text="Редактировать"
         android:textSize="18sp" />
 
 </LinearLayout>

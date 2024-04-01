@@ -1,7 +1,6 @@
 package com.example.projectnailsschedule.presentation.clients.editClient
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
@@ -81,20 +80,6 @@ class ClientEditFragment : Fragment() {
                 this@ClientEditFragment.notes.setText(notes)
             }
         }
-
-        vk.setOnFocusChangeListener { _, _ ->
-            if (vk.text.toString().contains("https://vk.com/")) {
-                val shortUrl = Util().extractVkUsername(vk.text.toString())
-                vk.setText(shortUrl)
-            }
-        }
-
-        instagram.setOnFocusChangeListener { _, _ ->
-            if (instagram.text.toString().contains("https://www.instagram.com/")) {
-                val shortUrl = Util().extractInstagramUsername(instagram.text.toString())
-                instagram.setText(shortUrl)
-            }
-        }
     }
 
     private fun setClickListeners() {
@@ -128,10 +113,21 @@ class ClientEditFragment : Fragment() {
             findNavController().popBackStack()
         }
 
+        binding.allAppointmentsCl.setOnClickListener {
+            Toast.makeText(requireContext(), "Функционал в разработке", Toast.LENGTH_LONG).show()
+        }
+
+        binding.statisticCl.setOnClickListener {
+            Toast.makeText(requireContext(), "Функционал в разработке", Toast.LENGTH_LONG).show()
+        }
+
+        binding.cameraIcon.setOnClickListener {
+            Toast.makeText(requireContext(), "Функционал в разработке", Toast.LENGTH_LONG).show()
+        }
+
         // OnCLickListener
 
         phone.setOnClickListener {
-            //clientsViewModel.startPhone(phone.text.toString())
             showOptionsDialog(phone)
         }
 
@@ -140,21 +136,14 @@ class ClientEditFragment : Fragment() {
         }
 
         instagram.setOnClickListener {
-            // clientsViewModel.startInstagram("https://${instagram.text}")
             showOptionsDialog(instagram)
         }
 
         telegram.setOnClickListener {
-            /*            if (telegram.text.toString().contains("https://t.me/")) {
-                clientsViewModel.startTelegram("https://t.me/" + telegram.text.toString())
-            } else {
-                clientsViewModel.startTelegram(telegram.text.toString())
-            }*/
             showOptionsDialog(telegram)
         }
 
         whatsapp.setOnClickListener {
-            //clientsViewModel.startWhatsApp(whatsapp.text.toString())
             showOptionsDialog(whatsapp)
         }
 
@@ -169,6 +158,8 @@ class ClientEditFragment : Fragment() {
         }
 
         instagram.setOnEditorActionListener { _, i, _ ->
+            val shortUrl = Util().extractInstagramUsername(instagram.text.toString())
+            instagram.setText(shortUrl)
             onEditorActionListener(i, instagram)
         }
 
@@ -187,10 +178,16 @@ class ClientEditFragment : Fragment() {
         }
 
         vk.setOnFocusChangeListener { _, hasFocus ->
+            if (vk.text.toString().contains("https://vk.com/")) {
+                val shortUrl = Util().extractVkUsername(vk.text.toString())
+                vk.setText(shortUrl)
+            }
             onFocusChangeListener(hasFocus, vk)
         }
 
         instagram.setOnFocusChangeListener { _, hasFocus ->
+            val shortUrl = Util().extractInstagramUsername(instagram.text.toString())
+            instagram.setText(shortUrl)
             onFocusChangeListener(hasFocus, instagram)
         }
 
@@ -222,10 +219,9 @@ class ClientEditFragment : Fragment() {
             vk.setText(shortUrl)
         }
 
-        if (instagram.text.toString().contains("https://www.instagram.com/")) {
-            val shortUrl = Util().extractInstagramUsername(instagram.text.toString())
-            instagram.setText(shortUrl)
-        }
+        val shortUrl =
+            Util().extractInstagramUsername(clientsViewModel.selectedClient?.instagram.toString())
+        instagram.setText(shortUrl)
 
         if (telegram.text.toString().contains("https://t.me/")) {
             val shortUrl = Util().extractTelegramUsername(telegram.text.toString())
@@ -241,29 +237,36 @@ class ClientEditFragment : Fragment() {
         val execute = view.findViewById<TextView>(R.id.execute)
         val edit = view.findViewById<TextView>(R.id.edit)
 
-        execute.setOnClickListener {
-            // Execute
+        if (clickedView.id == phone.id) {
+            execute.text = "Вызов"
         }
 
-        when (clickedView.id) {
-            phone.id -> {
-                Log.i("EditViewClicked", "${phone.id} - phone")
-            }
+        execute.setOnClickListener {
+            // Execute
+            when (clickedView.id) {
+                phone.id -> {
+                    clientsViewModel.startPhone(phone.text.toString())
+                }
 
-            vk.id -> {
-                Log.i("EditViewClicked", "${vk.id} - vk")
-            }
+                vk.id -> {
+                    clientsViewModel.startVk("https://${vk.text}")
+                }
 
-            telegram.id -> {
-                Log.i("EditViewClicked", "${telegram.id} - tg")
-            }
+                telegram.id -> {
+                    if (telegram.text.toString().contains("https://t.me/")) {
+                        clientsViewModel.startTelegram("https://t.me/" + telegram.text.toString())
+                    } else {
+                        clientsViewModel.startTelegram(telegram.text.toString())
+                    }
+                }
 
-            instagram.id -> {
-                Log.i("EditViewClicked", "${instagram.id} - inst")
-            }
+                instagram.id -> {
+                    clientsViewModel.startInstagram(instagram.text.toString())
+                }
 
-            whatsapp.id -> {
-                Log.i("EditViewClicked", "${whatsapp.id} - whtsa")
+                whatsapp.id -> {
+                    clientsViewModel.startWhatsApp(whatsapp.text.toString())
+                }
             }
         }
 

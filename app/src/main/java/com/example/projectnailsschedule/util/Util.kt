@@ -354,7 +354,12 @@ class Util {
     }
 
     fun extractInstagramUsername(instUrl: String): String {
-        return instUrl.replace("https://www.", "")
+        val filter0 = instUrl.replace("https://www.instagram.com/", "")
+        val filter1 = filter0.replace(Regex("\\?igsh.+"), "")
+        val filter2 = filter1.replace(Regex("/.+"), "")
+        val filter3 = filter2.replace("/", "")
+
+        return filter3
     }
 
     fun extractTelegramUsername(tgUrl: String): String {
