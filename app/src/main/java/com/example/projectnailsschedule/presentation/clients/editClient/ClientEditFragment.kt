@@ -240,6 +240,7 @@ class ClientEditFragment : Fragment() {
         val edit = view.findViewById<TextView>(R.id.edit)
 
         when (clickedView.id) {
+            // установить картинку
             phone.id -> {
                 execute.text = "Вызов"
                 view.findViewById<ImageView>(R.id.icon).setImageResource(R.drawable.baseline_call_24)
