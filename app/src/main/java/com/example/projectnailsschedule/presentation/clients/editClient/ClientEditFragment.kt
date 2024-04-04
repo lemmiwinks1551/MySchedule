@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -238,8 +239,28 @@ class ClientEditFragment : Fragment() {
         val execute = view.findViewById<TextView>(R.id.execute)
         val edit = view.findViewById<TextView>(R.id.edit)
 
-        if (clickedView.id == phone.id) {
-            execute.text = "Вызов"
+        when (clickedView.id) {
+            phone.id -> {
+                execute.text = "Вызов"
+                view.findViewById<ImageView>(R.id.icon).setImageResource(R.drawable.baseline_call_24)
+            }
+
+            vk.id -> {
+                view.findViewById<ImageView>(R.id.icon).setImageResource(R.drawable.vk_logo)
+            }
+
+            telegram.id -> {
+                view.findViewById<ImageView>(R.id.icon).setImageResource(R.drawable.telegram_logo)
+
+            }
+
+            instagram.id -> {
+                view.findViewById<ImageView>(R.id.icon).setImageResource(R.drawable.instagram_logo)
+            }
+
+            whatsapp.id -> {
+                view.findViewById<ImageView>(R.id.icon).setImageResource(R.drawable.whatsapp_logo)
+            }
         }
 
         execute.setOnClickListener {
@@ -247,23 +268,28 @@ class ClientEditFragment : Fragment() {
             when (clickedView.id) {
                 phone.id -> {
                     clientsViewModel.startPhone(phone.text.toString())
+                    view.findViewById<ImageView>(R.id.icon).setImageResource(R.drawable.baseline_call_24)
                 }
 
                 vk.id -> {
                     clientsViewModel.startVk(vk.text.toString())
+                    view.findViewById<ImageView>(R.id.icon).setImageResource(R.drawable.vk_logo)
                 }
 
                 telegram.id -> {
                     clientsViewModel.startTelegram(telegram.text.toString())
+                    view.findViewById<ImageView>(R.id.icon).setImageResource(R.drawable.telegram_logo)
 
                 }
 
                 instagram.id -> {
                     clientsViewModel.startInstagram(instagram.text.toString())
+                    view.findViewById<ImageView>(R.id.icon).setImageResource(R.drawable.instagram_logo)
                 }
 
                 whatsapp.id -> {
                     clientsViewModel.startWhatsApp(whatsapp.text.toString())
+                    view.findViewById<ImageView>(R.id.icon).setImageResource(R.drawable.whatsapp_logo)
                 }
             }
         }
