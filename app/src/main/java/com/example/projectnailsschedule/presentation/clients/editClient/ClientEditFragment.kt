@@ -51,7 +51,7 @@ class ClientEditFragment : Fragment() {
 
         inflateViews()
 
-        replaceUrls()
+        shortUrl()
 
         setHasOptionsMenu(true)
         return binding.root
@@ -125,7 +125,7 @@ class ClientEditFragment : Fragment() {
             Toast.makeText(requireContext(), "Функционал в разработке", Toast.LENGTH_LONG).show()
         }
 
-        // OnCLickListener
+        // OnCLickListener - showOptionsDialog
 
         phone.setOnClickListener {
             showOptionsDialog(phone)
@@ -180,10 +180,9 @@ class ClientEditFragment : Fragment() {
         }
 
         vk.setOnFocusChangeListener { _, hasFocus ->
-            if (vk.text.toString().contains("https://vk.com/")) {
-                val shortUrl = Util().extractVkUsername(vk.text.toString())
-                vk.setText(shortUrl)
-            }
+            val shortUrl = Util().extractVkUsername(vk.text.toString())
+            vk.setText(shortUrl)
+
             onFocusChangeListener(hasFocus, vk)
         }
 
@@ -215,7 +214,7 @@ class ClientEditFragment : Fragment() {
         super.onPrepareOptionsMenu(menu)
     }
 
-    private fun replaceUrls() {
+    private fun shortUrl() {
         if (vk.text.toString().contains("https://vk.com/")) {
             val shortUrl = Util().extractVkUsername(vk.text.toString())
             vk.setText(shortUrl)
@@ -247,7 +246,6 @@ class ClientEditFragment : Fragment() {
             // Execute
             when (clickedView.id) {
                 phone.id -> {
-
                     clientsViewModel.startPhone(phone.text.toString())
                 }
 
@@ -277,7 +275,13 @@ class ClientEditFragment : Fragment() {
 
             Util().showKeyboard(requireContext())
 
+            // убираем клик листенер, чтобы он бесконечно не выскакивал
+            // потом вернем его в событии onEditorActionListener или onFocusChangeListener
             clickedView.setOnClickListener(null)
+
+            // устанавливаем курсор в конец поля
+            clickedView.setSelection(clickedView.text.length)
+
             bottomSheetDialog.dismiss()
         }
 
@@ -285,20 +289,23 @@ class ClientEditFragment : Fragment() {
     }
 
     private fun onEditorActionListener(i: Int, et: EditText): Boolean {
+        // установки слушателя событий действий редактора ввода
         if (i == EditorInfo.IME_ACTION_DONE || i == EditorInfo.IME_ACTION_NONE) {
-            et.clearFocus()
-            et.isFocusableInTouchMode = false
+            et.clearFocus() // снять фокус с редактированного поля
+            et.isFocusableInTouchMode = false // запретить редактирование поля по нажатию
 
+        // установить клик листенер на поле
             et.setOnClickListener {
-                showOptionsDialog(vk)
+                showOptionsDialog(et)
             }
         }
         return false
     }
 
     private fun onFocusChangeListener(hasFocus: Boolean, et: EditText) {
+        // установки слушателя событий если фокус снят
         if (!hasFocus) {
-            et.clearFocus()
+            et.clearFocus() // снять фокус с редактированного поля
             et.isFocusableInTouchMode = false
 
             et.setOnClickListener {
