@@ -1,6 +1,7 @@
 package com.example.projectnailsschedule.presentation.clients.editClient
 
 import android.os.Bundle
+import android.telephony.PhoneNumberFormattingTextWatcher
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
@@ -200,6 +201,10 @@ class ClientEditFragment : Fragment() {
         whatsapp.setOnFocusChangeListener { _, hasFocus ->
             onFocusChangeListener(hasFocus, whatsapp)
         }
+
+        binding.clientPhoneTv.addTextChangedListener(PhoneNumberFormattingTextWatcher())
+        binding.clientTgTv.addTextChangedListener(PhoneNumberFormattingTextWatcher())
+        binding.clientWhatsappTv.addTextChangedListener(PhoneNumberFormattingTextWatcher())
     }
 
     override fun onDestroyView() {
