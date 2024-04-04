@@ -16,6 +16,13 @@ class StartInstagramUc(val context: Context) {
             if (username == "") {
                 username = matchResult?.groupValues?.getOrNull(2)
             }
+            if (username == "https") {
+                val filter0 = uri.replace("https://www.instagram.com/", "")
+                val filter1 = filter0.replace(Regex("\\?igsh.+"), "")
+                val filter2 = filter1.replace(Regex("/.+"), "")
+                val filter3 = filter2.replace("/", "")
+                username = filter3
+            }
 
             try {
                 val intent =

@@ -154,6 +154,8 @@ class ClientEditFragment : Fragment() {
         }
 
         vk.setOnEditorActionListener { _, i, _ ->
+            val shortUrl = Util().extractVkUsername(vk.text.toString())
+            vk.setText(shortUrl)
             onEditorActionListener(i, vk)
         }
 
@@ -245,19 +247,17 @@ class ClientEditFragment : Fragment() {
             // Execute
             when (clickedView.id) {
                 phone.id -> {
+
                     clientsViewModel.startPhone(phone.text.toString())
                 }
 
                 vk.id -> {
-                    clientsViewModel.startVk("https://${vk.text}")
+                    clientsViewModel.startVk(vk.text.toString())
                 }
 
                 telegram.id -> {
-                    if (telegram.text.toString().contains("https://t.me/")) {
-                        clientsViewModel.startTelegram("https://t.me/" + telegram.text.toString())
-                    } else {
-                        clientsViewModel.startTelegram(telegram.text.toString())
-                    }
+                    clientsViewModel.startTelegram(telegram.text.toString())
+
                 }
 
                 instagram.id -> {

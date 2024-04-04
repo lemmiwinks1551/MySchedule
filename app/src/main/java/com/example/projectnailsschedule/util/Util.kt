@@ -350,7 +350,7 @@ class Util {
     }
 
     fun extractVkUsername(vkUrl: String): String {
-        return vkUrl.replace("https://", "")
+        return vkUrl.replace("https://vk.com/", "")
     }
 
     fun extractInstagramUsername(instUrl: String): String {
