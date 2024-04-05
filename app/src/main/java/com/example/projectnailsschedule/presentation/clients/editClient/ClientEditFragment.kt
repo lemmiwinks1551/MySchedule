@@ -1,5 +1,6 @@
 package com.example.projectnailsschedule.presentation.clients.editClient
 
+import android.content.Intent
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.view.LayoutInflater
@@ -21,6 +22,7 @@ import com.example.projectnailsschedule.databinding.FragmentClientEditBinding
 import com.example.projectnailsschedule.domain.models.ClientModelDb
 import com.example.projectnailsschedule.presentation.clients.ClientsViewModel
 import com.example.projectnailsschedule.util.Util
+import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -124,7 +126,11 @@ class ClientEditFragment : Fragment() {
         }
 
         binding.cameraIcon.setOnClickListener {
-            Toast.makeText(requireContext(), "Функционал в разработке", Toast.LENGTH_LONG).show()
+            ImagePicker.with(this)
+                .crop()	    			//Crop image(Optional), Check Customization for more option
+                .compress(1024)			//Final image size will be less than 1 MB(Optional)
+                .maxResultSize(1080, 1080)	//Final image resolution will be less than 1080 x 1080(Optional)
+                .start()
         }
 
         // OnCLickListener - showOptionsDialog
@@ -344,5 +350,13 @@ class ClientEditFragment : Fragment() {
                 showOptionsDialog(et)
             }
         }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        // TODO: добавить сохранение в БД,
+        //  переписать с деприкейтед метода
+        super.onActivityResult(requestCode, resultCode, data)
+        val uri = data?.data
+        binding.clientAvatar.setImageURI(uri)
     }
 }

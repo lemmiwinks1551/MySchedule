@@ -148,4 +148,7 @@ dependencies {
 
     implementation "com.squareup.okhttp3:logging-interceptor:4.7.2"
     implementation "com.squareup.okhttp3:okhttp:4.7.2"
+
+    // Photo picker
+    implementation 'com.github.dhaval2404:imagepicker:2.1'
 }
