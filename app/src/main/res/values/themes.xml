@@ -223,4 +223,8 @@
         <item name="android:textColorHint">@color/MyNewThemeGray6</item>
     </style>
 
+    <style name="circleImageView">
+        <item name="cornerSize">50%</item>
+    </style>
+
 </resources>

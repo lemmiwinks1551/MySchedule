@@ -22,14 +22,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
+            <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/client_avatar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:padding="5dp"
                 android:src="@drawable/client_avatar"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearanceOverlay="@style/circleImageView"
+                app:strokeColor="?attr/editTextColor"
+                app:strokeWidth="2dp" />
 
             <ImageView
                 android:id="@+id/camera_icon"
@@ -254,8 +258,8 @@
                 android:background="@drawable/rectangle_2"
                 android:focusableInTouchMode="false"
                 android:hint="Telegram"
-                android:inputType="phone|number"
                 android:imeOptions="actionDone"
+                android:inputType="phone|number"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
                 android:singleLine="true"
@@ -323,10 +327,10 @@
                     android:background="@drawable/rectangle_2"
                     android:fadeScrollbars="false"
                     android:hint="Заметки"
+                    android:imeOptions="actionDone"
                     android:maxLines="5"
                     android:paddingStart="8dp"
                     android:paddingEnd="8dp"
-                    android:imeOptions="actionDone"
                     android:scrollbars="vertical"
                     android:textSize="20sp" />
 

@@ -2,7 +2,9 @@ package com.example.projectnailsschedule.presentation.clients.editClient
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Environment
 import android.telephony.PhoneNumberFormattingTextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
@@ -26,6 +28,7 @@ import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import java.io.File
 
 @AndroidEntryPoint
 class ClientEditFragment : Fragment() {
@@ -127,9 +130,10 @@ class ClientEditFragment : Fragment() {
 
         binding.cameraIcon.setOnClickListener {
             ImagePicker.with(this)
-                .crop()	    			//Crop image(Optional), Check Customization for more option
-                .compress(1024)			//Final image size will be less than 1 MB(Optional)
-                .maxResultSize(1080, 1080)	//Final image resolution will be less than 1080 x 1080(Optional)
+                .cropSquare() //Crop image(Optional), Check Customization for more option
+                .compress(1024) //Final image size will be less than 1 MB(Optional)
+                .maxResultSize(512, 512) //Final image resolution will be less than 1080 x 1080(Optional)
+                .saveDir(File(requireContext().filesDir, "ImagePicker"))
                 .start()
         }
 
