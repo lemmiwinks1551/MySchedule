@@ -3,7 +3,6 @@ package com.example.projectnailsschedule.presentation.clients.editClient
 import android.content.Intent
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
@@ -368,7 +367,7 @@ class ClientEditFragment : Fragment() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        // TODO: добавить сохранение в БД,
+        // TODO:
         //  переписать с деприкейтед метода
         //  в списке клиентов появляется null в поле инстаграм
         super.onActivityResult(requestCode, resultCode, data)
@@ -385,7 +384,8 @@ class ClientEditFragment : Fragment() {
     }
 
     private fun copyPhotoIntoClientFolder(clientId: Long) {
-        val destinationDir = File(requireContext().filesDir, "ClientFiles/${clientId}") // Целевая папка
+        val destinationDir =
+            File(requireContext().filesDir, "ClientFiles/${clientId}") // Целевая папка
         val newName = "$clientId avatar.${tempPhotoFile.extension}" // Новое имя файла
 
         // Создаем объект File для целевой папки
@@ -398,7 +398,7 @@ class ClientEditFragment : Fragment() {
 
         // Копируем файл
         try {
-            tempPhotoFile.copyTo(destinationFile)
+            tempPhotoFile.copyTo(destinationFile, true)
         } catch (e: IOException) {
             e.printStackTrace()
         }
