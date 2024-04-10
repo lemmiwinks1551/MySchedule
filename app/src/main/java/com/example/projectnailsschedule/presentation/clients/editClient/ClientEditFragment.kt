@@ -2,7 +2,6 @@ package com.example.projectnailsschedule.presentation.clients.editClient
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Environment
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.util.Log
 import android.view.LayoutInflater
@@ -29,6 +28,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.io.File
+import java.io.IOException
 
 @AndroidEntryPoint
 class ClientEditFragment : Fragment() {
@@ -44,6 +44,8 @@ class ClientEditFragment : Fragment() {
     private lateinit var instagram: EditText
     private lateinit var whatsapp: EditText
     private lateinit var notes: EditText
+
+    private lateinit var tempPhotoFile: File
 
     private lateinit var saveToolbarButton: MenuItem
 
@@ -103,11 +105,14 @@ class ClientEditFragment : Fragment() {
             )
 
             lifecycleScope.launch {
+                val clientId: Long?
                 if (clientsViewModel.selectedClient?._id != null) {
                     clientsViewModel.updateClient(clientModelDb)
+                    clientId = clientsViewModel.selectedClient?._id
                 } else {
-                    clientsViewModel.insertClient(clientModelDb)
+                    clientId = clientsViewModel.insertClient(clientModelDb)
                 }
+                copyPhotoIntoClientFolder(clientId = clientId!!)
             }
 
             val toast: Toast = Toast.makeText(
@@ -132,8 +137,8 @@ class ClientEditFragment : Fragment() {
             ImagePicker.with(this)
                 .cropSquare() //Crop image(Optional), Check Customization for more option
                 .compress(1024) //Final image size will be less than 1 MB(Optional)
-                .maxResultSize(512, 512) //Final image resolution will be less than 1080 x 1080(Optional)
-                .saveDir(File(requireContext().filesDir, "ImagePicker"))
+                .maxResultSize(512, 512)
+                .saveDir(File(requireContext().filesDir, "ClientAvatarTemp"))
                 .start()
         }
 
@@ -221,6 +226,7 @@ class ClientEditFragment : Fragment() {
         super.onDestroyView()
         clientsViewModel.selectedClient = null
         _binding = null
+        deleteTempFolder()
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
@@ -258,7 +264,8 @@ class ClientEditFragment : Fragment() {
             // установить картинку
             phone.id -> {
                 execute.text = "Вызов"
-                view.findViewById<ImageView>(R.id.icon).setImageResource(R.drawable.baseline_call_24)
+                view.findViewById<ImageView>(R.id.icon)
+                    .setImageResource(R.drawable.baseline_call_24)
             }
 
             vk.id -> {
@@ -284,7 +291,8 @@ class ClientEditFragment : Fragment() {
             when (clickedView.id) {
                 phone.id -> {
                     clientsViewModel.startPhone(phone.text.toString())
-                    view.findViewById<ImageView>(R.id.icon).setImageResource(R.drawable.baseline_call_24)
+                    view.findViewById<ImageView>(R.id.icon)
+                        .setImageResource(R.drawable.baseline_call_24)
                 }
 
                 vk.id -> {
@@ -294,18 +302,21 @@ class ClientEditFragment : Fragment() {
 
                 telegram.id -> {
                     clientsViewModel.startTelegram(telegram.text.toString())
-                    view.findViewById<ImageView>(R.id.icon).setImageResource(R.drawable.telegram_logo)
+                    view.findViewById<ImageView>(R.id.icon)
+                        .setImageResource(R.drawable.telegram_logo)
 
                 }
 
                 instagram.id -> {
                     clientsViewModel.startInstagram(instagram.text.toString())
-                    view.findViewById<ImageView>(R.id.icon).setImageResource(R.drawable.instagram_logo)
+                    view.findViewById<ImageView>(R.id.icon)
+                        .setImageResource(R.drawable.instagram_logo)
                 }
 
                 whatsapp.id -> {
                     clientsViewModel.startWhatsApp(whatsapp.text.toString())
-                    view.findViewById<ImageView>(R.id.icon).setImageResource(R.drawable.whatsapp_logo)
+                    view.findViewById<ImageView>(R.id.icon)
+                        .setImageResource(R.drawable.whatsapp_logo)
                 }
             }
         }
@@ -336,7 +347,7 @@ class ClientEditFragment : Fragment() {
             et.clearFocus() // снять фокус с редактированного поля
             et.isFocusableInTouchMode = false // запретить редактирование поля по нажатию
 
-        // установить клик листенер на поле
+            // установить клик листенер на поле
             et.setOnClickListener {
                 showOptionsDialog(et)
             }
@@ -359,8 +370,37 @@ class ClientEditFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         // TODO: добавить сохранение в БД,
         //  переписать с деприкейтед метода
+        //  в списке клиентов появляется null в поле инстаграм
         super.onActivityResult(requestCode, resultCode, data)
         val uri = data?.data
         binding.clientAvatar.setImageURI(uri)
+        tempPhotoFile = uri!!.path?.let { File(it) }!!
+    }
+
+    private fun deleteTempFolder() {
+        val folderToDelete = File(requireContext().filesDir, "ClientAvatarTemp")
+        if (folderToDelete.exists()) {
+            folderToDelete.deleteRecursively()
+        }
+    }
+
+    private fun copyPhotoIntoClientFolder(clientId: Long) {
+        val destinationDir = File(requireContext().filesDir, "ClientFiles/${clientId}") // Целевая папка
+        val newName = "$clientId avatar.${tempPhotoFile.extension}" // Новое имя файла
+
+        // Создаем объект File для целевой папки
+        if (!destinationDir.exists()) {
+            destinationDir.mkdirs() // Создаем целевую папку, если она не существует
+        }
+
+        // Создаем объект File для нового файла в целевой папке
+        val destinationFile = File(destinationDir, newName)
+
+        // Копируем файл
+        try {
+            tempPhotoFile.copyTo(destinationFile)
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
     }
 }

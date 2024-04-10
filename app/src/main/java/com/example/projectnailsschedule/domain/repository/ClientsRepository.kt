@@ -4,7 +4,7 @@ import com.example.projectnailsschedule.domain.models.ClientModelDb
 
 interface ClientsRepository {
 
-    suspend fun insertClient(clientModelDb: ClientModelDb): Boolean
+    suspend fun insertClient(clientModelDb: ClientModelDb): Long
 
     suspend fun updateClient(clientModelDb: ClientModelDb): Boolean
 

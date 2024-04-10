@@ -24,10 +24,11 @@
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/client_avatar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="174dp"
+                android:layout_height="174dp"
                 android:padding="5dp"
                 android:src="@drawable/client_avatar"
+                app:layout_constraintBottom_toTopOf="@id/client_name_et"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

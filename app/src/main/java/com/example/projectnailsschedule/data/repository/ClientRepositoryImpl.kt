@@ -8,24 +8,23 @@ import com.example.projectnailsschedule.domain.models.ClientModelDb
 import com.example.projectnailsschedule.domain.repository.ClientsRepository
 
 class ClientRepositoryImpl(context: Context) : ClientsRepository {
-    private var clientsDb = ClientsDb.getDb(context)
+    private var dao = ClientsDb.getDb(context).getDao()
 
-    override suspend fun insertClient(clientModelDb: ClientModelDb): Boolean {
-        clientsDb.getDao().insert(clientModelDb = clientModelDb)
-        return true
+    override suspend fun insertClient(clientModelDb: ClientModelDb): Long {
+        return dao.insert(clientModelDb = clientModelDb)
     }
 
     override suspend fun updateClient(clientModelDb: ClientModelDb): Boolean {
-        clientsDb.getDao().update(clientModelDb = clientModelDb)
+        dao.update(clientModelDb = clientModelDb)
         return true
     }
 
     override suspend fun deleteClient(clientModelDb: ClientModelDb): Boolean {
-        clientsDb.getDao().delete(clientModelDb = clientModelDb)
+        dao.delete(clientModelDb = clientModelDb)
         return true
     }
 
     override suspend fun searchClient(searchQuery: String): MutableList<ClientModelDb> {
-        return clientsDb.getDao().searchClient(searchQuery)
+        return dao.searchClient(searchQuery)
     }
 }

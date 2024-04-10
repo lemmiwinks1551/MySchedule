@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface ClientsDao {
     @Insert
-    suspend fun insert(clientModelDb: ClientModelDb)
+    suspend fun insert(clientModelDb: ClientModelDb) : Long
 
     @Update
     suspend fun update(clientModelDb: ClientModelDb)

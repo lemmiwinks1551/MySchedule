@@ -15,7 +15,7 @@ import kotlinx.parcelize.Parcelize
 @Entity(tableName = "clients")
 data class ClientModelDb(
     @PrimaryKey(autoGenerate = true)
-    val _id: Int? = null,
+    val _id: Long? = null,
 
     @ColumnInfo(name = "name")
     val name: String? = null,

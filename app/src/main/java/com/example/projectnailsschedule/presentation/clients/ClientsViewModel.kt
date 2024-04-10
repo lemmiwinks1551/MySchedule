@@ -30,8 +30,8 @@ class ClientsViewModel @Inject constructor(
 
     var selectedClient: ClientModelDb? = null
 
-    suspend fun insertClient(clientModelDb: ClientModelDb) {
-        insertClientUseCase.execute(clientModelDb)
+    suspend fun insertClient(clientModelDb: ClientModelDb): Long {
+        return insertClientUseCase.execute(clientModelDb)
     }
 
     suspend fun updateClient(clientModelDb: ClientModelDb) {

@@ -5,8 +5,7 @@ import com.example.projectnailsschedule.domain.repository.ClientsRepository
 
 class InsertClientUseCase(private val clientsRepository: ClientsRepository) {
 
-    suspend fun execute(clientModelDb: ClientModelDb): Boolean {
-        clientsRepository.insertClient(clientModelDb)
-        return true
+    suspend fun execute(clientModelDb: ClientModelDb): Long {
+        return clientsRepository.insertClient(clientModelDb)
     }
 }
