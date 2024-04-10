@@ -36,7 +36,10 @@ data class ClientModelDb(
     val whatsapp: String? = null,
 
     @ColumnInfo(name = "notes")
-    val notes: String? = null
+    val notes: String? = null,
+
+    @ColumnInfo(name = "photo")
+    val photo: String? = null
 ) : Parcelable {
     override fun toString(): String {
         return "Client № ${this._id}, name = ${this.name}, " +

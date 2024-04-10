@@ -45,6 +45,7 @@ class ClientEditFragment : Fragment() {
     private lateinit var notes: EditText
 
     private lateinit var tempPhotoFile: File
+    private var newPhotoFile: String? = null
 
     private lateinit var saveToolbarButton: MenuItem
 
@@ -100,7 +101,8 @@ class ClientEditFragment : Fragment() {
                 telegram = telegram.text.toString(),
                 instagram = instagram.text.toString(),
                 whatsapp = whatsapp.text.toString(),
-                notes = notes.text.toString()
+                notes = notes.text.toString(),
+                photo = newPhotoFile
             )
 
             lifecycleScope.launch {
@@ -112,6 +114,8 @@ class ClientEditFragment : Fragment() {
                     clientId = clientsViewModel.insertClient(clientModelDb)
                 }
                 copyPhotoIntoClientFolder(clientId = clientId!!)
+                // todo придумать как обновлять после получения айди и нового пути фотки
+                clientsViewModel.updateClient(clientModelDb)
             }
 
             val toast: Toast = Toast.makeText(
@@ -386,7 +390,7 @@ class ClientEditFragment : Fragment() {
     private fun copyPhotoIntoClientFolder(clientId: Long) {
         val destinationDir =
             File(requireContext().filesDir, "ClientFiles/${clientId}") // Целевая папка
-        val newName = "$clientId avatar.${tempPhotoFile.extension}" // Новое имя файла
+        newPhotoFile = "$clientId avatar.${tempPhotoFile.extension}" // Новое имя файла
 
         // Создаем объект File для целевой папки
         if (!destinationDir.exists()) {
@@ -394,7 +398,7 @@ class ClientEditFragment : Fragment() {
         }
 
         // Создаем объект File для нового файла в целевой папке
-        val destinationFile = File(destinationDir, newName)
+        val destinationFile = File(destinationDir, newPhotoFile)
 
         // Копируем файл
         try {
