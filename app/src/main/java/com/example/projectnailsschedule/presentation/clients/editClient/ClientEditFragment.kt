@@ -1,5 +1,6 @@
 package com.example.projectnailsschedule.presentation.clients.editClient
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
@@ -13,6 +14,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -45,7 +47,7 @@ class ClientEditFragment : Fragment() {
     private lateinit var notes: EditText
 
     private lateinit var tempPhotoFile: File
-    private var newPhotoFile: String? = null
+    private var newPhotoFilePath: String? = null
 
     private lateinit var saveToolbarButton: MenuItem
 
@@ -88,12 +90,17 @@ class ClientEditFragment : Fragment() {
                 this@ClientEditFragment.whatsapp.setText(whatsapp)
                 this@ClientEditFragment.notes.setText(notes)
             }
+
+            // set actual photo
+            if (!selectedClient.photo.isNullOrEmpty()) {
+                binding.clientAvatar.setImageURI(selectedClient.photo.toUri())
+            }
         }
     }
 
     private fun setClickListeners() {
         saveToolbarButton.setOnMenuItemClickListener {
-            val clientModelDb = ClientModelDb(
+            var clientModelDb = ClientModelDb(
                 _id = clientsViewModel.selectedClient?._id,
                 name = name.text.toString(),
                 phone = phone.text.toString(),
@@ -102,20 +109,30 @@ class ClientEditFragment : Fragment() {
                 instagram = instagram.text.toString(),
                 whatsapp = whatsapp.text.toString(),
                 notes = notes.text.toString(),
-                photo = newPhotoFile
+                photo = null
             )
 
             lifecycleScope.launch {
-                val clientId: Long?
-                if (clientsViewModel.selectedClient?._id != null) {
+                val clientId: Long? = if (clientsViewModel.selectedClient?._id != null) {
                     clientsViewModel.updateClient(clientModelDb)
-                    clientId = clientsViewModel.selectedClient?._id
+                    clientsViewModel.selectedClient?._id
                 } else {
-                    clientId = clientsViewModel.insertClient(clientModelDb)
+                    clientsViewModel.insertClient(clientModelDb)
                 }
+
                 copyPhotoIntoClientFolder(clientId = clientId!!)
-                // todo придумать как обновлять после получения айди и нового пути фотки
-                clientsViewModel.updateClient(clientModelDb)
+
+                // if new photo has been set
+                if (clientsViewModel.selectedClient?.photo != newPhotoFilePath) {
+                    // delete previous photo
+                    clientsViewModel.selectedClient?.photo?.let { it1 -> File(it1).delete() }
+
+                    // copy clientModel with new photo
+                    clientModelDb = clientModelDb.copy(photo = newPhotoFilePath)
+
+                    // update client
+                    clientsViewModel.updateClient(clientModelDb)
+                }
             }
 
             val toast: Toast = Toast.makeText(
@@ -371,13 +388,19 @@ class ClientEditFragment : Fragment() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        // TODO:
-        //  переписать с деприкейтед метода
+        // TODO: переписать с деприкейтед метода
         //  в списке клиентов появляется null в поле инстаграм
         super.onActivityResult(requestCode, resultCode, data)
-        val uri = data?.data
-        binding.clientAvatar.setImageURI(uri)
-        tempPhotoFile = uri!!.path?.let { File(it) }!!
+
+        if (resultCode == Activity.RESULT_OK) {
+            val uri = data?.data
+
+            // set temp photo into view
+            binding.clientAvatar.setImageURI(uri)
+
+            // set temp photo path
+            tempPhotoFile = uri!!.path?.let { File(it) }!!
+        }
     }
 
     private fun deleteTempFolder() {
@@ -390,15 +413,16 @@ class ClientEditFragment : Fragment() {
     private fun copyPhotoIntoClientFolder(clientId: Long) {
         val destinationDir =
             File(requireContext().filesDir, "ClientFiles/${clientId}") // Целевая папка
-        newPhotoFile = "$clientId avatar.${tempPhotoFile.extension}" // Новое имя файла
 
-        // Создаем объект File для целевой папки
+        // create dir
         if (!destinationDir.exists()) {
-            destinationDir.mkdirs() // Создаем целевую папку, если она не существует
+            destinationDir.mkdirs()
         }
 
         // Создаем объект File для нового файла в целевой папке
-        val destinationFile = File(destinationDir, newPhotoFile)
+        val destinationFile = File(destinationDir, tempPhotoFile.name)
+
+        newPhotoFilePath = destinationFile.path
 
         // Копируем файл
         try {

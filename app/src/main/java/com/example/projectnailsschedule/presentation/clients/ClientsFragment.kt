@@ -130,7 +130,8 @@ class ClientsFragment : Fragment() {
                     telegram = clientsList[position].telegram,
                     instagram = clientsList[position].instagram,
                     whatsapp = clientsList[position].whatsapp,
-                    notes = clientsList[position].notes
+                    notes = clientsList[position].notes,
+                    photo = clientsList[position].photo
                 )
                 findNavController().navigate(R.id.action_nav_clients_to_nav_client_edit_fragment)
             }
