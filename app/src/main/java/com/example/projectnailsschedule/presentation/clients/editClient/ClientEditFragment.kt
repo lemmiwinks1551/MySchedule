@@ -38,16 +38,16 @@ class ClientEditFragment : Fragment() {
     private var _binding: FragmentClientEditBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var name: EditText
-    private lateinit var phone: EditText
-    private lateinit var vk: EditText
-    private lateinit var telegram: EditText
-    private lateinit var instagram: EditText
-    private lateinit var whatsapp: EditText
-    private lateinit var notes: EditText
+    private lateinit var nameEt: EditText
+    private lateinit var phoneEt: EditText
+    private lateinit var vkEt: EditText
+    private lateinit var telegramEt: EditText
+    private lateinit var instagramEt: EditText
+    private lateinit var whatsappEt: EditText
+    private lateinit var notesEt: EditText
+    private lateinit var clientPhoto: ImageView
 
-    private lateinit var tempPhotoFile: File
-    private var newPhotoFilePath: String? = null
+    private var tempPhotoFile: File? = null
 
     private lateinit var saveToolbarButton: MenuItem
 
@@ -69,80 +69,62 @@ class ClientEditFragment : Fragment() {
     }
 
     private fun initViews() {
-        name = binding.clientNameEt
-        phone = binding.clientPhoneTv
-        vk = binding.clientVkTv
-        telegram = binding.clientTgTv
-        instagram = binding.clientInstagramTv
-        whatsapp = binding.clientWhatsappTv
-        notes = binding.clientNoteTv
+        nameEt = binding.clientNameEt
+        phoneEt = binding.clientPhoneTv
+        vkEt = binding.clientVkTv
+        telegramEt = binding.clientTgTv
+        instagramEt = binding.clientInstagramTv
+        whatsappEt = binding.clientWhatsappTv
+        notesEt = binding.clientNoteTv
+        clientPhoto = binding.clientPhoto
     }
 
     private fun inflateViews() {
-        val selectedClient = clientsViewModel.selectedClient
-        if (selectedClient != null) {
-            with(selectedClient) {
-                this@ClientEditFragment.name.setText(name)
-                this@ClientEditFragment.phone.setText(phone)
-                this@ClientEditFragment.vk.setText(vk)
-                this@ClientEditFragment.telegram.setText(telegram)
-                this@ClientEditFragment.instagram.setText(instagram)
-                this@ClientEditFragment.whatsapp.setText(whatsapp)
-                this@ClientEditFragment.notes.setText(notes)
-            }
+        if (clientsViewModel.selectedClient != null) {
+            // inflate views with select client fields
+            with(clientsViewModel.selectedClient!!) {
+                nameEt.setText(name)
+                phoneEt.setText(phone)
+                vkEt.setText(vk)
+                telegramEt.setText(telegram)
+                instagramEt.setText(instagram)
+                whatsappEt.setText(whatsapp)
+                notesEt.setText(notes)
 
-            // set actual photo
-            if (!selectedClient.photo.isNullOrEmpty()) {
-                binding.clientAvatar.setImageURI(selectedClient.photo.toUri())
+                // set actual photo
+                if (!photo.isNullOrEmpty()) {
+                    clientPhoto.setImageURI(photo.toUri())
+                }
             }
         }
     }
 
     private fun setClickListeners() {
         saveToolbarButton.setOnMenuItemClickListener {
-            var clientModelDb = ClientModelDb(
-                _id = clientsViewModel.selectedClient?._id,
-                name = name.text.toString(),
-                phone = phone.text.toString(),
-                vk = vk.text.toString(),
-                telegram = telegram.text.toString(),
-                instagram = instagram.text.toString(),
-                whatsapp = whatsapp.text.toString(),
-                notes = notes.text.toString(),
-                photo = null
-            )
+
+            setDataIntoSelectedClient()
 
             lifecycleScope.launch {
-                val clientId: Long? = if (clientsViewModel.selectedClient?._id != null) {
-                    clientsViewModel.updateClient(clientModelDb)
-                    clientsViewModel.selectedClient?._id
+                if (clientsViewModel.selectedClient?._id == null) {
+                    // if current client id is null -> create new client in db
+                    val id = clientsViewModel.insertClient(clientsViewModel.selectedClient!!)
+                    setNewClientId(id)
                 } else {
-                    clientsViewModel.insertClient(clientModelDb)
+                    // if current client id is not null -> update client in db
+                    clientsViewModel.updateClient(clientsViewModel.selectedClient!!)
                 }
-
-                copyPhotoIntoClientFolder(clientId = clientId!!)
 
                 // if new photo has been set
-                if (clientsViewModel.selectedClient?.photo != newPhotoFilePath) {
-                    // delete previous photo
-                    clientsViewModel.selectedClient?.photo?.let { it1 -> File(it1).delete() }
-
-                    // copy clientModel with new photo
-                    clientModelDb = clientModelDb.copy(photo = newPhotoFilePath)
-
-                    // update client
-                    clientsViewModel.updateClient(clientModelDb)
+                if (tempPhotoFile != null) {
+                    copyPhotoIntoClientFolder()
+                    clientsViewModel.updateClient(clientsViewModel.selectedClient!!)
                 }
+
+                showToastSaved()
+
+                findNavController().popBackStack()
             }
-
-            val toast: Toast = Toast.makeText(
-                context,
-                getString(R.string.client_created, clientModelDb.name),
-                Toast.LENGTH_LONG
-            )
-            toast.show()
-
-            findNavController().popBackStack()
+            return@setOnMenuItemClickListener true
         }
 
         binding.allAppointmentsCl.setOnClickListener {
@@ -164,77 +146,77 @@ class ClientEditFragment : Fragment() {
 
         // OnCLickListener - showOptionsDialog
 
-        phone.setOnClickListener {
-            showOptionsDialog(phone)
+        phoneEt.setOnClickListener {
+            showOptionsDialog(phoneEt)
         }
 
-        vk.setOnClickListener {
-            showOptionsDialog(vk)
+        vkEt.setOnClickListener {
+            showOptionsDialog(vkEt)
         }
 
-        instagram.setOnClickListener {
-            showOptionsDialog(instagram)
+        instagramEt.setOnClickListener {
+            showOptionsDialog(instagramEt)
         }
 
-        telegram.setOnClickListener {
-            showOptionsDialog(telegram)
+        telegramEt.setOnClickListener {
+            showOptionsDialog(telegramEt)
         }
 
-        whatsapp.setOnClickListener {
-            showOptionsDialog(whatsapp)
+        whatsappEt.setOnClickListener {
+            showOptionsDialog(whatsappEt)
         }
 
         // OnEditorActionListener
 
-        phone.setOnEditorActionListener { _, i, _ ->
-            onEditorActionListener(i, phone)
+        phoneEt.setOnEditorActionListener { _, i, _ ->
+            onEditorActionListener(i, phoneEt)
         }
 
-        vk.setOnEditorActionListener { _, i, _ ->
-            val shortUrl = Util().extractVkUsername(vk.text.toString())
-            vk.setText(shortUrl)
-            onEditorActionListener(i, vk)
+        vkEt.setOnEditorActionListener { _, i, _ ->
+            val shortUrl = Util().extractVkUsername(vkEt.text.toString())
+            vkEt.setText(shortUrl)
+            onEditorActionListener(i, vkEt)
         }
 
-        instagram.setOnEditorActionListener { _, i, _ ->
-            val shortUrl = Util().extractInstagramUsername(instagram.text.toString())
-            instagram.setText(shortUrl)
-            onEditorActionListener(i, instagram)
+        instagramEt.setOnEditorActionListener { _, i, _ ->
+            val shortUrl = Util().extractInstagramUsername(instagramEt.text.toString())
+            instagramEt.setText(shortUrl)
+            onEditorActionListener(i, instagramEt)
         }
 
-        telegram.setOnEditorActionListener { _, i, _ ->
-            onEditorActionListener(i, telegram)
+        telegramEt.setOnEditorActionListener { _, i, _ ->
+            onEditorActionListener(i, telegramEt)
         }
 
-        whatsapp.setOnEditorActionListener { _, i, _ ->
-            onEditorActionListener(i, whatsapp)
+        whatsappEt.setOnEditorActionListener { _, i, _ ->
+            onEditorActionListener(i, whatsappEt)
         }
 
         // OnFocusChangeListener
 
-        phone.setOnFocusChangeListener { _, hasFocus ->
-            onFocusChangeListener(hasFocus, phone)
+        phoneEt.setOnFocusChangeListener { _, hasFocus ->
+            onFocusChangeListener(hasFocus, phoneEt)
         }
 
-        vk.setOnFocusChangeListener { _, hasFocus ->
-            val shortUrl = Util().extractVkUsername(vk.text.toString())
-            vk.setText(shortUrl)
+        vkEt.setOnFocusChangeListener { _, hasFocus ->
+            val shortUrl = Util().extractVkUsername(vkEt.text.toString())
+            vkEt.setText(shortUrl)
 
-            onFocusChangeListener(hasFocus, vk)
+            onFocusChangeListener(hasFocus, vkEt)
         }
 
-        instagram.setOnFocusChangeListener { _, hasFocus ->
-            val shortUrl = Util().extractInstagramUsername(instagram.text.toString())
-            instagram.setText(shortUrl)
-            onFocusChangeListener(hasFocus, instagram)
+        instagramEt.setOnFocusChangeListener { _, hasFocus ->
+            val shortUrl = Util().extractInstagramUsername(instagramEt.text.toString())
+            instagramEt.setText(shortUrl)
+            onFocusChangeListener(hasFocus, instagramEt)
         }
 
-        telegram.setOnFocusChangeListener { _, hasFocus ->
-            onFocusChangeListener(hasFocus, telegram)
+        telegramEt.setOnFocusChangeListener { _, hasFocus ->
+            onFocusChangeListener(hasFocus, telegramEt)
         }
 
-        whatsapp.setOnFocusChangeListener { _, hasFocus ->
-            onFocusChangeListener(hasFocus, whatsapp)
+        whatsappEt.setOnFocusChangeListener { _, hasFocus ->
+            onFocusChangeListener(hasFocus, whatsappEt)
         }
 
         binding.clientPhoneTv.addTextChangedListener(PhoneNumberFormattingTextWatcher())
@@ -257,18 +239,20 @@ class ClientEditFragment : Fragment() {
     }
 
     private fun shortUrl() {
-        if (vk.text.toString().contains("https://vk.com/")) {
-            val shortUrl = Util().extractVkUsername(vk.text.toString())
-            vk.setText(shortUrl)
+        if (vkEt.text.toString().contains("https://vk.com/")) {
+            val shortUrl = Util().extractVkUsername(vkEt.text.toString())
+            vkEt.setText(shortUrl)
         }
 
-        val shortUrl =
-            Util().extractInstagramUsername(clientsViewModel.selectedClient?.instagram.toString())
-        instagram.setText(shortUrl)
+        if (instagramEt.text.toString().contains("https://www.instagram.com/")) {
+            val shortUrl =
+                Util().extractInstagramUsername(clientsViewModel.selectedClient?.instagram.toString())
+            instagramEt.setText(shortUrl)
+        }
 
-        if (telegram.text.toString().contains("https://t.me/")) {
-            val shortUrl = Util().extractTelegramUsername(telegram.text.toString())
-            telegram.setText(shortUrl)
+        if (telegramEt.text.toString().contains("https://t.me/")) {
+            val shortUrl = Util().extractTelegramUsername(telegramEt.text.toString())
+            telegramEt.setText(shortUrl)
         }
     }
 
@@ -282,26 +266,26 @@ class ClientEditFragment : Fragment() {
 
         when (clickedView.id) {
             // установить картинку
-            phone.id -> {
+            phoneEt.id -> {
                 execute.text = "Вызов"
                 view.findViewById<ImageView>(R.id.icon)
                     .setImageResource(R.drawable.baseline_call_24)
             }
 
-            vk.id -> {
+            vkEt.id -> {
                 view.findViewById<ImageView>(R.id.icon).setImageResource(R.drawable.vk_logo)
             }
 
-            telegram.id -> {
+            telegramEt.id -> {
                 view.findViewById<ImageView>(R.id.icon).setImageResource(R.drawable.telegram_logo)
 
             }
 
-            instagram.id -> {
+            instagramEt.id -> {
                 view.findViewById<ImageView>(R.id.icon).setImageResource(R.drawable.instagram_logo)
             }
 
-            whatsapp.id -> {
+            whatsappEt.id -> {
                 view.findViewById<ImageView>(R.id.icon).setImageResource(R.drawable.whatsapp_logo)
             }
         }
@@ -309,32 +293,32 @@ class ClientEditFragment : Fragment() {
         execute.setOnClickListener {
             // Execute
             when (clickedView.id) {
-                phone.id -> {
-                    clientsViewModel.startPhone(phone.text.toString())
+                phoneEt.id -> {
+                    clientsViewModel.startPhone(phoneEt.text.toString())
                     view.findViewById<ImageView>(R.id.icon)
                         .setImageResource(R.drawable.baseline_call_24)
                 }
 
-                vk.id -> {
-                    clientsViewModel.startVk(vk.text.toString())
+                vkEt.id -> {
+                    clientsViewModel.startVk(vkEt.text.toString())
                     view.findViewById<ImageView>(R.id.icon).setImageResource(R.drawable.vk_logo)
                 }
 
-                telegram.id -> {
-                    clientsViewModel.startTelegram(telegram.text.toString())
+                telegramEt.id -> {
+                    clientsViewModel.startTelegram(telegramEt.text.toString())
                     view.findViewById<ImageView>(R.id.icon)
                         .setImageResource(R.drawable.telegram_logo)
 
                 }
 
-                instagram.id -> {
-                    clientsViewModel.startInstagram(instagram.text.toString())
+                instagramEt.id -> {
+                    clientsViewModel.startInstagram(instagramEt.text.toString())
                     view.findViewById<ImageView>(R.id.icon)
                         .setImageResource(R.drawable.instagram_logo)
                 }
 
-                whatsapp.id -> {
-                    clientsViewModel.startWhatsApp(whatsapp.text.toString())
+                whatsappEt.id -> {
+                    clientsViewModel.startWhatsApp(whatsappEt.text.toString())
                     view.findViewById<ImageView>(R.id.icon)
                         .setImageResource(R.drawable.whatsapp_logo)
                 }
@@ -396,7 +380,7 @@ class ClientEditFragment : Fragment() {
             val uri = data?.data
 
             // set temp photo into view
-            binding.clientAvatar.setImageURI(uri)
+            clientPhoto.setImageURI(uri)
 
             // set temp photo path
             tempPhotoFile = uri!!.path?.let { File(it) }!!
@@ -410,25 +394,54 @@ class ClientEditFragment : Fragment() {
         }
     }
 
-    private fun copyPhotoIntoClientFolder(clientId: Long) {
+    private fun copyPhotoIntoClientFolder() {
         val destinationDir =
-            File(requireContext().filesDir, "ClientFiles/${clientId}") // Целевая папка
+            File(requireContext().filesDir, "ClientFiles/${clientsViewModel.selectedClient?._id}")
 
         // create dir
         if (!destinationDir.exists()) {
             destinationDir.mkdirs()
         }
 
-        // Создаем объект File для нового файла в целевой папке
-        val destinationFile = File(destinationDir, tempPhotoFile.name)
+        val destinationFile = File(destinationDir, tempPhotoFile!!.name)
 
-        newPhotoFilePath = destinationFile.path
-
-        // Копируем файл
         try {
-            tempPhotoFile.copyTo(destinationFile, true)
+            tempPhotoFile!!.copyTo(destinationFile, true)
         } catch (e: IOException) {
             e.printStackTrace()
         }
+
+        setPhotoToSelectedClient(destinationFile)
+    }
+
+    private fun setDataIntoSelectedClient() {
+        // put data from edit text into selected client
+        clientsViewModel.selectedClient = clientsViewModel.selectedClient?.copy(
+            _id = clientsViewModel.selectedClient?._id,
+            name = nameEt.text.toString(),
+            phone = phoneEt.text.toString(),
+            vk = vkEt.text.toString(),
+            telegram = telegramEt.text.toString(),
+            instagram = instagramEt.text.toString(),
+            whatsapp = whatsappEt.text.toString(),
+            notes = notesEt.text.toString()
+        )
+    }
+
+    private fun setNewClientId(id: Long) {
+        clientsViewModel.selectedClient = clientsViewModel.selectedClient?.copy(_id = id)
+    }
+
+    private fun showToastSaved() {
+        Toast.makeText(
+            context,
+            getString(R.string.client_created, clientsViewModel.selectedClient?.name),
+            Toast.LENGTH_LONG
+        ).show()
+    }
+
+    private fun setPhotoToSelectedClient(newPhotoFile: File) {
+        clientsViewModel.selectedClient =
+            clientsViewModel.selectedClient?.copy(photo = newPhotoFile.path)
     }
 }

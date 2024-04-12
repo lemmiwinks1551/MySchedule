@@ -13,7 +13,7 @@
         android:layout_height="wrap_content">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/client_avatar_cl"
+            android:id="@+id/client_photo_cl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -23,7 +23,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/client_avatar"
+                android:id="@+id/client_photo"
                 android:layout_width="174dp"
                 android:layout_height="174dp"
                 android:padding="5dp"
@@ -42,8 +42,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:src="@drawable/photo_camera"
-                app:layout_constraintBottom_toBottomOf="@+id/client_avatar"
-                app:layout_constraintEnd_toEndOf="@+id/client_avatar" />
+                app:layout_constraintBottom_toBottomOf="@+id/client_photo"
+                app:layout_constraintEnd_toEndOf="@+id/client_photo" />
 
             <EditText
                 android:id="@+id/client_name_et"
@@ -61,7 +61,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/client_avatar" />
+                app:layout_constraintTop_toBottomOf="@+id/client_photo" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -72,7 +72,7 @@
             android:layout_margin="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/client_avatar_cl">
+            app:layout_constraintTop_toBottomOf="@id/client_photo_cl">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/all_appointments_cl"
@@ -176,8 +176,8 @@
                 android:hint="Номер телефона"
                 android:imeOptions="actionDone"
                 android:inputType="phone|number"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
                 android:src="@drawable/rectangle_2"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -203,8 +203,8 @@
                 android:focusableInTouchMode="false"
                 android:hint="Адрес страницы Вконтакте"
                 android:imeOptions="actionDone"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
                 android:singleLine="true"
                 android:src="@drawable/rectangle_2"
                 android:textSize="20sp"
@@ -231,8 +231,8 @@
                 android:focusableInTouchMode="false"
                 android:hint="Адрес страницы Instagram"
                 android:imeOptions="actionDone"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
                 android:singleLine="true"
                 android:src="@drawable/rectangle_2"
                 android:textSize="20sp"
@@ -261,8 +261,8 @@
                 android:hint="Telegram"
                 android:imeOptions="actionDone"
                 android:inputType="phone|number"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
                 android:singleLine="true"
                 android:src="@drawable/rectangle_2"
                 android:textSize="20sp"
@@ -290,8 +290,8 @@
                 android:hint="Whatsapp"
                 android:imeOptions="actionDone"
                 android:inputType="phone|number"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
                 android:singleLine="true"
                 android:src="@drawable/rectangle_2"
                 android:textSize="20sp"
@@ -330,8 +330,8 @@
                     android:hint="Заметки"
                     android:imeOptions="actionDone"
                     android:maxLines="5"
-                    android:paddingStart="8dp"
-                    android:paddingEnd="8dp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
                     android:scrollbars="vertical"
                     android:textSize="20sp" />
 

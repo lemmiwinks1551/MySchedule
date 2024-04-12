@@ -99,6 +99,7 @@ class ClientsFragment : Fragment() {
 
         // add new client
         binding.floatingActionButton.setOnClickListener {
+            clientsViewModel.selectedClient = ClientModelDb()
             findNavController().navigate(
                 R.id.action_nav_clients_to_nav_client_edit_fragment
             )
