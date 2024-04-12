@@ -1,11 +1,14 @@
 package com.example.projectnailsschedule.presentation.clients
 
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.domain.models.ClientModelDb
@@ -25,6 +28,7 @@ class ClientsRvAdapter(
         var instagram: TextView
         var whatsapp: TextView
         var notes: TextView
+        var clientPhoto: ImageView
 
         var callClientButton: ImageButton
         var vkImageButton: ImageButton
@@ -49,6 +53,7 @@ class ClientsRvAdapter(
                 instagram = findViewById(R.id.client_select_instagram_link_tv)
                 whatsapp = findViewById(R.id.client_select_whatsapp_link_tv)
                 notes = findViewById(R.id.client_select_notes)
+                clientPhoto = findViewById(R.id.client_avatar)
 
                 callClientButton = findViewById(R.id.call_client_button_select_button)
                 vkImageButton = findViewById(R.id.vk_logo_imageButton_select_client)
@@ -108,6 +113,12 @@ class ClientsRvAdapter(
             holder.instagram.text = instagram
             holder.whatsapp.text = whatsapp
             holder.notes.text = notes
+            // if client photo exists - set photo
+            if (!photo.isNullOrEmpty()) {
+                holder.clientPhoto.setImageURI(photo.toUri())
+            } else {
+                holder.clientPhoto.setImageResource(R.drawable.client_avatar)
+            }
         }
 
         hideEmptyViews(holder, holder.adapterPosition)

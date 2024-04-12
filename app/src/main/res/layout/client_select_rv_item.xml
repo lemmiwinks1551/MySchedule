@@ -7,15 +7,34 @@
     android:background="@drawable/bold_borders"
     android:orientation="vertical">
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/client_avatar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_baseline_account_box_36"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="174dp"
+        android:layout_height="174dp"
+        android:padding="5dp"
+        android:src="@drawable/client_avatar"
+        app:layout_constraintBottom_toTopOf="@id/client_select_name"
         app:layout_constraintEnd_toStartOf="@id/client_constraint_layout"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/circleImageView"
+        app:strokeColor="?attr/editTextColor"
+        app:strokeWidth="2dp" />
+
+    <TextView
+        android:id="@+id/client_select_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@drawable/rectangle_2"
+        android:text="@string/example_client"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/client_constraint_layout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/client_avatar" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/client_constraint_layout"
@@ -35,30 +54,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:textStyle="bold"
-                android:id="@+id/client_select_name"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:gravity="center_vertical"
-                android:text="@string/example_client"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/imageButton"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageButton
-                android:visibility="invisible"
-                android:id="@+id/imageButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_baseline_people_alt_24"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -75,8 +70,12 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
+                android:background="@drawable/rectangle_2"
                 android:gravity="center_vertical"
-                android:text="@string/example_phone"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:singleLine="true"
+                android:text="8 952 512 23 45"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/call_client_button_select_button"
@@ -84,11 +83,11 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
-                android:background="@color/transparent"
-                android:layout_margin="10dp"
                 android:id="@+id/call_client_button_select_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@color/transparent"
                 android:src="@drawable/baseline_call_24"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -110,7 +109,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
+                android:background="@drawable/rectangle_2"
                 android:gravity="center_vertical"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:singleLine="true"
                 android:text="@string/vk_text"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -119,11 +122,11 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
-                android:background="@color/transparent"
-                android:layout_margin="10dp"
                 android:id="@+id/vk_logo_imageButton_select_client"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@color/transparent"
                 android:src="@drawable/vk_logo"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -145,7 +148,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
+                android:background="@drawable/rectangle_2"
                 android:gravity="center_vertical"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:singleLine="true"
                 android:text="@string/telegram_text"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -154,11 +161,11 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
-                android:background="@color/transparent"
-                android:layout_margin="10dp"
                 android:id="@+id/telegram_logo_imageButton_select_client"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@color/transparent"
                 android:src="@drawable/telegram_logo"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -180,7 +187,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
+                android:background="@drawable/rectangle_2"
                 android:gravity="center_vertical"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:singleLine="true"
                 android:text="@string/instagram_text"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -189,11 +200,11 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
-                android:background="@color/transparent"
-                android:layout_margin="10dp"
                 android:id="@+id/instagram_logo_imageButton_select_client"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@color/transparent"
                 android:src="@drawable/instagram_logo"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -215,7 +226,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
+                android:background="@drawable/rectangle_2"
                 android:gravity="center_vertical"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:singleLine="true"
                 android:text="@string/whatsapp_text"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -224,11 +239,11 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
-                android:background="@color/transparent"
-                android:layout_margin="10dp"
                 android:id="@+id/whatsapp_logo_imageButton_select_client"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@color/transparent"
                 android:src="@drawable/whatsapp_logo"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -250,7 +265,10 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
+                android:background="@drawable/rectangle_2"
                 android:gravity="center_vertical"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
                 android:text="@string/notes"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -258,12 +276,12 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageButton
-                android:visibility="invisible"
+            <ImageView
                 android:id="@+id/notes_logo_imageButton_select_client"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/baseline_edit_note_24"
+                android:layout_margin="10dp"
+                android:src="@drawable/note"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
