@@ -274,13 +274,13 @@
                 android:maxLength="15"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/call_client_button"
+                app:layout_constraintEnd_toStartOf="@+id/call_client_button_date_appointment"
                 app:layout_constraintHorizontal_weight="8"
                 app:layout_constraintStart_toEndOf="@+id/appointment_phone"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
-                android:id="@+id/call_client_button"
+                android:id="@+id/call_client_button_date_appointment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"

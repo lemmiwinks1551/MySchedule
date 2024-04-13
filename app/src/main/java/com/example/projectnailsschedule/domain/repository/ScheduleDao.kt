@@ -18,9 +18,6 @@ interface ScheduleDao {
     @Query("SELECT * FROM schedule WHERE date = :date ORDER BY time")
     suspend fun getDateAppointments(date: String): MutableList<AppointmentModelDb>
 
-    @Query("SELECT * FROM schedule")
-    suspend fun selectAllAppointmentsList(): List<AppointmentModelDb>
-
     @Query("SELECT * FROM schedule WHERE date LIKE :dateMonth ORDER BY date")
     suspend fun getMonthAppointments(dateMonth: String): MutableList<AppointmentModelDb>
 

@@ -7,153 +7,144 @@
     android:background="@drawable/bold_borders"
     android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/client_avatar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="4dp"
-        android:contentDescription="@string/avatar_description"
-        android:src="@drawable/baseline_app_registration_24"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/appointment_cl"
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/client_avatar_date_appointment"
+        android:layout_width="134dp"
+        android:layout_height="134dp"
+        android:layout_margin="8dp"
+        android:padding="5dp"
+        android:src="@drawable/client_avatar"
+        app:layout_constraintBottom_toTopOf="@id/client_name_date_appointment"
+        app:layout_constraintEnd_toStartOf="@id/client_constraint_layout"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/circleImageView"
+        app:strokeColor="?attr/editTextColor"
+        app:strokeWidth="2dp" />
+
+    <TextView
+        android:id="@+id/client_name_date_appointment"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@drawable/rectangle_2"
+        android:text="@string/example_client"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/client_constraint_layout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/client_avatar_date_appointment" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/appointment_cl"
+        android:id="@+id/client_constraint_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/client_avatar"
+        app:layout_constraintStart_toEndOf="@id/client_avatar_date_appointment"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/client_time_cl_date_appointment_rv_item"
+            android:id="@+id/appointment_time_cl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@+id/client_procedure_appointment_month_rv_child"
+            app:layout_constraintBottom_toTopOf="@id/appointment_procedure_cl"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/time_value_search"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="@string/example_time"
+                android:id="@+id/appointment_time_tv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="3dp"
+                android:background="@drawable/rectangle_2"
+                android:gravity="center_vertical"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:singleLine="true"
+                android:text="10:00"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/time_client_button"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageButton
-                android:id="@+id/time_client_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/baseline_access_time_24"
-                android:visibility="invisible"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/client_procedure_appointment_month_rv_child"
+            android:id="@+id/appointment_procedure_cl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@+id/client_phone_appointment_month_rv_child"
+            app:layout_constraintBottom_toTopOf="@id/client_phone_cl"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/client_time_cl_date_appointment_rv_item">
+            app:layout_constraintTop_toBottomOf="@id/appointment_time_cl">
 
             <TextView
-                android:id="@+id/client_value_search"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="@string/example_client"
+                android:id="@+id/procedure_tv_date_appointment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="3dp"
+                android:background="@drawable/rectangle_2"
+                android:gravity="center_vertical"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:text="Наращивание ногтей"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/name_client_button"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageButton
-                android:id="@+id/name_client_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_baseline_people_alt_24"
-                android:visibility="invisible"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/client_phone_appointment_month_rv_child"
+            android:id="@+id/client_phone_cl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@+id/client_vk_appointment_month_rv_child"
+            app:layout_constraintBottom_toTopOf="@id/client_vk_cl"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/client_procedure_appointment_month_rv_child">
+            app:layout_constraintTop_toBottomOf="@id/appointment_procedure_cl">
 
             <TextView
-                android:id="@+id/procedure_value_search"
+                android:id="@+id/phone_date_appointment"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="@string/example_procedure"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="3dp"
+                android:background="@drawable/rectangle_2"
+                android:gravity="center_vertical"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:singleLine="true"
+                android:text="8 952 512 23 45"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/procedure_client_button"
+                app:layout_constraintEnd_toStartOf="@+id/call_client_button_date_appointment"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
-                android:id="@+id/procedure_client_button"
+                android:id="@+id/call_client_button_date_appointment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/baseline_attach_money_24"
-                android:visibility="invisible"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/client_vk_appointment_month_rv_child"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@+id/client_telegram_appointment_month_rv_child"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/client_phone_appointment_month_rv_child">
-
-            <TextView
-                android:id="@+id/phone_value_search"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="@string/example_phone"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/call_client_button"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageButton
-                android:id="@+id/call_client_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="3dp"
                 android:background="@color/transparent"
                 android:src="@drawable/baseline_call_24"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -163,31 +154,42 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/client_telegram_appointment_month_rv_child"
+            android:id="@+id/client_vk_cl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@+id/client_instagram_appointment_month_rv_child"
+            app:layout_constraintBottom_toTopOf="@id/client_telegram_cl"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/client_vk_appointment_month_rv_child">
+            app:layout_constraintTop_toBottomOf="@id/client_phone_cl">
 
             <TextView
-                android:id="@+id/client_vk_link_tv"
+                android:id="@+id/vk_date_appointment"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="3dp"
+                android:background="@drawable/rectangle_2"
+                android:gravity="center_vertical"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:singleLine="true"
                 android:text="@string/vk_text"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/vk_logo_imageButton_date"
+                app:layout_constraintEnd_toStartOf="@+id/vk_logo_imageButton_date_appointment"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
-                android:id="@+id/vk_logo_imageButton_date"
+                android:id="@+id/vk_logo_imageButton_date_appointment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="3dp"
                 android:background="@color/transparent"
                 android:src="@drawable/vk_logo"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -197,30 +199,42 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/client_instagram_appointment_month_rv_child"
+            android:id="@+id/client_telegram_cl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@+id/client_whatsapp_appointment_month_rv_child"
+            app:layout_constraintBottom_toTopOf="@id/client_instagram_cl"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/client_telegram_appointment_month_rv_child">
+            app:layout_constraintTop_toBottomOf="@id/client_vk_cl">
 
             <TextView
-                android:id="@+id/client_telegram_link_tv"
+                android:id="@+id/telegram_date_appointment"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="3dp"
+                android:background="@drawable/rectangle_2"
+                android:gravity="center_vertical"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:singleLine="true"
                 android:text="@string/telegram_text"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/telegram_logo_imageButton_date"
+                app:layout_constraintEnd_toStartOf="@+id/telegram_logo_imageButton_date_appointment"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
-                android:id="@+id/telegram_logo_imageButton_date"
+                android:id="@+id/telegram_logo_imageButton_date_appointment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="3dp"
                 android:background="@color/transparent"
                 android:src="@drawable/telegram_logo"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -230,31 +244,42 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/client_whatsapp_appointment_month_rv_child"
+            android:id="@+id/client_instagram_cl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@+id/client_notes_appointment_month_rv_child"
+            app:layout_constraintBottom_toTopOf="@id/client_whatsapp_cl"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/client_instagram_appointment_month_rv_child">
+            app:layout_constraintTop_toBottomOf="@id/client_telegram_cl">
 
             <TextView
-                android:id="@+id/client_instagram_link_tv"
+                android:id="@+id/instagram_date_appointment"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="3dp"
+                android:background="@drawable/rectangle_2"
+                android:gravity="center_vertical"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:singleLine="true"
                 android:text="@string/instagram_text"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/instagram_logo_imageButton_date"
+                app:layout_constraintEnd_toStartOf="@+id/instagram_logo_imageButton_date_appointment"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
-                android:id="@+id/instagram_logo_imageButton_date"
+                android:id="@+id/instagram_logo_imageButton_date_appointment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="3dp"
                 android:background="@color/transparent"
                 android:src="@drawable/instagram_logo"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -264,31 +289,42 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/client_notes_appointment_month_rv_child"
+            android:id="@+id/client_whatsapp_cl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@+id/client_notes_cl_date_appointment_rv_item"
+            app:layout_constraintBottom_toTopOf="@id/client_notes_cl"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/client_whatsapp_appointment_month_rv_child">
+            app:layout_constraintTop_toBottomOf="@id/client_instagram_cl">
 
             <TextView
-                android:id="@+id/client_whatsapp_link_tv"
+                android:id="@+id/whatsapp_date_appointment"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="3dp"
+                android:background="@drawable/rectangle_2"
+                android:gravity="center_vertical"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:singleLine="true"
                 android:text="@string/whatsapp_text"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/whatsapp_logo_imageButton_date"
+                app:layout_constraintEnd_toStartOf="@+id/whatsapp_logo_imageButton_date_appointment"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
-                android:id="@+id/whatsapp_logo_imageButton_date"
+                android:id="@+id/whatsapp_logo_imageButton_date_appointment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="3dp"
                 android:background="@color/transparent"
                 android:src="@drawable/whatsapp_logo"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -298,32 +334,42 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/client_notes_cl_date_appointment_rv_item"
+            android:id="@+id/client_notes_cl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/client_notes_appointment_month_rv_child">
+            app:layout_constraintTop_toBottomOf="@id/client_whatsapp_cl">
 
             <TextView
-                android:id="@+id/client_notes"
+                android:id="@+id/notes_date_appointment"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="@string/example_notes"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="3dp"
+                android:background="@drawable/rectangle_2"
+                android:gravity="center_vertical"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:text="@string/notes"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/notes_client_button"
+                app:layout_constraintEnd_toStartOf="@+id/notes_logo_imageButton_date_appointment"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageButton
-                android:id="@+id/notes_client_button"
+            <ImageView
+                android:id="@+id/notes_logo_imageButton_date_appointment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/baseline_edit_note_24"
-                android:visibility="invisible"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="3dp"
+                android:src="@drawable/note"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -332,4 +378,4 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout> <!--Appointment params-->
+</androidx.constraintlayout.widget.ConstraintLayout>

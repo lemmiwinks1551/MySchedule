@@ -32,7 +32,6 @@ class DateViewHolder internal constructor(
     val whatsappImageButton: ImageButton
 
     var clientTimeCl: ConstraintLayout
-    var clientNameCl: ConstraintLayout
     var clientProcedureCl: ConstraintLayout
     var clientPhoneCl: ConstraintLayout
     var clientVkCl: ConstraintLayout
@@ -43,31 +42,30 @@ class DateViewHolder internal constructor(
 
     init {
         with(itemView) {
-            appointmentTime = findViewById(R.id.time_value_search)
-            appointmentProcedure = findViewById(R.id.procedure_value_search)
-            appointmentClientName = findViewById(R.id.client_value_search)
-            appointmentClientPhone = findViewById(R.id.phone_value_search)
-            appointmentClientVk = findViewById(R.id.client_vk_link_tv)
-            appointmentClientTelegram = findViewById(R.id.client_telegram_link_tv)
-            appointmentClientInstagram = findViewById(R.id.client_instagram_link_tv)
-            appointmentClientWhatsapp = findViewById(R.id.client_whatsapp_link_tv)
-            appointmentNotes = findViewById(R.id.client_notes)
+            appointmentTime = findViewById(R.id.appointment_time_tv)
+            appointmentProcedure = findViewById(R.id.procedure_tv_date_appointment)
+            appointmentClientName = findViewById(R.id.client_name_date_appointment)
+            appointmentClientPhone = findViewById(R.id.phone_date_appointment)
+            appointmentClientVk = findViewById(R.id.vk_date_appointment)
+            appointmentClientTelegram = findViewById(R.id.telegram_date_appointment)
+            appointmentClientInstagram = findViewById(R.id.instagram_date_appointment)
+            appointmentClientWhatsapp = findViewById(R.id.whatsapp_date_appointment)
+            appointmentNotes = findViewById(R.id.notes_date_appointment)
 
-            callClientButton = findViewById(R.id.call_client_button)
-            vkImageButton = findViewById(R.id.vk_logo_imageButton_date)
-            telegramImageButton = findViewById(R.id.telegram_logo_imageButton_date)
-            instagramImageButton = findViewById(R.id.instagram_logo_imageButton_date)
-            whatsappImageButton = findViewById(R.id.whatsapp_logo_imageButton_date)
+            callClientButton = findViewById(R.id.call_client_button_date_appointment)
+            vkImageButton = findViewById(R.id.vk_logo_imageButton_date_appointment)
+            telegramImageButton = findViewById(R.id.telegram_logo_imageButton_date_appointment)
+            instagramImageButton = findViewById(R.id.instagram_logo_imageButton_date_appointment)
+            whatsappImageButton = findViewById(R.id.whatsapp_logo_imageButton_date_appointment)
 
-            clientTimeCl = findViewById(R.id.client_time_cl_date_appointment_rv_item)
-            clientNameCl = findViewById(R.id.client_procedure_appointment_month_rv_child)
-            clientProcedureCl = findViewById(R.id.client_phone_appointment_month_rv_child)
-            clientPhoneCl = findViewById(R.id.client_vk_appointment_month_rv_child)
-            clientVkCl = findViewById(R.id.client_telegram_appointment_month_rv_child)
-            clientTelegramCl = findViewById(R.id.client_instagram_appointment_month_rv_child)
-            clientInstagramCl = findViewById(R.id.client_whatsapp_appointment_month_rv_child)
-            clientWhatsappCl = findViewById(R.id.client_notes_appointment_month_rv_child)
-            clientNotesCl = findViewById(R.id.client_notes_cl_date_appointment_rv_item)
+            clientTimeCl = findViewById(R.id.appointment_time_cl)
+            clientProcedureCl = findViewById(R.id.appointment_procedure_cl)
+            clientPhoneCl = findViewById(R.id.client_phone_cl)
+            clientVkCl = findViewById(R.id.client_vk_cl)
+            clientTelegramCl = findViewById(R.id.client_telegram_cl)
+            clientInstagramCl = findViewById(R.id.client_instagram_cl)
+            clientWhatsappCl = findViewById(R.id.client_whatsapp_cl)
+            clientNotesCl = findViewById(R.id.client_notes_cl)
         }
 
         itemView.setOnClickListener {

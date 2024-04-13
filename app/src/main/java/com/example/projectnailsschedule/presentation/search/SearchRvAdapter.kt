@@ -64,7 +64,7 @@ class SearchRvAdapter(
                 instagramLink = findViewById(R.id.client_instagram_link_tv)
                 whatsAppLink = findViewById(R.id.client_whatsapp_link_tv)
 
-                callClientButton = findViewById(R.id.call_client_button)
+                callClientButton = findViewById(R.id.call_client_button_date_appointment)
                 vkImageButton = findViewById(R.id.vk_logo_imageButton_date)
                 telegramImageButton = findViewById(R.id.telegram_logo_imageButton_date)
                 instagramImageButton = findViewById(R.id.instagram_logo_imageButton_date)

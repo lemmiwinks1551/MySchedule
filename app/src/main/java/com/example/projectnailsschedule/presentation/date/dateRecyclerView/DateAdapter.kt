@@ -100,9 +100,6 @@ class DateAdapter(
         if (appointmentsList[position].time.isNullOrEmpty()) {
             holder.clientTimeCl.visibility = View.GONE
         }
-        if (appointmentsList[position].name.isNullOrEmpty()) {
-            holder.clientNameCl.visibility = View.GONE
-        }
         if (appointmentsList[position].procedure.isNullOrEmpty()) {
             holder.clientProcedureCl.visibility = View.GONE
         }

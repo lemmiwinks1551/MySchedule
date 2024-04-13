@@ -49,6 +49,9 @@ data class AppointmentModelDb(
     @ColumnInfo(name = "notes")
     val notes: String? = null,
 
+    @ColumnInfo(name = "photo")
+    val photo: String? = null,
+
     @ColumnInfo(name = "deleted")
     val deleted: Boolean
 ) : Parcelable {

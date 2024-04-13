@@ -1,6 +1,5 @@
 package com.example.projectnailsschedule.presentation.clients
 
-import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,7 +35,6 @@ class ClientsRvAdapter(
         var instagramImageButton: ImageButton
         var whatsappImageButton: ImageButton
 
-        var clientNameCl: ConstraintLayout
         var clientPhoneCl: ConstraintLayout
         var clientVkCl: ConstraintLayout
         var clientTelegramCl: ConstraintLayout
@@ -46,22 +44,21 @@ class ClientsRvAdapter(
 
         init {
             with(itemView) {
-                name = findViewById(R.id.client_select_name)
-                phone = findViewById(R.id.client_select_phone)
-                vk = findViewById(R.id.client_select_vk_link_tv)
-                telegram = findViewById(R.id.client_select_telegram_link_tv)
-                instagram = findViewById(R.id.client_select_instagram_link_tv)
-                whatsapp = findViewById(R.id.client_select_whatsapp_link_tv)
-                notes = findViewById(R.id.client_select_notes)
-                clientPhoto = findViewById(R.id.client_avatar)
+                name = findViewById(R.id.client_name_date_appointment)
+                phone = findViewById(R.id.phone_date_appointment)
+                vk = findViewById(R.id.vk_date_appointment)
+                telegram = findViewById(R.id.telegram_date_appointment)
+                instagram = findViewById(R.id.instagram_date_appointment)
+                whatsapp = findViewById(R.id.whatsapp_date_appointment)
+                notes = findViewById(R.id.notes_date_appointment)
+                clientPhoto = findViewById(R.id.client_avatar_date_appointment)
 
                 callClientButton = findViewById(R.id.call_client_button_select_button)
-                vkImageButton = findViewById(R.id.vk_logo_imageButton_select_client)
-                telegramImageButton = findViewById(R.id.telegram_logo_imageButton_select_client)
-                instagramImageButton = findViewById(R.id.instagram_logo_imageButton_select_client)
-                whatsappImageButton = findViewById(R.id.whatsapp_logo_imageButton_select_client)
+                vkImageButton = findViewById(R.id.vk_logo_imageButton_date_appointment)
+                telegramImageButton = findViewById(R.id.telegram_logo_imageButton_date_appointment)
+                instagramImageButton = findViewById(R.id.instagram_logo_imageButton_date_appointment)
+                whatsappImageButton = findViewById(R.id.whatsapp_logo_imageButton_date_appointment)
 
-                clientNameCl = findViewById(R.id.client_name_cl)
                 clientPhoneCl = findViewById(R.id.client_phone_cl)
                 clientVkCl = findViewById(R.id.client_vk_cl)
                 clientTelegramCl = findViewById(R.id.client_telegram_cl)
@@ -170,9 +167,6 @@ class ClientsRvAdapter(
 
     private fun hideEmptyViews(holder: ViewHolder, position: Int) {
         with(clientsList[position]) {
-            if (name.isNullOrEmpty()) {
-                holder.clientNameCl.visibility = View.GONE
-            }
             if (phone.isNullOrEmpty()) {
                 holder.clientPhoneCl.visibility = View.GONE
             }
@@ -196,7 +190,6 @@ class ClientsRvAdapter(
 
     private fun clearViews(holder: ViewHolder) {
         with(holder) {
-            clientNameCl.visibility = View.VISIBLE
             clientPhoneCl.visibility = View.VISIBLE
             clientVkCl.visibility = View.VISIBLE
             clientTelegramCl.visibility = View.VISIBLE
