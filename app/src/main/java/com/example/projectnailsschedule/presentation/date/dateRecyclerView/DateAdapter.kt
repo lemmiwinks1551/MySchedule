@@ -3,6 +3,7 @@ package com.example.projectnailsschedule.presentation.date.dateRecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
@@ -41,6 +42,7 @@ class DateAdapter(
             holder.appointmentClientInstagram.text = instagram
             holder.appointmentClientWhatsapp.text = whatsapp
             holder.appointmentNotes.text = notes
+            holder.clientPhoto.setImageURI(photo?.toUri())
         }
 
         hideEmptyViews(holder, position)

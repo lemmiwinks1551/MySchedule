@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -18,9 +19,9 @@ import androidx.navigation.fragment.findNavController
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentAppointmentBinding
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
-import com.example.projectnailsschedule.domain.models.ClientModelDb
 import com.example.projectnailsschedule.domain.models.ProcedureModelDb
 import com.example.projectnailsschedule.presentation.calendar.DateParamsViewModel
+import com.example.projectnailsschedule.presentation.clients.ClientsViewModel
 import com.example.projectnailsschedule.util.Util
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -28,9 +29,8 @@ import java.util.Calendar
 
 @AndroidEntryPoint
 class AppointmentFragment : Fragment() {
-    val log = this::class.simpleName
-
     private val dateParamsViewModel: DateParamsViewModel by activityViewModels()
+    private val clientsViewModel: ClientsViewModel by activityViewModels()
 
     private lateinit var currentAppointment: AppointmentModelDb
 
@@ -59,34 +59,16 @@ class AppointmentFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // select client results
-        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<ClientModelDb>("client")
-            ?.observe(viewLifecycleOwner) { result ->
-                with(binding) {
-                    nameEt.setText(result.name)
-                    phoneEt.setText(result.phone)
-                    clientVkLinkEt.setText(result.vk)
-                    clientTelegramLinkEt.setText(result.telegram)
-                    clientInstagramLinkEt.setText(result.instagram)
-                    clientWhatsappLinkEt.setText(result.whatsapp)
-                    Util().animateEditTexts(
-                        nameEt,
-                        phoneEt,
-                        clientVkLinkEt,
-                        clientTelegramLinkEt,
-                        clientInstagramLinkEt,
-                        clientWhatsappLinkEt
-                    )
-                }
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Boolean>("client")
+            ?.observe(viewLifecycleOwner) {
+                clientSelected()
             }
 
         // select procedure results
+        // TODO: переписать через вью модель
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<ProcedureModelDb>("procedure")
-            ?.observe(viewLifecycleOwner) { result ->
-                with(binding) {
-                    procedureEt.setText(result.procedureName)
-                    Util().animateEditTexts(procedureEt)
-                }
+            ?.observe(viewLifecycleOwner) { savedState ->
+                procedureSelected(savedState)
             }
     }
 
@@ -163,6 +145,7 @@ class AppointmentFragment : Fragment() {
                 instagram = clientInstagramLinkEt.text.toString(),
                 whatsapp = clientWhatsappLinkEt.text.toString(),
                 notes = notesEt.text.toString(),
+                photo = clientsViewModel.selectedClient?.photo,
                 deleted = false
             )
 
@@ -197,6 +180,7 @@ class AppointmentFragment : Fragment() {
                 instagram = clientInstagramLinkEt.text.toString(),
                 whatsapp = clientWhatsappLinkEt.text.toString(),
                 notes = notesEt.text.toString(),
+                photo = clientsViewModel.selectedClient?.photo,
                 deleted = false
             )
 
@@ -301,6 +285,35 @@ class AppointmentFragment : Fragment() {
         } else {
             // new AppointmentModelDb
             AppointmentModelDb(deleted = false)
+        }
+    }
+
+    private fun clientSelected() {
+        // update views
+        with(binding) {
+            nameEt.setText(clientsViewModel.selectedClient!!.name)
+            phoneEt.setText(clientsViewModel.selectedClient!!.phone)
+            clientVkLinkEt.setText(clientsViewModel.selectedClient!!.vk)
+            clientTelegramLinkEt.setText(clientsViewModel.selectedClient!!.telegram)
+            clientInstagramLinkEt.setText(clientsViewModel.selectedClient!!.instagram)
+            clientWhatsappLinkEt.setText(clientsViewModel.selectedClient!!.whatsapp)
+            clientAvatarDateAppointment.setImageURI(clientsViewModel.selectedClient!!.photo?.toUri())
+            Util().animateEditTexts(
+                nameEt,
+                phoneEt,
+                clientVkLinkEt,
+                clientTelegramLinkEt,
+                clientInstagramLinkEt,
+                clientWhatsappLinkEt
+            )
+        }
+    }
+
+    private fun procedureSelected(savedState: ProcedureModelDb) {
+        // update views
+        with(binding) {
+            procedureEt.setText(savedState.procedureName)
+            Util().animateEditTexts(procedureEt)
         }
     }
 }

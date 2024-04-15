@@ -110,19 +110,10 @@ class SelectClientFragment : DialogFragment() {
             ClientsRvAdapter.OnItemClickListener {
             override fun onItemClick(position: Int) {
                 // client selected
-                val clientModelDb = ClientModelDb(
-                    _id = clientsList[position]._id,
-                    name = clientsList[position].name,
-                    phone = clientsList[position].phone,
-                    vk = clientsList[position].vk,
-                    telegram = clientsList[position].telegram,
-                    instagram = clientsList[position].instagram,
-                    whatsapp = clientsList[position].whatsapp,
-                    notes = clientsList[position].notes
-                )
+                clientsViewModel.selectedClient = clientsList[position]
 
-                findNavController().currentBackStackEntry?.savedStateHandle?.set("client", clientModelDb)
-                dismiss() // закрыть диалоговое окно после передачи данных
+                findNavController().currentBackStackEntry?.savedStateHandle?.set("client", true)
+                dismiss()
             }
         })
     }

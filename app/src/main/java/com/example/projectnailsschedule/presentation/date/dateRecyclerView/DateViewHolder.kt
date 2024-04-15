@@ -2,6 +2,7 @@ package com.example.projectnailsschedule.presentation.date.dateRecyclerView
 
 import android.view.View
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
@@ -24,6 +25,7 @@ class DateViewHolder internal constructor(
     val appointmentClientInstagram: TextView
     val appointmentClientWhatsapp: TextView
     val appointmentNotes: TextView
+    val clientPhoto: ImageView
 
     var callClientButton: ImageButton
     val vkImageButton: ImageButton
@@ -51,6 +53,7 @@ class DateViewHolder internal constructor(
             appointmentClientInstagram = findViewById(R.id.instagram_date_appointment)
             appointmentClientWhatsapp = findViewById(R.id.whatsapp_date_appointment)
             appointmentNotes = findViewById(R.id.notes_date_appointment)
+            clientPhoto = findViewById(R.id.client_avatar_date_appointment)
 
             callClientButton = findViewById(R.id.call_client_button_date_appointment)
             vkImageButton = findViewById(R.id.vk_logo_imageButton_date_appointment)
