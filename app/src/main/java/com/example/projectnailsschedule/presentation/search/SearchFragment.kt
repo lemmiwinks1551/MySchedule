@@ -117,12 +117,17 @@ class SearchFragment : Fragment() {
             override fun onItemClick(position: Int) {
                 // edit selected appointment
                 dateParamsViewModel.appointmentPosition = position
-                val selectedDate = DateParams(
-                    date = Util().convertStringToLocalDate(appointmentList?.get(position)?.date!!),
-                    appointmentsList = appointmentsList
-                )
-                dateParamsViewModel.updateSelectedDate(selectedDate)
-                findNavController().navigate(R.id.action_nav_search_to_nav_appointment)
+                lifecycleScope.launch {
+                    val date = Util().convertStringToLocalDate(appointmentList?.get(position)?.date!!)
+                    val dateAppointments = dateParamsViewModel.getArrayAppointments(date!!)
+                    val selectedDate = DateParams(
+                        date = date,
+                        appointmentsList = dateAppointments
+                    )
+                    dateParamsViewModel.updateSelectedDate(selectedDate)
+                    findNavController().navigate(R.id.action_nav_search_to_nav_appointment)
+                }
+
             }
         })
     }

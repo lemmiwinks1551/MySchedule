@@ -207,6 +207,7 @@ class AppointmentFragment : Fragment() {
                 binding.clientTelegramLinkEt.setText(this.telegram)
                 binding.clientInstagramLinkEt.setText(this.instagram)
                 binding.clientWhatsappLinkEt.setText(this.whatsapp)
+                binding.clientAvatarDateAppointment.setImageURI(this.photo?.toUri())
                 binding.notesEt.setText(this.notes)
             }
         } else {
