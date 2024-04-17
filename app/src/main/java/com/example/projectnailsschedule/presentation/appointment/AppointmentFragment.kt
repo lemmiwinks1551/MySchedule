@@ -19,6 +19,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentAppointmentBinding
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
+import com.example.projectnailsschedule.domain.models.ClientModelDb
 import com.example.projectnailsschedule.domain.models.ProcedureModelDb
 import com.example.projectnailsschedule.presentation.calendar.DateParamsViewModel
 import com.example.projectnailsschedule.presentation.clients.ClientsViewModel
@@ -180,7 +181,7 @@ class AppointmentFragment : Fragment() {
                 instagram = clientInstagramLinkEt.text.toString(),
                 whatsapp = clientWhatsappLinkEt.text.toString(),
                 notes = notesEt.text.toString(),
-                photo = clientsViewModel.selectedClient?.photo,
+                photo = clientsViewModel.selectedClient?.photo, // ошибка, запоминает старого клиента выбранного
                 deleted = false
             )
 
@@ -280,12 +281,22 @@ class AppointmentFragment : Fragment() {
 
     private fun defineAppointment() {
         // set current appointmentParams
-        currentAppointment = if (dateParamsViewModel.appointmentPosition != null) {
+        if (dateParamsViewModel.appointmentPosition != null) {
             // if AppointmentModelDb already exists
-            dateParamsViewModel.selectedDate.value!!.appointmentsList!![dateParamsViewModel.appointmentPosition!!]
+            currentAppointment = dateParamsViewModel.selectedDate.value!!.appointmentsList!![dateParamsViewModel.appointmentPosition!!]
+            clientsViewModel.selectedClient = ClientModelDb(
+                name = currentAppointment.name,
+                phone = currentAppointment.phone,
+                telegram = currentAppointment.telegram,
+                instagram = currentAppointment.instagram,
+                vk = currentAppointment.vk,
+                whatsapp = currentAppointment.whatsapp,
+                photo = currentAppointment.photo
+            )
         } else {
             // new AppointmentModelDb
-            AppointmentModelDb(deleted = false)
+            currentAppointment = AppointmentModelDb(deleted = false)
+            clientsViewModel.selectedClient = null
         }
     }
 
