@@ -181,7 +181,7 @@ class AppointmentFragment : Fragment() {
                 instagram = clientInstagramLinkEt.text.toString(),
                 whatsapp = clientWhatsappLinkEt.text.toString(),
                 notes = notesEt.text.toString(),
-                photo = clientsViewModel.selectedClient?.photo, // ошибка, запоминает старого клиента выбранного
+                photo = clientsViewModel.selectedClient?.photo,
                 deleted = false
             )
 
