@@ -266,6 +266,13 @@ class DateParamsViewModel @Inject constructor(
         }
     }
 
+    fun getAppointmentPositionInDate(
+        appointmentModelDb: AppointmentModelDb,
+        appointmentList: MutableList<AppointmentModelDb>
+    ): Int {
+        return appointmentList.indexOf(appointmentModelDb)
+    }
+
     fun startVk(uri: String) {
         startVkUc.execute(uri)
     }

@@ -115,19 +115,7 @@ class SearchFragment : Fragment() {
 
         searchRvAdapter!!.setOnItemClickListener(object : SearchRvAdapter.OnItemClickListener {
             override fun onItemClick(position: Int) {
-                // edit selected appointment
-                dateParamsViewModel.appointmentPosition = position
-                lifecycleScope.launch {
-                    val date = Util().convertStringToLocalDate(appointmentList?.get(position)?.date!!)
-                    val dateAppointments = dateParamsViewModel.getArrayAppointments(date!!)
-                    val selectedDate = DateParams(
-                        date = date,
-                        appointmentsList = dateAppointments
-                    )
-                    dateParamsViewModel.updateSelectedDate(selectedDate)
-                    findNavController().navigate(R.id.action_nav_search_to_nav_appointment)
-                }
-
+                appointmentClick(position)
             }
         })
     }
@@ -260,5 +248,22 @@ class SearchFragment : Fragment() {
         super.onDestroyView()
         snackbar?.dismiss()
         _binding = null
+    }
+
+    private fun appointmentClick(position: Int) {
+        // edit selected appointment
+        //dateParamsViewModel.appointmentPosition = position
+        lifecycleScope.launch {
+            val date = Util().convertStringToLocalDate(appointmentList?.get(position)?.date!!)
+            val dateAppointments = dateParamsViewModel.getArrayAppointments(date!!)
+            val selectedDate = DateParams(
+                date = date,
+                appointmentsList = dateAppointments
+            )
+            val currentAppointment = appointmentList!![position]
+            dateParamsViewModel.appointmentPosition = dateParamsViewModel.getAppointmentPositionInDate(currentAppointment, dateAppointments)
+            dateParamsViewModel.updateSelectedDate(selectedDate)
+            findNavController().navigate(R.id.action_nav_search_to_nav_appointment)
+        }
     }
 }
