@@ -30,8 +30,6 @@ import java.util.Date
 @AndroidEntryPoint
 class CalendarFragment : Fragment(),
     DateShortAdapter.OnItemListener {
-    private val log = this::class.simpleName
-
     private val dateParamsViewModel: DateParamsViewModel by activityViewModels()
 
     private var _binding: FragmentCalendarBinding? = null

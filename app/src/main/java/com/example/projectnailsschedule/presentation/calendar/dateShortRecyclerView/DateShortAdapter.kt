@@ -1,8 +1,11 @@
 package com.example.projectnailsschedule.presentation.calendar.dateShortRecyclerView
 
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.domain.models.DateParams
@@ -22,11 +25,20 @@ internal class DateShortAdapter(
 
     override fun onBindViewHolder(holder: DateShortViewHolder, position: Int) {
         with(selectedDayParams.appointmentsList?.get(position)!!) {
-            holder.number.text = String.format("${position + 1}.")
-            holder.clientName.text = name
-            holder.time.text = time
-            holder.procedure.text = procedure
-            holder.notes.text = notes
+            inflateView(name, holder.clientName)
+            inflateView(time, holder.time)
+            inflateView(procedure, holder.procedure)
+            inflateView(notes, holder.notes)
+            holder.photo.setImageURI(photo?.toUri())
+        }
+    }
+
+    private fun inflateView(string: String?, textView: TextView) {
+        if (string.isNullOrEmpty()) {
+            textView.text = "-"
+            textView.gravity = Gravity.CENTER
+        } else {
+            textView.text = string
         }
     }
 
