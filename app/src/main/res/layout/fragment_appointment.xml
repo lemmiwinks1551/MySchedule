@@ -277,7 +277,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:background="@drawable/bold_borders"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/procedure_cl"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/fragment_add_row">
@@ -636,6 +636,18 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!--Procedure data-->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/procedure_cl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fragment_appointment_client_cl">
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
