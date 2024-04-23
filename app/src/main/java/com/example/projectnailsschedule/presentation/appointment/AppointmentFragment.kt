@@ -9,6 +9,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.net.toUri
@@ -114,6 +115,15 @@ class AppointmentFragment : Fragment() {
                 val dialogFragment = SelectProcedureFragment()
                 dialogFragment.show(parentFragmentManager, "SelectProcedureFragment")
             }
+
+            clearClientButton.setOnClickListener {
+                // TODO:
+                //  1. Добавть логику по очистке полей с данными
+                //  2. удалению Id клиента из записи
+                //  3. разблокировка полей клиента для ручного заполнения
+                Toast.makeText(requireContext(), "Данные о клиенте очищены", Toast.LENGTH_LONG)
+                    .show()
+            }
         }
     }
 
@@ -140,11 +150,11 @@ class AppointmentFragment : Fragment() {
                 name = nameEt.text.toString(),
                 time = timeEditText.text.toString(),
                 procedure = procedureEt.text.toString(),
-                phone = phoneEt.text.toString(),
+                phone = clientPhoneEt.text.toString(),
                 vk = clientVkLinkEt.text.toString(),
-                telegram = clientTelegramLinkEt.text.toString(),
-                instagram = clientInstagramLinkEt.text.toString(),
-                whatsapp = clientWhatsappLinkEt.text.toString(),
+                telegram = clientTelegramEt.text.toString(),
+                instagram = clientInstagramEt.text.toString(),
+                whatsapp = clientWhatsappEt.text.toString(),
                 notes = notesEt.text.toString(),
                 photo = clientsViewModel.selectedClient?.photo,
                 deleted = false
@@ -175,11 +185,11 @@ class AppointmentFragment : Fragment() {
                 name = nameEt.text.toString(),
                 time = timeEditText.text.toString(),
                 procedure = procedureEt.text.toString(),
-                phone = phoneEt.text.toString(),
+                phone = clientPhoneEt.text.toString(),
                 vk = clientVkLinkEt.text.toString(),
-                telegram = clientTelegramLinkEt.text.toString(),
-                instagram = clientInstagramLinkEt.text.toString(),
-                whatsapp = clientWhatsappLinkEt.text.toString(),
+                telegram = clientTelegramEt.text.toString(),
+                instagram = clientInstagramEt.text.toString(),
+                whatsapp = clientWhatsappEt.text.toString(),
                 notes = notesEt.text.toString(),
                 photo = clientsViewModel.selectedClient?.photo,
                 deleted = false
@@ -203,11 +213,11 @@ class AppointmentFragment : Fragment() {
                 binding.timeEditText.text = this.time
                 binding.procedureEt.setText(this.procedure)
                 binding.nameEt.setText(this.name)
-                binding.phoneEt.setText(this.phone)
+                binding.clientPhoneEt.setText(this.phone)
                 binding.clientVkLinkEt.setText(this.vk)
-                binding.clientTelegramLinkEt.setText(this.telegram)
-                binding.clientInstagramLinkEt.setText(this.instagram)
-                binding.clientWhatsappLinkEt.setText(this.whatsapp)
+                binding.clientTelegramEt.setText(this.telegram)
+                binding.clientInstagramEt.setText(this.instagram)
+                binding.clientWhatsappEt.setText(this.whatsapp)
                 binding.clientAvatarDateAppointment.setImageURI(this.photo?.toUri())
                 binding.notesEt.setText(this.notes)
             }
@@ -283,7 +293,8 @@ class AppointmentFragment : Fragment() {
         // set current appointmentParams
         if (dateParamsViewModel.appointmentPosition != null) {
             // if AppointmentModelDb already exists
-            currentAppointment = dateParamsViewModel.selectedDate.value!!.appointmentsList!![dateParamsViewModel.appointmentPosition!!]
+            currentAppointment =
+                dateParamsViewModel.selectedDate.value!!.appointmentsList!![dateParamsViewModel.appointmentPosition!!]
             clientsViewModel.selectedClient = ClientModelDb(
                 name = currentAppointment.name,
                 phone = currentAppointment.phone,
@@ -304,21 +315,22 @@ class AppointmentFragment : Fragment() {
         // update views
         with(binding) {
             nameEt.setText(clientsViewModel.selectedClient!!.name)
-            phoneEt.setText(clientsViewModel.selectedClient!!.phone)
+            clientPhoneEt.setText(clientsViewModel.selectedClient!!.phone)
             clientVkLinkEt.setText(clientsViewModel.selectedClient!!.vk)
-            clientTelegramLinkEt.setText(clientsViewModel.selectedClient!!.telegram)
-            clientInstagramLinkEt.setText(clientsViewModel.selectedClient!!.instagram)
-            clientWhatsappLinkEt.setText(clientsViewModel.selectedClient!!.whatsapp)
+            clientTelegramEt.setText(clientsViewModel.selectedClient!!.telegram)
+            clientInstagramEt.setText(clientsViewModel.selectedClient!!.instagram)
+            clientWhatsappEt.setText(clientsViewModel.selectedClient!!.whatsapp)
             clientAvatarDateAppointment.setImageURI(clientsViewModel.selectedClient!!.photo?.toUri())
             Util().animateEditTexts(
                 nameEt,
-                phoneEt,
+                clientPhoneEt,
                 clientVkLinkEt,
-                clientTelegramLinkEt,
-                clientInstagramLinkEt,
-                clientWhatsappLinkEt
+                clientTelegramEt,
+                clientInstagramEt,
+                clientWhatsappEt
             )
         }
+        blockClientFields()
     }
 
     private fun procedureSelected(savedState: ProcedureModelDb) {
@@ -327,5 +339,71 @@ class AppointmentFragment : Fragment() {
             procedureEt.setText(savedState.procedureName)
             Util().animateEditTexts(procedureEt)
         }
+    }
+
+    private fun blockClientFields() {
+        with(binding) {
+            setGrayBackground(clientPhoneEt)
+            disableTouchMode(clientPhoneEt)
+
+            setGrayBackground(clientVkLinkEt)
+            disableTouchMode(clientVkLinkEt)
+
+            setGrayBackground(clientTelegramEt)
+            disableTouchMode(clientTelegramEt)
+
+            setGrayBackground(clientInstagramEt)
+            disableTouchMode(clientInstagramEt)
+
+            setGrayBackground(clientWhatsappEt)
+            disableTouchMode(clientWhatsappEt)
+
+            setGrayBackground(clientNotesEt)
+            disableTouchMode(clientNotesEt)
+        }
+    }
+
+    private fun unBlockClientFields() {
+        with(binding) {
+            setWhiteBackground(clientPhoneEt)
+            enableTouchMode(clientPhoneEt)
+
+            setWhiteBackground(clientVkLinkEt)
+            enableTouchMode(clientVkLinkEt)
+
+            setWhiteBackground(clientTelegramEt)
+            enableTouchMode(clientTelegramEt)
+
+            setWhiteBackground(clientInstagramEt)
+            enableTouchMode(clientInstagramEt)
+
+            setWhiteBackground(clientWhatsappEt)
+            enableTouchMode(clientWhatsappEt)
+
+            setWhiteBackground(clientNotesEt)
+            enableTouchMode(clientNotesEt)
+        }
+    }
+
+    private fun clearClientFields() {
+
+    }
+
+    private fun setGrayBackground(editText: EditText) {
+        val grayBackground = R.drawable.rectangle_2_gray
+        editText.setBackgroundResource(grayBackground)
+    }
+
+    private fun setWhiteBackground(editText: EditText) {
+        val grayBackground = R.drawable.rectangle_2
+        editText.setBackgroundResource(grayBackground)
+    }
+
+    private fun disableTouchMode(editText: EditText) {
+        editText.isFocusableInTouchMode = false
+    }
+
+    private fun enableTouchMode(editText: EditText) {
+        editText.isFocusableInTouchMode = true
     }
 }

@@ -245,7 +245,7 @@
                     app:layout_constraintTop_toTopOf="parent">
 
                     <EditText
-                        android:id="@+id/phone_et"
+                        android:id="@+id/client_phone_et"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="8dp"
@@ -333,7 +333,7 @@
                     app:layout_constraintTop_toBottomOf="@id/client_vk_cl">
 
                     <EditText
-                        android:id="@+id/client_telegram_link_et"
+                        android:id="@+id/client_telegram_et"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="8dp"
@@ -377,14 +377,14 @@
                     app:layout_constraintTop_toBottomOf="@id/client_telegram_cl">
 
                     <EditText
-                        android:id="@+id/client_instagram_link_et"
+                        android:id="@+id/client_instagram_et"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="8dp"
                         android:layout_marginTop="12dp"
                         android:background="@drawable/rectangle_2"
                         android:focusableInTouchMode="false"
-                        android:hint="Telegram"
+                        android:hint="@string/instagram_text"
                         android:imeOptions="actionDone"
                         android:inputType="phone|number"
                         android:paddingStart="12dp"
@@ -423,7 +423,7 @@
                     app:layout_constraintTop_toBottomOf="@id/client_instagram_cl">
 
                     <EditText
-                        android:id="@+id/client_whatsapp_link_et"
+                        android:id="@+id/client_whatsapp_et"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="8dp"
@@ -477,7 +477,7 @@
                         app:layout_constraintTop_toTopOf="parent">
 
                         <EditText
-                            android:id="@+id/notes_date_appointment"
+                            android:id="@+id/client_notes_et"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@drawable/rectangle_2"
