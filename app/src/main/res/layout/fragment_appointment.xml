@@ -196,7 +196,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/name_et">
 
-                <ImageButton
+                <ImageView
                     android:id="@+id/select_client_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -204,7 +204,7 @@
                     android:adjustViewBounds="false"
                     android:cropToPadding="false"
                     android:elevation="14dp"
-                    android:src="@drawable/ic_baseline_people_alt_24"
+                    android:src="@drawable/user_search_icon"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/clear_client_button"
                     app:layout_constraintStart_toStartOf="parent"
@@ -218,7 +218,7 @@
                     android:layout_marginTop="3dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="3dp"
-                    android:src="@drawable/fluent_people_subtract_32_filled"
+                    android:src="@drawable/user_clear_icon"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/select_client_button"
@@ -559,20 +559,19 @@
                     android:textSize="20sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/procedure_select_button"
-                    app:layout_constraintHorizontal_weight="6"
+                    app:layout_constraintHorizontal_weight="7"
                     app:layout_constraintStart_toEndOf="@+id/database_appointment_procedure"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <ImageButton
+                <ImageView
                     android:id="@+id/procedure_select_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="3dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="3dp"
                     android:elevation="14dp"
-                    android:src="@drawable/baseline_attach_money_24"
+                    android:src="@drawable/select_procedure_icon"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -593,7 +592,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:text="@string/price_example"
+                    android:text="Цена"
                     android:textSize="20sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/procedure_price_et"
@@ -607,7 +606,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
                     android:background="@drawable/rectangle_2"
-                    android:hint="@string/price_hint"
+                    android:hint="1000"
                     android:imeOptions="actionDone"
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp"
