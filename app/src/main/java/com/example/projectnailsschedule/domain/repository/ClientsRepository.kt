@@ -11,4 +11,6 @@ interface ClientsRepository {
     suspend fun deleteClient(clientModelDb: ClientModelDb): Boolean
 
     suspend fun searchClient(searchQuery: String): MutableList<ClientModelDb>
+
+    suspend fun getClientById(id: Long): ClientModelDb
 }

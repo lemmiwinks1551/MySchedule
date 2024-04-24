@@ -22,6 +22,9 @@ data class AppointmentModelDb(
     @ColumnInfo(name = "date")
     val date: String? = null,
 
+    @ColumnInfo(name = "clientId")
+    val clientId: Long? = null,
+
     @ColumnInfo(name = "name")
     val name: String? = null,
 

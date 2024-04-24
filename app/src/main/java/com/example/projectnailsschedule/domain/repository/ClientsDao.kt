@@ -24,4 +24,7 @@ interface ClientsDao {
             "whatsapp LIKE :searchQuery OR " +
             "notes LIKE :searchQuery order by name")
     fun searchClient(searchQuery: String): MutableList<ClientModelDb>
+
+    @Query("SELECT * FROM clients WHERE _id = :id")
+    fun getClientById(id: Long): ClientModelDb
 }

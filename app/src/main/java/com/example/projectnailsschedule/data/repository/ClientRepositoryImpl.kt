@@ -27,4 +27,8 @@ class ClientRepositoryImpl(context: Context) : ClientsRepository {
     override suspend fun searchClient(searchQuery: String): MutableList<ClientModelDb> {
         return dao.searchClient(searchQuery)
     }
+
+    override suspend fun getClientById(id: Long): ClientModelDb {
+        return dao.getClientById(id)
+    }
 }

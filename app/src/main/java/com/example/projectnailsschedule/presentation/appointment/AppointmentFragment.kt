@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.app.TimePickerDialog.OnTimeSetListener
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
@@ -26,6 +27,7 @@ import com.example.projectnailsschedule.presentation.calendar.DateParamsViewMode
 import com.example.projectnailsschedule.presentation.clients.ClientsViewModel
 import com.example.projectnailsschedule.util.Util
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.util.Calendar
 
@@ -40,6 +42,8 @@ class AppointmentFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var saveToolbarButton: MenuItem
+
+    private var appointmentClientId: Long? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -117,10 +121,11 @@ class AppointmentFragment : Fragment() {
             }
 
             clearClientButton.setOnClickListener {
-                // TODO:
-                //  1. Добавть логику по очистке полей с данными
-                //  2. удалению Id клиента из записи
-                //  3. разблокировка полей клиента для ручного заполнения
+                unBlockClientFields()
+                clearClientFields()
+
+                clientsViewModel.selectedClient = null
+
                 Toast.makeText(requireContext(), "Данные о клиенте очищены", Toast.LENGTH_LONG)
                     .show()
             }
@@ -147,6 +152,7 @@ class AppointmentFragment : Fragment() {
             currentAppointment = AppointmentModelDb(
                 _id = null,
                 date = dayEditText.text.toString(),
+                clientId =  appointmentClientId,
                 name = nameEt.text.toString(),
                 time = timeEditText.text.toString(),
                 procedure = procedureEt.text.toString(),
@@ -182,6 +188,7 @@ class AppointmentFragment : Fragment() {
             currentAppointment = AppointmentModelDb(
                 _id = currentAppointment._id,
                 date = dayEditText.text.toString(),
+                clientId = appointmentClientId,
                 name = nameEt.text.toString(),
                 time = timeEditText.text.toString(),
                 procedure = procedureEt.text.toString(),
@@ -213,6 +220,8 @@ class AppointmentFragment : Fragment() {
                 binding.timeEditText.text = this.time
                 binding.procedureEt.setText(this.procedure)
                 binding.nameEt.setText(this.name)
+
+                // set client views (old)
                 binding.clientPhoneEt.setText(this.phone)
                 binding.clientVkLinkEt.setText(this.vk)
                 binding.clientTelegramEt.setText(this.telegram)
@@ -224,6 +233,18 @@ class AppointmentFragment : Fragment() {
         } else {
             binding.dayEditText.text =
                 Util().formatDateToRus(dateParamsViewModel.selectedDate.value?.date!!)
+        }
+
+        // if client has been set before - fill views with client`s data
+        if (appointmentClientId != null) {
+            // set client views (new)
+            binding.clientPhoneEt.setText(clientsViewModel.selectedClient!!.phone)
+            binding.clientVkLinkEt.setText(clientsViewModel.selectedClient!!.vk)
+            binding.clientTelegramEt.setText(clientsViewModel.selectedClient!!.telegram)
+            binding.clientInstagramEt.setText(clientsViewModel.selectedClient!!.instagram)
+            binding.clientWhatsappEt.setText(clientsViewModel.selectedClient!!.whatsapp)
+            binding.clientAvatarDateAppointment.setImageURI(clientsViewModel.selectedClient!!.photo?.toUri())
+            binding.notesEt.setText(clientsViewModel.selectedClient!!.notes)
         }
     }
 
@@ -259,6 +280,162 @@ class AppointmentFragment : Fragment() {
         mTimePicker.show()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    private fun defineAppointment() {
+        // set current appointmentParams
+        if (dateParamsViewModel.appointmentPosition != null) {
+            // if AppointmentModelDb already exists
+            currentAppointment =
+                dateParamsViewModel.selectedDate.value!!.appointmentsList!![dateParamsViewModel.appointmentPosition!!]
+
+            if (currentAppointment.clientId == null) {
+                // client is not in the Client database
+                clientsViewModel.selectedClient = ClientModelDb(
+                    name = currentAppointment.name,
+                    phone = currentAppointment.phone,
+                    telegram = currentAppointment.telegram,
+                    instagram = currentAppointment.instagram,
+                    vk = currentAppointment.vk,
+                    whatsapp = currentAppointment.whatsapp,
+                    photo = currentAppointment.photo
+                )
+            } else {
+                // Get client data from the Client database
+                // TODO: предусмотреть, если килент из базы был удален
+                lifecycleScope.launch {
+                    clientsViewModel.selectedClient = async { clientsViewModel.getClientById(currentAppointment.clientId!!) }.await()
+                    appointmentClientId = clientsViewModel.selectedClient!!._id
+                }
+
+                blockClientFields()
+            }
+        } else {
+            // new AppointmentModelDb
+            currentAppointment = AppointmentModelDb(deleted = false)
+            clientsViewModel.selectedClient = null
+        }
+    }
+
+    private fun clientSelected() {
+        // update views
+        with(binding) {
+            nameEt.setText(clientsViewModel.selectedClient!!.name)
+            clientPhoneEt.setText(clientsViewModel.selectedClient!!.phone)
+            clientVkLinkEt.setText(clientsViewModel.selectedClient!!.vk)
+            clientTelegramEt.setText(clientsViewModel.selectedClient!!.telegram)
+            clientInstagramEt.setText(clientsViewModel.selectedClient!!.instagram)
+            clientWhatsappEt.setText(clientsViewModel.selectedClient!!.whatsapp)
+            clientAvatarDateAppointment.setImageURI(clientsViewModel.selectedClient!!.photo?.toUri())
+
+            Util().animateEditTexts(
+                nameEt,
+                clientPhoneEt,
+                clientVkLinkEt,
+                clientTelegramEt,
+                clientInstagramEt,
+                clientWhatsappEt
+            )
+        }
+
+        // set selected client id
+        appointmentClientId = clientsViewModel.selectedClient!!._id
+
+        blockClientFields()
+    }
+
+    private fun procedureSelected(savedState: ProcedureModelDb) {
+        // update views
+        with(binding) {
+            procedureEt.setText(savedState.procedureName)
+            Util().animateEditTexts(procedureEt)
+        }
+    }
+
+    private fun blockClientFields() {
+        with(binding) {
+            setGrayBackground(nameEt)
+            disableTouchMode(nameEt)
+
+            setGrayBackground(clientPhoneEt)
+            disableTouchMode(clientPhoneEt)
+
+            setGrayBackground(clientVkLinkEt)
+            disableTouchMode(clientVkLinkEt)
+
+            setGrayBackground(clientTelegramEt)
+            disableTouchMode(clientTelegramEt)
+
+            setGrayBackground(clientInstagramEt)
+            disableTouchMode(clientInstagramEt)
+
+            setGrayBackground(clientWhatsappEt)
+            disableTouchMode(clientWhatsappEt)
+
+            setGrayBackground(clientNotesEt)
+            disableTouchMode(clientNotesEt)
+        }
+    }
+
+    private fun unBlockClientFields() {
+        with(binding) {
+            setWhiteBackground(nameEt)
+            enableTouchMode(nameEt)
+
+            setWhiteBackground(clientPhoneEt)
+            enableTouchMode(clientPhoneEt)
+
+            setWhiteBackground(clientVkLinkEt)
+            enableTouchMode(clientVkLinkEt)
+
+            setWhiteBackground(clientTelegramEt)
+            enableTouchMode(clientTelegramEt)
+
+            setWhiteBackground(clientInstagramEt)
+            enableTouchMode(clientInstagramEt)
+
+            setWhiteBackground(clientWhatsappEt)
+            enableTouchMode(clientWhatsappEt)
+
+            setWhiteBackground(clientNotesEt)
+            enableTouchMode(clientNotesEt)
+        }
+    }
+
+    private fun clearClientFields() {
+        with(binding) {
+            nameEt.setText("")
+            clientPhoneEt.setText("")
+            clientVkLinkEt.setText("")
+            clientTelegramEt.setText("")
+            clientInstagramEt.setText("")
+            clientWhatsappEt.setText("")
+            clientAvatarDateAppointment.setImageResource(R.drawable.client_avatar)
+            clientNotesEt.setText("")
+        }
+    }
+
+    private fun setGrayBackground(editText: EditText) {
+        val grayBackground = R.drawable.rectangle_2_gray
+        editText.setBackgroundResource(grayBackground)
+    }
+
+    private fun setWhiteBackground(editText: EditText) {
+        val grayBackground = R.drawable.rectangle_2
+        editText.setBackgroundResource(grayBackground)
+    }
+
+    private fun disableTouchMode(editText: EditText) {
+        editText.isFocusableInTouchMode = false
+    }
+
+    private fun enableTouchMode(editText: EditText) {
+        editText.isFocusableInTouchMode = true
+    }
+
     private fun setSpinnerTimePicker() {
         // spinner time picker
         val myCalender = Calendar.getInstance()
@@ -282,128 +459,5 @@ class AppointmentFragment : Fragment() {
         timePickerDialog.setTitle("Choose hour:")
         timePickerDialog.window!!.setBackgroundDrawableResource(android.R.color.transparent)
         timePickerDialog.show()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
-    private fun defineAppointment() {
-        // set current appointmentParams
-        if (dateParamsViewModel.appointmentPosition != null) {
-            // if AppointmentModelDb already exists
-            currentAppointment =
-                dateParamsViewModel.selectedDate.value!!.appointmentsList!![dateParamsViewModel.appointmentPosition!!]
-            clientsViewModel.selectedClient = ClientModelDb(
-                name = currentAppointment.name,
-                phone = currentAppointment.phone,
-                telegram = currentAppointment.telegram,
-                instagram = currentAppointment.instagram,
-                vk = currentAppointment.vk,
-                whatsapp = currentAppointment.whatsapp,
-                photo = currentAppointment.photo
-            )
-        } else {
-            // new AppointmentModelDb
-            currentAppointment = AppointmentModelDb(deleted = false)
-            clientsViewModel.selectedClient = null
-        }
-    }
-
-    private fun clientSelected() {
-        // update views
-        with(binding) {
-            nameEt.setText(clientsViewModel.selectedClient!!.name)
-            clientPhoneEt.setText(clientsViewModel.selectedClient!!.phone)
-            clientVkLinkEt.setText(clientsViewModel.selectedClient!!.vk)
-            clientTelegramEt.setText(clientsViewModel.selectedClient!!.telegram)
-            clientInstagramEt.setText(clientsViewModel.selectedClient!!.instagram)
-            clientWhatsappEt.setText(clientsViewModel.selectedClient!!.whatsapp)
-            clientAvatarDateAppointment.setImageURI(clientsViewModel.selectedClient!!.photo?.toUri())
-            Util().animateEditTexts(
-                nameEt,
-                clientPhoneEt,
-                clientVkLinkEt,
-                clientTelegramEt,
-                clientInstagramEt,
-                clientWhatsappEt
-            )
-        }
-        blockClientFields()
-    }
-
-    private fun procedureSelected(savedState: ProcedureModelDb) {
-        // update views
-        with(binding) {
-            procedureEt.setText(savedState.procedureName)
-            Util().animateEditTexts(procedureEt)
-        }
-    }
-
-    private fun blockClientFields() {
-        with(binding) {
-            setGrayBackground(clientPhoneEt)
-            disableTouchMode(clientPhoneEt)
-
-            setGrayBackground(clientVkLinkEt)
-            disableTouchMode(clientVkLinkEt)
-
-            setGrayBackground(clientTelegramEt)
-            disableTouchMode(clientTelegramEt)
-
-            setGrayBackground(clientInstagramEt)
-            disableTouchMode(clientInstagramEt)
-
-            setGrayBackground(clientWhatsappEt)
-            disableTouchMode(clientWhatsappEt)
-
-            setGrayBackground(clientNotesEt)
-            disableTouchMode(clientNotesEt)
-        }
-    }
-
-    private fun unBlockClientFields() {
-        with(binding) {
-            setWhiteBackground(clientPhoneEt)
-            enableTouchMode(clientPhoneEt)
-
-            setWhiteBackground(clientVkLinkEt)
-            enableTouchMode(clientVkLinkEt)
-
-            setWhiteBackground(clientTelegramEt)
-            enableTouchMode(clientTelegramEt)
-
-            setWhiteBackground(clientInstagramEt)
-            enableTouchMode(clientInstagramEt)
-
-            setWhiteBackground(clientWhatsappEt)
-            enableTouchMode(clientWhatsappEt)
-
-            setWhiteBackground(clientNotesEt)
-            enableTouchMode(clientNotesEt)
-        }
-    }
-
-    private fun clearClientFields() {
-
-    }
-
-    private fun setGrayBackground(editText: EditText) {
-        val grayBackground = R.drawable.rectangle_2_gray
-        editText.setBackgroundResource(grayBackground)
-    }
-
-    private fun setWhiteBackground(editText: EditText) {
-        val grayBackground = R.drawable.rectangle_2
-        editText.setBackgroundResource(grayBackground)
-    }
-
-    private fun disableTouchMode(editText: EditText) {
-        editText.isFocusableInTouchMode = false
-    }
-
-    private fun enableTouchMode(editText: EditText) {
-        editText.isFocusableInTouchMode = true
     }
 }

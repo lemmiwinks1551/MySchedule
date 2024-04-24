@@ -25,6 +25,7 @@ import com.example.projectnailsschedule.domain.usecase.proceduresUC.InsertProced
 import com.example.projectnailsschedule.domain.usecase.proceduresUC.SearchProcedureUseCase
 import com.example.projectnailsschedule.domain.usecase.proceduresUC.UpdateProcedureUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.SearchAppointmentUseCase
+import com.example.projectnailsschedule.domain.usecase.clientsUC.GetClientByIdUseCase
 import com.example.projectnailsschedule.domain.usecase.settingsUC.*
 import com.example.projectnailsschedule.domain.usecase.socUC.*
 import dagger.Module
@@ -83,6 +84,11 @@ class DomainModule {
     @Provides
     fun provideSearchClientUseCase(repository: ClientsRepository): SearchClientUseCase {
         return SearchClientUseCase(repository)
+    }
+
+    @Provides
+    fun getClientByIdUseCase(repository: ClientsRepository): GetClientByIdUseCase {
+        return GetClientByIdUseCase(repository)
     }
 
     // Procedures

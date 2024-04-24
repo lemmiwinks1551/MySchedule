@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
 import com.example.projectnailsschedule.domain.models.CalendarDateModelDb
+import com.example.projectnailsschedule.domain.models.ClientModelDb
 import com.example.projectnailsschedule.domain.models.DateParams
 import com.example.projectnailsschedule.domain.models.Day
 import com.example.projectnailsschedule.domain.repository.ProductionCalendarApi
@@ -20,6 +21,7 @@ import com.example.projectnailsschedule.domain.usecase.calendarUC.CalendarDbDele
 import com.example.projectnailsschedule.domain.usecase.calendarUC.GetDateAppointments
 import com.example.projectnailsschedule.domain.usecase.calendarUC.InsertCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.SelectCalendarDateByDateUseCase
+import com.example.projectnailsschedule.domain.usecase.clientsUC.GetClientByIdUseCase
 import com.example.projectnailsschedule.domain.usecase.socUC.StartInstagramUc
 import com.example.projectnailsschedule.domain.usecase.socUC.StartPhoneUc
 import com.example.projectnailsschedule.domain.usecase.socUC.StartTelegramUc
