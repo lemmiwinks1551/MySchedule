@@ -307,7 +307,7 @@ class AppointmentFragment : Fragment() {
                 // Get client data from the Client database
                 // TODO: предусмотреть, если килент из базы был удален
                 lifecycleScope.launch {
-                    clientsViewModel.selectedClient = async { clientsViewModel.getClientById(currentAppointment.clientId!!) }.await()
+                    clientsViewModel.selectedClient = clientsViewModel.getClientById(currentAppointment.clientId!!)
                     appointmentClientId = clientsViewModel.selectedClient!!._id
                 }
 
