@@ -50,10 +50,12 @@ class AppointmentFragment : Fragment() {
     ): View {
         _binding = FragmentAppointmentBinding.inflate(inflater, container, false)
 
-        defineAppointment()
+        lifecycleScope.launch {
+            defineAppointment()
 
-        // set current appointmentParams
-        inflateViews()
+            // set current appointmentParams
+            inflateViews()
+        }
 
         // set title text
         setTitle()
@@ -285,7 +287,7 @@ class AppointmentFragment : Fragment() {
         _binding = null
     }
 
-    private fun defineAppointment() {
+    private suspend fun defineAppointment() {
         // set current appointmentParams
         if (dateParamsViewModel.appointmentPosition != null) {
             // if AppointmentModelDb already exists
@@ -306,10 +308,10 @@ class AppointmentFragment : Fragment() {
             } else {
                 // Get client data from the Client database
                 // TODO: предусмотреть, если килент из базы был удален
-                lifecycleScope.launch {
-                    clientsViewModel.selectedClient = clientsViewModel.getClientById(currentAppointment.clientId!!)
+
+                    clientsViewModel.selectedClient =  clientsViewModel.getClientById(currentAppointment.clientId!!)
                     appointmentClientId = clientsViewModel.selectedClient!!._id
-                }
+
 
                 blockClientFields()
             }
