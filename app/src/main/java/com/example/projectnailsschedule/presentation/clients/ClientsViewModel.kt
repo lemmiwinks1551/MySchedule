@@ -2,6 +2,7 @@ package com.example.projectnailsschedule.presentation.clients
 
 import androidx.lifecycle.ViewModel
 import com.example.projectnailsschedule.domain.models.ClientModelDb
+import com.example.projectnailsschedule.domain.usecase.appointmentUC.UpdateClientInAppointmentsUseCase
 import com.example.projectnailsschedule.domain.usecase.clientsUC.DeleteClientUseCase
 import com.example.projectnailsschedule.domain.usecase.clientsUC.GetClientByIdUseCase
 import com.example.projectnailsschedule.domain.usecase.clientsUC.InsertClientUseCase
@@ -23,6 +24,7 @@ class ClientsViewModel @Inject constructor(
     private val deleteClientUseCase: DeleteClientUseCase,
     private val searchClientUseCase: SearchClientUseCase,
     private val getClientByIdUseCase: GetClientByIdUseCase,
+    private val updateClientInAppointmentsUseCase: UpdateClientInAppointmentsUseCase,
     private val startVkUc: StartVkUc,
     private val startTelegramUc: StartTelegramUc,
     private val startInstagramUc: StartInstagramUc,
@@ -50,6 +52,10 @@ class ClientsViewModel @Inject constructor(
 
     suspend fun getClientById(id: Long): ClientModelDb {
         return getClientByIdUseCase.execute(id)
+    }
+
+    suspend fun updateClientInAppointments(clientModelDb: ClientModelDb) {
+        updateClientInAppointmentsUseCase.execute(clientModelDb)
     }
 
     fun startVk(uri: String) {

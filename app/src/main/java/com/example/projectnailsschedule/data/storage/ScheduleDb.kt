@@ -10,8 +10,8 @@ import com.example.projectnailsschedule.domain.repository.ScheduleDao
 
 @Database(
     entities = [AppointmentModelDb::class],
-    version = 4,
-    autoMigrations = [AutoMigration(from = 3, to = 4)]
+    version = 5,
+    autoMigrations = [AutoMigration(from = 4, to = 5)]
 )
 abstract class ScheduleDb : RoomDatabase() {
     abstract fun getDao(): ScheduleDao

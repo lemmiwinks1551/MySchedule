@@ -25,6 +25,7 @@ import com.example.projectnailsschedule.domain.usecase.proceduresUC.InsertProced
 import com.example.projectnailsschedule.domain.usecase.proceduresUC.SearchProcedureUseCase
 import com.example.projectnailsschedule.domain.usecase.proceduresUC.UpdateProcedureUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.SearchAppointmentUseCase
+import com.example.projectnailsschedule.domain.usecase.appointmentUC.UpdateClientInAppointmentsUseCase
 import com.example.projectnailsschedule.domain.usecase.clientsUC.GetClientByIdUseCase
 import com.example.projectnailsschedule.domain.usecase.settingsUC.*
 import com.example.projectnailsschedule.domain.usecase.socUC.*
@@ -62,6 +63,11 @@ class DomainModule {
     @Provides
     fun gateDateAppointmentsUseCase(repository: ScheduleRepository): GetDateAppointments {
         return GetDateAppointments(repository)
+    }
+
+    @Provides
+    fun updateClientInAppointmentsUseCase(repository: ScheduleRepository): UpdateClientInAppointmentsUseCase {
+        return UpdateClientInAppointmentsUseCase(repository)
     }
 
     // Clients

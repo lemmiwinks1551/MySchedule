@@ -1,6 +1,7 @@
 package com.example.projectnailsschedule.domain.repository
 
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
+import com.example.projectnailsschedule.domain.models.ClientModelDb
 import java.time.LocalDate
 
 interface ScheduleRepository {
@@ -14,4 +15,6 @@ interface ScheduleRepository {
     suspend fun searchAppointment(searchQuery: String): MutableList<AppointmentModelDb>
 
     suspend fun getDateAppointments(date: LocalDate): MutableList<AppointmentModelDb>
+
+    suspend fun updateClientInAppointments(clientModelDb: ClientModelDb)
 }

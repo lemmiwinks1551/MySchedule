@@ -112,6 +112,7 @@ class ClientEditFragment : Fragment() {
                 } else {
                     // if current client id is not null -> update client in db
                     clientsViewModel.updateClient(clientsViewModel.selectedClient!!)
+                    clientsViewModel.updateClientInAppointments(clientsViewModel.selectedClient!!)
                 }
 
                 // if new photo has been set

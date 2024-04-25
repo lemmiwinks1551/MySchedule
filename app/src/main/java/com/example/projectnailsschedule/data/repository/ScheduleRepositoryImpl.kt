@@ -1,13 +1,11 @@
 package com.example.projectnailsschedule.data.repository
 
 import android.content.Context
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.asLiveData
 import com.example.projectnailsschedule.data.storage.ScheduleDb
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
+import com.example.projectnailsschedule.domain.models.ClientModelDb
 import com.example.projectnailsschedule.domain.repository.ScheduleRepository
 import com.example.projectnailsschedule.util.Util
-import com.google.android.exoplayer2.util.Log
 import java.time.LocalDate
 
 class ScheduleRepositoryImpl(context: Context) : ScheduleRepository {
@@ -31,8 +29,15 @@ class ScheduleRepositoryImpl(context: Context) : ScheduleRepository {
         return dao.getDateAppointments(Util().dateConverterNew(date.toString()))
     }
 
+    override suspend fun updateClientInAppointments(clientModelDb: ClientModelDb) {
+        with(clientModelDb) {
+            dao.updateClientInAppointments(
+                _id!!, name, phone, vk, telegram, instagram, whatsapp, notes, photo
+            )
+        }
+    }
+
     override suspend fun searchAppointment(searchQuery: String): MutableList<AppointmentModelDb> {
         return dao.searchAppointment(searchQuery = searchQuery)
     }
-
 }

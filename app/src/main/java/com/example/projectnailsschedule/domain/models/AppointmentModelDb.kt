@@ -52,6 +52,9 @@ data class AppointmentModelDb(
     @ColumnInfo(name = "notes")
     var notes: String? = null,
 
+    @ColumnInfo(name = "clientNotes")
+    var clientNotes: String? = null,
+
     @ColumnInfo(name = "photo")
     var photo: String? = null,
 
