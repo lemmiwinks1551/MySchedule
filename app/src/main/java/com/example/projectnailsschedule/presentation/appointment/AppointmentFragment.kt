@@ -4,7 +4,6 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.app.TimePickerDialog.OnTimeSetListener
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
@@ -27,7 +26,6 @@ import com.example.projectnailsschedule.presentation.calendar.DateParamsViewMode
 import com.example.projectnailsschedule.presentation.clients.ClientsViewModel
 import com.example.projectnailsschedule.util.Util
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.util.Calendar
 
@@ -163,7 +161,7 @@ class AppointmentFragment : Fragment() {
                 telegram = clientTelegramEt.text.toString(),
                 instagram = clientInstagramEt.text.toString(),
                 whatsapp = clientWhatsappEt.text.toString(),
-                notes = notesEt.text.toString(),
+                notes = clientNotesEt.text.toString(),
                 photo = clientsViewModel.selectedClient?.photo,
                 deleted = false
             )
@@ -199,7 +197,7 @@ class AppointmentFragment : Fragment() {
                 telegram = clientTelegramEt.text.toString(),
                 instagram = clientInstagramEt.text.toString(),
                 whatsapp = clientWhatsappEt.text.toString(),
-                notes = notesEt.text.toString(),
+                notes = clientNotesEt.text.toString(),
                 photo = clientsViewModel.selectedClient?.photo,
                 deleted = false
             )
@@ -230,7 +228,7 @@ class AppointmentFragment : Fragment() {
                 binding.clientInstagramEt.setText(this.instagram)
                 binding.clientWhatsappEt.setText(this.whatsapp)
                 binding.clientAvatarDateAppointment.setImageURI(this.photo?.toUri())
-                binding.notesEt.setText(this.notes)
+                binding.clientNotesEt.setText(this.notes)
             }
         } else {
             binding.dayEditText.text =
@@ -246,7 +244,7 @@ class AppointmentFragment : Fragment() {
             binding.clientInstagramEt.setText(clientsViewModel.selectedClient!!.instagram)
             binding.clientWhatsappEt.setText(clientsViewModel.selectedClient!!.whatsapp)
             binding.clientAvatarDateAppointment.setImageURI(clientsViewModel.selectedClient!!.photo?.toUri())
-            binding.notesEt.setText(clientsViewModel.selectedClient!!.notes)
+            binding.clientNotesEt.setText(clientsViewModel.selectedClient!!.notes)
         }
     }
 
@@ -309,9 +307,8 @@ class AppointmentFragment : Fragment() {
                 // Get client data from the Client database
                 // TODO: предусмотреть, если килент из базы был удален
 
-                    clientsViewModel.selectedClient =  clientsViewModel.getClientById(currentAppointment.clientId!!)
-                    appointmentClientId = clientsViewModel.selectedClient!!._id
-
+                clientsViewModel.selectedClient =  clientsViewModel.getClientById(currentAppointment.clientId!!)
+                appointmentClientId = clientsViewModel.selectedClient!!._id
 
                 blockClientFields()
             }
@@ -331,6 +328,7 @@ class AppointmentFragment : Fragment() {
             clientTelegramEt.setText(clientsViewModel.selectedClient!!.telegram)
             clientInstagramEt.setText(clientsViewModel.selectedClient!!.instagram)
             clientWhatsappEt.setText(clientsViewModel.selectedClient!!.whatsapp)
+            clientNotesEt.setText(clientsViewModel.selectedClient!!.notes)
             clientAvatarDateAppointment.setImageURI(clientsViewModel.selectedClient!!.photo?.toUri())
 
             Util().animateEditTexts(
@@ -339,7 +337,8 @@ class AppointmentFragment : Fragment() {
                 clientVkLinkEt,
                 clientTelegramEt,
                 clientInstagramEt,
-                clientWhatsappEt
+                clientWhatsappEt,
+                clientNotesEt
             )
         }
 
@@ -418,6 +417,7 @@ class AppointmentFragment : Fragment() {
             clientAvatarDateAppointment.setImageResource(R.drawable.client_avatar)
             clientNotesEt.setText("")
         }
+        appointmentClientId = null
     }
 
     private fun setGrayBackground(editText: EditText) {

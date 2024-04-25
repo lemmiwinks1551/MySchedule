@@ -23,10 +23,10 @@ data class AppointmentModelDb(
     val date: String? = null,
 
     @ColumnInfo(name = "clientId")
-    val clientId: Long? = null,
+    var clientId: Long? = null,
 
     @ColumnInfo(name = "name")
-    val name: String? = null,
+    var name: String? = null,
 
     @ColumnInfo(name = "time")
     val time: String? = null,
@@ -35,25 +35,25 @@ data class AppointmentModelDb(
     val procedure: String? = null,
 
     @ColumnInfo(name = "phone")
-    val phone: String? = null,
+    var phone: String? = null,
 
     @ColumnInfo(name = "telegram")
-    val telegram: String? = null,
+    var telegram: String? = null,
 
     @ColumnInfo(name = "instagram")
-    val instagram: String? = null,
+    var instagram: String? = null,
 
     @ColumnInfo(name = "vk")
-    val vk: String? = null,
+    var vk: String? = null,
 
     @ColumnInfo(name = "whatsapp")
-    val whatsapp: String? = null,
+    var whatsapp: String? = null,
 
     @ColumnInfo(name = "notes")
-    val notes: String? = null,
+    var notes: String? = null,
 
     @ColumnInfo(name = "photo")
-    val photo: String? = null,
+    var photo: String? = null,
 
     @ColumnInfo(name = "deleted")
     val deleted: Boolean
