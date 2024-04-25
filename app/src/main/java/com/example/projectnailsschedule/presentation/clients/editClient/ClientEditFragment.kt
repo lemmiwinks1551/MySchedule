@@ -22,6 +22,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentClientEditBinding
 import com.example.projectnailsschedule.domain.models.ClientModelDb
+import com.example.projectnailsschedule.presentation.calendar.DateParamsViewModel
 import com.example.projectnailsschedule.presentation.clients.ClientsViewModel
 import com.example.projectnailsschedule.util.Util
 import com.github.dhaval2404.imagepicker.ImagePicker
@@ -34,6 +35,7 @@ import java.io.IOException
 @AndroidEntryPoint
 class ClientEditFragment : Fragment() {
     private val clientsViewModel: ClientsViewModel by activityViewModels()
+    private val dateParamsViewModel: DateParamsViewModel by activityViewModels()
 
     private var _binding: FragmentClientEditBinding? = null
     private val binding get() = _binding!!
@@ -113,6 +115,9 @@ class ClientEditFragment : Fragment() {
                     // if current client id is not null -> update client in db
                     clientsViewModel.updateClient(clientsViewModel.selectedClient!!)
                     clientsViewModel.updateClientInAppointments(clientsViewModel.selectedClient!!)
+                    // update appointment list in selected date
+                    dateParamsViewModel.selectedDate.value?.appointmentsList =
+                        dateParamsViewModel.getArrayAppointments(date = dateParamsViewModel.selectedDate.value?.date!!)
                 }
 
                 // if new photo has been set
