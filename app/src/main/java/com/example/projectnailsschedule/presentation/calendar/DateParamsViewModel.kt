@@ -86,6 +86,8 @@ class DateParamsViewModel @Inject constructor(
     var prevCalendarRvHolder: CalendarRvAdapter.ViewHolder? = null
 
     suspend fun getArrayAppointments(date: LocalDate): MutableList<AppointmentModelDb> {
+        val a = getDateAppointments.execute(date)
+        Log.i("getArrayAppointments", a.toString())
         return getDateAppointments.execute(date)
     }
 
