@@ -115,6 +115,7 @@ class ClientEditFragment : Fragment() {
                     // if current client id is not null -> update client in db
                     clientsViewModel.updateClient(clientsViewModel.selectedClient!!)
                     clientsViewModel.updateClientInAppointments(clientsViewModel.selectedClient!!)
+
                     // update appointment list in selected date
                     dateParamsViewModel.selectedDate.value?.appointmentsList =
                         dateParamsViewModel.getArrayAppointments(date = dateParamsViewModel.selectedDate.value?.date!!)
