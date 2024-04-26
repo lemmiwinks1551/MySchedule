@@ -34,6 +34,12 @@ data class AppointmentModelDb(
     @ColumnInfo(name = "procedure")
     val procedure: String? = null,
 
+    @ColumnInfo(name = "procedureNotes")
+    val procedureNotes: String? = null,
+
+    @ColumnInfo(name = "procedurePrice")
+    val procedurePrice: String? = null,
+
     @ColumnInfo(name = "phone")
     var phone: String? = null,
 

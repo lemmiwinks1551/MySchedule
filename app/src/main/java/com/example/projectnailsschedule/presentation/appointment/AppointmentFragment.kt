@@ -156,6 +156,8 @@ class AppointmentFragment : Fragment() {
                 name = nameEt.text.toString(),
                 time = timeEditText.text.toString(),
                 procedure = procedureEt.text.toString(),
+                procedurePrice = procedurePriceEt.text.toString(),
+                procedureNotes = procedureNotesEt.text.toString(),
                 phone = clientPhoneEt.text.toString(),
                 vk = clientVkLinkEt.text.toString(),
                 telegram = clientTelegramEt.text.toString(),
@@ -192,6 +194,8 @@ class AppointmentFragment : Fragment() {
                 name = nameEt.text.toString(),
                 time = timeEditText.text.toString(),
                 procedure = procedureEt.text.toString(),
+                procedurePrice = procedurePriceEt.text.toString(),
+                procedureNotes = procedureNotesEt.text.toString(),
                 phone = clientPhoneEt.text.toString(),
                 vk = clientVkLinkEt.text.toString(),
                 telegram = clientTelegramEt.text.toString(),
@@ -219,6 +223,8 @@ class AppointmentFragment : Fragment() {
                 binding.dayEditText.text = this.date
                 binding.timeEditText.text = this.time
                 binding.procedureEt.setText(this.procedure)
+                binding.procedurePriceEt.setText(this.procedurePrice)
+                binding.procedureNotesEt.setText(this.procedureNotes)
                 binding.nameEt.setText(this.name)
 
                 // set client views (old)

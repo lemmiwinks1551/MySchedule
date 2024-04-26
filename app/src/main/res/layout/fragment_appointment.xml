@@ -644,6 +644,7 @@
                     android:background="@drawable/rectangle_2"
                     android:hint="1000"
                     android:imeOptions="actionDone"
+                    android:inputType="number"
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp"
                     android:textSize="20sp"
