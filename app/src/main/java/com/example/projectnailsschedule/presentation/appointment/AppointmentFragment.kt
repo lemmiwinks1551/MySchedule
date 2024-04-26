@@ -163,7 +163,7 @@ class AppointmentFragment : Fragment() {
                 telegram = clientTelegramEt.text.toString(),
                 instagram = clientInstagramEt.text.toString(),
                 whatsapp = clientWhatsappEt.text.toString(),
-                notes = clientNotesEt.text.toString(),
+                notes = appointmentNotesEt.text.toString(),
                 photo = clientsViewModel.selectedClient?.photo,
                 deleted = false
             )
@@ -201,7 +201,7 @@ class AppointmentFragment : Fragment() {
                 telegram = clientTelegramEt.text.toString(),
                 instagram = clientInstagramEt.text.toString(),
                 whatsapp = clientWhatsappEt.text.toString(),
-                notes = clientNotesEt.text.toString(),
+                notes = appointmentNotesEt.text.toString(),
                 photo = clientsViewModel.selectedClient?.photo,
                 deleted = false
             )

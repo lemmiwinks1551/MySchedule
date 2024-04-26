@@ -163,13 +163,14 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
+                <EditText
                     android:id="@+id/appointment_notes_et"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
                     android:background="@drawable/rectangle_2"
                     android:hint="@string/example_notes"
+                    android:imeOptions="actionDone"
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp"
                     android:textSize="20sp"
@@ -334,7 +335,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="8dp"
                         android:background="@drawable/rectangle_2"
-                        android:hint="Адрес страницы Вконтакте"
+                        android:hint="Вконтакте"
                         android:imeOptions="actionDone"
                         android:paddingStart="12dp"
                         android:paddingEnd="12dp"
@@ -377,8 +378,9 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="8dp"
                         android:background="@drawable/rectangle_2"
-                        android:hint="Адрес страницы Instagram"
+                        android:hint="Telegram"
                         android:imeOptions="actionDone"
+                        android:inputType="phone|number"
                         android:paddingStart="12dp"
                         android:paddingEnd="12dp"
                         android:singleLine="true"
@@ -423,7 +425,6 @@
                         android:background="@drawable/rectangle_2"
                         android:hint="@string/instagram_text"
                         android:imeOptions="actionDone"
-                        android:inputType="phone|number"
                         android:paddingStart="12dp"
                         android:paddingEnd="12dp"
                         android:singleLine="true"
