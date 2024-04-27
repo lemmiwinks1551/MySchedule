@@ -222,6 +222,8 @@ class AppointmentFragment : Fragment() {
             with(currentAppointment) {
                 binding.dayEditText.text = this.date
                 binding.timeEditText.text = this.time
+                binding.appointmentNotesEt.setText(this.notes)
+
                 binding.procedureEt.setText(this.procedure)
                 binding.procedurePriceEt.setText(this.procedurePrice)
                 binding.procedureNotesEt.setText(this.procedureNotes)
@@ -358,7 +360,11 @@ class AppointmentFragment : Fragment() {
         // update views
         with(binding) {
             procedureEt.setText(savedState.procedureName)
+            procedurePriceEt.setText(savedState.procedurePrice)
+            procedureNotesEt.setText(savedState.procedureNotes)
             Util().animateEditTexts(procedureEt)
+            Util().animateEditTexts(procedurePriceEt)
+            Util().animateEditTexts(procedureNotesEt)
         }
     }
 
