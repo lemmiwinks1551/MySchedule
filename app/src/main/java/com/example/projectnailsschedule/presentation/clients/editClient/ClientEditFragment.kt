@@ -416,6 +416,8 @@ class ClientEditFragment : Fragment() {
             e.printStackTrace()
         }
 
+        deleteFilesExceptOne(destinationDir, destinationFile)
+
         setPhotoToSelectedClient(destinationFile)
     }
 
@@ -453,5 +455,14 @@ class ClientEditFragment : Fragment() {
     private suspend fun updateAppointmentListInSelectedDate() {
         dateParamsViewModel.selectedDate.value?.appointmentsList =
             dateParamsViewModel.getArrayAppointments(date = dateParamsViewModel.selectedDate.value?.date!!)
+    }
+
+    private fun deleteFilesExceptOne(folderPath: File, fileToKeep: File) {
+        val files = folderPath.listFiles()
+        files?.forEach { file ->
+            if (file != fileToKeep) {
+                file.delete()
+            }
+        }
     }
 }
