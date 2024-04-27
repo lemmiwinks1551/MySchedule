@@ -115,17 +115,16 @@ class ClientEditFragment : Fragment() {
                     // if current client id is not null -> update client in db
                     clientsViewModel.updateClient(clientsViewModel.selectedClient!!)
                     clientsViewModel.updateClientInAppointments(clientsViewModel.selectedClient!!)
-
-                    // update appointment list in selected date
-                    dateParamsViewModel.selectedDate.value?.appointmentsList =
-                        dateParamsViewModel.getArrayAppointments(date = dateParamsViewModel.selectedDate.value?.date!!)
                 }
 
                 // if new photo has been set
                 if (tempPhotoFile != null) {
                     copyPhotoIntoClientFolder()
                     clientsViewModel.updateClient(clientsViewModel.selectedClient!!)
+                    clientsViewModel.updateClientInAppointments(clientsViewModel.selectedClient!!)
                 }
+
+                updateAppointmentListInSelectedDate()
 
                 showToastSaved()
 
@@ -380,7 +379,6 @@ class ClientEditFragment : Fragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         // TODO: переписать с деприкейтед метода
-        //  в списке клиентов появляется null в поле инстаграм
         super.onActivityResult(requestCode, resultCode, data)
 
         if (resultCode == Activity.RESULT_OK) {
@@ -450,5 +448,10 @@ class ClientEditFragment : Fragment() {
     private fun setPhotoToSelectedClient(newPhotoFile: File) {
         clientsViewModel.selectedClient =
             clientsViewModel.selectedClient?.copy(photo = newPhotoFile.path)
+    }
+
+    private suspend fun updateAppointmentListInSelectedDate() {
+        dateParamsViewModel.selectedDate.value?.appointmentsList =
+            dateParamsViewModel.getArrayAppointments(date = dateParamsViewModel.selectedDate.value?.date!!)
     }
 }
