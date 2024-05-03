@@ -76,7 +76,7 @@
                     android:textSize="20sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/day_edit_text"
-                    app:layout_constraintHorizontal_weight="4"
+                    app:layout_constraintHorizontal_weight="5"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -116,7 +116,7 @@
                     android:textSize="20sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/time_edit_text"
-                    app:layout_constraintHorizontal_weight="4"
+                    app:layout_constraintHorizontal_weight="5"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -156,7 +156,7 @@
                     android:textSize="20sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/appointment_notes_et"
-                    app:layout_constraintHorizontal_weight="4"
+                    app:layout_constraintHorizontal_weight="5"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -200,7 +200,7 @@
                 android:layout_margin="8dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/client_constraint_layout"
-                app:layout_constraintHorizontal_weight="4"
+                app:layout_constraintHorizontal_weight="5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -221,7 +221,7 @@
 
                 <EditText
                     android:id="@+id/name_et"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
                     android:background="@drawable/rectangle_2"
@@ -591,7 +591,7 @@
                     android:textSize="20sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/procedure_extra_cl"
-                    app:layout_constraintHorizontal_weight="4"
+                    app:layout_constraintHorizontal_weight="5"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -655,7 +655,7 @@
                     android:textSize="20sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/procedure_price_et"
-                    app:layout_constraintHorizontal_weight="4"
+                    app:layout_constraintHorizontal_weight="5"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -698,7 +698,7 @@
                     android:textSize="20sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/procedure_notes_et"
-                    app:layout_constraintHorizontal_weight="4"
+                    app:layout_constraintHorizontal_weight="5"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
