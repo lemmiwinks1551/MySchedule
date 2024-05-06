@@ -138,6 +138,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:textColor="@color/red1"
             android:id="@+id/saturday"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -150,6 +151,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:textColor="@color/red1"
             android:id="@+id/sunday"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

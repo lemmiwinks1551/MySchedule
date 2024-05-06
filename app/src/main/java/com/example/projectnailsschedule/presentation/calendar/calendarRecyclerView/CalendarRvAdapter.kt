@@ -334,8 +334,7 @@ class CalendarRvAdapter(
                         if (note == null || note == "") {
                             dateParamsViewModel.dayOffInfo.postValue(typeText)
                         } else {
-                            val dayOffInfo = "$typeText - $note"
-                            dateParamsViewModel.dayOffInfo.postValue(dayOffInfo)
+                            dateParamsViewModel.dayOffInfo.postValue(note)
                         }
                     } else {
                         dateParamsViewModel.dayOffInfo.postValue(null)
@@ -367,5 +366,20 @@ class CalendarRvAdapter(
     private fun selectDate(holder: ViewHolder) {
         // Make selected date bold
         holder.date.setTypeface(null, Typeface.BOLD)
+    }
+
+    private fun getHolidayIcon(note: String): Int? {
+        when (note) {
+            "Новогодние каникулы" -> return R.drawable.new_year_icon
+            "Рождество Христово" -> return R.drawable.christmas_icon
+            "День защитника Отечества" -> return R.drawable._23feb_icon
+            "Международный женский день" -> return R.drawable.international_womens_day
+            "Праздник весны и труда" -> return R.drawable.hammer_sickle
+            "День Победы" -> return R.drawable.victory_day
+            "День России" -> return R.drawable.russianflag
+            "День народного единства" -> return R.drawable.noto_people_holding_hands
+            "Дополнительный / перенесенный выходной день" -> return R.drawable.asterisk
+        }
+        return null
     }
 }
