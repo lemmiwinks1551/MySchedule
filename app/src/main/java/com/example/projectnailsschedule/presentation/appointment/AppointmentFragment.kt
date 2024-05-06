@@ -157,7 +157,7 @@ class AppointmentFragment : Fragment() {
                 time = timeEditText.text.toString(),
                 procedure = procedureEt.text.toString(),
                 procedurePrice = procedurePriceEt.text.toString(),
-                procedureNotes = procedureNotesEt.text.toString(),
+                procedureNotes = null,
                 phone = clientPhoneEt.text.toString(),
                 vk = clientVkLinkEt.text.toString(),
                 telegram = clientTelegramEt.text.toString(),
@@ -195,7 +195,7 @@ class AppointmentFragment : Fragment() {
                 time = timeEditText.text.toString(),
                 procedure = procedureEt.text.toString(),
                 procedurePrice = procedurePriceEt.text.toString(),
-                procedureNotes = procedureNotesEt.text.toString(),
+                procedureNotes = null,
                 phone = clientPhoneEt.text.toString(),
                 vk = clientVkLinkEt.text.toString(),
                 telegram = clientTelegramEt.text.toString(),
@@ -226,7 +226,7 @@ class AppointmentFragment : Fragment() {
 
                 binding.procedureEt.setText(this.procedure)
                 binding.procedurePriceEt.setText(this.procedurePrice)
-                binding.procedureNotesEt.setText(this.procedureNotes)
+                //binding.procedureNotesEt.setText(this.procedureNotes)
                 binding.nameEt.setText(this.name)
 
                 // set client views (old)
@@ -361,10 +361,10 @@ class AppointmentFragment : Fragment() {
         with(binding) {
             procedureEt.setText(savedState.procedureName)
             procedurePriceEt.setText(savedState.procedurePrice)
-            procedureNotesEt.setText(savedState.procedureNotes)
+            //procedureNotesEt.setText(savedState.procedureNotes)
             Util().animateEditTexts(procedureEt)
             Util().animateEditTexts(procedurePriceEt)
-            Util().animateEditTexts(procedureNotesEt)
+            //Util().animateEditTexts(procedureNotesEt)
         }
     }
 

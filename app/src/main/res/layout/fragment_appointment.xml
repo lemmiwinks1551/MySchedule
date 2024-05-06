@@ -102,7 +102,7 @@
                 android:id="@+id/client_procedure_appointment_month_rv_child"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toTopOf="@id/appointment_notes_cl"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/client_time_cl_date_appointment_rv_item">
@@ -134,47 +134,6 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_weight="8"
                     app:layout_constraintStart_toEndOf="@+id/database_appointment_start"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/appointment_notes_cl"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/client_procedure_appointment_month_rv_child">
-
-                <TextView
-                    android:id="@+id/appointment_notes_tv"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:text="@string/notes"
-                    android:textSize="20sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/appointment_notes_et"
-                    app:layout_constraintHorizontal_weight="5"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <EditText
-                    android:id="@+id/appointment_notes_et"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:background="@drawable/rectangle_2"
-                    android:hint="@string/example_notes"
-                    android:imeOptions="actionDone"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp"
-                    android:textSize="20sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_weight="8"
-                    app:layout_constraintStart_toEndOf="@+id/appointment_notes_tv"
                     app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -531,7 +490,7 @@
                             android:layout_height="wrap_content"
                             android:background="@drawable/rectangle_2"
                             android:fadeScrollbars="false"
-                            android:hint="Заметки"
+                            android:hint="@string/notes"
                             android:imeOptions="actionDone"
                             android:maxLines="5"
                             android:paddingStart="12dp"
@@ -568,7 +527,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:background="@drawable/bold_borders"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/appointment_notes_cl"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/fragment_appointment_client_cl">
@@ -641,7 +600,7 @@
                 android:id="@+id/procedure_price_cl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toTopOf="@id/procedure_notes_cl"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/procedure_name_cl">
@@ -677,10 +636,9 @@
                     app:layout_constraintStart_toEndOf="@+id/procedure_price_tv"
                     app:layout_constraintTop_toTopOf="parent" />
 
-
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <!--<androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/procedure_notes_cl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -694,7 +652,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:text="@string/notes"
+                    android:text="Комментарии"
                     android:textSize="20sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/procedure_notes_et"
@@ -719,7 +677,38 @@
                     app:layout_constraintStart_toEndOf="@+id/appointment_misc"
                     app:layout_constraintTop_toTopOf="parent" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!--Appointment notes-->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/appointment_notes_cl"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:background="@drawable/bold_borders"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/procedure_cl">
+
+            <EditText
+                android:id="@+id/appointment_notes_et"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/rectangle_2"
+                android:gravity="center"
+                android:hint="Заметки"
+                android:imeOptions="actionDone"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
