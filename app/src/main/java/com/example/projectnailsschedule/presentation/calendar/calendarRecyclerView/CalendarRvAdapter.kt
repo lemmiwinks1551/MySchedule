@@ -115,7 +115,7 @@ class CalendarRvAdapter(
             // If the day corresponds to today's date, set the text color to red
             setCurrentDateRedColor(holder, selectedDate)
 
-            //  Day off
+            // Day off
             CoroutineScope(Dispatchers.IO).launch {
                 val dayNum = Util().getDayOfYear(ruFormatDate) - 1
                 val dayOffStatus = dateParamsViewModel.getDataInfo(context, dayNum).type_id
@@ -360,7 +360,7 @@ class CalendarRvAdapter(
 
     private fun setCurrentDateRedColor(holder: ViewHolder, selectedDate: DateParams) {
         if (selectedDate.date!! == LocalDate.now()) {
-            holder.date.setTextColor(Color.RED)
+            holder.date.setTextColor(context.resources.getColor(R.color.red_weekend))
         }
     }
 
