@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:src="@drawable/asterisk"
         android:visibility="gone"
+        android:layout_margin="1dp"
         android:adjustViewBounds="true"
         android:maxWidth="13dp"
         android:maxHeight="13dp"
