@@ -699,7 +699,6 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:background="@drawable/rectangle_2"
-                android:gravity="center"
                 android:hint="Заметки"
                 android:imeOptions="actionDone"
                 android:paddingStart="12dp"
