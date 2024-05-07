@@ -145,6 +145,9 @@ class CalendarFragment : Fragment(),
             if (it != null) {
                 binding.dayOffCl.visibility = View.VISIBLE
                 binding.dayOffInfo.text = it
+
+                val icon = dateParamsViewModel.getHolidayIcon(it)
+                binding.dayOffIcon.setImageResource(icon)
             } else {
                 binding.dayOffCl.visibility = View.GONE
             }

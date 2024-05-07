@@ -39,7 +39,7 @@ class CalendarRvAdapter(
         lateinit var date: TextView
         lateinit var dateAppointmentsCount: TextView
         lateinit var cellLayout: ConstraintLayout
-        lateinit var dayOffStar: ImageView
+        lateinit var dayOffIcon: ImageView
         lateinit var progressBar: ProgressBar
 
         init {
@@ -50,7 +50,7 @@ class CalendarRvAdapter(
             date = itemView.findViewById(R.id.date_cell)
             dateAppointmentsCount = itemView.findViewById(R.id.date_appointments_text_view)
             cellLayout = itemView.findViewById(R.id.calendarRecyclerViewCell)
-            dayOffStar = itemView.findViewById(R.id.day_off_star)
+            dayOffIcon = itemView.findViewById(R.id.day_off_icon)
         }
     }
 
@@ -122,7 +122,12 @@ class CalendarRvAdapter(
                 if (dayOffStatus == 3 || dayOffStatus == 6) {
                     Log.i("DayOffStatus", "$ruFormatDate is Day-off")
                     withContext(Dispatchers.Main) {
-                        holder.dayOffStar.visibility = View.VISIBLE
+                        holder.dayOffIcon.visibility = View.VISIBLE
+
+                        // set icon to holder
+                        val notes = dateParamsViewModel.getDataInfo(context, dayNum).note
+                        val icon = dateParamsViewModel.getHolidayIcon(notes)
+                        holder.dayOffIcon.setImageResource(icon)
                     }
                 } else {
                     Log.i("DayOffStatus", "$ruFormatDate is not Day-off")
@@ -366,20 +371,5 @@ class CalendarRvAdapter(
     private fun selectDate(holder: ViewHolder) {
         // Make selected date bold
         holder.date.setTypeface(null, Typeface.BOLD)
-    }
-
-    private fun getHolidayIcon(note: String): Int? {
-        when (note) {
-            "Новогодние каникулы" -> return R.drawable.new_year_icon
-            "Рождество Христово" -> return R.drawable.christmas_icon
-            "День защитника Отечества" -> return R.drawable._23feb_icon
-            "Международный женский день" -> return R.drawable.international_womens_day
-            "Праздник весны и труда" -> return R.drawable.hammer_sickle
-            "День Победы" -> return R.drawable.victory_day
-            "День России" -> return R.drawable.russianflag
-            "День народного единства" -> return R.drawable.noto_people_holding_hands
-            "Дополнительный / перенесенный выходной день" -> return R.drawable.asterisk
-        }
-        return null
     }
 }

@@ -7,6 +7,7 @@ import android.os.Build
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
 import com.example.projectnailsschedule.domain.models.CalendarDateModelDb
 import com.example.projectnailsschedule.domain.models.ClientModelDb
@@ -273,6 +274,20 @@ class DateParamsViewModel @Inject constructor(
         appointmentList: MutableList<AppointmentModelDb>
     ): Int {
         return appointmentList.indexOf(appointmentModelDb)
+    }
+
+    fun getHolidayIcon(note: String): Int {
+        when (note) {
+            "Новогодние каникулы" -> return R.drawable.new_year_icon
+            "Рождество Христово" -> return R.drawable.christmas_icon
+            "День защитника Отечества" -> return R.drawable._23feb_icon
+            "Международный женский день" -> return R.drawable.international_womens_day
+            "Праздник весны и труда" -> return R.drawable.hammer_sickle
+            "День Победы" -> return R.drawable.victory_day
+            "День России" -> return R.drawable.russianflag
+            "День народного единства" -> return R.drawable.noto_people_holding_hands
+        }
+        return R.drawable.asterisk
     }
 
     fun startVk(uri: String) {

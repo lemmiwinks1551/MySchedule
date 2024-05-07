@@ -7,10 +7,10 @@
     android:background="@drawable/calendar_recycler_view_borders">
 
     <ImageView
-        android:id="@+id/day_off_star"
+        android:id="@+id/day_off_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/day_off_star_icon"
+        android:src="@drawable/asterisk"
         android:visibility="gone"
         android:adjustViewBounds="true"
         android:maxWidth="13dp"

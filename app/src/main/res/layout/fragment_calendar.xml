@@ -138,26 +138,28 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:textColor="@color/red1"
             android:id="@+id/saturday"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/sat"
+            android:textColor="@color/red_weekend"
             android:textSize="16sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/sunday"
             app:layout_constraintStart_toEndOf="@id/friday"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:textColor="@color/red1"
             android:id="@+id/sunday"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/sun"
+            android:textColor="@color/red_weekend"
             android:textSize="16sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/saturday"
@@ -189,11 +191,11 @@
         app:layout_constraintTop_toBottomOf="@id/calendarRecyclerView">
 
         <ImageView
-            android:id="@+id/day_off_star"
+            android:id="@+id/day_off_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:src="@drawable/day_off_star_icon"
+            android:src="@drawable/asterisk"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -205,11 +207,11 @@
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:gravity="center"
-            android:text="Государственный праздник - Международный женский день"
+            android:text="Международный женский день"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/day_off_star"
+            app:layout_constraintStart_toEndOf="@id/day_off_icon"
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
