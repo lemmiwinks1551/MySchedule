@@ -155,6 +155,7 @@ class AppointmentFragment : Fragment() {
                 clientId =  appointmentClientId,
                 name = nameEt.text.toString(),
                 time = timeEditText.text.toString(),
+                clientNotes = clientNotesEt.text.toString(),
                 procedure = procedureEt.text.toString(),
                 procedurePrice = procedurePriceEt.text.toString(),
                 procedureNotes = null,
@@ -193,6 +194,7 @@ class AppointmentFragment : Fragment() {
                 clientId = appointmentClientId,
                 name = nameEt.text.toString(),
                 time = timeEditText.text.toString(),
+                clientNotes = clientNotesEt.text.toString(),
                 procedure = procedureEt.text.toString(),
                 procedurePrice = procedurePriceEt.text.toString(),
                 procedureNotes = null,
@@ -236,7 +238,7 @@ class AppointmentFragment : Fragment() {
                 binding.clientInstagramEt.setText(this.instagram)
                 binding.clientWhatsappEt.setText(this.whatsapp)
                 binding.clientAvatarDateAppointment.setImageURI(this.photo?.toUri())
-                binding.clientNotesEt.setText(this.notes)
+                binding.clientNotesEt.setText(this.clientNotes)
             }
         } else {
             binding.dayEditText.text =
