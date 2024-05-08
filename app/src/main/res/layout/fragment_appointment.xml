@@ -165,8 +165,8 @@
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/client_avatar_date_appointment"
-                    android:layout_width="134dp"
-                    android:layout_height="134dp"
+                    android:layout_width="125dp"
+                    android:layout_height="125dp"
                     android:layout_margin="8dp"
                     android:padding="2dp"
                     android:src="@drawable/client_avatar"
