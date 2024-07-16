@@ -233,7 +233,7 @@ class CalendarRvAdapter(
         val id = dateParamsViewModel.getDateId(ruFormatDate = ruFormatDate)
 
         if (id == null) {
-            // if date in not exists in database
+            // if date is not exists in database
             insertDateWithNewColor(ruFormatDate = ruFormatDate, color = color)
         } else {
             if (color == "default") {

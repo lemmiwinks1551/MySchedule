@@ -25,6 +25,10 @@ class ScheduleRepositoryImpl(context: Context) : ScheduleRepository {
         return true
     }
 
+    override suspend fun searchAppointment(searchQuery: String): MutableList<AppointmentModelDb> {
+        return dao.searchAppointment(searchQuery = searchQuery)
+    }
+
     override suspend fun getDateAppointments(date: LocalDate): MutableList<AppointmentModelDb> {
         return dao.getDateAppointments(Util().dateConverterNew(date.toString()))
     }
@@ -35,9 +39,5 @@ class ScheduleRepositoryImpl(context: Context) : ScheduleRepository {
                 _id!!, name, phone, vk, telegram, instagram, whatsapp, notes, photo
             )
         }
-    }
-
-    override suspend fun searchAppointment(searchQuery: String): MutableList<AppointmentModelDb> {
-        return dao.searchAppointment(searchQuery = searchQuery)
     }
 }
