@@ -3,6 +3,7 @@ package com.example.projectnailsschedule.presentation.calendar.calendarRecyclerV
 import android.app.AlertDialog
 import android.content.Context
 import android.graphics.Color
+import android.graphics.Paint.Style
 import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.util.Log
@@ -117,21 +118,7 @@ class CalendarRvAdapter(
 
             // Day off
             CoroutineScope(Dispatchers.IO).launch {
-                val dayNum = Util().getDayOfYear(ruFormatDate) - 1
-                val dayOffStatus = dateParamsViewModel.getDataInfo(context, dayNum).type_id
-                if (dayOffStatus == 3 || dayOffStatus == 6) {
-                    Log.i("DayOffStatus", "$ruFormatDate is Day-off")
-                    withContext(Dispatchers.Main) {
-                        holder.dayOffIcon.visibility = View.VISIBLE
-
-                        // set icon to holder
-                        val notes = dateParamsViewModel.getDataInfo(context, dayNum).note
-                        val icon = dateParamsViewModel.getHolidayIcon(notes)
-                        holder.dayOffIcon.setImageResource(icon)
-                    }
-                } else {
-                    Log.i("DayOffStatus", "$ruFormatDate is not Day-off")
-                }
+                productionCalendarAPI(ruFormatDate, holder)
             }
 
             restoreSelection(holder)
@@ -332,9 +319,9 @@ class CalendarRvAdapter(
                 CoroutineScope(Dispatchers.IO).launch {
                     val dayNum =
                         Util().getDayOfYear(Util().formatDateToRus(selectedDate.date!!)) - 1
-                    val dayOffStatus = dateParamsViewModel.getDataInfo(context, dayNum)
-                    if (dayOffStatus.type_id == 3 || dayOffStatus.type_id == 6) {
-                        val typeText = dateParamsViewModel.getDataInfo(context, dayNum).type_text
+                    val dateInfo = dateParamsViewModel.getDataInfo(context, dayNum)
+                    if (dateInfo.typeId == 3 || dateInfo.typeId == 6) {
+                        val typeText = dateParamsViewModel.getDataInfo(context, dayNum).typeText
                         val note = dateParamsViewModel.getDataInfo(context, dayNum).note
                         if (note == null || note == "") {
                             dateParamsViewModel.dayOffInfo.postValue(typeText)
@@ -371,5 +358,40 @@ class CalendarRvAdapter(
     private fun selectDate(holder: ViewHolder) {
         // Make selected date bold
         holder.date.setTypeface(null, Typeface.BOLD)
+    }
+
+    private suspend fun productionCalendarAPI(ruFormatDate: String, holder: ViewHolder) {
+        val dayNum = Util().getDayOfYear(ruFormatDate) - 1 // Получаем порядковый номер дня
+        Log.i("productionCalendarAPI", "Получаем информацию по дате № $dayNum")
+
+        val dateInfo = dateParamsViewModel.getDataInfo(context, dayNum)
+        Log.i("productionCalendarAPI", "Тип дня № $dayNum - ${dateInfo.typeId}")
+
+        // 3 - Государственный праздник, 6 - Дополнительный / перенесенный выходной день
+        if (dateInfo.typeId == 3 || dateInfo.typeId == 5 || dateInfo.typeId == 6) {
+            Log.i("productionCalendarAPI", "$ruFormatDate является выходным днем")
+            withContext(Dispatchers.Main) {
+                // Установить данные во вьюхи
+                holder.dayOffIcon.visibility = View.VISIBLE
+
+                // Добавить иконку праздника
+                val notes = dateParamsViewModel.getDataInfo(context, dayNum).note
+                val icon = dateParamsViewModel.getHolidayIcon(notes)
+                holder.dayOffIcon.setImageResource(icon)
+            }
+        } else {
+            Log.i("productionCalendarAPI", "$ruFormatDate не является выходным днем")
+        }
+
+        withContext(Dispatchers.Main) {
+            // Если день выходной - оnметить красным
+            if (dateInfo.typeId == 2) {
+                holder.date.setTextColor(context.resources.getColor(R.color.red_weekend))
+                holder.date.setTypeface(null, Typeface.BOLD)
+            } else {
+                holder.date.setTextColor(context.resources.getColor(R.color.black))
+                holder.date.setTypeface(null, Typeface.NORMAL)
+            }
+        }
     }
 }

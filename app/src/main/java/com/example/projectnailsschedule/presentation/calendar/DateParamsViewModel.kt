@@ -12,7 +12,7 @@ import com.example.projectnailsschedule.domain.models.AppointmentModelDb
 import com.example.projectnailsschedule.domain.models.CalendarDateModelDb
 import com.example.projectnailsschedule.domain.models.ClientModelDb
 import com.example.projectnailsschedule.domain.models.DateParams
-import com.example.projectnailsschedule.domain.models.Day
+import com.example.projectnailsschedule.domain.models.ProductionCalendarDateModel
 import com.example.projectnailsschedule.domain.repository.ProductionCalendarApi
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.DeleteAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.InsertAppointmentUseCase
@@ -194,8 +194,8 @@ class DateParamsViewModel @Inject constructor(
         selectedDate.postValue(selectedDate.value)
     }
 
-    suspend fun getDataInfo(context: Context, day: Int = 0): Day {
-        // add interceptor for logs
+    suspend fun getDataInfo(context: Context, day: Int = 0): ProductionCalendarDateModel {
+        // add interceptor for logs: OkHttp
         val interceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
 
         class CacheInterceptor : Interceptor {
@@ -228,19 +228,17 @@ class DateParamsViewModel @Inject constructor(
             .build()
 
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://production-calendar.ru")
+            //.baseUrl("https://production-calendar.ru")
+            .baseUrl("https://myschedule.myddns.me")
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val productionCalendarApi = retrofit.create(ProductionCalendarApi::class.java)
 
-        val year = selectedDate.value?.date?.year.toString()
+        val year = selectedDate.value?.date?.year.toString() // Получаем обрабатываемый год, например "2024"
 
-        // load info
-        productionCalendarApi.getYearData(year)
-
-        // return day info
-        return productionCalendarApi.getYearData(year).days[day]
+        // вернуть информацию о конкретной дате
+        return productionCalendarApi.getYearData(year)[day]
     }
 
     private fun createOkHttpClient(context: Context): OkHttpClient {
@@ -282,7 +280,7 @@ class DateParamsViewModel @Inject constructor(
             "Рождество Христово" -> return R.drawable.christmas_icon
             "День защитника Отечества" -> return R.drawable._23feb_icon
             "Международный женский день" -> return R.drawable.international_womens_day
-            "Праздник весны и труда" -> return R.drawable.hammer_sickle
+            "Праздник Весны и Труда" -> return R.drawable.hammer_sickle
             "День Победы" -> return R.drawable.victory_day
             "День России" -> return R.drawable.russianflag
             "День народного единства" -> return R.drawable.noto_people_holding_hands
