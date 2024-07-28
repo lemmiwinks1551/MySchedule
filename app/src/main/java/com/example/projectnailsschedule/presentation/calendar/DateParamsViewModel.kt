@@ -277,7 +277,7 @@ class DateParamsViewModel @Inject constructor(
     fun getHolidayIcon(note: String): Int {
         when (note) {
             "Новогодние каникулы" -> return R.drawable.new_year_icon
-            "Рождество Христово" -> return R.drawable.christmas_icon
+            // "Рождество Христово" -> return R.drawable.christmas_icon
             "День защитника Отечества" -> return R.drawable._23feb_icon
             "Международный женский день" -> return R.drawable.international_womens_day
             "Праздник Весны и Труда" -> return R.drawable.hammer_sickle

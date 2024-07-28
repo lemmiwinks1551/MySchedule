@@ -3,7 +3,6 @@ package com.example.projectnailsschedule.presentation.calendar.calendarRecyclerV
 import android.app.AlertDialog
 import android.content.Context
 import android.graphics.Color
-import android.graphics.Paint.Style
 import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.util.Log
@@ -118,7 +117,7 @@ class CalendarRvAdapter(
 
             // Day off
             CoroutineScope(Dispatchers.IO).launch {
-                productionCalendarAPI(ruFormatDate, holder)
+                workWithProductionCalendar(ruFormatDate, holder)
             }
 
             restoreSelection(holder)
@@ -360,37 +359,84 @@ class CalendarRvAdapter(
         holder.date.setTypeface(null, Typeface.BOLD)
     }
 
-    private suspend fun productionCalendarAPI(ruFormatDate: String, holder: ViewHolder) {
+    private suspend fun workWithProductionCalendar(ruFormatDate: String, holder: ViewHolder) {
+        /**  Типы даты:
+        1 - Рабочий день
+        2 - Выходной день
+        3 - Государственный праздник
+        4 - Региональный праздник (не работает)
+        5 - Сокращенный рабочий день
+        6 - Перенесенный выходной день
+        7 - Перенесенный рабочий день */
+
         val dayNum = Util().getDayOfYear(ruFormatDate) - 1 // Получаем порядковый номер дня
         Log.i("productionCalendarAPI", "Получаем информацию по дате № $dayNum")
 
         val dateInfo = dateParamsViewModel.getDataInfo(context, dayNum)
         Log.i("productionCalendarAPI", "Тип дня № $dayNum - ${dateInfo.typeId}")
 
-        // 3 - Государственный праздник, 6 - Дополнительный / перенесенный выходной день
-        if (dateInfo.typeId == 3 || dateInfo.typeId == 5 || dateInfo.typeId == 6) {
-            Log.i("productionCalendarAPI", "$ruFormatDate является выходным днем")
-            withContext(Dispatchers.Main) {
-                // Установить данные во вьюхи
-                holder.dayOffIcon.visibility = View.VISIBLE
-
-                // Добавить иконку праздника
-                val notes = dateParamsViewModel.getDataInfo(context, dayNum).note
-                val icon = dateParamsViewModel.getHolidayIcon(notes)
-                holder.dayOffIcon.setImageResource(icon)
-            }
-        } else {
-            Log.i("productionCalendarAPI", "$ruFormatDate не является выходным днем")
-        }
-
         withContext(Dispatchers.Main) {
-            // Если день выходной - оnметить красным
-            if (dateInfo.typeId == 2) {
-                holder.date.setTextColor(context.resources.getColor(R.color.red_weekend))
-                holder.date.setTypeface(null, Typeface.BOLD)
-            } else {
-                holder.date.setTextColor(context.resources.getColor(R.color.black))
-                holder.date.setTypeface(null, Typeface.NORMAL)
+            when (dateInfo.typeId) {
+                1 -> {
+                    Log.i("productionCalendarAPI", "${dateInfo.date} - Рабочий день")
+                    holder.date.setTextColor(context.resources.getColor(R.color.black))
+                    holder.date.setTypeface(null, Typeface.NORMAL)
+                }
+
+                2 -> {
+                    Log.i("productionCalendarAPI", "${dateInfo.date} - Выходной день")
+                    holder.date.setTextColor(context.resources.getColor(R.color.red_weekend))
+                    holder.date.setTypeface(null, Typeface.BOLD)
+                }
+
+                3 -> {
+                    Log.i("productionCalendarAPI", "${dateInfo.date} - Праздник")
+                    holder.dayOffIcon.visibility = View.VISIBLE
+                    // Добавить иконку праздника
+                    val notes = dateParamsViewModel.getDataInfo(context, dayNum).note
+                    val icon = dateParamsViewModel.getHolidayIcon(notes)
+                    holder.dayOffIcon.setImageResource(icon)
+                    holder.date.setTextColor(context.resources.getColor(R.color.red_weekend))
+                    holder.date.setTypeface(null, Typeface.BOLD)
+                }
+
+                4 -> {
+                    Log.i("productionCalendarAPI", "Не реализовано")
+                }
+
+                5 -> {
+                    Log.i("productionCalendarAPI", "${dateInfo.date} - Сокращенный рабочий день")
+                    val notes = dateParamsViewModel.getDataInfo(context, dayNum).typeText
+                    val icon = dateParamsViewModel.getHolidayIcon(notes)
+                    holder.dayOffIcon.visibility = View.VISIBLE
+                    holder.dayOffIcon.setImageResource(icon)
+                    holder.date.setTextColor(context.resources.getColor(R.color.black))
+                    holder.date.setTypeface(null, Typeface.NORMAL)
+                }
+
+                6 -> {
+                    Log.i("productionCalendarAPI", "${dateInfo.date} - Перенесенный выходной день")
+                    val notes = dateParamsViewModel.getDataInfo(context, dayNum).typeText
+                    val icon = dateParamsViewModel.getHolidayIcon(notes)
+                    holder.dayOffIcon.visibility = View.VISIBLE
+                    holder.dayOffIcon.setImageResource(icon)
+                    holder.date.setTextColor(context.resources.getColor(R.color.red_weekend))
+                    holder.date.setTypeface(null, Typeface.BOLD)
+                }
+
+                7 -> {
+                    Log.i("productionCalendarAPI", "${dateInfo.date} - Перенесенный рабочий день")
+                    val notes = dateParamsViewModel.getDataInfo(context, dayNum).typeText
+                    val icon = dateParamsViewModel.getHolidayIcon(notes)
+                    holder.dayOffIcon.visibility = View.VISIBLE
+                    holder.date.setTextColor(context.resources.getColor(R.color.black))
+                    holder.date.setTypeface(null, Typeface.NORMAL)
+                    holder.dayOffIcon.setImageResource(icon)
+                }
+
+                else -> {
+                    Log.i("productionCalendarAPI", "${dateInfo.date} - Неизвестный код")
+                }
             }
         }
     }
