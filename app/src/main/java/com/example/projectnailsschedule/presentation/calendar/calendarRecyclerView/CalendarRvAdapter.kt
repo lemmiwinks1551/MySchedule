@@ -5,6 +5,8 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
+import android.text.SpannableString
+import android.text.style.UnderlineSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -28,6 +30,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
 
+
 class CalendarRvAdapter(
     private val daysInMonth: ArrayList<String>,
     private val dateParamsViewModel: DateParamsViewModel,
@@ -40,6 +43,8 @@ class CalendarRvAdapter(
         lateinit var dateAppointmentsCount: TextView
         lateinit var cellLayout: ConstraintLayout
         lateinit var dateIcon: ImageView
+        lateinit var selectedBackground: ImageView
+        lateinit var selectedBackgroundRed: ImageView
         lateinit var progressBar: ProgressBar
 
         init {
@@ -51,6 +56,8 @@ class CalendarRvAdapter(
             dateAppointmentsCount = itemView.findViewById(R.id.date_appointments_text_view)
             cellLayout = itemView.findViewById(R.id.calendarRecyclerViewCell)
             dateIcon = itemView.findViewById(R.id.day_off_icon)
+            selectedBackground = itemView.findViewById(R.id.selected_background)
+            selectedBackgroundRed = itemView.findViewById(R.id.selected_background_red)
         }
     }
 
@@ -112,13 +119,11 @@ class CalendarRvAdapter(
 
             setOnCalendarLongClickListener(holder, ruFormatDate)
 
-            // If the day corresponds to today's date, set the text color to red
-            setCurrentDateRedColor(holder, selectedDate)
-
-            // Day off
             CoroutineScope(Dispatchers.IO).launch {
                 workWithProductionCalendar(ruFormatDate, holder)
             }
+
+            markCurrentDate(holder, selectedDate)
 
             restoreSelection(holder)
         }
@@ -314,22 +319,8 @@ class CalendarRvAdapter(
                     dateParams = selectedDate
                 )
 
-                //  Day off
                 CoroutineScope(Dispatchers.IO).launch {
-                    val dayNum =
-                        Util().getDayOfYear(Util().formatDateToRus(selectedDate.date!!)) - 1
-                    val dateInfo = dateParamsViewModel.getDataInfo(context, dayNum)
-                    if (dateInfo.typeId == 3 || dateInfo.typeId == 6) {
-                        val typeText = dateParamsViewModel.getDataInfo(context, dayNum).typeText
-                        val note = dateParamsViewModel.getDataInfo(context, dayNum).note
-                        if (note == null || note == "") {
-                            dateParamsViewModel.dayOffInfo.postValue(typeText)
-                        } else {
-                            dateParamsViewModel.dayOffInfo.postValue(note)
-                        }
-                    } else {
-                        dateParamsViewModel.dayOffInfo.postValue(null)
-                    }
+                    setDateInfo(selectedDate)
                 }
 
                 dateParamsViewModel.dateDetailsVisibility.value = true
@@ -344,19 +335,23 @@ class CalendarRvAdapter(
         }
     }
 
-    private fun setCurrentDateRedColor(holder: ViewHolder, selectedDate: DateParams) {
+    private fun markCurrentDate(holder: ViewHolder, selectedDate: DateParams) {
         if (selectedDate.date!! == LocalDate.now()) {
-            holder.date.setTextColor(context.resources.getColor(R.color.red_weekend))
+            //holder.date.setTextColor(context.resources.getColor(R.color.red_weekend))
+/*            val mSpannableString = SpannableString(selectedDate.date!!.dayOfMonth.toString())
+            mSpannableString.setSpan(UnderlineSpan(), 0, mSpannableString.length, 0)
+            holder.date.text = mSpannableString*/
+            holder.selectedBackgroundRed.visibility = View.VISIBLE
         }
     }
 
     private fun unSelectPreviousHolder() {
-        dateParamsViewModel.prevCalendarRvHolder?.date?.setTypeface(null, Typeface.NORMAL)
+        dateParamsViewModel.prevCalendarRvHolder?.selectedBackground?.visibility = View.GONE
+
     }
 
     private fun selectDate(holder: ViewHolder) {
-        // Make selected date bold
-        holder.date.setTypeface(null, Typeface.BOLD)
+        holder.selectedBackground.visibility = View.VISIBLE
     }
 
     private suspend fun workWithProductionCalendar(ruFormatDate: String, holder: ViewHolder) {
@@ -433,6 +428,25 @@ class CalendarRvAdapter(
                 else -> {
                     Log.i("productionCalendarAPI", "${dateInfo.date} - Неизвестный код")
                 }
+            }
+        }
+    }
+
+    private suspend fun setDateInfo(selectedDate: DateParams) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val dayNum =
+                Util().getDayOfYear(Util().formatDateToRus(selectedDate.date!!)) - 1
+            val dateInfo = dateParamsViewModel.getDataInfo(context, dayNum)
+            if (dateInfo.typeId == 3 || dateInfo.typeId == 6) {
+                val typeText = dateParamsViewModel.getDataInfo(context, dayNum).typeText
+                val note = dateParamsViewModel.getDataInfo(context, dayNum).note
+                if (note == null || note == "") {
+                    dateParamsViewModel.dayOffInfo.postValue(typeText)
+                } else {
+                    dateParamsViewModel.dayOffInfo.postValue(note)
+                }
+            } else {
+                dateParamsViewModel.dayOffInfo.postValue(null)
             }
         }
     }

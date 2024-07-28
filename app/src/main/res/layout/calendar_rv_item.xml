@@ -7,16 +7,38 @@
     android:background="@drawable/calendar_recycler_view_borders">
 
     <ImageView
+        android:id="@+id/selected_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/calendar_recycler_view_selected_borders"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/selected_background_red"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/calendar_recycler_view_selected_borders_red"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
         android:id="@+id/day_off_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/asterisk"
-        android:visibility="gone"
         android:layout_margin="1dp"
         android:adjustViewBounds="true"
         android:maxWidth="13dp"
         android:maxHeight="13dp"
         android:scaleType="fitCenter"
+        android:src="@drawable/asterisk"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
