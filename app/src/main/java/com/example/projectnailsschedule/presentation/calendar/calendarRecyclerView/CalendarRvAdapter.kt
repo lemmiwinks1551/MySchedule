@@ -39,7 +39,7 @@ class CalendarRvAdapter(
         lateinit var date: TextView
         lateinit var dateAppointmentsCount: TextView
         lateinit var cellLayout: ConstraintLayout
-        lateinit var dayOffIcon: ImageView
+        lateinit var dateIcon: ImageView
         lateinit var progressBar: ProgressBar
 
         init {
@@ -50,7 +50,7 @@ class CalendarRvAdapter(
             date = itemView.findViewById(R.id.date_cell)
             dateAppointmentsCount = itemView.findViewById(R.id.date_appointments_text_view)
             cellLayout = itemView.findViewById(R.id.calendarRecyclerViewCell)
-            dayOffIcon = itemView.findViewById(R.id.day_off_icon)
+            dateIcon = itemView.findViewById(R.id.day_off_icon)
         }
     }
 
@@ -379,23 +379,25 @@ class CalendarRvAdapter(
             when (dateInfo.typeId) {
                 1 -> {
                     Log.i("productionCalendarAPI", "${dateInfo.date} - Рабочий день")
+                    holder.dateIcon.visibility = View.INVISIBLE
                     holder.date.setTextColor(context.resources.getColor(R.color.black))
                     holder.date.setTypeface(null, Typeface.NORMAL)
                 }
 
                 2 -> {
                     Log.i("productionCalendarAPI", "${dateInfo.date} - Выходной день")
+                    holder.dateIcon.visibility = View.INVISIBLE
                     holder.date.setTextColor(context.resources.getColor(R.color.red_weekend))
                     holder.date.setTypeface(null, Typeface.BOLD)
                 }
 
                 3 -> {
                     Log.i("productionCalendarAPI", "${dateInfo.date} - Праздник")
-                    holder.dayOffIcon.visibility = View.VISIBLE
-                    // Добавить иконку праздника
+                    holder.dateIcon.visibility = View.VISIBLE
+                    // Установить иконку праздника
                     val notes = dateParamsViewModel.getDataInfo(context, dayNum).note
                     val icon = dateParamsViewModel.getHolidayIcon(notes)
-                    holder.dayOffIcon.setImageResource(icon)
+                    holder.dateIcon.setImageResource(icon)
                     holder.date.setTextColor(context.resources.getColor(R.color.red_weekend))
                     holder.date.setTypeface(null, Typeface.BOLD)
                 }
@@ -406,32 +408,26 @@ class CalendarRvAdapter(
 
                 5 -> {
                     Log.i("productionCalendarAPI", "${dateInfo.date} - Сокращенный рабочий день")
-                    val notes = dateParamsViewModel.getDataInfo(context, dayNum).typeText
-                    val icon = dateParamsViewModel.getHolidayIcon(notes)
-                    holder.dayOffIcon.visibility = View.VISIBLE
-                    holder.dayOffIcon.setImageResource(icon)
+                    holder.dateIcon.visibility = View.VISIBLE
+                    holder.dateIcon.setImageResource(R.drawable.asterisk)
                     holder.date.setTextColor(context.resources.getColor(R.color.black))
                     holder.date.setTypeface(null, Typeface.NORMAL)
                 }
 
                 6 -> {
                     Log.i("productionCalendarAPI", "${dateInfo.date} - Перенесенный выходной день")
-                    val notes = dateParamsViewModel.getDataInfo(context, dayNum).typeText
-                    val icon = dateParamsViewModel.getHolidayIcon(notes)
-                    holder.dayOffIcon.visibility = View.VISIBLE
-                    holder.dayOffIcon.setImageResource(icon)
+                    holder.dateIcon.visibility = View.VISIBLE
+                    holder.dateIcon.setImageResource(R.drawable.asterisk)
                     holder.date.setTextColor(context.resources.getColor(R.color.red_weekend))
                     holder.date.setTypeface(null, Typeface.BOLD)
                 }
 
                 7 -> {
                     Log.i("productionCalendarAPI", "${dateInfo.date} - Перенесенный рабочий день")
-                    val notes = dateParamsViewModel.getDataInfo(context, dayNum).typeText
-                    val icon = dateParamsViewModel.getHolidayIcon(notes)
-                    holder.dayOffIcon.visibility = View.VISIBLE
+                    holder.dateIcon.visibility = View.VISIBLE
                     holder.date.setTextColor(context.resources.getColor(R.color.black))
                     holder.date.setTypeface(null, Typeface.NORMAL)
-                    holder.dayOffIcon.setImageResource(icon)
+                    holder.dateIcon.setImageResource(R.drawable.asterisk)
                 }
 
                 else -> {
