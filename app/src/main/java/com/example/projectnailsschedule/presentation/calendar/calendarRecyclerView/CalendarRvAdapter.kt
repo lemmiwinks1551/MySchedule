@@ -5,8 +5,6 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
-import android.text.SpannableString
-import android.text.style.UnderlineSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -306,7 +304,6 @@ class CalendarRvAdapter(
     }
 
     private fun setOnCalendarClickListener(holder: ViewHolder, selectedDate: DateParams) {
-        // Set the click listener to handle cell selection
         holder.cellLayout.setOnClickListener {
             if (holder != dateParamsViewModel.prevCalendarRvHolder) {
 
@@ -434,16 +431,10 @@ class CalendarRvAdapter(
             val dayNum =
                 Util().getDayOfYear(Util().formatDateToRus(selectedDate.date!!)) - 1
             val dateInfo = dateParamsViewModel.getDataInfo(context, dayNum)
-            if (dateInfo.typeId == 3 || dateInfo.typeId == 6) {
-                val typeText = dateParamsViewModel.getDataInfo(context, dayNum).typeText
-                val note = dateParamsViewModel.getDataInfo(context, dayNum).note
-                if (note == null || note == "") {
-                    dateParamsViewModel.dayOffInfo.postValue(typeText)
-                } else {
-                    dateParamsViewModel.dayOffInfo.postValue(note)
-                }
-            } else {
-                dateParamsViewModel.dayOffInfo.postValue(null)
+            when (dateInfo.typeId) {
+                3 -> dateParamsViewModel.dateInfo.postValue(dateInfo.note)
+                5, 6 , 7 -> dateParamsViewModel.dateInfo.postValue(dateInfo.typeText)
+                else -> dateParamsViewModel.dateInfo.postValue(null)
             }
         }
     }

@@ -141,7 +141,7 @@ class CalendarFragment : Fragment(),
         }
 
         // set if selected day is day off observer
-        dateParamsViewModel.dayOffInfo.observe(viewLifecycleOwner) {
+        dateParamsViewModel.dateInfo.observe(viewLifecycleOwner) {
             if (it != null) {
                 binding.dayOffCl.visibility = View.VISIBLE
                 binding.dayOffInfo.text = it
