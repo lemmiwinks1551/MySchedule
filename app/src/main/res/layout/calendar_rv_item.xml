@@ -64,4 +64,15 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <ImageView
+        android:id="@+id/current_date"
+        android:layout_width="28sp"
+        android:layout_height="23sp"
+        android:src="@drawable/calendar_recycler_view_current_date"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/date_cell"
+        app:layout_constraintEnd_toEndOf="@id/date_cell"
+        app:layout_constraintStart_toStartOf="@id/date_cell"
+        app:layout_constraintTop_toTopOf="@id/date_cell" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

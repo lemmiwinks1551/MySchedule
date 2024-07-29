@@ -30,7 +30,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
 
-
 class CalendarRvAdapter(
     private val daysInMonth: ArrayList<String>,
     private val dateParamsViewModel: DateParamsViewModel,
@@ -45,6 +44,7 @@ class CalendarRvAdapter(
         lateinit var dateIcon: ImageView
         lateinit var selectedBackground: ImageView
         lateinit var selectedBackgroundRed: ImageView
+        lateinit var currentDate: ImageView
         lateinit var progressBar: ProgressBar
 
         init {
@@ -58,6 +58,7 @@ class CalendarRvAdapter(
             dateIcon = itemView.findViewById(R.id.day_off_icon)
             selectedBackground = itemView.findViewById(R.id.selected_background)
             selectedBackgroundRed = itemView.findViewById(R.id.selected_background_red)
+            currentDate = itemView.findViewById(R.id.current_date)
         }
     }
 
@@ -337,11 +338,7 @@ class CalendarRvAdapter(
 
     private fun markCurrentDate(holder: ViewHolder, selectedDate: DateParams) {
         if (selectedDate.date!! == LocalDate.now()) {
-            //holder.date.setTextColor(context.resources.getColor(R.color.red_weekend))
-/*            val mSpannableString = SpannableString(selectedDate.date!!.dayOfMonth.toString())
-            mSpannableString.setSpan(UnderlineSpan(), 0, mSpannableString.length, 0)
-            holder.date.text = mSpannableString*/
-            holder.selectedBackgroundRed.visibility = View.VISIBLE
+            holder.currentDate.visibility = View.VISIBLE
         }
     }
 
