@@ -226,7 +226,6 @@ class DateParamsViewModel @Inject constructor(
             .build()
 
         val retrofit = Retrofit.Builder()
-            //.baseUrl("https://production-calendar.ru")
             .baseUrl("https://myschedule.myddns.me")
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())

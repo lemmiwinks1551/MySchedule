@@ -1,34 +1,35 @@
 package com.example.projectnailsschedule.di
 
 import android.content.Context
-import com.example.projectnailsschedule.domain.repository.ClientsRepository
 import com.example.projectnailsschedule.domain.repository.CalendarRepository
+import com.example.projectnailsschedule.domain.repository.ClientsRepository
 import com.example.projectnailsschedule.domain.repository.ProcedureRepository
 import com.example.projectnailsschedule.domain.repository.ScheduleRepository
 import com.example.projectnailsschedule.domain.repository.SettingsRepository
+import com.example.projectnailsschedule.domain.usecase.apiUC.SendUserDataUseCase
+import com.example.projectnailsschedule.domain.usecase.appointmentUC.DeleteAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.InsertAppointmentUseCase
+import com.example.projectnailsschedule.domain.usecase.appointmentUC.SearchAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.UpdateAppointmentUseCase
+import com.example.projectnailsschedule.domain.usecase.appointmentUC.UpdateClientInAppointmentsUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.CalendarDbDeleteObj
-import com.example.projectnailsschedule.domain.usecase.calendarUC.SelectCalendarDateByDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.GetDateAppointments
 import com.example.projectnailsschedule.domain.usecase.calendarUC.InsertCalendarDateUseCase
+import com.example.projectnailsschedule.domain.usecase.calendarUC.SelectCalendarDateByDateUseCase
 import com.example.projectnailsschedule.domain.usecase.clientsUC.DeleteClientUseCase
+import com.example.projectnailsschedule.domain.usecase.clientsUC.GetClientByIdUseCase
 import com.example.projectnailsschedule.domain.usecase.clientsUC.InsertClientUseCase
 import com.example.projectnailsschedule.domain.usecase.clientsUC.SearchClientUseCase
 import com.example.projectnailsschedule.domain.usecase.clientsUC.UpdateClientUseCase
-import com.example.projectnailsschedule.domain.usecase.appointmentUC.DeleteAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.importExportUC.ExportUseCase
 import com.example.projectnailsschedule.domain.usecase.importExportUC.ImportUseCase
-import com.example.projectnailsschedule.domain.usecase.util.RestartAppUseCase
 import com.example.projectnailsschedule.domain.usecase.proceduresUC.DeleteProcedureUseCase
 import com.example.projectnailsschedule.domain.usecase.proceduresUC.InsertProcedureUseCase
 import com.example.projectnailsschedule.domain.usecase.proceduresUC.SearchProcedureUseCase
 import com.example.projectnailsschedule.domain.usecase.proceduresUC.UpdateProcedureUseCase
-import com.example.projectnailsschedule.domain.usecase.appointmentUC.SearchAppointmentUseCase
-import com.example.projectnailsschedule.domain.usecase.appointmentUC.UpdateClientInAppointmentsUseCase
-import com.example.projectnailsschedule.domain.usecase.clientsUC.GetClientByIdUseCase
 import com.example.projectnailsschedule.domain.usecase.settingsUC.*
 import com.example.projectnailsschedule.domain.usecase.socUC.*
+import com.example.projectnailsschedule.domain.usecase.util.RestartAppUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -217,5 +218,12 @@ class DomainModule {
     @Provides
     fun provideRestartAppUseCase(context: Context): RestartAppUseCase {
         return RestartAppUseCase(context)
+    }
+
+    // Server
+
+    @Provides
+    fun providePostUserData(context: Context): SendUserDataUseCase {
+        return SendUserDataUseCase(context)
     }
 }
