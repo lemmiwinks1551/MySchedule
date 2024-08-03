@@ -1,6 +1,7 @@
 package com.example.projectnailsschedule.presentation.main
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -71,6 +72,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val lifecycleObserver = AppLifecycleObserver(mainViewModel)
+        lifecycle.addObserver(lifecycleObserver)
+
         // set theme from shared prefs
         val currentUserTheme = mainViewModel.getUserTheme()
         val currentUserThemeId = resources.getIdentifier(currentUserTheme, "style", packageName)
@@ -112,7 +116,7 @@ class MainActivity : AppCompatActivity() {
 
         ruStoreAd.interstitialAd(context = applicationContext)
 
-        lifecycle.addObserver(mainViewModel.lifecycleObserver)
+        initObservers()
     }
 
     override fun onResume() {
@@ -162,7 +166,6 @@ class MainActivity : AppCompatActivity() {
         if (updateType == AppUpdateType.FLEXIBLE) {
             appUpdateManager.unregisterListener(installStateUpdatedListener)
         }
-        lifecycle.removeObserver(mainViewModel.lifecycleObserver)
     }
 
     private fun checkForUpdates() {
@@ -181,6 +184,16 @@ class MainActivity : AppCompatActivity() {
                     this,
                     123
                 )
+            }
+        }
+    }
+
+    private fun initObservers() {
+        // Подключаем Observer к userDateQueue
+        mainViewModel.userDateQueue.observe(this) { userDataQueue ->
+            // Обрабатываем обновления userDateQueue
+            CoroutineScope(Dispatchers.IO).launch {
+                mainViewModel.sendUserData()
             }
         }
     }

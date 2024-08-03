@@ -1,15 +1,14 @@
 package com.example.projectnailsschedule.domain.models
 
 import android.os.Build
-import android.util.Log
 import com.example.projectnailsschedule.BuildConfig
 import com.example.projectnailsschedule.util.Util
 import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.util.LinkedList
 
-data class UserEventSingleton(
+data class UserData(
     var sessionId: String = Util().generateUniqueId(),
     var model: String = Build.MODEL,
     var device: String = Build.DEVICE,
@@ -18,25 +17,26 @@ data class UserEventSingleton(
     var event: String = ""
 )
 
-object UserEventManager {
-    private val userEvent = UserEventSingleton()
-    private val mutex = Mutex() // Mutex для синхронизации
+var userDateQueue = LinkedList<UserData>()
 
-    suspend fun getUserEvent(): UserEventSingleton = mutex.withLock {
-        userEvent.copy()
+object UserDataManager {
+    private val userEvent = UserData()
+
+    fun getUserData(): UserData {
+        return userEvent.copy()
     }
 
-    suspend fun updateUserEvent(
+    fun updateUserData(
         dateTime: String? = LocalDateTime.now()
             .format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss")),
         event: String? = null
-    ): Boolean {
-        return mutex.withLock {
-            dateTime?.let { userEvent.dateTime = it }
-            event?.let { userEvent.event = it }
-            Log.i("AppLifecycleObserverUpdater", userEvent.event)
-            true
-        }
+    ) {
+        dateTime?.let { userEvent.dateTime = it }
+        event?.let { userEvent.event = it }
+    }
+
+    fun updateQueue() {
+        userDateQueue.add(this.getUserData())
     }
 }
 

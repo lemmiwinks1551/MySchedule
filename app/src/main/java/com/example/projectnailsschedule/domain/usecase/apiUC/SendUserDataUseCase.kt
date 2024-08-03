@@ -1,10 +1,8 @@
 package com.example.projectnailsschedule.domain.usecase.apiUC
 
 import android.content.Context
-import android.util.Log
-import com.example.projectnailsschedule.domain.models.UserEventManager
+import com.example.projectnailsschedule.domain.models.UserData
 import com.example.projectnailsschedule.domain.repository.EventsApi
-import kotlinx.coroutines.delay
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -12,7 +10,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class SendUserDataUseCase(var context: Context) {
 
-    suspend fun execute() {
+    suspend fun execute(userData: UserData) {
         val interceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
 
         val client = OkHttpClient.Builder()
@@ -28,8 +26,6 @@ class SendUserDataUseCase(var context: Context) {
         val eventsApi = retrofit.create(EventsApi::class.java)
 
         try {
-            val userData = UserEventManager.getUserEvent()
-            Log.i("AppLifecycleObserverSend", userData.event)
             eventsApi.postUserEvent(userData)
         } catch (e: Exception) {
             e.printStackTrace()
