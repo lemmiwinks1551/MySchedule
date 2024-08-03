@@ -14,6 +14,8 @@ class MainViewModel @Inject constructor(
     private val sendUserDataUseCase: SendUserDataUseCase
 ) : ViewModel() {
 
+    val lifecycleObserver = AppLifecycleObserver(sendUserDataUseCase)
+
     fun getLanguage(): String {
         return getLanguageUseCase.execute()
     }
@@ -21,10 +23,8 @@ class MainViewModel @Inject constructor(
     fun getUserTheme(): String {
         return getUserThemeUseCase.execute()
     }
-
-    suspend fun sendUserDate() {
-        sendUserDataUseCase.execute()
-    }
 }
+
+
 
 

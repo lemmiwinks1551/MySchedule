@@ -22,6 +22,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
+import java.security.SecureRandom
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.YearMonth
@@ -370,5 +371,19 @@ class Util {
         val inputMethodManager =
             context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
+    }
+
+    fun generateUniqueId(length: Int = 24): String {
+        val characters =
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_=+[]{}|;:',.<>?/~`"
+        val random = SecureRandom()
+        val sb = StringBuilder(length)
+
+        for (i in 0 until length) {
+            val randomIndex = random.nextInt(characters.length)
+            sb.append(characters[randomIndex])
+        }
+
+        return sb.toString()
     }
 }

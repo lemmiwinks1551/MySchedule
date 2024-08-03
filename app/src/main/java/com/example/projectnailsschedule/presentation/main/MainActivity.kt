@@ -1,7 +1,5 @@
 package com.example.projectnailsschedule.presentation.main
 
-import android.content.pm.PackageInfo
-import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -18,10 +16,8 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.ActivityMainBinding
-import com.example.projectnailsschedule.domain.models.UserEventManager
 import com.example.projectnailsschedule.util.UncaughtExceptionHandler
 import com.example.projectnailsschedule.util.rustore.RuStoreAd
-import com.example.projectnailsschedule.util.rustore.RuStoreReview
 import com.google.android.material.navigation.NavigationView
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
@@ -38,9 +34,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.security.SecureRandom
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import kotlin.time.Duration.Companion.seconds
 
 @AndroidEntryPoint
@@ -119,13 +112,7 @@ class MainActivity : AppCompatActivity() {
 
         ruStoreAd.interstitialAd(context = applicationContext)
 
-        CoroutineScope(Dispatchers.IO).launch {
-            // Request user's review
-            RuStoreReview(this@MainActivity).rateApp()
-
-            initUserEventSingleton()
-            mainViewModel.sendUserDate()
-        }
+        lifecycle.addObserver(mainViewModel.lifecycleObserver)
     }
 
     override fun onResume() {
@@ -175,6 +162,7 @@ class MainActivity : AppCompatActivity() {
         if (updateType == AppUpdateType.FLEXIBLE) {
             appUpdateManager.unregisterListener(installStateUpdatedListener)
         }
+        lifecycle.removeObserver(mainViewModel.lifecycleObserver)
     }
 
     private fun checkForUpdates() {
@@ -195,31 +183,5 @@ class MainActivity : AppCompatActivity() {
                 )
             }
         }
-    }
-
-    private fun initUserEventSingleton() {
-        UserEventManager.updateUserEvent(
-            userId = generateUniqueId(),
-            model = Build.MODEL,
-            device = Build.DEVICE,
-            dateTime = LocalDateTime.now()
-                .format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss")),
-            appVersionName = PackageInfo().versionName,
-            event = "Start"
-        )
-    }
-
-    private fun generateUniqueId(length: Int = 24): String {
-        val characters =
-            "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_=+[]{}|;:',.<>?/~`"
-        val random = SecureRandom()
-        val sb = StringBuilder(length)
-
-        for (i in 0 until length) {
-            val randomIndex = random.nextInt(characters.length)
-            sb.append(characters[randomIndex])
-        }
-
-        return sb.toString()
     }
 }

@@ -1,38 +1,42 @@
 package com.example.projectnailsschedule.domain.models
 
-// Класс UserEventSingleton для хранения данных
+import android.os.Build
+import android.util.Log
+import com.example.projectnailsschedule.BuildConfig
+import com.example.projectnailsschedule.util.Util
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+
 data class UserEventSingleton(
-    var sessionId: String = "",
-    var model: String = "",
-    var device: String = "",
+    var sessionId: String = Util().generateUniqueId(),
+    var model: String = Build.MODEL,
+    var device: String = Build.DEVICE,
     var dateTime: String = "",
-    var appVersionName: String = "",
+    var appVersionName: String = BuildConfig.VERSION_NAME,
     var event: String = ""
 )
 
-// Синглтон для управления состоянием UserEventSingleton
 object UserEventManager {
-    // Экземпляр UserEventSingleton
     private val userEvent = UserEventSingleton()
+    private val mutex = Mutex() // Mutex для синхронизации
 
-    // Получение текущего состояния
-    fun getUserEvent(): UserEventSingleton = userEvent
+    suspend fun getUserEvent(): UserEventSingleton = mutex.withLock {
+        userEvent.copy()
+    }
 
-    // Обновление данных
-    fun updateUserEvent(
-        userId: String? = null,
-        model: String? = null,
-        device: String? = null,
-        dateTime: String? = null,
-        appVersionName: String? = null,
+    suspend fun updateUserEvent(
+        dateTime: String? = LocalDateTime.now()
+            .format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss")),
         event: String? = null
-    ) {
-        userId?.let { userEvent.sessionId = it }
-        model?.let { userEvent.model = it }
-        device?.let { userEvent.device = it }
-        dateTime?.let { userEvent.dateTime = it }
-        appVersionName?.let { userEvent.appVersionName = it }
-        event?.let { userEvent.event = it }
+    ): Boolean {
+        return mutex.withLock {
+            dateTime?.let { userEvent.dateTime = it }
+            event?.let { userEvent.event = it }
+            Log.i("AppLifecycleObserverUpdater", userEvent.event)
+            true
+        }
     }
 }
 
