@@ -17,6 +17,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.ActivityMainBinding
+import com.example.projectnailsschedule.domain.models.UserDataManager
 import com.example.projectnailsschedule.util.UncaughtExceptionHandler
 import com.example.projectnailsschedule.util.rustore.RuStoreAd
 import com.google.android.material.navigation.NavigationView
@@ -72,7 +73,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val lifecycleObserver = AppLifecycleObserver(mainViewModel)
+        val lifecycleObserver = AppLifecycleObserver()
         lifecycle.addObserver(lifecycleObserver)
 
         // set theme from shared prefs
@@ -190,7 +191,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun initObservers() {
         // Подключаем Observer к userDateQueue
-        mainViewModel.userDateQueue.observe(this) { userDataQueue ->
+        UserDataManager.userDateQueue.observe(this) { userDataQueue ->
             // Обрабатываем обновления userDateQueue
             CoroutineScope(Dispatchers.IO).launch {
                 mainViewModel.sendUserData()
