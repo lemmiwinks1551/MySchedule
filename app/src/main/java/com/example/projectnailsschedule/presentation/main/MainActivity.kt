@@ -1,7 +1,6 @@
 package com.example.projectnailsschedule.presentation.main
 
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -32,10 +31,12 @@ import com.google.android.play.core.ktx.isFlexibleUpdateAllowed
 import com.google.android.play.core.ktx.isImmediateUpdateAllowed
 import com.my.target.ads.MyTargetView
 import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
 
 @AndroidEntryPoint
@@ -49,7 +50,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
-    private val uncaughtExceptionHandler = UncaughtExceptionHandler()
+
+    @Inject
+    lateinit var uncaughtExceptionHandler: Thread.UncaughtExceptionHandler
 
     private var drawerLayout: DrawerLayout? = null
     private var navView: NavigationView? = null
@@ -134,6 +137,8 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+
+        throw RuntimeException("This is a test crash in onCreate")
     }
 
     private fun initWidgets() {

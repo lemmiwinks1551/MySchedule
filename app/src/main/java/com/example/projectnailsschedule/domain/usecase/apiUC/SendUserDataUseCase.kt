@@ -8,8 +8,9 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Inject
 
-class SendUserDataUseCase(var context: Context) {
+class SendUserDataUseCase @Inject constructor (var context: Context) {
     private val log = this::class.simpleName
 
     suspend fun execute(userData: UserData) {
@@ -31,7 +32,7 @@ class SendUserDataUseCase(var context: Context) {
             Log.i(log, "Отправляем данные $userData")
             eventsApi.postUserEvent(userData)
         } catch (e: Exception) {
-            Log.i(log, "Не удалось отправить динные $userData")
+            Log.i(log, "Не удалось отправить данные $userData, ${e.message}")
             e.printStackTrace()
         }
     }

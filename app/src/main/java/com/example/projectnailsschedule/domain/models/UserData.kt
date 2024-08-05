@@ -35,6 +35,10 @@ object UserDataManager {
         addUserDateQueue(newUserData)
     }
 
+    fun getUserData(): UserData {
+        return this.userData
+    }
+
     private fun addUserDateQueue(userData: UserData) {
         val queue = userDateQueue.value ?: LinkedList()
         queue.add(userData)
