@@ -30,7 +30,13 @@ class SendUserDataUseCase @Inject constructor (var context: Context) {
 
         try {
             Log.i(log, "Отправляем данные $userData")
-            eventsApi.postUserEvent(userData)
+            val response = eventsApi.postUserEvent(userData)
+
+            if (response.isSuccessful) {
+                Log.i(log, "Данные отправлены успешно $userData")
+            } else {
+                Log.i(log, "Не удалось отправить данные $userData")
+            }
         } catch (e: Exception) {
             Log.i(log, "Не удалось отправить данные $userData, ${e.message}")
             e.printStackTrace()

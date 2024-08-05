@@ -137,8 +137,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-
-        throw RuntimeException("This is a test crash in onCreate")
     }
 
     private fun initWidgets() {
