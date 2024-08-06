@@ -15,5 +15,4 @@
 local.properties
 /app/release/app-release.aab
 /app/release/MyScheduleApp.apk
-/app/release/output-metadata.json 
- 
+/app/release/output-metadata.json/gradle.properties
