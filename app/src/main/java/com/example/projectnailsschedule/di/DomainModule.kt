@@ -220,7 +220,7 @@ class DomainModule {
         return RestartAppUseCase(context)
     }
 
-    // Server
+    // Server api
 
     @Provides
     fun providePostUserData(context: Context): SendUserDataUseCase {

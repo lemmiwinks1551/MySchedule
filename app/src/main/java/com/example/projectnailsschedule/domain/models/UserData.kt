@@ -13,18 +13,20 @@ data class UserData(
     var sessionId: String = Util().generateUniqueId(),
     var model: String = Build.MODEL,
     var device: String = Build.DEVICE,
-    var dateTime: String = LocalDateTime.now()
-        .format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss")),
+    var dateTime: String = "",
     var appVersionName: String = BuildConfig.VERSION_NAME,
     var event: String = ""
 )
-
 
 object UserDataManager {
     private val log = this::class.simpleName
 
     private val userData = UserData()
     var userDateQueue = MutableLiveData(LinkedList<UserData>())
+
+    fun getUserData(): UserData {
+        return this.userData
+    }
 
     fun updateUserData(event: String?) {
         val newUserData = userData.copy(
@@ -33,10 +35,6 @@ object UserDataManager {
             event = event ?: userData.event
         )
         addUserDateQueue(newUserData)
-    }
-
-    fun getUserData(): UserData {
-        return this.userData
     }
 
     private fun addUserDateQueue(userData: UserData) {

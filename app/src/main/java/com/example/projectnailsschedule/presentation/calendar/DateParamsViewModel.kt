@@ -138,7 +138,7 @@ class DateParamsViewModel @Inject constructor(
             selectCalendarDateByDate(ruFormatDate)
         }
 
-        Log.d(tagDateColor, "Date $ruFormatDate has color ${deferredColor.await().color}")
+        //Log.d(tagDateColor, "Date $ruFormatDate has color ${deferredColor.await().color}")
         return deferredColor.await().color
     }
 

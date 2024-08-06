@@ -12,19 +12,11 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class Modules {
+class ContextModule {
 
     @Provides
     @Singleton
     fun provideContext(@ApplicationContext context: Context): Context {
         return context
-    }
-
-    @Provides
-    @Singleton
-    fun provideUncaughtExceptionHandler(
-        sendUserDataUseCase: SendUserDataUseCase
-    ): Thread.UncaughtExceptionHandler {
-        return UncaughtExceptionHandler(sendUserDataUseCase)
     }
 }

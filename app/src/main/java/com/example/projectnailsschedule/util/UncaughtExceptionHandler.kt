@@ -1,6 +1,7 @@
 package com.example.projectnailsschedule.util
 
 import com.example.projectnailsschedule.domain.models.UserData
+import com.example.projectnailsschedule.domain.models.UserDataManager
 import com.example.projectnailsschedule.domain.usecase.apiUC.SendUserDataUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -24,6 +25,7 @@ class UncaughtExceptionHandler(
         hasHandledException = true
 
         val userData = UserData(
+            sessionId = UserDataManager.getUserData().sessionId,
             dateTime = LocalDateTime.now()
                 .format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss")),
             event = throwable.message.toString()
