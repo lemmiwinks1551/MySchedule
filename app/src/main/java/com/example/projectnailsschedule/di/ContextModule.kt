@@ -1,8 +1,6 @@
 package com.example.projectnailsschedule.di
 
 import android.content.Context
-import com.example.projectnailsschedule.domain.usecase.apiUC.SendUserDataUseCase
-import com.example.projectnailsschedule.util.UncaughtExceptionHandler
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

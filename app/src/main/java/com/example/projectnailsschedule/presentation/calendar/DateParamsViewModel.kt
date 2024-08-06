@@ -31,6 +31,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
+import kotlinx.coroutines.withContext
 import okhttp3.Cache
 import okhttp3.CacheControl
 import okhttp3.Interceptor
@@ -134,12 +135,14 @@ class DateParamsViewModel @Inject constructor(
     suspend fun getDateColor(ruFormatDate: String): String? {
         Log.d(tagDateColor, "Getting color for $ruFormatDate")
 
-        val deferredColor = CoroutineScope(Dispatchers.IO).async {
-            selectCalendarDateByDate(ruFormatDate)
-        }
+        // Запускаем асинхронную операцию в фоновом потоке
+        val calendarDate = selectCalendarDateByDate(ruFormatDate)
 
-        //Log.d(tagDateColor, "Date $ruFormatDate has color ${deferredColor.await().color}")
-        return deferredColor.await().color
+        // Проверяем результат на null перед вызовом getColor()
+        val color: String? = calendarDate?.color // Не убирать
+
+        Log.d(tagDateColor, "Date $ruFormatDate has color $color")
+        return color
     }
 
     suspend fun insertCalendarDate(calendarDateModelDb: CalendarDateModelDb): Boolean {
