@@ -3,6 +3,10 @@ package com.example.projectnailsschedule.presentation.settings
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.example.projectnailsschedule.R
@@ -11,7 +15,20 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class SettingsFragmentCompat : PreferenceFragmentCompat() {
+    private val log = this::class.simpleName
+    private val settingsViewModel: SettingsViewModel by viewModels()
     private val selectThemeFragmentTag = "SelectThemeFragment"
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+
+        settingsViewModel.updateUserData("$log ${object{}.javaClass.enclosingMethod?.name}")
+
+        return super.onCreateView(inflater, container, savedInstanceState)
+    }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey)
@@ -38,5 +55,10 @@ class SettingsFragmentCompat : PreferenceFragmentCompat() {
         emailIntent.data = Uri.parse("mailto:$recipientEmail")
 
         startActivity(emailIntent)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        settingsViewModel.updateUserData("$log ${object{}.javaClass.enclosingMethod?.name}")
     }
 }

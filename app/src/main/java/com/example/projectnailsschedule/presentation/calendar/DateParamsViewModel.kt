@@ -12,6 +12,7 @@ import com.example.projectnailsschedule.domain.models.AppointmentModelDb
 import com.example.projectnailsschedule.domain.models.CalendarDateModelDb
 import com.example.projectnailsschedule.domain.models.DateParams
 import com.example.projectnailsschedule.domain.models.ProductionCalendarDateModel
+import com.example.projectnailsschedule.domain.models.UserDataManager
 import com.example.projectnailsschedule.domain.repository.ProductionCalendarApi
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.DeleteAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.InsertAppointmentUseCase
@@ -310,5 +311,9 @@ class DateParamsViewModel @Inject constructor(
 
     fun getSelectedMonth(): LocalDate? {
         return selectedDate.value?.date
+    }
+
+    fun updateUserData(event: String) {
+        UserDataManager.updateUserData(event)
     }
 }

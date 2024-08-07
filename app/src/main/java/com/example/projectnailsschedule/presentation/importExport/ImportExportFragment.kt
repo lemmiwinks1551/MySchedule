@@ -18,6 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class ImportExportFragment : Fragment() {
+    private val log = this::class.simpleName
 
     private val importExportViewModel: ImportExportViewModel by viewModels()
     private val OPEN_DIRECTORY_REQUEST_CODE = 123
@@ -38,6 +39,8 @@ class ImportExportFragment : Fragment() {
         initViews()
 
         initClickListeners()
+
+        importExportViewModel.updateUserData("$log ${object{}.javaClass.enclosingMethod?.name}")
 
         return binding.root
     }
@@ -110,6 +113,7 @@ class ImportExportFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        importExportViewModel.updateUserData("$log ${object{}.javaClass.enclosingMethod?.name}")
         _binding = null
     }
 }

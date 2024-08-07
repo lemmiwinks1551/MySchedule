@@ -6,6 +6,7 @@ import com.example.projectnailsschedule.domain.usecase.proceduresUC.DeleteProced
 import com.example.projectnailsschedule.domain.usecase.proceduresUC.InsertProcedureUseCase
 import com.example.projectnailsschedule.domain.usecase.proceduresUC.SearchProcedureUseCase
 import com.example.projectnailsschedule.domain.usecase.proceduresUC.UpdateProcedureUseCase
+import com.example.projectnailsschedule.domain.usecase.util.UpdateUserDataUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -15,6 +16,7 @@ class ProceduresViewModel @Inject constructor(
     private val updateProcedureUseCase: UpdateProcedureUseCase,
     private val searchProcedureUseCase: SearchProcedureUseCase,
     private val deleteProcedureUseCase: DeleteProcedureUseCase,
+    private var updateUserDataUseCase: UpdateUserDataUseCase
 ) : ViewModel() {
 
     var selectedProcedure: ProcedureModelDb? = null
@@ -33,5 +35,9 @@ class ProceduresViewModel @Inject constructor(
 
     suspend fun searchProcedure(searchQuery: String): MutableList<ProcedureModelDb> {
         return searchProcedureUseCase.execute(searchQuery)
+    }
+
+    fun updateUserData(event: String) {
+        updateUserDataUseCase.execute(event)
     }
 }

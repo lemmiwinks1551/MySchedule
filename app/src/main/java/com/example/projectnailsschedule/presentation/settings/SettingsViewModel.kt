@@ -3,6 +3,7 @@ package com.example.projectnailsschedule.presentation.settings
 import androidx.lifecycle.ViewModel
 import com.example.projectnailsschedule.domain.usecase.util.RestartAppUseCase
 import com.example.projectnailsschedule.domain.usecase.settingsUC.*
+import com.example.projectnailsschedule.domain.usecase.util.UpdateUserDataUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -16,6 +17,7 @@ class SettingsViewModel @Inject constructor(
     private val setUserThemeUseCase: SetUserThemeUseCase,
     private val getUserThemeUseCase: GetUserThemeUseCase,
     private var restartAppUseCase: RestartAppUseCase,
+    private var updateUserDataUseCase: UpdateUserDataUseCase
     ) : ViewModel() {
 
     init {
@@ -51,5 +53,9 @@ class SettingsViewModel @Inject constructor(
 
     fun restartApp() {
         restartAppUseCase.execute()
+    }
+
+    fun updateUserData(event: String) {
+        updateUserDataUseCase.execute(event)
     }
 }

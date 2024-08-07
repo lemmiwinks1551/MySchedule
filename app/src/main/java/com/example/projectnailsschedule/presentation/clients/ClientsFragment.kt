@@ -32,6 +32,7 @@ import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class ClientsFragment : Fragment() {
+    private val log = this::class.simpleName
     private val clientsViewModel: ClientsViewModel by activityViewModels()
 
     private var _binding: SelectUnifBinding? = null
@@ -59,6 +60,8 @@ class ClientsFragment : Fragment() {
         initClickListeners()
 
         clearSearchView()
+
+        clientsViewModel.updateUserData("$log ${object{}.javaClass.enclosingMethod?.name}")
 
         return binding.root
     }
@@ -269,6 +272,7 @@ class ClientsFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         snackbar?.dismiss()
+        clientsViewModel.updateUserData("$log ${object{}.javaClass.enclosingMethod?.name}")
         _binding = null
     }
 }

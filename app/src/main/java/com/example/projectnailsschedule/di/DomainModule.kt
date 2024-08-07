@@ -30,6 +30,7 @@ import com.example.projectnailsschedule.domain.usecase.proceduresUC.UpdateProced
 import com.example.projectnailsschedule.domain.usecase.settingsUC.*
 import com.example.projectnailsschedule.domain.usecase.socUC.*
 import com.example.projectnailsschedule.domain.usecase.util.RestartAppUseCase
+import com.example.projectnailsschedule.domain.usecase.util.UpdateUserDataUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -218,6 +219,11 @@ class DomainModule {
     @Provides
     fun provideRestartAppUseCase(context: Context): RestartAppUseCase {
         return RestartAppUseCase(context)
+    }
+
+    @Provides
+    fun provideUpdateUserDataUseCase(): UpdateUserDataUseCase {
+        return UpdateUserDataUseCase()
     }
 
     // Server api

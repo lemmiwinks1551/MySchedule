@@ -21,6 +21,7 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ProcedureEditFragment : Fragment() {
+    private val log = this::class.simpleName
     private val proceduresViewModel: ProceduresViewModel by activityViewModels()
 
     private var _binding: FragmentProcedureEditBinding? = null
@@ -44,6 +45,9 @@ class ProcedureEditFragment : Fragment() {
         inflateViews()
 
         setHasOptionsMenu(true)
+
+        proceduresViewModel.updateUserData("$log ${object{}.javaClass.enclosingMethod?.name}")
+
         return binding.root
     }
 
@@ -95,6 +99,7 @@ class ProcedureEditFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         proceduresViewModel.selectedProcedure = null
+        proceduresViewModel.updateUserData("$log ${object{}.javaClass.enclosingMethod?.name}")
         _binding = null
     }
 

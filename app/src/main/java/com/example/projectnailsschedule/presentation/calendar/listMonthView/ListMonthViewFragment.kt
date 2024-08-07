@@ -35,6 +35,7 @@ import java.util.Date
 
 @AndroidEntryPoint
 class ListMonthViewFragment : Fragment() {
+    private val log = this::class.simpleName
     private val dateParamsViewModel: DateParamsViewModel by activityViewModels()
 
     private var _binding: FragmentFullMonthViewBinding? = null
@@ -57,6 +58,8 @@ class ListMonthViewFragment : Fragment() {
         initObservers()
 
         initClickListeners()
+
+        dateParamsViewModel.updateUserData("$log ${object{}.javaClass.enclosingMethod?.name}")
 
         return binding.root
     }
@@ -215,5 +218,11 @@ class ListMonthViewFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         fullMonthAppointmentsRVAdapter?.snackbar?.dismiss()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        dateParamsViewModel.updateUserData("$log ${object{}.javaClass.enclosingMethod?.name}")
+        _binding = null
     }
 }
