@@ -28,7 +28,7 @@ class UncaughtExceptionHandler(
             sessionId = UserDataManager.getUserData().sessionId,
             dateTime = LocalDateTime.now()
                 .format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss")),
-            event = throwable.message.toString()
+            event = "Message ${throwable.message}. StackTrace: ${throwable.stackTrace[0]}"
         )
 
         CoroutineScope(Dispatchers.IO).launch {
