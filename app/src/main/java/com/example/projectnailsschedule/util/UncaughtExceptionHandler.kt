@@ -1,5 +1,6 @@
 package com.example.projectnailsschedule.util
 
+import android.util.Log
 import com.example.projectnailsschedule.domain.models.UserData
 import com.example.projectnailsschedule.domain.models.UserDataManager
 import com.example.projectnailsschedule.domain.usecase.apiUC.SendUserDataUseCase
@@ -16,6 +17,7 @@ class UncaughtExceptionHandler(
 
     @Volatile
     private var hasHandledException = false
+    private val log = this::class.simpleName
 
     override fun uncaughtException(thread: Thread, throwable: Throwable) {
         if (hasHandledException) {
@@ -37,6 +39,7 @@ class UncaughtExceptionHandler(
             } catch (e: Exception) {
                 e.printStackTrace()
             } finally {
+                Log.e(log, "$log Exiting process")
                 exitProcess(1)
             }
         }

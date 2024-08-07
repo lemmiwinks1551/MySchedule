@@ -6,6 +6,7 @@ import com.example.projectnailsschedule.domain.repository.ClientsRepository
 import com.example.projectnailsschedule.domain.repository.ProcedureRepository
 import com.example.projectnailsschedule.domain.repository.ScheduleRepository
 import com.example.projectnailsschedule.domain.repository.SettingsRepository
+import com.example.projectnailsschedule.domain.usecase.apiUC.GetProductionCalendarDateInfoUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.SendUserDataUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.DeleteAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.InsertAppointmentUseCase
@@ -229,7 +230,12 @@ class DomainModule {
     // Server api
 
     @Provides
-    fun providePostUserData(context: Context): SendUserDataUseCase {
+    fun providePostUserDataUseCase(context: Context): SendUserDataUseCase {
         return SendUserDataUseCase(context)
+    }
+
+    @Provides
+    fun getProductionCalendarUseCase(context: Context): GetProductionCalendarDateInfoUseCase {
+        return GetProductionCalendarDateInfoUseCase(context)
     }
 }

@@ -1,9 +1,5 @@
 package com.example.projectnailsschedule.presentation.calendar
 
-import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
-import android.os.Build
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -13,7 +9,7 @@ import com.example.projectnailsschedule.domain.models.CalendarDateModelDb
 import com.example.projectnailsschedule.domain.models.DateParams
 import com.example.projectnailsschedule.domain.models.ProductionCalendarDateModel
 import com.example.projectnailsschedule.domain.models.UserDataManager
-import com.example.projectnailsschedule.domain.repository.ProductionCalendarApi
+import com.example.projectnailsschedule.domain.usecase.apiUC.GetProductionCalendarDateInfoUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.DeleteAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.InsertAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.SearchAppointmentUseCase
@@ -32,19 +28,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
-import kotlinx.coroutines.withContext
-import okhttp3.Cache
-import okhttp3.CacheControl
-import okhttp3.Interceptor
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.Response
-import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import java.io.File
 import java.time.LocalDate
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @HiltViewModel
@@ -61,7 +45,8 @@ class DateParamsViewModel @Inject constructor(
     private val startTelegramUc: StartTelegramUc,
     private val startInstagramUc: StartInstagramUc,
     private val startWhatsAppUc: StartWhatsAppUc,
-    private val startPhoneUc: StartPhoneUc
+    private val startPhoneUc: StartPhoneUc,
+    private val getProductionCalendarDateInfoUseCase: GetProductionCalendarDateInfoUseCase
 ) : ViewModel() {
     private val tagDateColor = "DateColor"
 
@@ -196,78 +181,6 @@ class DateParamsViewModel @Inject constructor(
         selectedDate.postValue(selectedDate.value)
     }
 
-    suspend fun getDataInfo(context: Context, day: Int = 0): ProductionCalendarDateModel {
-        // add interceptor for logs: OkHttp
-        val interceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
-
-        class CacheInterceptor : Interceptor {
-            override fun intercept(chain: Interceptor.Chain): Response {
-                val response: Response = chain.proceed(chain.request())
-                val cacheControl = CacheControl.Builder()
-                    .maxAge(10, TimeUnit.DAYS)
-                    .build()
-                return response.newBuilder()
-                    .header("Cache-Control", cacheControl.toString())
-                    .build()
-            }
-        }
-
-        class ForceCacheInterceptor : Interceptor {
-            override fun intercept(chain: Interceptor.Chain): Response {
-                val builder: Request.Builder = chain.request().newBuilder()
-                if (!isInternetAvailable(context)) { // Функция для проверки доступности интернета
-                    builder.cacheControl(CacheControl.FORCE_CACHE)
-                }
-                return chain.proceed(builder.build())
-            }
-        }
-
-        val client = OkHttpClient.Builder()
-            .addInterceptor(interceptor)
-            .addNetworkInterceptor(CacheInterceptor())
-            .addInterceptor(ForceCacheInterceptor())
-            .cache(createOkHttpClient(context).cache)
-            .build()
-
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://myschedule.myddns.me")
-            .client(client)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-        val productionCalendarApi = retrofit.create(ProductionCalendarApi::class.java)
-
-        val year = selectedDate.value?.date?.year.toString() // Получаем обрабатываемый год, например "2024"
-
-        // вернуть информацию о конкретной дате
-        return productionCalendarApi.getYearData(year)[day]
-    }
-
-    private fun createOkHttpClient(context: Context): OkHttpClient {
-        // Размер кэша - 100 МБ
-        val cacheSize = 100 * 1024 * 1024
-        val cacheDirectory = File(context.cacheDir, "http-cache")
-        val cache = Cache(cacheDirectory, cacheSize.toLong())
-
-        return OkHttpClient.Builder()
-            .cache(cache)
-            .build()
-    }
-
-    fun isInternetAvailable(context: Context): Boolean {
-        val connectivityManager =
-            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            val network = connectivityManager.activeNetwork ?: return false
-            val capabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
-            return capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
-        } else {
-            @Suppress("DEPRECATION")
-            val networkInfo = connectivityManager.activeNetworkInfo
-            return networkInfo?.isConnected ?: false
-        }
-    }
-
     fun getAppointmentPositionInDate(
         appointmentModelDb: AppointmentModelDb,
         appointmentList: MutableList<AppointmentModelDb>
@@ -315,5 +228,9 @@ class DateParamsViewModel @Inject constructor(
 
     fun updateUserData(event: String) {
         UserDataManager.updateUserData(event)
+    }
+
+    suspend fun getDataInfo(dayNum: Int): ProductionCalendarDateModel {
+        return getProductionCalendarDateInfoUseCase.execute(selectedDate.value!!, dayNum)
     }
 }

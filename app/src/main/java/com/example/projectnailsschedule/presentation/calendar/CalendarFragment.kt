@@ -41,13 +41,6 @@ class CalendarFragment : Fragment(),
     private var shortDataRecyclerView: RecyclerView? = null
     private var addButton: FloatingActionButton? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        CoroutineScope(Dispatchers.IO).launch {
-            dateParamsViewModel.getDataInfo(requireContext())
-        }
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
