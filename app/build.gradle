@@ -12,10 +12,10 @@ android {
 
     signingConfigs {
         debug {
-            storeFile file('C:\\Users\\Kirill\\Desktop\\key.jks')
-            storePassword 'RTS567m81'
-            keyPassword 'RTS567m81'
-            keyAlias 'key0'
+            storeFile file('******')
+            storePassword '******'
+            keyPassword '******'
+            keyAlias '******'
         }
     }
     compileSdk 34
