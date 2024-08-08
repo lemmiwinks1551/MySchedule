@@ -125,7 +125,7 @@ class DateParamsViewModel @Inject constructor(
         val calendarDate = selectCalendarDateByDate(ruFormatDate)
 
         // Проверяем результат на null перед вызовом getColor()
-        val color: String? = calendarDate?.color // Не убирать
+        val color: String? = calendarDate?.color // Не убирать "?"
 
         Log.d(tagDateColor, "Date $ruFormatDate has color $color")
         return color

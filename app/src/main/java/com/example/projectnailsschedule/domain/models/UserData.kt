@@ -28,6 +28,7 @@ object UserDataManager {
         return this.userData
     }
 
+    @Synchronized
     fun updateUserData(event: String?) {
         val newUserData = userData.copy(
             dateTime = LocalDateTime.now()

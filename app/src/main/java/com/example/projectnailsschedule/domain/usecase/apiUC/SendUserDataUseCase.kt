@@ -10,7 +10,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Inject
 
-class SendUserDataUseCase @Inject constructor (var context: Context) {
+class SendUserDataUseCase @Inject constructor(var context: Context) {
     private val log = this::class.simpleName
 
     suspend fun execute(userData: UserData) {
@@ -33,7 +33,7 @@ class SendUserDataUseCase @Inject constructor (var context: Context) {
             val response = eventsApi.postUserEvent(userData)
 
             if (response.isSuccessful) {
-                Log.i(log, "Данные отправлены успешно $userData")
+                Log.i(log, "Данные доставлены успешно $userData")
             } else {
                 Log.i(log, "Не удалось отправить данные $userData")
             }
