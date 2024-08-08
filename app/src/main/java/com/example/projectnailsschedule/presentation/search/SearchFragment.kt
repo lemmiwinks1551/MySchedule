@@ -33,6 +33,7 @@ import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class SearchFragment : Fragment() {
+    private val log = this::class.simpleName
     private val dateParamsViewModel: DateParamsViewModel by activityViewModels()
 
     private var _binding: SelectUnifBinding? = null
@@ -59,6 +60,8 @@ class SearchFragment : Fragment() {
         initClickListeners()
 
         clearSearchView()
+
+        dateParamsViewModel.updateUserData("$log ${object{}.javaClass.enclosingMethod?.name}")
 
         return binding.root
     }
@@ -247,6 +250,7 @@ class SearchFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         snackbar?.dismiss()
+        dateParamsViewModel.updateUserData("$log ${object{}.javaClass.enclosingMethod?.name}")
         _binding = null
     }
 

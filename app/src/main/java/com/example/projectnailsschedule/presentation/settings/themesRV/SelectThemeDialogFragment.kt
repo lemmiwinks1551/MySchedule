@@ -41,11 +41,11 @@ private val themesArray = arrayOf(
 @AndroidEntryPoint
 class SelectThemeDialogFragment : DialogFragment() {
     val log = this::class.simpleName
+    private val settingsViewModel: SettingsViewModel by viewModels()
 
     private var _binding: FragmentSelectThemeBinding? = null
     private lateinit var viewPager: ViewPager2
     private val binding get() = _binding!!
-    private val settingsViewModel: SettingsViewModel by viewModels()
 
     private lateinit var currentTheme: String
 

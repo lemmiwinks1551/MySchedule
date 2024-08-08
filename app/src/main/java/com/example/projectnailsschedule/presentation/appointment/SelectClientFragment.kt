@@ -24,6 +24,7 @@ import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class SelectClientFragment : DialogFragment() {
+    private val log = this::class.simpleName
     private val clientsViewModel: ClientsViewModel by activityViewModels()
 
     private var _binding: SelectUnifBinding? = null
@@ -61,6 +62,7 @@ class SelectClientFragment : DialogFragment() {
 
         clearSearchView()
 
+        clientsViewModel.updateUserData("$log ${object{}.javaClass.enclosingMethod?.name}")
         return binding.root
     }
 
@@ -124,6 +126,7 @@ class SelectClientFragment : DialogFragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        clientsViewModel.updateUserData("$log ${object{}.javaClass.enclosingMethod?.name}")
         _binding = null
     }
 }

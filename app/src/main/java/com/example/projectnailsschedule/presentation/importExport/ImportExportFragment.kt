@@ -11,13 +11,13 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentImportExportBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class ImportExportFragment : Fragment() {
+    private val log = this::class.simpleName
 
     private val importExportViewModel: ImportExportViewModel by viewModels()
     private val OPEN_DIRECTORY_REQUEST_CODE = 123
@@ -38,6 +38,8 @@ class ImportExportFragment : Fragment() {
         initViews()
 
         initClickListeners()
+
+        importExportViewModel.updateUserData("$log ${object{}.javaClass.enclosingMethod?.name}")
 
         return binding.root
     }
@@ -110,6 +112,7 @@ class ImportExportFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        importExportViewModel.updateUserData("$log ${object{}.javaClass.enclosingMethod?.name}")
         _binding = null
     }
 }

@@ -13,6 +13,7 @@ import com.example.projectnailsschedule.domain.usecase.socUC.StartPhoneUc
 import com.example.projectnailsschedule.domain.usecase.socUC.StartTelegramUc
 import com.example.projectnailsschedule.domain.usecase.socUC.StartVkUc
 import com.example.projectnailsschedule.domain.usecase.socUC.StartWhatsAppUc
+import com.example.projectnailsschedule.domain.usecase.util.UpdateUserDataUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import javax.inject.Inject
@@ -29,7 +30,8 @@ class ClientsViewModel @Inject constructor(
     private val startTelegramUc: StartTelegramUc,
     private val startInstagramUc: StartInstagramUc,
     private val startWhatsAppUc: StartWhatsAppUc,
-    private val startPhoneUc: StartPhoneUc
+    private val startPhoneUc: StartPhoneUc,
+    private var updateUserDataUseCase: UpdateUserDataUseCase
 ) : ViewModel() {
 
     var selectedClient: ClientModelDb? = null
@@ -76,5 +78,9 @@ class ClientsViewModel @Inject constructor(
 
     fun startPhone(phoneNum: String) {
         startPhoneUc.execute(phoneNum)
+    }
+
+    fun updateUserData(event: String) {
+        updateUserDataUseCase.execute(event)
     }
 }

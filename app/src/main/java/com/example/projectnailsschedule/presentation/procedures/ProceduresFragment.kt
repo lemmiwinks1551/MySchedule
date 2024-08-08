@@ -31,6 +31,7 @@ import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class ProceduresFragment : Fragment() {
+    private val log = this::class.simpleName
     private val proceduresViewModel: ProceduresViewModel by activityViewModels()
 
     private var _binding: SelectUnifBinding? = null
@@ -56,6 +57,8 @@ class ProceduresFragment : Fragment() {
         initClickListeners()
 
         clearSearchView()
+
+        proceduresViewModel.updateUserData("$log ${object{}.javaClass.enclosingMethod?.name}")
 
         return binding.root
     }
@@ -243,6 +246,7 @@ class ProceduresFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         snackbar?.dismiss()
+        proceduresViewModel.updateUserData("$log ${object{}.javaClass.enclosingMethod?.name}")
         _binding = null
     }
 }

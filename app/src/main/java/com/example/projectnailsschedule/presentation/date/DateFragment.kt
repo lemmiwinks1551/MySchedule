@@ -31,6 +31,7 @@ import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class DateFragment : Fragment() {
+    private val log = this::class.simpleName
     private val dateParamsViewModel: DateParamsViewModel by activityViewModels()
 
     private var _binding: FragmentDateBinding? = null
@@ -53,6 +54,8 @@ class DateFragment : Fragment() {
         initClickListeners()
 
         swipeToDelete()
+
+        dateParamsViewModel.updateUserData("$log ${object{}.javaClass.enclosingMethod?.name}")
 
         return binding.root
     }
@@ -234,6 +237,7 @@ class DateFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         snackbar?.dismiss()
+        dateParamsViewModel.updateUserData("$log ${object{}.javaClass.enclosingMethod?.name}")
         _binding = null
     }
 }

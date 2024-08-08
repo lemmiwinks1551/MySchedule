@@ -68,7 +68,7 @@ android {
         GooglePlay {
             dimension "MySchedule"
             applicationId "com.lemmiwinks.myschedule"
-            versionCode 50
+            versionCode 51
             versionName "7." + versionCode
         }
     }

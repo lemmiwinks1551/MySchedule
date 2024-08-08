@@ -16,9 +16,8 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.ActivityMainBinding
-import com.example.projectnailsschedule.util.UncaughtExceptionHandler
+import com.example.projectnailsschedule.domain.models.UserDataManager
 import com.example.projectnailsschedule.util.rustore.RuStoreAd
-import com.example.projectnailsschedule.util.rustore.RuStoreReview
 import com.google.android.material.navigation.NavigationView
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
@@ -35,6 +34,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
 
 @AndroidEntryPoint
@@ -48,7 +48,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
-    private val uncaughtExceptionHandler = UncaughtExceptionHandler()
+
+    @Inject
+    lateinit var uncaughtExceptionHandler: Thread.UncaughtExceptionHandler
 
     private var drawerLayout: DrawerLayout? = null
     private var navView: NavigationView? = null
@@ -71,6 +73,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val lifecycleObserver = AppLifecycleObserver()
+        lifecycle.addObserver(lifecycleObserver)
 
         // set theme from shared prefs
         val currentUserTheme = mainViewModel.getUserTheme()
@@ -113,10 +118,7 @@ class MainActivity : AppCompatActivity() {
 
         ruStoreAd.interstitialAd(context = applicationContext)
 
-        CoroutineScope(Dispatchers.IO).launch {
-            // Request user's review
-            RuStoreReview(this@MainActivity).rateApp()
-        }
+        initObservers()
     }
 
     override fun onResume() {
@@ -184,6 +186,16 @@ class MainActivity : AppCompatActivity() {
                     this,
                     123
                 )
+            }
+        }
+    }
+
+    private fun initObservers() {
+        // Подключаем Observer к userDateQueue
+        UserDataManager.userDateQueue.observe(this) { userDataQueue ->
+            // Обрабатываем обновления userDateQueue
+            CoroutineScope(Dispatchers.IO).launch {
+                mainViewModel.sendUserData()
             }
         }
     }

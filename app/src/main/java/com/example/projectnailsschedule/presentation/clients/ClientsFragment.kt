@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.SelectUnifBinding
 import com.example.projectnailsschedule.domain.models.ClientModelDb
+import com.example.projectnailsschedule.presentation.main.MainViewModel
 import com.example.projectnailsschedule.util.rustore.RuStoreAd
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
@@ -31,6 +32,7 @@ import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class ClientsFragment : Fragment() {
+    private val log = this::class.simpleName
     private val clientsViewModel: ClientsViewModel by activityViewModels()
 
     private var _binding: SelectUnifBinding? = null
@@ -58,6 +60,8 @@ class ClientsFragment : Fragment() {
         initClickListeners()
 
         clearSearchView()
+
+        clientsViewModel.updateUserData("$log ${object{}.javaClass.enclosingMethod?.name}")
 
         return binding.root
     }
@@ -268,6 +272,7 @@ class ClientsFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         snackbar?.dismiss()
+        clientsViewModel.updateUserData("$log ${object{}.javaClass.enclosingMethod?.name}")
         _binding = null
     }
 }

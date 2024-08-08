@@ -31,6 +31,8 @@ import java.util.Calendar
 
 @AndroidEntryPoint
 class AppointmentFragment : Fragment() {
+    private val log = this::class.simpleName
+
     private val dateParamsViewModel: DateParamsViewModel by activityViewModels()
     private val clientsViewModel: ClientsViewModel by activityViewModels()
 
@@ -59,6 +61,7 @@ class AppointmentFragment : Fragment() {
         setTitle()
 
         setHasOptionsMenu(true)
+        dateParamsViewModel.updateUserData("$log ${object{}.javaClass.enclosingMethod?.name}")
         return binding.root
     }
 
@@ -293,6 +296,7 @@ class AppointmentFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        dateParamsViewModel.updateUserData("$log ${object{}.javaClass.enclosingMethod?.name}")
     }
 
     private suspend fun defineAppointment() {

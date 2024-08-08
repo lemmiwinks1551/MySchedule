@@ -24,6 +24,7 @@ import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class SelectProcedureFragment : DialogFragment() {
+    private val log = this::class.simpleName
     private val proceduresViewModel: ProceduresViewModel by activityViewModels()
 
     private var _binding: SelectUnifBinding? = null
@@ -60,6 +61,8 @@ class SelectProcedureFragment : DialogFragment() {
         initClickListeners()
 
         clearSearchView()
+
+        proceduresViewModel.updateUserData("$log ${object{}.javaClass.enclosingMethod?.name}")
 
         return binding.root
     }
@@ -125,5 +128,11 @@ class SelectProcedureFragment : DialogFragment() {
 
     private fun clearSearchView() {
         searchView?.setQuery(null, true)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        proceduresViewModel.updateUserData("$log ${object{}.javaClass.enclosingMethod?.name}")
+        _binding = null
     }
 }

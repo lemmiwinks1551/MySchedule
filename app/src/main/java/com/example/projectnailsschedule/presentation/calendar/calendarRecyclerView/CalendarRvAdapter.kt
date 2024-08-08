@@ -361,7 +361,7 @@ class CalendarRvAdapter(
         val dayNum = Util().getDayOfYear(ruFormatDate) - 1 // Получаем порядковый номер дня
         Log.i("productionCalendarAPI", "Получаем информацию по дате № $dayNum")
 
-        val dateInfo = dateParamsViewModel.getDataInfo(context, dayNum)
+        val dateInfo = dateParamsViewModel.getDataInfo(dayNum)
         Log.i("productionCalendarAPI", "Тип дня № $dayNum - ${dateInfo.typeId}")
 
         withContext(Dispatchers.Main) {
@@ -384,7 +384,7 @@ class CalendarRvAdapter(
                     Log.i("productionCalendarAPI", "${dateInfo.date} - Праздник")
                     holder.dateIcon.visibility = View.VISIBLE
                     // Установить иконку праздника
-                    val notes = dateParamsViewModel.getDataInfo(context, dayNum).note
+                    val notes = dateParamsViewModel.getDataInfo(dayNum).note
                     val icon = dateParamsViewModel.getHolidayIcon(notes)
                     holder.dateIcon.setImageResource(icon)
                     holder.date.setTextColor(context.resources.getColor(R.color.red_weekend))
@@ -430,7 +430,7 @@ class CalendarRvAdapter(
         CoroutineScope(Dispatchers.IO).launch {
             val dayNum =
                 Util().getDayOfYear(Util().formatDateToRus(selectedDate.date!!)) - 1
-            val dateInfo = dateParamsViewModel.getDataInfo(context, dayNum)
+            val dateInfo = dateParamsViewModel.getDataInfo(dayNum)
             when (dateInfo.typeId) {
                 3 -> dateParamsViewModel.dateInfo.postValue(dateInfo.note)
                 5, 6 , 7 -> dateParamsViewModel.dateInfo.postValue(dateInfo.typeText)
