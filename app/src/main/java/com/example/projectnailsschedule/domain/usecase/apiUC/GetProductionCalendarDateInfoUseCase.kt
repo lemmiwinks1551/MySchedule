@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
+import android.util.Log
 import com.example.projectnailsschedule.domain.models.DateParams
 import com.example.projectnailsschedule.domain.models.ProductionCalendarDateModel
 import com.example.projectnailsschedule.domain.repository.ProductionCalendarApi
@@ -13,6 +14,7 @@ import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
+import okhttp3.ResponseBody.Companion.toResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -23,7 +25,7 @@ class GetProductionCalendarDateInfoUseCase(private val context: Context) {
     private val log = this::class.simpleName
 
     suspend fun execute(selectedDate: DateParams, day: Int = 0): ProductionCalendarDateModel {
-        // add interceptor for logs: OkHttp
+
         val interceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
 
         class CacheInterceptor : Interceptor {
@@ -41,7 +43,7 @@ class GetProductionCalendarDateInfoUseCase(private val context: Context) {
         class ForceCacheInterceptor : Interceptor {
             override fun intercept(chain: Interceptor.Chain): Response {
                 val builder: Request.Builder = chain.request().newBuilder()
-                if (!isInternetAvailable(context)) { // Функция для проверки доступности интернета
+                if (!isInternetAvailable(context)) {
                     builder.cacheControl(CacheControl.FORCE_CACHE)
                 }
                 return chain.proceed(builder.build())
@@ -53,6 +55,7 @@ class GetProductionCalendarDateInfoUseCase(private val context: Context) {
             .addNetworkInterceptor(CacheInterceptor())
             .addInterceptor(ForceCacheInterceptor())
             .cache(createOkHttpClient(context).cache)
+            .addInterceptor(CacheLoggingInterceptor())
             .build()
 
         val retrofit = Retrofit.Builder()
@@ -60,6 +63,7 @@ class GetProductionCalendarDateInfoUseCase(private val context: Context) {
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
+
         val productionCalendarApi = retrofit.create(ProductionCalendarApi::class.java)
 
         val year = selectedDate.date?.year.toString() // Получаем обрабатываемый год, например "2024"
@@ -69,9 +73,8 @@ class GetProductionCalendarDateInfoUseCase(private val context: Context) {
     }
 
     private fun createOkHttpClient(context: Context): OkHttpClient {
-        // Размер кэша - 100 МБ
-        val cacheSize = 100 * 1024 * 1024
-        val cacheDirectory = File(context.cacheDir, "http-cache")
+        val cacheSize = 10 * 1024 * 1024 // 10 mb
+        val cacheDirectory = File(context.cacheDir, "prod_calendar_cache")
         val cache = Cache(cacheDirectory, cacheSize.toLong())
 
         return OkHttpClient.Builder()
@@ -79,7 +82,7 @@ class GetProductionCalendarDateInfoUseCase(private val context: Context) {
             .build()
     }
 
-    fun isInternetAvailable(context: Context): Boolean {
+    private fun isInternetAvailable(context: Context): Boolean {
         val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
@@ -91,6 +94,27 @@ class GetProductionCalendarDateInfoUseCase(private val context: Context) {
             @Suppress("DEPRECATION")
             val networkInfo = connectivityManager.activeNetworkInfo
             return networkInfo?.isConnected ?: false
+        }
+    }
+
+    class CacheLoggingInterceptor : Interceptor {
+        override fun intercept(chain: Interceptor.Chain): Response {
+            val request = chain.request()
+            val response = chain.proceed(request)
+
+            val cacheControl = response.cacheControl.toString()
+            val responseBody = response.body?.string() // Получаем тело ответа как строку для логирования
+
+/*            Log.d("CacheLoggingInterceptor", "Response Message: ${response.message}")
+            Log.d("CacheLoggingInterceptor", "Response isSuccessful: ${response.isSuccessful}")
+            Log.d("CacheLoggingInterceptor", "Response code: ${response.code}")
+            Log.d("CacheLoggingInterceptor", "Cache-Control: $cacheControl")
+            Log.d("CacheLoggingInterceptor", "Response Body: $responseBody")*/
+
+            // Воссоздаем Response с тем же телом для последующей обработки
+            return response.newBuilder()
+                .body(responseBody?.toResponseBody(response.body?.contentType()))
+                .build()
         }
     }
 }
