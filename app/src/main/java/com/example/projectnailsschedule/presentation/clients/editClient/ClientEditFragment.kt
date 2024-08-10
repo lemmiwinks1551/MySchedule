@@ -21,7 +21,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentClientEditBinding
-import com.example.projectnailsschedule.domain.models.ClientModelDb
 import com.example.projectnailsschedule.presentation.calendar.DateParamsViewModel
 import com.example.projectnailsschedule.presentation.clients.ClientsViewModel
 import com.example.projectnailsschedule.util.Util
@@ -454,7 +453,7 @@ class ClientEditFragment : Fragment() {
 
     private suspend fun updateAppointmentListInSelectedDate() {
         dateParamsViewModel.selectedDate.value?.appointmentsList =
-            dateParamsViewModel.getArrayAppointments(date = dateParamsViewModel.selectedDate.value?.date!!)
+            dateParamsViewModel.getArrayOfAppointments(date = dateParamsViewModel.selectedDate.value?.date!!)
     }
 
     private fun deleteFilesExceptOne(folderPath: File, fileToKeep: File) {

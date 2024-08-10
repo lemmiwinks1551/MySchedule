@@ -60,6 +60,8 @@ class CalendarRvAdapter(
         }
     }
 
+    private val log = this::class.simpleName
+
     private lateinit var greenImageView: ImageView
     private lateinit var yellowImageView: ImageView
     private lateinit var redImageView: ImageView
@@ -93,7 +95,7 @@ class CalendarRvAdapter(
             // get date appointments
             CoroutineScope(Dispatchers.IO).launch {
                 selectedDate.appointmentsList =
-                    dateParamsViewModel.getArrayAppointments(date = selectedDate.date!!)
+                    dateParamsViewModel.getArrayOfAppointments(date = selectedDate.date!!)
                 withContext(Dispatchers.Main) {
                     // set appointments size into holder
                     if (selectedDate.appointmentsList!!.isNotEmpty()) {
@@ -359,7 +361,7 @@ class CalendarRvAdapter(
         7 - Перенесенный рабочий день */
 
         val dayNum = Util().getDayOfYear(ruFormatDate) - 1 // Получаем порядковый номер дня
-        Log.i("productionCalendarAPI", "Получаем информацию по дате № $dayNum")
+        Log.i("productionCalendarAPI", "Получаем информацию по дате $ruFormatDate № $dayNum")
 
         val dateInfo = dateParamsViewModel.getDataInfo(dayNum)
         Log.i("productionCalendarAPI", "Тип дня № $dayNum - ${dateInfo.typeId}")
@@ -433,7 +435,7 @@ class CalendarRvAdapter(
             val dateInfo = dateParamsViewModel.getDataInfo(dayNum)
             when (dateInfo.typeId) {
                 3 -> dateParamsViewModel.dateInfo.postValue(dateInfo.note)
-                5, 6 , 7 -> dateParamsViewModel.dateInfo.postValue(dateInfo.typeText)
+                5, 6, 7 -> dateParamsViewModel.dateInfo.postValue(dateInfo.typeText)
                 else -> dateParamsViewModel.dateInfo.postValue(null)
             }
         }

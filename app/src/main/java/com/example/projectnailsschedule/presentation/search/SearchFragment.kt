@@ -259,7 +259,7 @@ class SearchFragment : Fragment() {
         //dateParamsViewModel.appointmentPosition = position
         lifecycleScope.launch {
             val date = Util().convertStringToLocalDate(appointmentList?.get(position)?.date!!)
-            val dateAppointments = dateParamsViewModel.getArrayAppointments(date!!)
+            val dateAppointments = dateParamsViewModel.getArrayOfAppointments(date!!)
             val selectedDate = DateParams(
                 date = date,
                 appointmentsList = dateAppointments

@@ -6,13 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import androidx.recyclerview.widget.RecyclerView.SmoothScroller
 import com.example.projectnailsschedule.R
@@ -28,7 +26,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.time.LocalDate
 import java.time.ZoneId
 import java.util.Calendar
 import java.util.Date
@@ -120,7 +117,7 @@ class ListMonthViewFragment : Fragment() {
                 val addToList = DateWeekAppModel(
                     date = dateParams.date!!,
                     weekDay = Util().getDayOfWeek(date, requireContext()),
-                    appointmentsList = dateParamsViewModel.getArrayAppointments(dateParams.date!!)
+                    appointmentsList = dateParamsViewModel.getArrayOfAppointments(dateParams.date!!)
                 )
                 list.add(addToList)
             }

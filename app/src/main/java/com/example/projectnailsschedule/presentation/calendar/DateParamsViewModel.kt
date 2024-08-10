@@ -71,7 +71,7 @@ class DateParamsViewModel @Inject constructor(
 
     var prevCalendarRvHolder: CalendarRvAdapter.ViewHolder? = null
 
-    suspend fun getArrayAppointments(date: LocalDate): MutableList<AppointmentModelDb> {
+    suspend fun getArrayOfAppointments(date: LocalDate): MutableList<AppointmentModelDb> {
         return getDateAppointments.execute(date)
     }
 
@@ -231,6 +231,7 @@ class DateParamsViewModel @Inject constructor(
     }
 
     suspend fun getDataInfo(dayNum: Int): ProductionCalendarDateModel {
+        // Вернуть информацию о дате из ProductionCalendar
         return getProductionCalendarDateInfoUseCase.execute(selectedDate.value!!, dayNum)
     }
 }
