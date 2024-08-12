@@ -12,10 +12,10 @@ android {
 
     signingConfigs {
         debug {
-            storeFile file(project.properties['DEBUG_STORE_FILE_PATH'])
-            storePassword project.properties['DEBUG_STORE_PASSWORD']
-            keyPassword project.properties['DEBUG_KEY_PASSWORD']
-            keyAlias project.properties['DEBUG_KEY_ALIAS']
+            storeFile file('******')
+            storePassword '******'
+            keyPassword '******'
+            keyAlias '*******'
         }
     }
     compileSdk 34
