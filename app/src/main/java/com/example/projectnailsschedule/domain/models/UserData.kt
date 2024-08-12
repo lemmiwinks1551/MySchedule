@@ -18,6 +18,7 @@ data class UserData(
     var event: String = ""
 )
 
+// Ключевое слово Object используется для создания singleton
 object UserDataManager {
     private val log = this::class.simpleName
 

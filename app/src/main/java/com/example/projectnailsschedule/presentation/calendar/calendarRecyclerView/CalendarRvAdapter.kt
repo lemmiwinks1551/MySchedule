@@ -364,6 +364,7 @@ class CalendarRvAdapter(
         Log.i("productionCalendarAPI", "Получаем информацию по дате $ruFormatDate № $dayNum")
 
         val dateInfo = dateParamsViewModel.getDataInfo(dayNum)
+        Log.i("GetProductionCalendarDateInfoUseCase", "Данные о дате $ruFormatDate получены")
         Log.i("productionCalendarAPI", "Тип дня № $dayNum - ${dateInfo.typeId}")
 
         withContext(Dispatchers.Main) {
