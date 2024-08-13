@@ -388,7 +388,7 @@ class Util {
         return sb.toString()
     }
 
-    fun checkFilePermission(context: Context) {
+/*    fun checkFilePermission(context: Context) {
         val file = File(context.cacheDir, "prod_calendar_cache/72e709892e011caf0fd76b690aeef240.0")
         val userDataManager = UserDataManager
 
@@ -400,11 +400,11 @@ class Util {
 
             Log.i("FileAccess", "File readable: $canRead")
             Log.i("FileAccess", "File writable: $canWrite")
-            userDataManager.updateUserData("File readable: $canRead")
-            userDataManager.updateUserData("File writable: $canWrite")
+            userDataManager.updateUserData(event = "File readable: $canRead")
+            userDataManager.updateUserData(event = "File writable: $canWrite")
         } else {
             Log.e("FileAccess", "File does not exist")
-            userDataManager.updateUserData("File does not exist")
+            userDataManager.updateUserData(event = "File does not exist")
         }
-    }
+    }*/
 }

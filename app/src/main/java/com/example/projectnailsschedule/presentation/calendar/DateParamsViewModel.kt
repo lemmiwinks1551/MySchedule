@@ -227,7 +227,7 @@ class DateParamsViewModel @Inject constructor(
     }
 
     fun updateUserData(event: String) {
-        UserDataManager.updateUserData(event)
+        UserDataManager.updateUserData(event = event)
     }
 
     suspend fun getDataInfo(dayNum: Int): ProductionCalendarDateModel {

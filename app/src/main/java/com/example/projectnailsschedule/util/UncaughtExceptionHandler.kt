@@ -30,6 +30,7 @@ class UncaughtExceptionHandler(
             sessionId = UserDataManager.getUserData().sessionId,
             dateTime = LocalDateTime.now()
                 .format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss")),
+            eventType = "Error",
             event = "Message ${throwable.message}. StackTrace: ${throwable.stackTrace[0]}"
         )
 

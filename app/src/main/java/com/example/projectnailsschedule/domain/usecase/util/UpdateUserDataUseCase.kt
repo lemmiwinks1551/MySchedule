@@ -4,6 +4,6 @@ import com.example.projectnailsschedule.domain.models.UserDataManager
 
 class UpdateUserDataUseCase {
     fun execute(event: String) {
-        UserDataManager.updateUserData(event)
+        UserDataManager.updateUserData(event = event)
     }
 }

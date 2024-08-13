@@ -9,7 +9,7 @@ class AppLifecycleObserver : DefaultLifecycleObserver {
     private val userDataManager = UserDataManager
 
     override fun onCreate(owner: LifecycleOwner) {
-        userDataManager.updateUserData("Main Activity onCreate")
+        userDataManager.updateUserData(event = "Main Activity onCreate")
         super.onCreate(owner)
     }
 
@@ -34,7 +34,7 @@ class AppLifecycleObserver : DefaultLifecycleObserver {
     }*/
 
     override fun onStop(owner: LifecycleOwner) {
-        userDataManager.updateUserData("Main Activity onStop")
+        userDataManager.updateUserData(event = "Main Activity onStop")
         super.onStop(owner)
     }
 }

@@ -119,7 +119,7 @@ class GetProductionCalendarDateInfoUseCase(private val context: Context) {
             } catch (e: Exception) {
                 e.message?.let { Log.e(log, it) }
                 // отправить данные об ошибке
-                UserDataManager.updateUserData(e.message)
+                UserDataManager.updateUserData(event =  e.message)
                 continue
 
                 // вернуть простой рабочий день

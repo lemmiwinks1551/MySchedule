@@ -15,6 +15,7 @@ data class UserData(
     var device: String = Build.DEVICE,
     var dateTime: String = "",
     var appVersionName: String = BuildConfig.VERSION_NAME,
+    var eventType: String = "",
     var event: String = ""
 )
 
@@ -30,10 +31,11 @@ object UserDataManager {
     }
 
     @Synchronized
-    fun updateUserData(event: String?) {
+    fun updateUserData(eventType: String = "LifeCycle", event: String?) {
         val newUserData = userData.copy(
             dateTime = LocalDateTime.now()
                 .format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss")),
+            eventType = eventType,
             event = event ?: userData.event
         )
         addUserDateQueue(newUserData)
