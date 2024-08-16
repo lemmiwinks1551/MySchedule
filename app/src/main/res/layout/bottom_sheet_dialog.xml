@@ -47,9 +47,35 @@
         android:padding="16dp"
         android:text="Редактировать"
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/edit_icon"
         app:layout_constraintTop_toBottomOf="@id/execute" />
+
+    <ImageView
+        android:id="@+id/get_phone_from_contacts_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:src="@drawable/baseline_contact_page_24"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/get_phone_from_contacts_textView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/get_phone_from_contacts_textView" />
+
+    <TextView
+        android:id="@+id/get_phone_from_contacts_textView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="16dp"
+        android:text="Выбрать из телефонной книги"
+        android:textSize="18sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/edit_icon"
+        app:layout_constraintTop_toBottomOf="@id/edit" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

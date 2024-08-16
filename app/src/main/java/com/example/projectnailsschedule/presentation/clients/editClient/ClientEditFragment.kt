@@ -275,6 +275,12 @@ class ClientEditFragment : Fragment() {
                 execute.text = "Вызов"
                 view.findViewById<ImageView>(R.id.icon)
                     .setImageResource(R.drawable.baseline_call_24)
+
+                // Выбор из телефонной книги
+                view.findViewById<ImageView>(R.id.get_phone_from_contacts_icon).visibility =
+                    View.VISIBLE
+                view.findViewById<TextView>(R.id.get_phone_from_contacts_textView).visibility =
+                    View.VISIBLE
             }
 
             vkEt.id -> {
