@@ -174,4 +174,5 @@
     <string name="report_technical_issues_or_suggest_new_features">Сообщить о технических проблемах или предложить новые функции</string>
     <string name="set_as_theme">Выбрать тему</string>
     <string name="set_dark_theme">Темная тема</string>
+    <string name="faq">Часто задаваемые вопросы</string>
 </resources>

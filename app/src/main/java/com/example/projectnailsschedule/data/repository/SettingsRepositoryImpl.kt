@@ -2,8 +2,7 @@ package com.example.projectnailsschedule.data.repository
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.example.projectnailsschedule.domain.repository.SettingsRepository
-import java.time.LocalDate
+import com.example.projectnailsschedule.domain.repository.repo.SettingsRepository
 
 class SettingsRepositoryImpl(context: Context?) : SettingsRepository {
 

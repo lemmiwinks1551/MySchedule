@@ -6,7 +6,7 @@ import android.net.NetworkCapabilities
 import android.os.Build
 import android.util.Log
 import com.example.projectnailsschedule.domain.models.UserData
-import com.example.projectnailsschedule.domain.repository.EventsApi
+import com.example.projectnailsschedule.domain.repository.api.EventsApi
 import okhttp3.Cache
 import okhttp3.CacheControl
 import okhttp3.Interceptor

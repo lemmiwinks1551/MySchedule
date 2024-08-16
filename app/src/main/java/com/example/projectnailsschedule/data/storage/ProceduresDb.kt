@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.projectnailsschedule.domain.models.ProcedureModelDb
-import com.example.projectnailsschedule.domain.repository.ProcedureDao
+import com.example.projectnailsschedule.domain.repository.dao.ProcedureDao
 
 @Database(
     entities = [ProcedureModelDb::class],

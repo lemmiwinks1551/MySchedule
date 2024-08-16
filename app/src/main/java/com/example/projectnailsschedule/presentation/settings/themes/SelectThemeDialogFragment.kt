@@ -1,4 +1,4 @@
-package com.example.projectnailsschedule.presentation.settings.themesRV
+package com.example.projectnailsschedule.presentation.settings.themes
 
 import ZoomOutPageTransformer
 import android.os.Bundle

@@ -1,11 +1,12 @@
 package com.example.projectnailsschedule.di
 
 import android.content.Context
-import com.example.projectnailsschedule.domain.repository.CalendarRepository
-import com.example.projectnailsschedule.domain.repository.ClientsRepository
-import com.example.projectnailsschedule.domain.repository.ProcedureRepository
-import com.example.projectnailsschedule.domain.repository.ScheduleRepository
-import com.example.projectnailsschedule.domain.repository.SettingsRepository
+import com.example.projectnailsschedule.domain.repository.repo.CalendarRepository
+import com.example.projectnailsschedule.domain.repository.repo.ClientsRepository
+import com.example.projectnailsschedule.domain.repository.repo.ProcedureRepository
+import com.example.projectnailsschedule.domain.repository.repo.ScheduleRepository
+import com.example.projectnailsschedule.domain.repository.repo.SettingsRepository
+import com.example.projectnailsschedule.domain.usecase.apiUC.GetFaqUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.GetProductionCalendarDateInfoUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.SendUserDataUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.DeleteAppointmentUseCase
@@ -237,5 +238,10 @@ class DomainModule {
     @Provides
     fun getProductionCalendarUseCase(context: Context): GetProductionCalendarDateInfoUseCase {
         return GetProductionCalendarDateInfoUseCase(context)
+    }
+
+    @Provides
+    fun getFaqUseCase(context: Context): GetFaqUseCase {
+        return GetFaqUseCase(context)
     }
 }

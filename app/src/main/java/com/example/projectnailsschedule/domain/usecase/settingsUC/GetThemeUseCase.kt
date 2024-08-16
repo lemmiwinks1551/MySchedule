@@ -1,6 +1,6 @@
 package com.example.projectnailsschedule.domain.usecase.settingsUC
 
-import com.example.projectnailsschedule.domain.repository.SettingsRepository
+import com.example.projectnailsschedule.domain.repository.repo.SettingsRepository
 
 class GetThemeUseCase(private val settingsRepository: SettingsRepository) {
 

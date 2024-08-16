@@ -5,10 +5,9 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
 import android.util.Log
-import com.example.projectnailsschedule.domain.models.DateParams
-import com.example.projectnailsschedule.domain.models.ProductionCalendarDateModel
+import com.example.projectnailsschedule.domain.models.FaqModel
 import com.example.projectnailsschedule.domain.models.UserDataManager
-import com.example.projectnailsschedule.domain.repository.api.ProductionCalendarApi
+import com.example.projectnailsschedule.domain.repository.api.FaqApi
 import okhttp3.Cache
 import okhttp3.CacheControl
 import okhttp3.Interceptor
@@ -21,10 +20,10 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
 import java.util.concurrent.TimeUnit
 
-class GetProductionCalendarDateInfoUseCase(private val context: Context) {
+class GetFaqUseCase(private val context: Context) {
     private val log = this::class.simpleName
 
-    suspend fun execute(selectedDate: DateParams, day: Int = 0): ProductionCalendarDateModel {
+    suspend fun execute(): List<FaqModel> {
         do {
             try {
                 val interceptor =
@@ -74,19 +73,19 @@ class GetProductionCalendarDateInfoUseCase(private val context: Context) {
                         val responseBody =
                             response.body?.string() // Получаем тело ответа как строку для логирования
 
-                        Log.d("CacheLoggingInterceptor", "Response Message: ${response.message}")
+                        Log.d("$log CacheLoggingInterceptor", "Response Message: ${response.message}")
                         Log.d(
-                            "CacheLoggingInterceptor",
-                            "Response isSuccessful: ${response.isSuccessful}"
+                            "$log CacheLoggingInterceptor",
+                            "$log Response isSuccessful: ${response.isSuccessful}"
                         )
-                        Log.d("CacheLoggingInterceptor", "Response code: ${response.code}")
-                        Log.d("CacheLoggingInterceptor", "Cache-Control: $cacheControl")
-                        Log.d("CacheLoggingInterceptor", "Response Body: $responseBody")
+                        Log.d("$log CacheLoggingInterceptor", "Response code: ${response.code}")
+                        Log.d("$log CacheLoggingInterceptor", "Cache-Control: $cacheControl")
+                        Log.d("$log CacheLoggingInterceptor", "Response Body: $responseBody")
 
                         if (response.cacheResponse == null) {
-                            Log.d("CacheLoggingInterceptor", "Response from server")
+                            Log.d("$log CacheLoggingInterceptor", "Response from server")
                         } else {
-                            Log.d("CacheLoggingInterceptor", "Response from cache")
+                            Log.d("$log CacheLoggingInterceptor", "Response from cache")
                         }
 
                         return response.newBuilder()
@@ -109,28 +108,17 @@ class GetProductionCalendarDateInfoUseCase(private val context: Context) {
                     .addConverterFactory(GsonConverterFactory.create())
                     .build()
 
-                val productionCalendarApi = retrofit.create(ProductionCalendarApi::class.java)
+                val faqApi = retrofit.create(FaqApi::class.java)
 
-                val year =
-                    selectedDate.date?.year.toString() // Получаем обрабатываемый год, например "2024"
+                val faq = faqApi.getFaq()
 
                 // вернуть информацию о конкретной дате
-                return productionCalendarApi.getYearData(year)[day]
+                return faq
             } catch (e: Exception) {
                 e.message?.let { Log.e(log, it) }
                 // отправить данные об ошибке
-                UserDataManager.updateUserData(event =  e.message)
+                UserDataManager.updateUserData(event = e.message)
                 continue
-
-                // вернуть простой рабочий день
-                /*                return ProductionCalendarDateModel(
-                                    id = 0,
-                                    date = selectedDate.date.toString(),
-                                    typeId = 1,
-                                    typeText = "",
-                                    note = "",
-                                    weekDay = ""
-                                )*/
             }
         } while (true)
     }
@@ -138,7 +126,7 @@ class GetProductionCalendarDateInfoUseCase(private val context: Context) {
 
 private fun createOkHttpClient(context: Context): OkHttpClient {
     val cacheSize = 10 * 1024 * 1024 // 10 mb
-    val cacheDirectory = File(context.cacheDir, "prod_calendar_cache")
+    val cacheDirectory = File(context.cacheDir, "faq_cache")
     val cache = Cache(cacheDirectory, cacheSize.toLong())
 
     return OkHttpClient.Builder()

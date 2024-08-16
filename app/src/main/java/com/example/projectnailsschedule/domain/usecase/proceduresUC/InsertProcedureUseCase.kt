@@ -1,7 +1,7 @@
 package com.example.projectnailsschedule.domain.usecase.proceduresUC
 
 import com.example.projectnailsschedule.domain.models.ProcedureModelDb
-import com.example.projectnailsschedule.domain.repository.ProcedureRepository
+import com.example.projectnailsschedule.domain.repository.repo.ProcedureRepository
 
 class InsertProcedureUseCase(private val procedureRepository: ProcedureRepository) {
 

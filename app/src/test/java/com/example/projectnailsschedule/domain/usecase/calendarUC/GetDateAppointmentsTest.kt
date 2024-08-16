@@ -1,7 +1,7 @@
 package com.example.projectnailsschedule.domain.usecase.calendarUC
 
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
-import com.example.projectnailsschedule.domain.repository.ScheduleRepository
+import com.example.projectnailsschedule.domain.repository.repo.ScheduleRepository
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito

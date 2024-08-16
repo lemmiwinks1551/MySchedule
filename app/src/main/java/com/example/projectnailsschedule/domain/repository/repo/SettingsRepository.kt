@@ -1,4 +1,4 @@
-package com.example.projectnailsschedule.domain.repository
+package com.example.projectnailsschedule.domain.repository.repo
 
 interface SettingsRepository {
 

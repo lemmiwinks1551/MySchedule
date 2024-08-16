@@ -1,6 +1,8 @@
 package com.example.projectnailsschedule.presentation.settings
 
 import androidx.lifecycle.ViewModel
+import com.example.projectnailsschedule.domain.models.FaqModel
+import com.example.projectnailsschedule.domain.usecase.apiUC.GetFaqUseCase
 import com.example.projectnailsschedule.domain.usecase.util.RestartAppUseCase
 import com.example.projectnailsschedule.domain.usecase.settingsUC.*
 import com.example.projectnailsschedule.domain.usecase.util.UpdateUserDataUseCase
@@ -17,7 +19,8 @@ class SettingsViewModel @Inject constructor(
     private val setUserThemeUseCase: SetUserThemeUseCase,
     private val getUserThemeUseCase: GetUserThemeUseCase,
     private var restartAppUseCase: RestartAppUseCase,
-    private var updateUserDataUseCase: UpdateUserDataUseCase
+    private var updateUserDataUseCase: UpdateUserDataUseCase,
+    private var getFaqUseCase: GetFaqUseCase
     ) : ViewModel() {
 
     init {
@@ -57,5 +60,9 @@ class SettingsViewModel @Inject constructor(
 
     fun updateUserData(event: String) {
         updateUserDataUseCase.execute(event)
+    }
+
+    suspend fun getFaq(): List<FaqModel> {
+        return getFaqUseCase.execute()
     }
 }

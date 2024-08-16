@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.projectnailsschedule.domain.models.CalendarDateModelDb
-import com.example.projectnailsschedule.domain.repository.CalendarDao
+import com.example.projectnailsschedule.domain.repository.dao.CalendarDao
 
 @Database(
     entities = [CalendarDateModelDb::class],
