@@ -4,21 +4,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FaqLayoutBinding
-import com.example.projectnailsschedule.databinding.SelectUnifBinding
-import com.example.projectnailsschedule.domain.models.FaqModel
 import com.example.projectnailsschedule.presentation.settings.SettingsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class FaqDialogFragment : DialogFragment() {
@@ -55,7 +53,7 @@ class FaqDialogFragment : DialogFragment() {
 
         inflateRecyclerView()
 
-        // clientsViewModel.updateUserData("$log ${object{}.javaClass.enclosingMethod?.name}")
+        settingsViewModel.updateUserData("$log ${object{}.javaClass.enclosingMethod?.name}")
         return binding.root
     }
 
@@ -64,22 +62,24 @@ class FaqDialogFragment : DialogFragment() {
     }
 
     private fun inflateRecyclerView() {
-        CoroutineScope(Dispatchers.Main).launch {
-            async { recyclerViewAdapter = FaqRvAdapter(
+        CoroutineScope(Dispatchers.IO).launch {
+            recyclerViewAdapter = FaqRvAdapter(
                 faq = settingsViewModel.getFaq()
-            ) }.await()
+            )
 
-            val layoutManager: RecyclerView.LayoutManager =
-                GridLayoutManager(activity, 1)
+            withContext(Dispatchers.Main) {
+                val layoutManager: RecyclerView.LayoutManager =
+                    GridLayoutManager(activity, 1)
 
-            recyclerView?.layoutManager = layoutManager
-            recyclerView?.adapter = recyclerViewAdapter
+                recyclerView?.layoutManager = layoutManager
+                recyclerView?.adapter = recyclerViewAdapter
+            }
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        // clientsViewModel.updateUserData("$log ${object{}.javaClass.enclosingMethod?.name}")
+        settingsViewModel.updateUserData("$log ${object{}.javaClass.enclosingMethod?.name}")
         _binding = null
     }
 }
