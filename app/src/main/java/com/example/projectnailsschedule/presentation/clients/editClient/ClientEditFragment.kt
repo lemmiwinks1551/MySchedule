@@ -58,6 +58,9 @@ class ClientEditFragment : Fragment() {
 
     private lateinit var saveToolbarButton: MenuItem
 
+    private val REQUEST_READ_CONTACTS = 1
+    private val REQUEST_CONTACT_PICK = 2
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -290,7 +293,15 @@ class ClientEditFragment : Fragment() {
 
                 view.findViewById<TextView>(R.id.get_phone_from_contacts_textView)
                     .setOnClickListener {
-                        checkContactPermission()
+                        try {
+                            checkContactPermission()
+                        } catch (e: Exception) {
+                            Toast.makeText(
+                                requireContext(),
+                                "Возникла непредвиденная ошибка",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
                         bottomSheetDialog.dismiss()
                     }
             }
@@ -398,7 +409,7 @@ class ClientEditFragment : Fragment() {
         // TODO: переписать с деприкейтед метода
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (resultCode == Activity.RESULT_OK) {
+        if (resultCode == Activity.RESULT_OK && requestCode != REQUEST_CONTACT_PICK) {
             val uri = data?.data
 
             // set temp photo into view
@@ -498,9 +509,6 @@ class ClientEditFragment : Fragment() {
         }
     }
 
-    private val REQUEST_READ_CONTACTS = 1
-    private val REQUEST_CONTACT_PICK = 2
-
     private fun checkContactPermission() {
         if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_CONTACTS)
             != PackageManager.PERMISSION_GRANTED
@@ -556,7 +564,11 @@ class ClientEditFragment : Fragment() {
                 val phoneNumber =
                     cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER))
                 phoneEt.setText(phoneNumber)
-                Toast.makeText(requireContext(), "Данные получены", Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    requireContext(),
+                    "Номер телефона добавлен \n $phoneNumber",
+                    Toast.LENGTH_LONG
+                ).show()
             }
         }
     }
