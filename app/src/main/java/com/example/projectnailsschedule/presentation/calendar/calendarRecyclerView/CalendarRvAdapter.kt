@@ -300,8 +300,9 @@ class CalendarRvAdapter(
             val prevHolderDate = dateParamsViewModel.prevCalendarRvHolder?.date?.text
 
             if (holderDate == prevHolderDate) {
-                dateParamsViewModel.prevCalendarRvHolder?.date?.setTypeface(null, Typeface.BOLD)
-                holder.date.setTypeface(null, Typeface.BOLD)
+                adjustTextSizeWithAnimation(holder.date, true)
+
+                dateParamsViewModel.prevCalendarRvHolder = holder
             }
         }
     }
@@ -453,14 +454,12 @@ class CalendarRvAdapter(
 
         if (increase) {
             newSize += 6f
-            textView.setTypeface(null, Typeface.BOLD)
         } else {
             newSize -= 6f
-            textView.setTypeface(null, Typeface.NORMAL)
         }
 
         val animator = ValueAnimator.ofFloat(currentSize, newSize)
-        animator.duration = 300 // Длительность анимации в миллисекундах
+        animator.duration = 400 // Длительность анимации в миллисекундах
         animator.addUpdateListener { animation ->
             val animatedValue = animation.animatedValue as Float
             textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, animatedValue)
