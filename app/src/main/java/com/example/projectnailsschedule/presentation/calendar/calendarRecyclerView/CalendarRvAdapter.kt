@@ -454,12 +454,20 @@ class CalendarRvAdapter(
 
         if (increase) {
             newSize += 6f
+            textView.setShadowLayer(
+                1.5f, // radius
+                2f,   // dx (смещение по X)
+                2f,   // dy (смещение по Y)
+                textView.currentTextColor // цвет тени
+            )
+
         } else {
             newSize -= 6f
+            textView.setShadowLayer(0f, 0f, 0f, Color.TRANSPARENT)
         }
 
         val animator = ValueAnimator.ofFloat(currentSize, newSize)
-        animator.duration = 400 // Длительность анимации в миллисекундах
+        animator.duration = 300 // Длительность анимации в миллисекундах
         animator.addUpdateListener { animation ->
             val animatedValue = animation.animatedValue as Float
             textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, animatedValue)
