@@ -8,13 +8,25 @@
     android:background="@drawable/bold_borders"
     android:orientation="vertical">
 
+    <ImageView
+        android:id="@+id/selected_background"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@drawable/calendar_recycler_view_selected_borders_red_radius"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/date_cl"
         android:layout_width="0dp"
+        android:layout_marginStart="4dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/rv_and_fab_cl"
-        app:layout_constraintHorizontal_weight="0.15"
+        app:layout_constraintHorizontal_weight="0.1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -22,7 +34,6 @@
             android:id="@+id/date_text_view"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="4dp"
             android:gravity="center_horizontal"
             android:text="@string/single_date_example"
             android:textSize="30sp"
@@ -49,10 +60,9 @@
         android:id="@+id/rv_and_fab_cl"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_weight="0.8"
+        app:layout_constraintHorizontal_weight="0.9"
         app:layout_constraintStart_toEndOf="@id/date_cl"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -60,7 +70,6 @@
             android:id="@+id/child_rv"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_margin="4dp"
             app:layout_constraintBottom_toTopOf="@id/month_view_add_appointment_fab"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -80,6 +89,5 @@
             app:srcCompat="@android:drawable/ic_input_add" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

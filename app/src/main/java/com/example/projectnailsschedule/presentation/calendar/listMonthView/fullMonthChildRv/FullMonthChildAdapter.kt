@@ -3,6 +3,7 @@ package com.example.projectnailsschedule.presentation.calendar.listMonthView.ful
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.net.toUri
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
@@ -49,6 +50,12 @@ class FullMonthChildAdapter(
             holder.appointmentClientWhatsApp.text = whatsapp
             holder.appointmentProcedure.text = procedure
             holder.appointmentNotes.text = notes
+            // if client photo exists - set photo
+            if (!photo.isNullOrEmpty()) {
+                holder.clientPhoto.setImageURI(photo!!.toUri())
+            } else {
+                holder.clientPhoto.setImageResource(R.drawable.client_avatar)
+            }
         }
     }
 

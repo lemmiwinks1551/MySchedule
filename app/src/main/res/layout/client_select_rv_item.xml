@@ -12,7 +12,6 @@
         android:layout_width="134dp"
         android:layout_height="134dp"
         android:layout_margin="8dp"
-
         android:padding="5dp"
         android:src="@drawable/client_avatar"
         app:layout_constraintBottom_toTopOf="@id/client_name_date_appointment"

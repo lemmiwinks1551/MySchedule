@@ -74,9 +74,9 @@ class FullMonthViewRVAdapter(
 
             // if day is today set custom frame
             if (monthDatesList[position].date == LocalDate.now()) {
-                holder.mothViewParentCl.setBackgroundResource(R.drawable.bold_borders_red)
+                holder.selectedBackground.visibility = View.VISIBLE
             } else {
-                holder.dateCl.setBackgroundColor(context.resources.getColor(R.color.transparent))
+                holder.selectedBackground.visibility = View.GONE
             }
         }
     }
