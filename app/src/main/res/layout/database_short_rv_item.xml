@@ -13,7 +13,7 @@
         android:layout_margin="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/client_short_data"
-        app:layout_constraintHorizontal_weight="2"
+        app:layout_constraintHorizontal_weight="3"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -33,13 +33,14 @@
 
         <TextView
             android:id="@+id/appointment_name_short"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:background="@drawable/rectangle_2"
             android:gravity="center"
             android:text="@string/client"
             android:textSize="16sp"
+            android:breakStrategy="high_quality"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/client_photo_short"

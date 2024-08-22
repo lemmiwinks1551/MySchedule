@@ -8,7 +8,7 @@ import android.util.Log
 import com.example.projectnailsschedule.domain.models.DateParams
 import com.example.projectnailsschedule.domain.models.ProductionCalendarDateModel
 import com.example.projectnailsschedule.domain.models.UserDataManager
-import com.example.projectnailsschedule.domain.repository.ProductionCalendarApi
+import com.example.projectnailsschedule.domain.repository.api.ProductionCalendarApi
 import okhttp3.Cache
 import okhttp3.CacheControl
 import okhttp3.Interceptor

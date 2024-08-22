@@ -1,8 +1,12 @@
 package com.example.projectnailsschedule.presentation.clients.editClient
 
+import android.Manifest
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
+import android.provider.ContactsContract
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.view.LayoutInflater
 import android.view.Menu
@@ -14,6 +18,8 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -51,6 +57,9 @@ class ClientEditFragment : Fragment() {
     private var tempPhotoFile: File? = null
 
     private lateinit var saveToolbarButton: MenuItem
+
+    private val REQUEST_READ_CONTACTS = 1
+    private val REQUEST_CONTACT_PICK = 2
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -270,11 +279,31 @@ class ClientEditFragment : Fragment() {
         val edit = view.findViewById<TextView>(R.id.edit)
 
         when (clickedView.id) {
-            // установить картинку
+            // обработка в зависимости от клика пользователя
             phoneEt.id -> {
                 execute.text = "Вызов"
                 view.findViewById<ImageView>(R.id.icon)
                     .setImageResource(R.drawable.baseline_call_24)
+
+                // Выбор из телефонной книги
+                view.findViewById<ImageView>(R.id.get_phone_from_contacts_icon).visibility =
+                    View.VISIBLE
+                view.findViewById<TextView>(R.id.get_phone_from_contacts_textView).visibility =
+                    View.VISIBLE
+
+                view.findViewById<TextView>(R.id.get_phone_from_contacts_textView)
+                    .setOnClickListener {
+                        try {
+                            checkContactPermission()
+                        } catch (e: Exception) {
+                            Toast.makeText(
+                                requireContext(),
+                                "Возникла непредвиденная ошибка",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                        bottomSheetDialog.dismiss()
+                    }
             }
 
             vkEt.id -> {
@@ -380,7 +409,7 @@ class ClientEditFragment : Fragment() {
         // TODO: переписать с деприкейтед метода
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (resultCode == Activity.RESULT_OK) {
+        if (resultCode == Activity.RESULT_OK && requestCode != REQUEST_CONTACT_PICK) {
             val uri = data?.data
 
             // set temp photo into view
@@ -388,6 +417,21 @@ class ClientEditFragment : Fragment() {
 
             // set temp photo path
             tempPhotoFile = uri!!.path?.let { File(it) }!!
+        }
+
+        if (requestCode == REQUEST_CONTACT_PICK && resultCode == Activity.RESULT_OK) {
+            val contactUri: Uri = data?.data ?: return
+            val projection: Array<String> = arrayOf(ContactsContract.Contacts._ID)
+
+            // Получаем ID контакта
+            requireActivity().contentResolver.query(contactUri, projection, null, null, null)
+                ?.use { cursor ->
+                    if (cursor.moveToFirst()) {
+                        val contactId =
+                            cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.Contacts._ID))
+                        getPhoneNumber(contactId)
+                    }
+                }
         }
     }
 
@@ -461,6 +505,70 @@ class ClientEditFragment : Fragment() {
         files?.forEach { file ->
             if (file != fileToKeep) {
                 file.delete()
+            }
+        }
+    }
+
+    private fun checkContactPermission() {
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_CONTACTS)
+            != PackageManager.PERMISSION_GRANTED
+        ) {
+
+            // Запрос разрешения у пользователя
+            ActivityCompat.requestPermissions(
+                requireActivity(),
+                arrayOf(Manifest.permission.READ_CONTACTS),
+                REQUEST_READ_CONTACTS
+            )
+        } else {
+            // Разрешение уже предоставлено, можем запускать выбор контакта
+            pickContact()
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == REQUEST_READ_CONTACTS) {
+            if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                // Разрешение предоставлено
+                pickContact()
+            } else {
+                // Разрешение отклонено
+            }
+        }
+    }
+
+    private fun pickContact() {
+        val intent = Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI)
+        startActivityForResult(intent, REQUEST_CONTACT_PICK)
+    }
+
+    private fun getPhoneNumber(contactId: String) {
+        val phoneUri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI
+        val projection: Array<String> = arrayOf(ContactsContract.CommonDataKinds.Phone.NUMBER)
+        val selection = "${ContactsContract.CommonDataKinds.Phone.CONTACT_ID} = ?"
+        val selectionArgs = arrayOf(contactId)
+
+        requireActivity().contentResolver.query(
+            phoneUri,
+            projection,
+            selection,
+            selectionArgs,
+            null
+        )?.use { cursor ->
+            if (cursor.moveToFirst()) {
+                val phoneNumber =
+                    cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER))
+                phoneEt.setText(phoneNumber)
+                Toast.makeText(
+                    requireContext(),
+                    "Номер телефона добавлен \n $phoneNumber",
+                    Toast.LENGTH_LONG
+                ).show()
             }
         }
     }

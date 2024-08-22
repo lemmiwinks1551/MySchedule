@@ -1,7 +1,7 @@
 package com.example.projectnailsschedule.domain.usecase.proceduresUC
 
 import com.example.projectnailsschedule.domain.models.ProcedureModelDb
-import com.example.projectnailsschedule.domain.repository.ProcedureRepository
+import com.example.projectnailsschedule.domain.repository.repo.ProcedureRepository
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test

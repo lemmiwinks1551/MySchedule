@@ -1,11 +1,13 @@
 package com.example.projectnailsschedule.presentation.calendar.calendarRecyclerView
 
+import android.animation.ValueAnimator
 import android.app.AlertDialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.util.Log
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -298,7 +300,7 @@ class CalendarRvAdapter(
             val prevHolderDate = dateParamsViewModel.prevCalendarRvHolder?.date?.text
 
             if (holderDate == prevHolderDate) {
-                holder.date.setTypeface(null, Typeface.BOLD)
+                adjustTextSizeWithAnimation(holder.date, true)
 
                 dateParamsViewModel.prevCalendarRvHolder = holder
             }
@@ -337,17 +339,21 @@ class CalendarRvAdapter(
 
     private fun markCurrentDate(holder: ViewHolder, selectedDate: DateParams) {
         if (selectedDate.date!! == LocalDate.now()) {
-            holder.currentDate.visibility = View.VISIBLE
+            holder.selectedBackground.visibility = View.VISIBLE
         }
     }
 
     private fun unSelectPreviousHolder() {
-        dateParamsViewModel.prevCalendarRvHolder?.selectedBackground?.visibility = View.GONE
-
+        dateParamsViewModel.prevCalendarRvHolder?.let {
+            adjustTextSizeWithAnimation(
+                it.date,
+                false
+            )
+        }
     }
 
     private fun selectDate(holder: ViewHolder) {
-        holder.selectedBackground.visibility = View.VISIBLE
+        adjustTextSizeWithAnimation(holder.date, true)
     }
 
     private suspend fun workWithProductionCalendar(ruFormatDate: String, holder: ViewHolder) {
@@ -440,5 +446,32 @@ class CalendarRvAdapter(
                 else -> dateParamsViewModel.dateInfo.postValue(null)
             }
         }
+    }
+
+    private fun adjustTextSizeWithAnimation(textView: TextView, increase: Boolean) {
+        val currentSize = textView.textSize / textView.resources.displayMetrics.scaledDensity
+        var newSize = currentSize
+
+        if (increase) {
+            newSize += 6f
+            textView.setShadowLayer(
+                1.5f, // radius
+                2f,   // dx (смещение по X)
+                2f,   // dy (смещение по Y)
+                textView.currentTextColor // цвет тени
+            )
+
+        } else {
+            newSize -= 6f
+            textView.setShadowLayer(0f, 0f, 0f, Color.TRANSPARENT)
+        }
+
+        val animator = ValueAnimator.ofFloat(currentSize, newSize)
+        animator.duration = 300 // Длительность анимации в миллисекундах
+        animator.addUpdateListener { animation ->
+            val animatedValue = animation.animatedValue as Float
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, animatedValue)
+        }
+        animator.start()
     }
 }

@@ -16,6 +16,7 @@ class ClientsRvAdapter(
     private var clientsList: List<ClientModelDb>,
     private var clientsViewModel: ClientsViewModel
 ) : RecyclerView.Adapter<ClientsRvAdapter.ViewHolder>() {
+
     inner class ViewHolder(
         itemView: View,
         listener: OnItemClickListener

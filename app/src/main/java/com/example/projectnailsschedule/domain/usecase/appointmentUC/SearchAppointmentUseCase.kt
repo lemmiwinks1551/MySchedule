@@ -1,7 +1,7 @@
 package com.example.projectnailsschedule.domain.usecase.appointmentUC
 
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
-import com.example.projectnailsschedule.domain.repository.ScheduleRepository
+import com.example.projectnailsschedule.domain.repository.repo.ScheduleRepository
 
 class SearchAppointmentUseCase(private val scheduleRepository: ScheduleRepository) {
 

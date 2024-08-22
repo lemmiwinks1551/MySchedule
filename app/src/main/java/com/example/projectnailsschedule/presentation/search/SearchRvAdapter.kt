@@ -4,8 +4,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
@@ -49,6 +51,7 @@ class SearchRvAdapter(
         var instagramCl: ConstraintLayout
         var whatsAppCl: ConstraintLayout
         var notesCl: ConstraintLayout
+        var clientPhoto: ImageView
 
         init {
             with(itemView) {
@@ -58,6 +61,7 @@ class SearchRvAdapter(
                 time = findViewById(R.id.time_value_search)
                 notes = findViewById(R.id.client_notes)
                 procedure = findViewById(R.id.procedure_value_search)
+                clientPhoto = findViewById(R.id.client_avatar_date_appointment)
 
                 vkLink = findViewById(R.id.client_vk_link_tv)
                 telegramLink = findViewById(R.id.client_telegram_link_tv)
@@ -124,6 +128,12 @@ class SearchRvAdapter(
             instagramLink.text = appointmentModelDb.instagram
             whatsAppLink.text = appointmentModelDb.whatsapp
             notes.text = appointmentModelDb.notes
+            // if client photo exists - set photo
+            if (!appointmentModelDb.photo.isNullOrEmpty()) {
+                holder.clientPhoto.setImageURI(appointmentModelDb.photo!!.toUri())
+            } else {
+                holder.clientPhoto.setImageResource(R.drawable.client_avatar)
+            }
         }
 
         initClickListeners(holder)

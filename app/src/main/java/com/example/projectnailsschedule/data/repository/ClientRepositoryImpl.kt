@@ -1,11 +1,9 @@
 package com.example.projectnailsschedule.data.repository
 
 import android.content.Context
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.asLiveData
 import com.example.projectnailsschedule.data.storage.ClientsDb
 import com.example.projectnailsschedule.domain.models.ClientModelDb
-import com.example.projectnailsschedule.domain.repository.ClientsRepository
+import com.example.projectnailsschedule.domain.repository.repo.ClientsRepository
 
 class ClientRepositoryImpl(context: Context) : ClientsRepository {
     private var dao = ClientsDb.getDb(context).getDao()

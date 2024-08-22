@@ -3,7 +3,7 @@ package com.example.projectnailsschedule.data.repository
 import android.content.Context
 import com.example.projectnailsschedule.data.storage.CalendarDb
 import com.example.projectnailsschedule.domain.models.CalendarDateModelDb
-import com.example.projectnailsschedule.domain.repository.CalendarRepository
+import com.example.projectnailsschedule.domain.repository.repo.CalendarRepository
 
 class CalendarRepositoryImpl(context: Context) : CalendarRepository {
     private var calendarDb = CalendarDb.getDb(context)

@@ -6,7 +6,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
-import com.example.projectnailsschedule.domain.repository.ScheduleDao
+import com.example.projectnailsschedule.domain.repository.dao.ScheduleDao
 
 @Database(
     entities = [AppointmentModelDb::class],

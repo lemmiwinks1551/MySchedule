@@ -10,7 +10,8 @@ import androidx.fragment.app.viewModels
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.example.projectnailsschedule.R
-import com.example.projectnailsschedule.presentation.settings.themesRV.SelectThemeDialogFragment
+import com.example.projectnailsschedule.presentation.settings.faq.FaqDialogFragment
+import com.example.projectnailsschedule.presentation.settings.themes.SelectThemeDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -18,6 +19,7 @@ class SettingsFragmentCompat : PreferenceFragmentCompat() {
     private val log = this::class.simpleName
     private val settingsViewModel: SettingsViewModel by viewModels()
     private val selectThemeFragmentTag = "SelectThemeFragment"
+    private val faqFragmentTag = "FaqFragment"
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,6 +37,7 @@ class SettingsFragmentCompat : PreferenceFragmentCompat() {
 
         val changeTheme = findPreference<Preference>("theme")
         val sendFeedback = findPreference<Preference>("feedback")
+        val faq = findPreference<Preference>("faq")
 
         changeTheme?.setOnPreferenceClickListener {
             val dialogFragment = SelectThemeDialogFragment()
@@ -44,6 +47,12 @@ class SettingsFragmentCompat : PreferenceFragmentCompat() {
 
         sendFeedback?.setOnPreferenceClickListener {
             sendEmail()
+            true
+        }
+
+        faq?.setOnPreferenceClickListener {
+            val dialogFragment = FaqDialogFragment()
+            dialogFragment.show(parentFragmentManager, faqFragmentTag)
             true
         }
     }

@@ -4,7 +4,7 @@ import android.content.Context
 import com.example.projectnailsschedule.data.storage.ScheduleDb
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
 import com.example.projectnailsschedule.domain.models.ClientModelDb
-import com.example.projectnailsschedule.domain.repository.ScheduleRepository
+import com.example.projectnailsschedule.domain.repository.repo.ScheduleRepository
 import com.example.projectnailsschedule.util.Util
 import java.time.LocalDate
 

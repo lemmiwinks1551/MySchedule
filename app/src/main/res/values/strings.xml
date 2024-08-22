@@ -95,7 +95,7 @@
     <string name="instagram_link_hint">https://instagram.com/… or Username</string>
     <string name="add_procedure_title2">Add/Modify Service in Database</string>
     <string name="price_example">Price</string>
-    <string name="price_hint">100</string>
+    <string name="price_hint">1000</string>
 
     <string name="app_version">Version</string>
     <string name="no_data_title">No appointments</string>
@@ -175,5 +175,6 @@
     <string name="set_as_theme">Set as Theme</string>
     <string name="set_dark_theme">Dark Theme</string>
     <string name="formatted_date">Установить цвет для даты %1$s</string>
+    <string name="faq">Часто задаваемые вопросы</string>
 
 </resources>

@@ -11,4 +11,9 @@
         app:summary="@string/report_technical_issues_or_suggest_new_features"
         app:title="@string/send_feedback" />
 
+    <Preference
+        app:icon="@drawable/baseline_question_mark_24"
+        app:key="faq"
+        app:title="@string/faq"/>
+
 </PreferenceScreen>

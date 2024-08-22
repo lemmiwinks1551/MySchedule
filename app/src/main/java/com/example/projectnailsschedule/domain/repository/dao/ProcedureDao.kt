@@ -1,4 +1,4 @@
-package com.example.projectnailsschedule.domain.repository
+package com.example.projectnailsschedule.domain.repository.dao
 
 import androidx.room.*
 import com.example.projectnailsschedule.domain.models.ProcedureModelDb

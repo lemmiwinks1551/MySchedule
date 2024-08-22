@@ -95,11 +95,8 @@ class MainActivity : AppCompatActivity() {
         // configure app bar
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_calendar,
-                R.id.nav_clients,
-                R.id.nav_procedures,
-                R.id.nav_settings,
-                R.id.nav_about
+                R.id.nav_calendar
+                // в какие фрагменты устанавливать меню
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
