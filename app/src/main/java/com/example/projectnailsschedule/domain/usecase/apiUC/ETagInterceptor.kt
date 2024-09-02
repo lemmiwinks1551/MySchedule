@@ -13,7 +13,18 @@ import okhttp3.ResponseBody
 import java.io.File
 import java.io.IOException
 
-class ETagInterceptor(private val cache: Cache, private val context: Context) : Interceptor {
+class ETagInterceptor(
+    private val cache: Cache,
+    private val context: Context,
+    private val OFFLINE_MODE: Boolean = false // устанавливаем true, если подключаться к интернету не нужно
+) : Interceptor {
+    /** Interceptor
+     * 1.   Получает данные из кеша, если интернет недоступен или выбран OFFLINE_MODE
+     * 2.   Если интернет доступе и OFFLINE_MODE не выбран - выполняет запрос к серверу
+     * 3.   Получает ETag от сервера и сравнивает с сохраненным
+     * 3.1      Если ETag найден в кеше - загружает данные из кеша
+     * 3.2      Если ETag не найден или изменился - загружает данные с сервера*/
+
     private val log = this::class.simpleName
 
     override fun intercept(chain: Interceptor.Chain): Response {
@@ -21,10 +32,10 @@ class ETagInterceptor(private val cache: Cache, private val context: Context) : 
         val cacheKey = request.url.toString()
         val cacheFile = File(cache.directory, cacheKey.hashCode().toString())
 
-        // Если интернета нет, пытаемся получить данные из кэша
-        if (!internetAvailable(context)) {
+        // Получает данные из кеша, если интернет недоступен или выбран OFFLINE_MODE
+        if (!internetAvailable(context) || OFFLINE_MODE) {
             if (cacheFile.exists()) {
-                Log.d(log, "Интернет недоступен, данные загружаются из Cache")
+                Log.d(log, "Интернет недоступен, данные загружаются из Cache OFFLINE_MODE == $OFFLINE_MODE")
                 val cachedETag = cacheFile.readText().substringBefore("\n")
                 val cachedData = cacheFile.readText().substringAfter("\n")
 
@@ -36,15 +47,17 @@ class ETagInterceptor(private val cache: Cache, private val context: Context) : 
                     .body(ResponseBody.create(null, cachedData))
                     .build()
             } else {
-                throw IOException("Интернет недоступен и данных в кэше нет")
+                throw IOException("Интернет недоступен и данных в кэше нет OFFLINE_MODE == $OFFLINE_MODE")
             }
         }
+
         // Выполнение запроса
         val response = chain.proceed(request)
 
         // Получение ETag из заголовков ответа
         val eTag = response.header("ETag")
 
+        // Если ETag получен - проверяет, равен ли он сохраненному ETag
         if (eTag != null) {
             // Попытка загрузить данные из файлового кэша
             Log.d(log, "В response.header.ETag найден")

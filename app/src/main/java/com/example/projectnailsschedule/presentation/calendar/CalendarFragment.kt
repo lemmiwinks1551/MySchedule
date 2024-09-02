@@ -96,9 +96,12 @@ class CalendarFragment : Fragment(),
         dateParamsViewModel.selectedDate.observe(viewLifecycleOwner) {
             val previousDate = dateParamsViewModel.previousDate.value
 
-            // if year was changed
+            // Если выбранный год изменился - перерисовать номер и скачать новые данные с сервера
             if (it.date!!.year != previousDate!!.date?.year) {
-                // update yearTextView
+                // Получить данные за год с сервера
+                getYearProductionCalendar()
+
+                // Установить новый номер года
                 setYearTextView(it)
             }
 
@@ -265,5 +268,13 @@ class CalendarFragment : Fragment(),
         dateParamsViewModel.selectedDate.value?.let { inflateShortDateRecyclerView(it) }
         dateParamsViewModel.selectedDate.value?.let { setMonthTextView(it) }
         dateParamsViewModel.selectedDate.value?.let { setYearTextView(it) }
+    }
+
+    private fun getYearProductionCalendar() {
+        // Получить данные с сервера за выбранный год
+        // TODO: надо добавить флаг, что можно обновляться по дням, пока флаг фолс этого не делать
+        CoroutineScope(Dispatchers.IO).launch {
+            dateParamsViewModel.getYearProcedureCalendar(dateParamsViewModel.selectedDate.value?.date?.year.toString())
+        }
     }
 }

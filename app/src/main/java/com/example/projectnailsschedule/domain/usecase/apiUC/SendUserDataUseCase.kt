@@ -21,6 +21,7 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class SendUserDataUseCase @Inject constructor(var context: Context) {
+    /** UseCase по оправке данных о действия пользователя */
     private val log = this::class.simpleName
 
     suspend fun execute(userData: UserData) {
