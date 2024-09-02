@@ -8,6 +8,7 @@ import com.example.projectnailsschedule.domain.repository.repo.ScheduleRepositor
 import com.example.projectnailsschedule.domain.repository.repo.SettingsRepository
 import com.example.projectnailsschedule.domain.usecase.apiUC.GetFaqUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.GetProductionCalendarDateInfoUseCase
+import com.example.projectnailsschedule.domain.usecase.apiUC.GetProductionCalendarYearUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.SendUserDataUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.DeleteAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.InsertAppointmentUseCase
@@ -238,6 +239,11 @@ class DomainModule {
     @Provides
     fun getProductionCalendarUseCase(context: Context): GetProductionCalendarDateInfoUseCase {
         return GetProductionCalendarDateInfoUseCase(context)
+    }
+
+    @Provides
+    fun getProductionCalendarYearUseCase(context: Context): GetProductionCalendarYearUseCase {
+        return GetProductionCalendarYearUseCase(context)
     }
 
     @Provides

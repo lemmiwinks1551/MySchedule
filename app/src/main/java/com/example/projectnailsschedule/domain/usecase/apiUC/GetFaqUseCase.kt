@@ -1,105 +1,32 @@
 package com.example.projectnailsschedule.domain.usecase.apiUC
 
 import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
-import android.os.Build
 import android.util.Log
 import com.example.projectnailsschedule.domain.models.FaqModel
 import com.example.projectnailsschedule.domain.models.UserDataManager
 import com.example.projectnailsschedule.domain.repository.api.FaqApi
 import okhttp3.Cache
-import okhttp3.CacheControl
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
-import okhttp3.ResponseBody.Companion.toResponseBody
-import okhttp3.logging.HttpLoggingInterceptor
+import okhttp3.ResponseBody
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
-import java.util.concurrent.TimeUnit
 
 class GetFaqUseCase(private val context: Context) {
     private val log = this::class.simpleName
 
     suspend fun execute(): List<FaqModel> {
+        val cacheSize = 10 * 1024 * 1024 // 10 MB
+        val cacheDirectory = File(context.cacheDir, "faq_cache")
+        val cache = Cache(cacheDirectory, cacheSize.toLong())
+
         do {
             try {
-                val interceptor =
-                    HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
-
-                class CacheInterceptor : Interceptor {
-                    override fun intercept(chain: Interceptor.Chain): Response {
-                        val request = chain.request()
-                        val response: Response = chain.proceed(request)
-                        val cacheControl = CacheControl.Builder()
-                            .maxAge(10, TimeUnit.DAYS)
-                            .build()
-                        return response.newBuilder()
-                            .header("Cache-Control", cacheControl.toString())
-                            .build()
-                    }
-                }
-
-                class ForceCacheInterceptor : Interceptor {
-                    /*Позволяет использовать данные из кэша, если интернет недоступен,
-                    и устанавливает правила для использования кэша даже при наличии интернета.*/
-                    override fun intercept(chain: Interceptor.Chain): Response {
-                        val request = chain.request()
-                        val cacheControl = if (!isInternetAvailable(context)) {
-                            CacheControl.FORCE_CACHE
-                        } else {
-                            CacheControl.Builder()
-                                .maxStale(
-                                    10,
-                                    TimeUnit.DAYS
-                                ) // Возвращать данные из кэша, даже если они устарели, но не 10 дней
-                                .build()
-                        }
-                        val newRequest = request.newBuilder()
-                            .cacheControl(cacheControl)
-                            .build()
-                        return chain.proceed(newRequest)
-                    }
-                }
-
-                class CacheLoggingInterceptor : Interceptor {
-                    override fun intercept(chain: Interceptor.Chain): Response {
-                        val request = chain.request()
-                        val response = chain.proceed(request)
-
-                        val cacheControl = response.cacheControl.toString()
-                        val responseBody =
-                            response.body?.string() // Получаем тело ответа как строку для логирования
-
-                        Log.d("$log CacheLoggingInterceptor", "Response Message: ${response.message}")
-                        Log.d(
-                            "$log CacheLoggingInterceptor",
-                            "$log Response isSuccessful: ${response.isSuccessful}"
-                        )
-                        Log.d("$log CacheLoggingInterceptor", "Response code: ${response.code}")
-                        Log.d("$log CacheLoggingInterceptor", "Cache-Control: $cacheControl")
-                        Log.d("$log CacheLoggingInterceptor", "Response Body: $responseBody")
-
-                        if (response.cacheResponse == null) {
-                            Log.d("$log CacheLoggingInterceptor", "Response from server")
-                        } else {
-                            Log.d("$log CacheLoggingInterceptor", "Response from cache")
-                        }
-
-                        return response.newBuilder()
-                            .body(responseBody?.toResponseBody(response.body?.contentType()))
-                            .build()
-                    }
-                }
-
                 val client = OkHttpClient.Builder()
-                    .addInterceptor(interceptor)
-                    .addNetworkInterceptor(CacheInterceptor())
-                    .addInterceptor(ForceCacheInterceptor())
-                    .cache(createOkHttpClient(context).cache)
-                    .addInterceptor(CacheLoggingInterceptor())
+                    .cache(cache)  // Добавляем кэш в OkHttpClient
+                    .addInterceptor(ETagInterceptor(cache, context))
                     .build()
 
                 val retrofit = Retrofit.Builder()
@@ -110,41 +37,15 @@ class GetFaqUseCase(private val context: Context) {
 
                 val faqApi = retrofit.create(FaqApi::class.java)
 
+                // Выполняем запрос
                 val faq = faqApi.getFaq()
 
-                // вернуть информацию о конкретной дате
                 return faq
             } catch (e: Exception) {
                 e.message?.let { Log.e(log, it) }
-                // отправить данные об ошибке
                 UserDataManager.updateUserData(event = e.message)
                 continue
             }
         } while (true)
-    }
-}
-
-private fun createOkHttpClient(context: Context): OkHttpClient {
-    val cacheSize = 10 * 1024 * 1024 // 10 mb
-    val cacheDirectory = File(context.cacheDir, "faq_cache")
-    val cache = Cache(cacheDirectory, cacheSize.toLong())
-
-    return OkHttpClient.Builder()
-        .cache(cache)
-        .build()
-}
-
-private fun isInternetAvailable(context: Context): Boolean {
-    val connectivityManager =
-        context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-        val network = connectivityManager.activeNetwork ?: return false
-        val capabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
-        return capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
-    } else {
-        @Suppress("DEPRECATION")
-        val networkInfo = connectivityManager.activeNetworkInfo
-        return networkInfo?.isConnected ?: false
     }
 }

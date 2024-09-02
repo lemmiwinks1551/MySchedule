@@ -10,6 +10,7 @@ import com.example.projectnailsschedule.domain.models.DateParams
 import com.example.projectnailsschedule.domain.models.ProductionCalendarDateModel
 import com.example.projectnailsschedule.domain.models.UserDataManager
 import com.example.projectnailsschedule.domain.usecase.apiUC.GetProductionCalendarDateInfoUseCase
+import com.example.projectnailsschedule.domain.usecase.apiUC.GetProductionCalendarYearUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.DeleteAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.InsertAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.SearchAppointmentUseCase
@@ -29,6 +30,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import java.time.LocalDate
+import java.time.Year
 import javax.inject.Inject
 
 @HiltViewModel
@@ -46,7 +48,8 @@ class DateParamsViewModel @Inject constructor(
     private val startInstagramUc: StartInstagramUc,
     private val startWhatsAppUc: StartWhatsAppUc,
     private val startPhoneUc: StartPhoneUc,
-    private val getProductionCalendarDateInfoUseCase: GetProductionCalendarDateInfoUseCase
+    private val getProductionCalendarDateInfoUseCase: GetProductionCalendarDateInfoUseCase,
+    private val getProductionCalendarYearUseCase: GetProductionCalendarYearUseCase
 ) : ViewModel() {
     private val tagDateColor = "DateColor"
 
@@ -231,7 +234,12 @@ class DateParamsViewModel @Inject constructor(
     }
 
     suspend fun getDataInfo(dayNum: Int): ProductionCalendarDateModel {
-        // Вернуть информацию о дате из ProductionCalendar
+        // Вернуть информацию о дате из cache ProductionCalendar
         return getProductionCalendarDateInfoUseCase.execute(selectedDate.value!!, dayNum)
+    }
+
+    suspend fun getYearProcedureCalendar(year: String) {
+        // Вернуть информацию о годе из API ProductionCalendar
+        getProductionCalendarYearUseCase.execute(year = year)
     }
 }
