@@ -9,6 +9,10 @@
             android:icon="@drawable/ic_baseline_calendar_month_24"
             android:title="@string/menu_calendar" />
         <item
+            android:id="@+id/nav_account"
+            android:icon="@drawable/ic_baseline_account_box_36"
+            android:title="@string/my_account" />
+        <item
             android:id="@+id/nav_clients"
             android:icon="@drawable/ic_baseline_people_alt_24"
             android:title="@string/menu_clients" />
