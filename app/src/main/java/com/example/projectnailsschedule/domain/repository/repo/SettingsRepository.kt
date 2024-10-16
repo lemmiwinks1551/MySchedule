@@ -15,4 +15,8 @@ interface SettingsRepository {
     fun setUserTheme(theme: String)
 
     fun getUserTheme(): String
+
+    fun setJwt(jwt: String?): Boolean
+
+    fun getJwt(): String?
 }

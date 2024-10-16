@@ -11,6 +11,7 @@ class SettingsRepositoryImpl(context: Context?) : SettingsRepository {
     private val monthKey = "month"
     private val languageKey = "language"
     private val userTheme = "theme"
+    private val jwtKey = "jwt"
 
     private val sharedPreference: SharedPreferences =
         context!!.getSharedPreferences(CUSTOM_PREF_NAME, Context.MODE_PRIVATE)
@@ -51,5 +52,16 @@ class SettingsRepositoryImpl(context: Context?) : SettingsRepository {
     override fun getUserTheme(): String {
         val defaultTheme = "Theme.Main"
         return sharedPreference.getString(userTheme, defaultTheme)!!
+    }
+
+    override fun setJwt(jwt: String?): Boolean {
+        val editor = sharedPreference.edit()
+        editor.putBoolean(jwtKey, true)
+        editor.apply()
+        return true
+    }
+
+    override fun getJwt(): String? {
+        return sharedPreference.getString(jwtKey, null)
     }
 }
