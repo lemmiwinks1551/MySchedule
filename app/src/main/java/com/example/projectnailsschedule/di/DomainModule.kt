@@ -6,6 +6,13 @@ import com.example.projectnailsschedule.domain.repository.repo.ClientsRepository
 import com.example.projectnailsschedule.domain.repository.repo.ProcedureRepository
 import com.example.projectnailsschedule.domain.repository.repo.ScheduleRepository
 import com.example.projectnailsschedule.domain.repository.repo.SettingsRepository
+import com.example.projectnailsschedule.domain.usecase.account.GetJwt
+import com.example.projectnailsschedule.domain.usecase.account.LoginUseCase
+import com.example.projectnailsschedule.domain.usecase.account.LogoutUseCase
+import com.example.projectnailsschedule.domain.usecase.account.RegisterUser
+import com.example.projectnailsschedule.domain.usecase.account.SendAccConfirmation
+import com.example.projectnailsschedule.domain.usecase.account.SendPasswordResetConfirmation
+import com.example.projectnailsschedule.domain.usecase.account.SetJwt
 import com.example.projectnailsschedule.domain.usecase.apiUC.GetFaqUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.GetProductionCalendarDateInfoUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.GetProductionCalendarYearUseCase
@@ -229,7 +236,7 @@ class DomainModule {
         return UpdateUserDataUseCase()
     }
 
-    // Server api
+    // Server API
 
     @Provides
     fun providePostUserDataUseCase(context: Context): SendUserDataUseCase {
@@ -249,5 +256,42 @@ class DomainModule {
     @Provides
     fun getFaqUseCase(context: Context): GetFaqUseCase {
         return GetFaqUseCase(context)
+    }
+
+    // Account API
+
+    @Provides
+    fun provideLoginUseCase(context: Context): LoginUseCase {
+        return LoginUseCase(context)
+    }
+
+    @Provides
+    fun provideLogoutUseCase(context: Context): LogoutUseCase {
+        return LogoutUseCase(context)
+    }
+
+    @Provides
+    fun provideRegisterNewUserUseCase(context: Context): RegisterUser {
+        return RegisterUser(context)
+    }
+
+    @Provides
+    fun provideSendAccountConfirmation(context: Context): SendAccConfirmation {
+        return SendAccConfirmation(context)
+    }
+
+    @Provides
+    fun provideSendPasswordResetConfirmation(context: Context): SendPasswordResetConfirmation {
+        return SendPasswordResetConfirmation(context)
+    }
+
+    @Provides
+    fun setJwt(settingsRepository: SettingsRepository): SetJwt {
+        return SetJwt(settingsRepository)
+    }
+
+    @Provides
+    fun getJwt(settingsRepository: SettingsRepository): GetJwt {
+        return GetJwt(settingsRepository)
     }
 }

@@ -151,8 +151,8 @@
         android:label="@string/menu_import_export" />
     <fragment
         android:id="@+id/nav_account"
-        tools:layout="@layout/fragment_account"
-        android:name="com.example.projectnailsschedule.presentation.account.AccountFragment"
+        tools:layout="@layout/fragment_account_home"
+        android:name="com.example.projectnailsschedule.presentation.account.AccountFragmentHome"
         android:label="@string/my_account" />
 
 </navigation>
