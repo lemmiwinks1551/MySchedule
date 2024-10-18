@@ -151,4 +151,6 @@ dependencies {
 
     // Photo picker
     implementation 'com.github.dhaval2404:imagepicker:2.1'
+
+    implementation 'com.auth0.android:jwtdecode:2.0.0'
 }

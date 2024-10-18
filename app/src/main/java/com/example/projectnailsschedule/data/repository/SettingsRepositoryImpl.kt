@@ -32,7 +32,6 @@ class SettingsRepositoryImpl(context: Context?) : SettingsRepository {
         return sharedPreference.getBoolean(themeKey, false)
     }
 
-
     override fun setLanguage(language: String) {
         val editor = sharedPreference.edit()
         editor.putString(monthKey, language)
@@ -56,7 +55,7 @@ class SettingsRepositoryImpl(context: Context?) : SettingsRepository {
 
     override fun setJwt(jwt: String?): Boolean {
         val editor = sharedPreference.edit()
-        editor.putBoolean(jwtKey, true)
+        editor.putString(jwtKey, jwt)
         editor.apply()
         return true
     }

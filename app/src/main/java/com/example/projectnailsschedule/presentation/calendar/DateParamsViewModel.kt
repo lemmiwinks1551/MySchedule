@@ -30,7 +30,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import java.time.LocalDate
-import java.time.Year
 import javax.inject.Inject
 
 @HiltViewModel

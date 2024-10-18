@@ -4,7 +4,6 @@ import android.content.Context
 import android.util.Log
 import com.example.projectnailsschedule.domain.models.DateParams
 import com.example.projectnailsschedule.domain.models.ProductionCalendarDateModel
-import com.example.projectnailsschedule.domain.models.UserDataManager
 import com.example.projectnailsschedule.domain.repository.api.ProductionCalendarApi
 import kotlinx.coroutines.delay
 import okhttp3.Cache

@@ -27,7 +27,7 @@ object UserDataManager {
     var userDateQueue = MutableLiveData(LinkedList<UserData>())
 
     fun getUserData(): UserData {
-        return this.userData
+        return userData
     }
 
     @Synchronized

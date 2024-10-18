@@ -6,10 +6,7 @@ import com.example.projectnailsschedule.domain.models.FaqModel
 import com.example.projectnailsschedule.domain.models.UserDataManager
 import com.example.projectnailsschedule.domain.repository.api.FaqApi
 import okhttp3.Cache
-import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import okhttp3.Response
-import okhttp3.ResponseBody
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File

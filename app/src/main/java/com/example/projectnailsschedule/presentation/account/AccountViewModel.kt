@@ -1,6 +1,8 @@
 package com.example.projectnailsschedule.presentation.account
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.auth0.android.jwt.JWT
 import com.example.projectnailsschedule.domain.models.User
 import com.example.projectnailsschedule.domain.usecase.account.GetJwt
 import com.example.projectnailsschedule.domain.usecase.account.LoginUseCase
@@ -23,16 +25,42 @@ class AccountViewModel @Inject constructor(
     private var getJwt: GetJwt
 ) : ViewModel() {
 
-    var user: User? = null
+    var user = MutableLiveData<User?>(null)
+    var requestDone = MutableLiveData(true)
+
+    val requestStarted: () -> Unit = { requestDone.postValue(false) }
+    val requestFinished: () -> Unit = { requestDone.postValue(true) }
+    val setUsername: (login: String) -> Unit = { user.postValue(User(it)) }
+    val clearUser: () -> Unit = { user.postValue(null) }
+
+    init {
+        // Пробуем получить JWT из SharedPreference и установить username
+        getJwt()?.let { extractLoginFromJwt(it) }?.let { setUsername(it) }
+    }
 
     suspend fun login(login: String, password: String): Boolean {
+        requestStarted()
+
         val jwt = loginUseCase.execute(login, password)
-        // Set JWT
+
+        // Установить в объект user его username
+        jwt?.let { extractLoginFromJwt(it) }?.let { setUsername(it) }
+
+        requestFinished()
+
+        // Установить JWT в SharedPreference
         return setJwt.execute(jwt)
     }
 
     suspend fun logout(): Boolean {
+        requestStarted()
+
         logoutUseCase.execute()
+
+        clearUser()
+
+        requestFinished()
+
         // Set JWT = null
         return setJwt.execute(null)
     }
@@ -49,7 +77,16 @@ class AccountViewModel @Inject constructor(
         return sendPasswordResetConfirmation.execute()
     }
 
-    suspend fun getJwt(): String? {
+    private fun getJwt(): String? {
         return getJwt.execute()
+    }
+
+    private fun extractLoginFromJwt(jwt: String): String {
+        // Извлекаем логин из поля "sub"
+        return JWT(jwt).getClaim("sub").asString().toString()
+    }
+
+    private fun checkLogin() {
+
     }
 }

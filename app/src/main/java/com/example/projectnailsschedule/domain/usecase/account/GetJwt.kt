@@ -4,7 +4,7 @@ import com.example.projectnailsschedule.domain.repository.repo.SettingsRepositor
 
 class GetJwt(private val settingsRepository: SettingsRepository) {
 
-    suspend fun execute(): String? {
+    fun execute(): String? {
         return settingsRepository.getJwt()
     }
 }
