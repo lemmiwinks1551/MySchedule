@@ -1,7 +1,10 @@
 package com.example.projectnailsschedule.domain.usecase.account
 
 import android.content.Context
-import kotlinx.coroutines.delay
+import com.example.projectnailsschedule.domain.repository.api.LoginApi
+import okhttp3.OkHttpClient
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class LogoutUseCase(private val context: Context) {
 
@@ -17,8 +20,10 @@ class LogoutUseCase(private val context: Context) {
         isExecuting = true
 
         return try {
-            // Выполнение запроса
-            delay(3000)
+
+
+
+
             true
         } finally {
             // Сброс состояния после завершения запроса

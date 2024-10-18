@@ -26,6 +26,10 @@ class SendUserDataUseCase @Inject constructor(var context: Context) {
     private val log = this::class.simpleName
 
     suspend fun execute(userData: UserData) {
+        var baseUrl = "https://myschedule.myddns.me"
+        if (!BuildConfig.DEBUG) {
+            baseUrl = "http://10.0.2.2:8080/"
+        }
 
         val interceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
 
@@ -59,7 +63,7 @@ class SendUserDataUseCase @Inject constructor(var context: Context) {
             .build()
 
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://myschedule.myddns.me")
+            .baseUrl(baseUrl)
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()

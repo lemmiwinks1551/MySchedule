@@ -30,7 +30,7 @@ class AccountViewModel @Inject constructor(
 
     val requestStarted: () -> Unit = { requestDone.postValue(false) }
     val requestFinished: () -> Unit = { requestDone.postValue(true) }
-    val setUsername: (login: String) -> Unit = { user.postValue(User(it)) }
+    val setUsername: (login: String) -> Unit = { user.postValue(User(it, null)) }
     val clearUser: () -> Unit = { user.postValue(null) }
 
     init {
@@ -41,7 +41,7 @@ class AccountViewModel @Inject constructor(
     suspend fun login(login: String, password: String): Boolean {
         requestStarted()
 
-        val jwt = loginUseCase.execute(login, password)
+        val jwt = loginUseCase.execute(User(login, password))
 
         // Установить в объект user его username
         jwt?.let { extractLoginFromJwt(it) }?.let { setUsername(it) }
