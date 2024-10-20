@@ -114,7 +114,7 @@ class AccountFragmentHome : Fragment() {
             val login = view.findViewById<EditText>(R.id.login_et).text.toString()
             var password: String? = view.findViewById<EditText>(R.id.password_et).text.toString()
 
-            CoroutineScope(Dispatchers.IO).launch {
+            CoroutineScope(Dispatchers.Main).launch {
                 dialog.dismiss()
                 viewModel.login(login, password!!)
                 password = null

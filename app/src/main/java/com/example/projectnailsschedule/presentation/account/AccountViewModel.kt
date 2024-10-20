@@ -27,6 +27,7 @@ class AccountViewModel @Inject constructor(
 
     var user = MutableLiveData<User?>(null)
     var requestDone = MutableLiveData(true)
+    private var jwt: String?
 
     val requestStarted: () -> Unit = { requestDone.postValue(false) }
     val requestFinished: () -> Unit = { requestDone.postValue(true) }
@@ -35,6 +36,7 @@ class AccountViewModel @Inject constructor(
 
     init {
         // Пробуем получить JWT из SharedPreference и установить username
+        jwt = getJwt()
         getJwt()?.let { extractLoginFromJwt(it) }?.let { setUsername(it) }
     }
 
@@ -55,7 +57,7 @@ class AccountViewModel @Inject constructor(
     suspend fun logout(): Boolean {
         requestStarted()
 
-        logoutUseCase.execute()
+        jwt?.let { logoutUseCase.execute(it) }
 
         clearUser()
 

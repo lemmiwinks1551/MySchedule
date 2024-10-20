@@ -16,12 +16,14 @@ class LoginUseCase(private val context: Context) {
     private var isExecuting = false
 
     suspend fun execute(user: User): String? {
-        var baseUrl = "https://myschedule.myddns.me"
+        val baseUrl: String
 
-        if (!BuildConfig.DEBUG) {
+        if (BuildConfig.DEBUG) {
             baseUrl = "http://10.0.2.2:8080/"
             user.username = "kirill"
             user.password = "123123123"
+        } else {
+            baseUrl = "https://myschedule.myddns.me"
         }
 
         if (isExecuting) {
