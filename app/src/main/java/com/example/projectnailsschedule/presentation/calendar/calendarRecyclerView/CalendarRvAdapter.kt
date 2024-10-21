@@ -69,6 +69,7 @@ class CalendarRvAdapter(
     private lateinit var redImageView: ImageView
     private lateinit var blueImageView: ImageView
     private lateinit var resetImageView: ImageView
+    private var holders: MutableList<ViewHolder> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -83,6 +84,8 @@ class CalendarRvAdapter(
 
         // set day number in CalendarViewHolder
         holder.date.text = dayInHolder
+
+        setCellBackground(position, holder)
 
         // set appointments count
         if (dayInHolder != "") {
@@ -473,5 +476,28 @@ class CalendarRvAdapter(
             textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, animatedValue)
         }
         animator.start()
+    }
+
+    private fun setCellBackground(position: Int, holder: ViewHolder) {
+        // Убираем фон для тех дней месяца, которые "по углам" расположены,
+        // чтобы они не портили заливку с круглыми углами,
+        // потом нужно будет для них отдельные ресурсы сделать
+        holders.add(position, holder)
+
+        if (position == 0 || position == 6) {
+            holder.cellLayout.background = null
+        }
+
+        if (position == 28 || position == 34) {
+            holder.cellLayout.background = null
+        }
+
+        if (position == 41) {
+            holder.cellLayout.background = null
+            holders[35].cellLayout.background = null
+
+            holders[28].cellLayout.setBackgroundResource(R.drawable.calendar_recycler_view_borders)
+            holders[34].cellLayout.setBackgroundResource(R.drawable.calendar_recycler_view_borders)
+        }
     }
 }

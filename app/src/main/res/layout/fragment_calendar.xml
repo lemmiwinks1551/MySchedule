@@ -172,6 +172,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
+        android:background="@drawable/bold_borders"
         android:layoutAnimation="@anim/layout_animation"
         android:scrollbars="vertical"
         android:verticalScrollbarPosition="left"
