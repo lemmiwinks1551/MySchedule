@@ -9,7 +9,7 @@ import com.example.projectnailsschedule.domain.repository.repo.SettingsRepositor
 import com.example.projectnailsschedule.domain.usecase.account.GetJwt
 import com.example.projectnailsschedule.domain.usecase.account.LoginUseCase
 import com.example.projectnailsschedule.domain.usecase.account.LogoutUseCase
-import com.example.projectnailsschedule.domain.usecase.account.RegisterUser
+import com.example.projectnailsschedule.domain.usecase.account.RegistrationUseCase
 import com.example.projectnailsschedule.domain.usecase.account.SendAccConfirmation
 import com.example.projectnailsschedule.domain.usecase.account.SendPasswordResetConfirmation
 import com.example.projectnailsschedule.domain.usecase.account.SetJwt
@@ -271,8 +271,8 @@ class DomainModule {
     }
 
     @Provides
-    fun provideRegisterNewUserUseCase(context: Context): RegisterUser {
-        return RegisterUser(context)
+    fun provideRegisterNewUserUseCase(context: Context): RegistrationUseCase {
+        return RegistrationUseCase(context)
     }
 
     @Provides

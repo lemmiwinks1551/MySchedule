@@ -444,7 +444,7 @@ class AppointmentFragment : Fragment() {
     }
 
     private fun setWhiteBackground(editText: EditText) {
-        val grayBackground = R.drawable.rectangle_2
+        val grayBackground = R.drawable.white_rectangle_shape
         editText.setBackgroundResource(grayBackground)
     }
 

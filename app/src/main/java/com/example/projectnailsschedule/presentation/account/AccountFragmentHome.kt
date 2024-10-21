@@ -30,11 +30,19 @@ class AccountFragmentHome : Fragment() {
     val showView: (View) -> Unit = { it.visibility = View.VISIBLE }
     val hideView: (View) -> Unit = { it.visibility = View.GONE }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        requireActivity().setTheme(R.style.MyNewThemeGradient) // Применяем стиль перед вызовом setContentView
+        super.onCreate(savedInstanceState)
+    }
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        requireContext().setTheme(R.style.MyNewThemeGradient)
+
         _binding = FragmentAccountHomeBinding.inflate(inflater, container, false)
 
         initViews()
@@ -127,6 +135,11 @@ class AccountFragmentHome : Fragment() {
     }
 
     private fun showDialogRegistration() {
+        val dialogFragment = RegistrationDialogFragment()
+        dialogFragment.show(parentFragmentManager, "RegistrationDialogFragment")
+    }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
     }
 }

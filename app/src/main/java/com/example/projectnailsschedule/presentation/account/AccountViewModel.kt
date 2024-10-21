@@ -7,7 +7,7 @@ import com.example.projectnailsschedule.domain.models.User
 import com.example.projectnailsschedule.domain.usecase.account.GetJwt
 import com.example.projectnailsschedule.domain.usecase.account.LoginUseCase
 import com.example.projectnailsschedule.domain.usecase.account.LogoutUseCase
-import com.example.projectnailsschedule.domain.usecase.account.RegisterUser
+import com.example.projectnailsschedule.domain.usecase.account.RegistrationUseCase
 import com.example.projectnailsschedule.domain.usecase.account.SendAccConfirmation
 import com.example.projectnailsschedule.domain.usecase.account.SendPasswordResetConfirmation
 import com.example.projectnailsschedule.domain.usecase.account.SetJwt
@@ -18,7 +18,7 @@ import javax.inject.Inject
 class AccountViewModel @Inject constructor(
     private var loginUseCase: LoginUseCase,
     private var logoutUseCase: LogoutUseCase,
-    private var registerUser: RegisterUser,
+    private var registrationUseCase: RegistrationUseCase,
     private var sendAccConfirmation: SendAccConfirmation,
     private var sendPasswordResetConfirmation: SendPasswordResetConfirmation,
     private var setJwt: SetJwt,
@@ -67,8 +67,8 @@ class AccountViewModel @Inject constructor(
         return setJwt.execute(null)
     }
 
-    suspend fun registerUser(): Boolean {
-        return registerUser.execute()
+    suspend fun registration(): Boolean {
+        return registrationUseCase.execute()
     }
 
     suspend fun sendAccConfirmation(): Boolean {
