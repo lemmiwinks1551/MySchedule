@@ -8,6 +8,7 @@
     tools:context=".presentation.clients.ClientsFragment">
 
     <androidx.appcompat.widget.SearchView
+        android:background="@drawable/white_rectangle_shape"
         android:id="@+id/search_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,7 +19,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:queryHint="Search"
+        app:queryHint="Поиск"
         app:searchIcon="@android:drawable/ic_menu_search" />
 
     <androidx.recyclerview.widget.RecyclerView

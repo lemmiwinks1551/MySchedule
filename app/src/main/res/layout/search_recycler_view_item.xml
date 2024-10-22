@@ -7,20 +7,60 @@
     android:background="@drawable/bold_borders"
     android:orientation="vertical">
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/client_avatar_date_appointment"
-        android:layout_width="134dp"
-        android:layout_height="134dp"
-        android:layout_margin="8dp"
-        android:padding="2dp"
-        android:src="@drawable/client_avatar"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/name_photo_cl"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/appointment_cl"
+        app:layout_constraintHorizontal_weight="0.4"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:shapeAppearanceOverlay="@style/circleImageView"
-        app:strokeColor="?attr/editTextColor"
-        app:strokeWidth="2dp" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/client_avatar_date_appointment"
+            android:layout_width="134dp"
+            android:layout_height="134dp"
+            android:layout_margin="8dp"
+            android:padding="2dp"
+            android:src="@drawable/client_avatar"
+            app:layout_constraintBottom_toTopOf="@id/client_procedure_appointment_month_rv_child"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/circleImageView"
+            app:strokeColor="?attr/editTextColor"
+            app:strokeWidth="2dp" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/client_procedure_appointment_month_rv_child"
+            android:layout_width="134dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/client_avatar_date_appointment">
+
+            <TextView
+                android:id="@+id/client_value_search"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_margin="8dp"
+                android:background="@drawable/white_rectangle_shape"
+                android:gravity="center"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:text="@string/example_client"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/appointment_cl"
@@ -28,7 +68,8 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/client_avatar_date_appointment"
+        app:layout_constraintHorizontal_weight="0.6"
+        app:layout_constraintStart_toEndOf="@+id/name_photo_cl"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -61,7 +102,7 @@
             android:id="@+id/client_time_cl_date_appointment_rv_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@+id/client_procedure_appointment_month_rv_child"
+            app:layout_constraintBottom_toTopOf="@+id/client_phone_appointment_month_rv_child"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/constraintLayout0">
@@ -85,39 +126,13 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/client_procedure_appointment_month_rv_child"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@+id/client_phone_appointment_month_rv_child"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/client_time_cl_date_appointment_rv_item">
-
-            <TextView
-                android:id="@+id/client_value_search"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:background="@drawable/white_rectangle_shape"
-                android:paddingStart="12dp"
-                android:paddingEnd="12dp"
-                android:text="@string/example_client"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/client_phone_appointment_month_rv_child"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toTopOf="@+id/client_vk_appointment_month_rv_child"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/client_procedure_appointment_month_rv_child">
+            app:layout_constraintTop_toBottomOf="@+id/client_time_cl_date_appointment_rv_item">
 
             <TextView
                 android:id="@+id/procedure_value_search"
@@ -347,5 +362,5 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout> <!--Appointment params-->
+</androidx.constraintlayout.widget.ConstraintLayout>
 

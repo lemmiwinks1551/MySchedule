@@ -180,13 +180,14 @@
 
                 <EditText
                     android:id="@+id/name_et"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:maxLines="2"
                     android:layout_margin="8dp"
+                    android:breakStrategy="high_quality"
                     android:background="@drawable/white_rectangle_shape"
                     android:hint="Имя клиента"
                     android:imeOptions="actionDone"
-                    android:inputType="textCapWords"
                     android:src="@drawable/white_rectangle_shape"
                     android:textAlignment="center"
                     android:textSize="20sp"
@@ -208,6 +209,7 @@
                     <ImageView
                         android:id="@+id/select_client_button"
                         android:layout_width="wrap_content"
+
                         android:layout_height="wrap_content"
                         android:layout_margin="2dp"
                         android:adjustViewBounds="false"

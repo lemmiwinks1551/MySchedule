@@ -7,6 +7,7 @@
     tools:context=".presentation.about.AboutFragment">
 
     <ImageView
+        android:background="@drawable/white_rectangle_shape"
         android:id="@+id/label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

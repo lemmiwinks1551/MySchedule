@@ -184,6 +184,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/day_off_cl"
         android:layout_width="match_parent"
+        android:background="@drawable/bold_borders"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:visibility="visible"

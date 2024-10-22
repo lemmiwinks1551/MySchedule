@@ -3,7 +3,7 @@
     <solid android:color="#ffffff" />
 
     <!-- Скругляем углы (radius указывает на величину скругления) -->
-    <corners android:radius="26dp" />
+    <corners android:radius="12dp" />
 
     <!-- Граница -->
     <!-- <stroke android:width="2dp" android:color="#000000" /> -->
