@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.projectnailsschedule.R
@@ -29,6 +30,11 @@ class AccountFragmentHome : Fragment() {
 
     val showView: (View) -> Unit = { it.visibility = View.VISIBLE }
     val hideView: (View) -> Unit = { it.visibility = View.GONE }
+
+    private val loginSuccess = "Вход выполнен"
+    private val loginError = "Не удалось выполнить вход"
+    private val logoutSuccess = "Выход выполнен"
+    private val logoutError = "Не удалось выполнить выход"
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -91,7 +97,7 @@ class AccountFragmentHome : Fragment() {
 
         binding.logoutButton.setOnClickListener {
             CoroutineScope(Dispatchers.Main).launch {
-                viewModel.logout()
+                logout()
             }
         }
 
@@ -116,8 +122,14 @@ class AccountFragmentHome : Fragment() {
 
             CoroutineScope(Dispatchers.Main).launch {
                 dialog.dismiss()
-                viewModel.login(login, password!!)
+                val success = viewModel.login(login, password!!)
                 password = null
+
+                if (success) {
+                    showToast(loginSuccess)
+                } else {
+                    showToast(loginError)
+                }
             }
         }
 
@@ -129,5 +141,18 @@ class AccountFragmentHome : Fragment() {
     private fun showDialogRegistration() {
         val dialogFragment = RegistrationDialogFragment()
         dialogFragment.show(parentFragmentManager, "RegistrationDialogFragment")
+    }
+
+    private suspend fun logout() {
+        val success = viewModel.logout()
+        if (success) {
+            showToast(logoutSuccess)
+        } else {
+            showToast(logoutError)
+        }
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
 }

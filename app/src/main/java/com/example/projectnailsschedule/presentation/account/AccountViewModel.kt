@@ -29,8 +29,11 @@ class AccountViewModel @Inject constructor(
     var requestDone = MutableLiveData(true)
     private var jwt: String?
 
+    // Статусы сетевого запроса
     val requestStarted: () -> Unit = { requestDone.postValue(false) }
     val requestFinished: () -> Unit = { requestDone.postValue(true) }
+
+    // Работа с user
     val setUsername: (login: String) -> Unit = { user.postValue(User(it, null)) }
     val clearUser: () -> Unit = { user.postValue(null) }
 
@@ -41,27 +44,48 @@ class AccountViewModel @Inject constructor(
     }
 
     suspend fun login(login: String, password: String): Boolean {
+        if (!isRequestFree()) return false
+
         requestStarted()
 
         val jwt = loginUseCase.execute(User(login, password))
 
-        // Установить в объект user его username
-        jwt?.let { extractLoginFromJwt(it) }?.let { setUsername(it) }
-
         requestFinished()
+
+        if (jwt == null) return false
+
+        // Установить в объект user его username
+        extractLoginFromJwt(jwt)?.let { setUsername(it) }
+
+        if (extractLoginFromJwt(jwt) == null) {
+            return false
+        }
 
         // Установить JWT в SharedPreference
         return setJwt.execute(jwt)
     }
 
     suspend fun logout(): Boolean {
+        if (!isRequestFree()) return false
+
         requestStarted()
 
-        jwt?.let { logoutUseCase.execute(it) }
+        val logoutSuccessful: Boolean
 
-        clearUser()
 
-        requestFinished()
+        if (jwt != null) {
+            logoutSuccessful = logoutUseCase.execute(jwt!!)
+            requestFinished()
+        } else {
+            requestFinished()
+            return false
+        }
+
+        if (!logoutSuccessful) {
+            return false
+        } else {
+            clearUser()
+        }
 
         // Set JWT = null
         return setJwt.execute(null)
@@ -83,12 +107,20 @@ class AccountViewModel @Inject constructor(
         return getJwt.execute()
     }
 
-    private fun extractLoginFromJwt(jwt: String): String {
+    private fun extractLoginFromJwt(jwt: String): String? {
         // Извлекаем логин из поля "sub"
-        return JWT(jwt).getClaim("sub").asString().toString()
+        return try {
+            JWT(jwt).getClaim("sub").asString().toString()
+        } catch (e: Exception) {
+            null
+        }
     }
 
     private fun checkLogin() {
 
+    }
+
+    private fun isRequestFree(): Boolean {
+        return requestDone.value == true
     }
 }

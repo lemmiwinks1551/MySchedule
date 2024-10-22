@@ -261,13 +261,13 @@ class DomainModule {
     // Account API
 
     @Provides
-    fun provideLoginUseCase(context: Context): LoginUseCase {
-        return LoginUseCase(context)
+    fun provideLoginUseCase(): LoginUseCase {
+        return LoginUseCase()
     }
 
     @Provides
-    fun provideLogoutUseCase(context: Context): LogoutUseCase {
-        return LogoutUseCase(context)
+    fun provideLogoutUseCase(): LogoutUseCase {
+        return LogoutUseCase()
     }
 
     @Provides
