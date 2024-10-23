@@ -20,7 +20,7 @@
             android:id="@+id/registration_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_margin="8dp"
             android:fontFamily="@font/roboto_black"
             android:gravity="center"
             android:text="Регистрация нового пользователя"
@@ -32,10 +32,10 @@
 
         <!-- Поле Логин -->
         <EditText
-            android:id="@+id/username_input"
+            android:id="@+id/login_et"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_margin="8dp"
             android:fontFamily="@font/roboto_regular"
             android:hint="Введите логин"
             android:inputType="text"
@@ -46,49 +46,55 @@
 
         <!-- Ошибка Логина -->
         <TextView
-            android:id="@+id/username_error"
-            android:layout_width="wrap_content"
+            android:id="@+id/login_error"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="ERROR"
             android:textColor="@android:color/holo_red_dark"
             android:textSize="12sp"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/username_input" />
+            app:layout_constraintTop_toBottomOf="@id/login_et" />
 
         <!-- Поле Email -->
         <EditText
-            android:id="@+id/email_input"
+            android:id="@+id/email_et"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_margin="8dp"
             android:fontFamily="@font/roboto_regular"
             android:hint="Email"
             android:inputType="textEmailAddress"
             android:padding="12dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/username_error" />
+            app:layout_constraintTop_toBottomOf="@id/login_error" />
 
         <!-- Ошибка Email -->
         <TextView
             android:id="@+id/email_error"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="ERROR"
             android:textColor="@android:color/holo_red_dark"
             android:textSize="12sp"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/email_input" />
+            app:layout_constraintTop_toBottomOf="@id/email_et" />
 
         <!-- Поле Пароль -->
         <EditText
-            android:id="@+id/password_input"
+            android:id="@+id/password_et"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_margin="8dp"
             android:fontFamily="@font/roboto_regular"
             android:hint="Пароль"
-            android:inputType="textPassword"
+            android:inputType="textWebPassword"
             android:padding="12dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -97,23 +103,26 @@
         <!-- Ошибка Пароля -->
         <TextView
             android:id="@+id/password_error"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="ERROR"
             android:textColor="@android:color/holo_red_dark"
             android:textSize="12sp"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/password_input" />
+            app:layout_constraintTop_toBottomOf="@id/password_et" />
 
         <!-- Поле Подтверждение Пароля -->
         <EditText
-            android:id="@+id/password_confirm_input"
+            android:id="@+id/password_confirm_et"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_margin="8dp"
             android:fontFamily="@font/roboto_regular"
             android:hint="Введите пароль еще раз"
-            android:inputType="textPassword"
+            android:inputType="textWebPassword"
             android:padding="12dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -122,25 +131,39 @@
         <!-- Ошибка Подтверждения Пароля -->
         <TextView
             android:id="@+id/password_confirm_error"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="ERROR"
             android:textColor="@android:color/holo_red_dark"
             android:textSize="12sp"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/password_confirm_input" />
+            app:layout_constraintTop_toBottomOf="@id/password_confirm_et" />
+
+        <CheckBox
+            android:id="@+id/show_password"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="Показать пароль"
+            app:layout_constraintBottom_toTopOf="@+id/register_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/password_confirm_error" />
 
         <!-- Кнопка "Зарегистрироваться" -->
         <Button
             android:id="@+id/register_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_margin="8dp"
             android:text="Зарегистрироваться"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/password_confirm_error" />
+            app:layout_constraintTop_toBottomOf="@id/show_password" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
