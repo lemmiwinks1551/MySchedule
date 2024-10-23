@@ -155,24 +155,53 @@ class AccountFragmentHome : Fragment() {
         val view = layoutInflater.inflate(R.layout.dialog_registration, null)
         dialog.setContentView(view)
 
-        val login = view.findViewById<EditText>(R.id.login_et)
-        val loginError = view.findViewById<TextView>(R.id.login_error)
+        val loginEt = view.findViewById<EditText>(R.id.login_et)
+        val loginErrorTv = view.findViewById<TextView>(R.id.login_error)
 
-        val email = view.findViewById<EditText>(R.id.email_et)
-        val emailError = view.findViewById<TextView>(R.id.email_error)
+        val emailEt = view.findViewById<EditText>(R.id.email_et)
+        val emailErrorTv = view.findViewById<TextView>(R.id.email_error)
 
-        val password = view.findViewById<EditText>(R.id.password_et)
-        val passwordError = view.findViewById<TextView>(R.id.password_error)
+        val passwordEt = view.findViewById<EditText>(R.id.password_et)
+        val passwordErrorTv = view.findViewById<TextView>(R.id.password_error)
 
-        val passwordConfirm = view.findViewById<EditText>(R.id.password_confirm_et)
-        val passwordConfirmError = view.findViewById<TextView>(R.id.password_confirm_error)
+        val passwordConfirmEt = view.findViewById<EditText>(R.id.password_confirm_et)
+        val passwordConfirmErrorTv = view.findViewById<TextView>(R.id.password_confirm_error)
 
         val showPassword = view.findViewById<CheckBox>(R.id.show_password)
         val registerButton = view.findViewById<Button>(R.id.register_button)
 
         showPassword.setOnCheckedChangeListener { _, isChecked ->
-            togglePasswordVisibility(isChecked, password)
-            togglePasswordVisibility(isChecked, passwordConfirm)
+            togglePasswordVisibility(isChecked, passwordEt)
+            togglePasswordVisibility(isChecked, passwordConfirmEt)
+        }
+
+        registerButton.setOnClickListener {
+            val loginError = viewModel.checkLogin(loginEt.text.toString())
+            val emailError = viewModel.checkEmail(emailEt.text.toString())
+            val passwordError = viewModel.checkPassword(passwordEt.text.toString())
+            val passwordConfirmError = viewModel.checkPasswordConfirm(
+                passwordEt.text.toString(),
+                passwordConfirmEt.text.toString()
+            )
+
+            val handleError: (TextView, String?) -> Unit = { errorTv, error ->
+                if (error != null) {
+                    showError(errorTv, error)
+                } else {
+                    hideError(errorTv)
+                }
+            }
+
+            handleError(loginErrorTv, loginError)
+            handleError(emailErrorTv, emailError)
+            handleError(passwordErrorTv, passwordError)
+            handleError(passwordConfirmErrorTv, passwordConfirmError)
+
+            if (loginError != null || emailError != null || passwordError != null || passwordConfirmError != null) {
+                CoroutineScope(Dispatchers.Main).launch {
+                    viewModel.registration()
+                }
+            }
         }
 
         dialog.window?.setLayout(
@@ -209,5 +238,15 @@ class AccountFragmentHome : Fragment() {
 
         // Чтобы курсор остался в поле EditText после изменения inputType
         password.setSelection(password.text.length)
+    }
+
+    private fun showError(textView: TextView, errorMessage: String) {
+        textView.text = errorMessage
+        textView.visibility = View.VISIBLE
+    }
+
+    private fun hideError(textView: TextView) {
+        textView.text = null
+        textView.visibility = View.GONE
     }
 }

@@ -116,11 +116,54 @@ class AccountViewModel @Inject constructor(
         }
     }
 
-    private fun checkLogin() {
-
-    }
-
     private fun isRequestFree(): Boolean {
         return requestDone.value == true
+    }
+
+    // Registration check
+
+    fun checkLogin(login: String): String? {
+        if (login.length < 4 || login.length > 16) {
+            return "Логин пользователя должен содержать от 4 до 16 символов"
+        }
+
+        if (isInvalidCharInLogin(login)) {
+            return "Логин не должен начинаться или заканчиваться символами: " + "(., _, -). " +
+                    "Содержать два и более специальных символов подряд или пробел."
+        }
+
+        return null
+    }
+
+    fun checkEmail(email: String): String? {
+        if (!email.contains("@") ||
+            email.isBlank() ||
+            !email.contains(".")
+        ) {
+            return "Указан некорректный Email"
+        }
+        return null
+    }
+
+    fun checkPassword(password: String): String? {
+        if (password.length < 8 || password.length > 16) {
+            return "Пароль пользователя должен содержать от 8 до 16 символов"
+        }
+        return null
+    }
+
+    fun checkPasswordConfirm(password: String, passwordConfirm: String): String? {
+        if (password != passwordConfirm) {
+            return "Пароли не совпадают"
+        }
+        return null
+    }
+
+    private fun isInvalidCharInLogin(login: String): Boolean {
+        val usernamePattern =
+            "^(?!.*[._-]{2,})[a-zA-Zа-яА-ЯёЁ0-9][a-zA-Zа-яА-ЯёЁ0-9._-]*[a-zA-Zа-яА-ЯёЁ0-9]$"
+
+        // Проверяем, соответствует ли строка регулярному выражению
+        return !Regex(usernamePattern).matches(login)
     }
 }
