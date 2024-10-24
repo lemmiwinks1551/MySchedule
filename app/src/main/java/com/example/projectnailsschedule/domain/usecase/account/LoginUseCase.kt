@@ -2,7 +2,7 @@ package com.example.projectnailsschedule.domain.usecase.account
 
 import android.util.Log
 import com.example.projectnailsschedule.BuildConfig
-import com.example.projectnailsschedule.domain.models.LoginResponse
+import com.example.projectnailsschedule.domain.models.dto.LoginResponseDto
 import com.example.projectnailsschedule.domain.models.User
 import com.example.projectnailsschedule.domain.repository.api.LoginApi
 import okhttp3.OkHttpClient
@@ -15,7 +15,7 @@ class LoginUseCase {
     private val log = this::class.simpleName
 
     suspend fun execute(user: User): String? {
-        val baseUrl = getBaseUrl(user)
+        val baseUrl = getBaseUrl()
 
         return try {
             val client = createOkHttpClient()
@@ -37,10 +37,8 @@ class LoginUseCase {
         }
     }
 
-    private fun getBaseUrl(user: User): String {
+    private fun getBaseUrl(): String {
         return if (BuildConfig.DEBUG) {
-            user.username = "kirill"
-            user.password = "123123123"
             "http://10.0.2.2:8080/"
         } else {
             "https://myschedule.myddns.me"
@@ -63,7 +61,7 @@ class LoginUseCase {
             .build()
     }
 
-    private suspend fun executeLoginRequest(loginApi: LoginApi, user: User): Response<LoginResponse> {
+    private suspend fun executeLoginRequest(loginApi: LoginApi, user: User): Response<LoginResponseDto> {
         return loginApi.loginUser(user)
     }
 

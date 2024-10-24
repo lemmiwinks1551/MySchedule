@@ -22,7 +22,6 @@ class LogoutUseCase {
             // Выполняем запрос на выход
             val response = executeLogoutRequest(logoutApi, jwt)
 
-            // Проверяем успешность ответа
             response.isSuccessful
         } catch (e: Exception) {
             // Логируем и возвращаем false при ошибке

@@ -1,5 +1,6 @@
 package com.example.projectnailsschedule.presentation.account
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.auth0.android.jwt.JWT
@@ -24,45 +25,55 @@ class AccountViewModel @Inject constructor(
     private var setJwt: SetJwt,
     private var getJwt: GetJwt
 ) : ViewModel() {
+    private val log = this::class.simpleName
 
     var user = MutableLiveData<User?>(null)
     var requestDone = MutableLiveData(true)
-    private var jwt: String?
 
-    // Статусы сетевого запроса
-    val requestStarted: () -> Unit = { requestDone.postValue(false) }
-    val requestFinished: () -> Unit = { requestDone.postValue(true) }
+    // Request status
+    private val requestStarted: () -> Unit = { requestDone.postValue(false) }
+    private val requestFinished: () -> Unit = { requestDone.postValue(true) }
+    private val isRequestFree: () -> Boolean = { requestDone.value == true }
 
-    // Работа с user
+    // Set user/clear user
     val setUsername: (login: String) -> Unit = { user.postValue(User(it, null)) }
     val clearUser: () -> Unit = { user.postValue(null) }
 
+    // JWT getter/setter
+    private var jwt: String?
+        get() = getJwt.execute()
+        set(value) {
+            value?.let { setJwt.execute(it) }
+        }
+
     init {
         // Пробуем получить JWT из SharedPreference и установить username
-        jwt = getJwt()
-        getJwt()?.let { extractLoginFromJwt(it) }?.let { setUsername(it) }
+        if (jwt != null) {
+            extractUsernameFromJwt(jwt!!)?.let { setUsername(it) }
+        }
     }
 
+    // Login
     suspend fun login(login: String, password: String): Boolean {
         if (!isRequestFree()) return false
 
         requestStarted()
-
-        val jwt = loginUseCase.execute(User(login, password))
-
-        requestFinished()
-
-        if (jwt == null) return false
-
-        // Установить в объект user его username
-        extractLoginFromJwt(jwt)?.let { setUsername(it) }
-
-        if (extractLoginFromJwt(jwt) == null) {
-            return false
+        try {
+            // Выполнить запрос и установить JWT в Shared Pref
+            val token = loginUseCase.execute(User(login, password))
+            if (token != null) {
+                setJwt.execute(token)
+                extractUsernameFromJwt(token)?.let { setUsername(it) }
+            } else {
+                requestFinished()
+                return false
+            }
+        } catch (e: Exception) {
+            Log.e(log, e.toString())
         }
 
-        // Установить JWT в SharedPreference
-        return setJwt.execute(jwt)
+        requestFinished()
+        return true
     }
 
     suspend fun logout(): Boolean {
@@ -72,42 +83,30 @@ class AccountViewModel @Inject constructor(
 
         val logoutSuccessful: Boolean
 
+        try {
+            if (jwt != null) {
+                logoutSuccessful = logoutUseCase.execute(jwt!!)
+            } else {
+                return false
+            }
 
-        if (jwt != null) {
-            logoutSuccessful = logoutUseCase.execute(jwt!!)
-            requestFinished()
-        } else {
-            requestFinished()
-            return false
+            if (logoutSuccessful) {
+                clearUser()
+            } else {
+                return false
+            }
+
+            jwt = null
+        } catch (e: Exception) {
+            Log.e(log, e.toString())
         }
 
-        if (!logoutSuccessful) {
-            return false
-        } else {
-            clearUser()
-        }
+        requestFinished()
 
-        // Set JWT = null
-        return setJwt.execute(null)
+        return true
     }
 
-    suspend fun registration(): Boolean {
-        return registrationUseCase.execute()
-    }
-
-    suspend fun sendAccConfirmation(): Boolean {
-        return sendAccConfirmation.execute()
-    }
-
-    suspend fun sendPasswordResetConfirmation(): Boolean {
-        return sendPasswordResetConfirmation.execute()
-    }
-
-    private fun getJwt(): String? {
-        return getJwt.execute()
-    }
-
-    private fun extractLoginFromJwt(jwt: String): String? {
+    private fun extractUsernameFromJwt(jwt: String): String? {
         // Извлекаем логин из поля "sub"
         return try {
             JWT(jwt).getClaim("sub").asString().toString()
@@ -116,11 +115,11 @@ class AccountViewModel @Inject constructor(
         }
     }
 
-    private fun isRequestFree(): Boolean {
-        return requestDone.value == true
-    }
+    // Registration + check
 
-    // Registration check
+    suspend fun registration(username: String, email: String, password: String): String {
+        return registrationUseCase.execute(username, email, password)
+    }
 
     fun checkLogin(login: String): String? {
         if (login.length < 4 || login.length > 16) {
@@ -165,5 +164,15 @@ class AccountViewModel @Inject constructor(
 
         // Проверяем, соответствует ли строка регулярному выражению
         return !Regex(usernamePattern).matches(login)
+    }
+
+    // Confirmation
+
+    suspend fun sendAccConfirmation(): Boolean {
+        return sendAccConfirmation.execute()
+    }
+
+    suspend fun sendPasswordResetConfirmation(): Boolean {
+        return sendPasswordResetConfirmation.execute()
     }
 }

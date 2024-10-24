@@ -272,7 +272,7 @@ class DomainModule {
 
     @Provides
     fun provideRegisterNewUserUseCase(context: Context): RegistrationUseCase {
-        return RegistrationUseCase(context)
+        return RegistrationUseCase()
     }
 
     @Provides

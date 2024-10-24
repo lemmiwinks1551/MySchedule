@@ -197,9 +197,16 @@ class AccountFragmentHome : Fragment() {
             handleError(passwordErrorTv, passwordError)
             handleError(passwordConfirmErrorTv, passwordConfirmError)
 
-            if (loginError != null || emailError != null || passwordError != null || passwordConfirmError != null) {
+            if (loginError == null && emailError == null && passwordError == null && passwordConfirmError == null) {
                 CoroutineScope(Dispatchers.Main).launch {
-                    viewModel.registration()
+                    val status = viewModel.registration(
+                        loginEt.text.toString(), emailEt.text.toString(), passwordEt.text.toString()
+                    )
+                    if (status == "Пользователь успешно зарегистрирован") {
+                        showDialogMessage("Пользователь успешно зарегистрирован", dialog)
+                    } else {
+                        Toast.makeText(context, status, Toast.LENGTH_LONG).show()
+                    }
                 }
             }
         }
@@ -210,6 +217,29 @@ class AccountFragmentHome : Fragment() {
         )
 
         dialog.show()
+    }
+
+    private fun showDialogMessage(messageText: String, dialog: Dialog) {
+        val dialogMessage = Dialog(requireContext())
+        val view = layoutInflater.inflate(R.layout.dialog_message, null)
+        dialogMessage.setContentView(view)
+
+        val messageTv = view.findViewById<TextView>(R.id.message_tv)
+        val buttonOk = view.findViewById<Button>(R.id.button_ok)
+
+        messageTv.text = messageText
+
+        buttonOk.setOnClickListener {
+            dialogMessage.dismiss()
+            dialog.dismiss()
+        }
+
+        dialogMessage.window?.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+
+        dialogMessage.show()
     }
 
     private suspend fun logout() {
