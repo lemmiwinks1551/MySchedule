@@ -87,17 +87,20 @@ class AccountViewModel @Inject constructor(
             if (jwt != null) {
                 logoutSuccessful = logoutUseCase.execute(jwt!!)
             } else {
+                requestFinished()
                 return false
             }
 
             if (logoutSuccessful) {
                 clearUser()
             } else {
+                requestFinished()
                 return false
             }
 
             jwt = null
         } catch (e: Exception) {
+            requestFinished()
             Log.e(log, e.toString())
         }
 

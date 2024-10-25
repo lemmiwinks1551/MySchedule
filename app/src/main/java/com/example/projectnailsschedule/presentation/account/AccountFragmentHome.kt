@@ -243,11 +243,14 @@ class AccountFragmentHome : Fragment() {
     }
 
     private suspend fun logout() {
-        val success = viewModel.logout()
-        if (success) {
-            showToast(logoutSuccess)
-        } else {
-            showToast(logoutError)
+        // Выполняем выход, только если сейчас никаких других процессов не выполняется
+        if (viewModel.requestDone.value == true) {
+            val success = viewModel.logout()
+            if (success) {
+                showToast(logoutSuccess)
+            } else {
+                showToast(logoutError)
+            }
         }
     }
 
