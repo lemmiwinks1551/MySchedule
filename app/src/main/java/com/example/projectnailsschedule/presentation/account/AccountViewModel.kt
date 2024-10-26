@@ -54,6 +54,7 @@ class AccountViewModel @Inject constructor(
     }
 
     // Login
+
     suspend fun login(login: String, password: String): String? {
         if (!isRequestFree()) return null
 
@@ -61,7 +62,7 @@ class AccountViewModel @Inject constructor(
         return try {
             // Выполнить запрос и установить JWT в Shared Pref
             val response = loginUseCase.execute(User(login, password))
-            if (response?.code() == 403)  {
+            if (response?.code() == 403) {
                 requestFinished()
                 return "403"
             }
@@ -177,8 +178,19 @@ class AccountViewModel @Inject constructor(
 
     // Confirmation
 
-    suspend fun sendAccConfirmation(): Boolean {
-        return sendAccConfirmation.execute()
+    suspend fun sendAccConfirmation(usernameOrEmail: String): String? {
+        if (!isRequestFree()) return null
+        requestStarted()
+
+        var status: String? = null
+        try {
+            status = sendAccConfirmation.execute(usernameOrEmail)?.body()?.status
+        } catch (e: Exception) {
+            Log.e(log, e.message.toString())
+        }
+
+        requestFinished()
+        return status
     }
 
     suspend fun sendPasswordResetConfirmation(): Boolean {

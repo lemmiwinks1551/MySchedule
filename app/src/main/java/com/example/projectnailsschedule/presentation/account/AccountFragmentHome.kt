@@ -39,6 +39,8 @@ class AccountFragmentHome : Fragment() {
     private val loginErrorUnknown = "Не удалось выполнить вход"
     private val logoutSuccess = "Выход выполнен"
     private val logoutError = "Не удалось выполнить выход"
+    private val passwordSuccessfullyReset =
+        "Успешно! Письмо для сброса пароля отправлено на почту пользователя"
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -123,7 +125,7 @@ class AccountFragmentHome : Fragment() {
         val credentialsError = view.findViewById<TextView>(R.id.credentials_error)
 
         val loginButton = view.findViewById<Button>(R.id.login_button)
-        val forgotPassword = view.findViewById<Button>(R.id.forgot_password_tv)
+        val forgotPassword = view.findViewById<TextView>(R.id.forgot_password_tv)
         val showPassword = view.findViewById<CheckBox>(R.id.show_password)
 
         showPassword.setOnCheckedChangeListener { _, isChecked ->
@@ -134,15 +136,17 @@ class AccountFragmentHome : Fragment() {
             CoroutineScope(Dispatchers.Main).launch {
                 val requestStatus = viewModel.login(login.text.toString(), password.text.toString())
 
-                when (requestStatus){
-                    loginSuccess ->  {
+                when (requestStatus) {
+                    loginSuccess -> {
                         showToast(loginSuccess)
                         dialog.dismiss()
                     }
+
                     "403" -> {
                         credentialsError.visibility = View.VISIBLE
                         credentialsError.text = loginError403
                     }
+
                     else -> {
                         credentialsError.visibility = View.VISIBLE
                         credentialsError.text = loginErrorUnknown
@@ -152,7 +156,8 @@ class AccountFragmentHome : Fragment() {
         }
 
         forgotPassword.setOnClickListener {
-
+            dialog.dismiss()
+            showDialogForgotPassword()
         }
 
         view.findViewById<EditText>(R.id.login_et).requestFocus()
@@ -258,7 +263,38 @@ class AccountFragmentHome : Fragment() {
     }
 
     private fun showDialogForgotPassword() {
+        val dialog = Dialog(requireContext())
+        val view = layoutInflater.inflate(R.layout.dialog_forgot_password, null)
 
+        val usernameOrEmailEt = view.findViewById<EditText>(R.id.usernameOrEmail_et)
+        val usernameOrEmailErrorTv = view.findViewById<TextView>(R.id.usernameOrEmail_error)
+        val resetPasswordButton = view.findViewById<Button>(R.id.reset_password_button)
+        dialog.setContentView(view)
+
+        resetPasswordButton.setOnClickListener {
+            val usernameOrEmailText = usernameOrEmailEt.text.toString()
+            if (usernameOrEmailText.isEmpty()) {
+                usernameOrEmailErrorTv.visibility = View.VISIBLE
+                usernameOrEmailErrorTv.text = "Логин  или email не может быть пустым"
+            } else {
+                CoroutineScope(Dispatchers.Main).launch {
+                    val status = viewModel.sendAccConfirmation(usernameOrEmailText)
+                    if (status == passwordSuccessfullyReset) {
+                        showDialogMessage(passwordSuccessfullyReset, dialog)
+                    } else {
+                        usernameOrEmailErrorTv.visibility = View.VISIBLE
+                        usernameOrEmailErrorTv.text = status
+                    }
+                }
+            }
+        }
+
+        dialog.window?.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+
+        dialog.show()
     }
 
     private suspend fun logout() {

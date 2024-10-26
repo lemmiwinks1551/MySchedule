@@ -277,7 +277,7 @@ class DomainModule {
 
     @Provides
     fun provideSendAccountConfirmation(context: Context): SendAccConfirmation {
-        return SendAccConfirmation(context)
+        return SendAccConfirmation()
     }
 
     @Provides
