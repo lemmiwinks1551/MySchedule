@@ -54,26 +54,30 @@ class AccountViewModel @Inject constructor(
     }
 
     // Login
-    suspend fun login(login: String, password: String): Boolean {
-        if (!isRequestFree()) return false
+    suspend fun login(login: String, password: String): String? {
+        if (!isRequestFree()) return null
 
         requestStarted()
-        try {
+        return try {
             // Выполнить запрос и установить JWT в Shared Pref
-            val token = loginUseCase.execute(User(login, password))
-            if (token != null) {
-                setJwt.execute(token)
-                extractUsernameFromJwt(token)?.let { setUsername(it) }
-            } else {
+            val response = loginUseCase.execute(User(login, password))
+            if (response?.code() == 403)  {
                 requestFinished()
-                return false
+                return "403"
+            }
+            if (response?.body() != null) {
+                jwt = response.body()!!.token
+                setUsername(response.body()!!.username)
+
+                requestFinished()
+                return "Вход выполнен"
+            } else {
+                throw Exception()
             }
         } catch (e: Exception) {
-            Log.e(log, e.toString())
+            requestFinished()
+            null
         }
-
-        requestFinished()
-        return true
     }
 
     suspend fun logout(): Boolean {
@@ -98,13 +102,15 @@ class AccountViewModel @Inject constructor(
                 return false
             }
 
-            jwt = null
+
         } catch (e: Exception) {
             requestFinished()
             Log.e(log, e.toString())
         }
 
         requestFinished()
+
+        jwt = ""
 
         return true
     }

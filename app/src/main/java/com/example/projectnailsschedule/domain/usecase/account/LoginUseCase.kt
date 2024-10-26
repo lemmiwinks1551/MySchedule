@@ -14,7 +14,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 class LoginUseCase {
     private val log = this::class.simpleName
 
-    suspend fun execute(user: User): String? {
+    suspend fun execute(user: User): Response<LoginResponseDto>? {
         val baseUrl = getBaseUrl()
 
         return try {
@@ -23,14 +23,8 @@ class LoginUseCase {
 
             val loginApi = retrofit.create(LoginApi::class.java)
 
-            // Выполняем запрос на авторизацию
-            val response = executeLoginRequest(loginApi, user)
+            return executeLoginRequest(loginApi, user)
 
-            // Проверяем успешность ответа и возвращаем токен
-            if (response.isSuccessful) {
-                return response.body()?.token
-            }
-            null
         } catch (e: Exception) {
             Log.e(log, e.toString())
             null
@@ -64,5 +58,4 @@ class LoginUseCase {
     private suspend fun executeLoginRequest(loginApi: LoginApi, user: User): Response<LoginResponseDto> {
         return loginApi.loginUser(user)
     }
-
 }

@@ -35,7 +35,8 @@ class AccountFragmentHome : Fragment() {
     val hideView: (View) -> Unit = { it.visibility = View.GONE }
 
     private val loginSuccess = "Вход выполнен"
-    private val loginError = "Не удалось выполнить вход"
+    private val loginError403 = "Неверный логин или пароль"
+    private val loginErrorUnknown = "Не удалось выполнить вход"
     private val logoutSuccess = "Выход выполнен"
     private val logoutError = "Не удалось выполнить выход"
 
@@ -119,8 +120,10 @@ class AccountFragmentHome : Fragment() {
 
         val login = view.findViewById<EditText>(R.id.login_et)
         val password = view.findViewById<EditText>(R.id.password_et)
+        val credentialsError = view.findViewById<TextView>(R.id.credentials_error)
 
         val loginButton = view.findViewById<Button>(R.id.login_button)
+        val forgotPassword = view.findViewById<Button>(R.id.forgot_password_tv)
         val showPassword = view.findViewById<CheckBox>(R.id.show_password)
 
         showPassword.setOnCheckedChangeListener { _, isChecked ->
@@ -129,15 +132,27 @@ class AccountFragmentHome : Fragment() {
 
         loginButton.setOnClickListener {
             CoroutineScope(Dispatchers.Main).launch {
-                dialog.dismiss()
-                val success = viewModel.login(login.text.toString(), password.text.toString())
+                val requestStatus = viewModel.login(login.text.toString(), password.text.toString())
 
-                if (success) {
-                    showToast(loginSuccess)
-                } else {
-                    showToast(loginError)
+                when (requestStatus){
+                    loginSuccess ->  {
+                        showToast(loginSuccess)
+                        dialog.dismiss()
+                    }
+                    "403" -> {
+                        credentialsError.visibility = View.VISIBLE
+                        credentialsError.text = loginError403
+                    }
+                    else -> {
+                        credentialsError.visibility = View.VISIBLE
+                        credentialsError.text = loginErrorUnknown
+                    }
                 }
             }
+        }
+
+        forgotPassword.setOnClickListener {
+
         }
 
         view.findViewById<EditText>(R.id.login_et).requestFocus()
@@ -240,6 +255,10 @@ class AccountFragmentHome : Fragment() {
         )
 
         dialogMessage.show()
+    }
+
+    private fun showDialogForgotPassword() {
+
     }
 
     private suspend fun logout() {
