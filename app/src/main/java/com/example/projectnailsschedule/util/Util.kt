@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import com.auth0.android.jwt.JWT
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.data.storage.ClientsDb
 import com.example.projectnailsschedule.data.storage.ProceduresDb
@@ -385,6 +386,15 @@ class Util {
         }
 
         return sb.toString()
+    }
+
+    fun extractUsernameFromJwt(jwt: String): String? {
+        // Извлекаем логин из поля "sub"
+        return try {
+            JWT(jwt).getClaim("sub").asString().toString()
+        } catch (e: Exception) {
+            null
+        }
     }
 
 /*    fun checkFilePermission(context: Context) {

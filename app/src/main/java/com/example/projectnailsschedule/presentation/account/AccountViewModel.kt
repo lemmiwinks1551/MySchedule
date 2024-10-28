@@ -5,14 +5,21 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.auth0.android.jwt.JWT
 import com.example.projectnailsschedule.domain.models.User
+import com.example.projectnailsschedule.domain.models.dto.UserInfoDto
+import com.example.projectnailsschedule.domain.models.dto.UserInfoDtoManager
 import com.example.projectnailsschedule.domain.usecase.account.GetJwt
+import com.example.projectnailsschedule.domain.usecase.account.GetUserInfoApiUseCase
 import com.example.projectnailsschedule.domain.usecase.account.LoginUseCase
 import com.example.projectnailsschedule.domain.usecase.account.LogoutUseCase
 import com.example.projectnailsschedule.domain.usecase.account.RegistrationUseCase
 import com.example.projectnailsschedule.domain.usecase.account.SendAccConfirmation
 import com.example.projectnailsschedule.domain.usecase.account.SendPasswordResetConfirmation
 import com.example.projectnailsschedule.domain.usecase.account.SetJwt
+import com.example.projectnailsschedule.util.Util
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,21 +30,21 @@ class AccountViewModel @Inject constructor(
     private var sendAccConfirmation: SendAccConfirmation,
     private var sendPasswordResetConfirmation: SendPasswordResetConfirmation,
     private var setJwt: SetJwt,
-    private var getJwt: GetJwt
+    private var getJwt: GetJwt,
+    private var getUserInfoApi: GetUserInfoApiUseCase,
 ) : ViewModel() {
     private val log = this::class.simpleName
 
-    var user = MutableLiveData<User?>(null)
+    var user = MutableLiveData<UserInfoDto?>(null)
+    val setUsername: (login: String) -> Unit = { }
+    private val clearUser: () -> Unit = { user.postValue(null) }
+
     var requestDone = MutableLiveData(true)
 
     // Request status
     private val requestStarted: () -> Unit = { requestDone.postValue(false) }
     private val requestFinished: () -> Unit = { requestDone.postValue(true) }
     private val isRequestFree: () -> Boolean = { requestDone.value == true }
-
-    // Set user/clear user
-    val setUsername: (login: String) -> Unit = { user.postValue(User(it, null)) }
-    val clearUser: () -> Unit = { user.postValue(null) }
 
     // JWT getter/setter
     private var jwt: String?
@@ -47,9 +54,14 @@ class AccountViewModel @Inject constructor(
         }
 
     init {
-        // Пробуем получить JWT из SharedPreference и установить username
-        if (jwt != null) {
-            extractUsernameFromJwt(jwt!!)?.let { setUsername(it) }
+        // Получаем юзера из синглтона, если там null - пробуем получить его через api
+        val currentUser = UserInfoDtoManager.getUserDto()
+        if (currentUser != null) {
+            user.postValue(currentUser)
+        } else {
+            CoroutineScope(Dispatchers.Main).launch {
+                user.postValue(getUserInfoApi())
+            }
         }
     }
 
@@ -68,7 +80,15 @@ class AccountViewModel @Inject constructor(
             }
             if (response?.body() != null) {
                 jwt = response.body()!!.token
-                setUsername(response.body()!!.username)
+
+                val userInfoDto = getUserInfoApi()
+
+                if (userInfoDto != null) {
+                    UserInfoDtoManager.setUserDto(userInfoDto)
+                    user.postValue(userInfoDto)
+                } else {
+                    return null
+                }
 
                 requestFinished()
                 return "Вход выполнен"
@@ -96,13 +116,10 @@ class AccountViewModel @Inject constructor(
                 return false
             }
 
-            if (logoutSuccessful) {
-                clearUser()
-            } else {
+            if (!logoutSuccessful) {
                 requestFinished()
                 return false
             }
-
 
         } catch (e: Exception) {
             requestFinished()
@@ -112,6 +129,10 @@ class AccountViewModel @Inject constructor(
         requestFinished()
 
         jwt = ""
+
+        UserInfoDtoManager.clearUserDto()
+
+        user.postValue(null)
 
         return true
     }
@@ -195,5 +216,21 @@ class AccountViewModel @Inject constructor(
 
     suspend fun sendPasswordResetConfirmation(): Boolean {
         return sendPasswordResetConfirmation.execute()
+    }
+
+    // Account
+
+    private fun updateUser() {
+
+    }
+
+    private suspend fun getUserInfoApi(): UserInfoDto? {
+        val jwt = getJwt.execute() ?: return null
+        val username = Util().extractUsernameFromJwt(jwt) ?: return null
+        val userInfo = getUserInfoApi.execute(username, jwt)?.body() ?: return null
+
+        // Обновляем данные о пользователе
+        UserInfoDtoManager.setUserDto(userInfo)
+        return userInfo
     }
 }

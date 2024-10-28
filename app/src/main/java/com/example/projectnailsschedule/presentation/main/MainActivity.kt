@@ -82,6 +82,11 @@ class MainActivity : AppCompatActivity() {
         val currentUserThemeId = resources.getIdentifier(currentUserTheme, "style", packageName)
         setTheme(currentUserThemeId)
 
+        // set UserData singleton
+        CoroutineScope(Dispatchers.IO).launch {
+            mainViewModel.getUserInfoApi()
+        }
+
         // Set uncaught exception handler
         Thread.setDefaultUncaughtExceptionHandler(uncaughtExceptionHandler)
 

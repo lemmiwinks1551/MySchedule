@@ -1,6 +1,8 @@
 package com.example.projectnailsschedule.presentation.account
 
 import android.app.Dialog
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.InputType
 import android.view.LayoutInflater
@@ -16,7 +18,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentAccountHomeBinding
-import com.example.projectnailsschedule.domain.models.User
+import com.example.projectnailsschedule.domain.models.dto.UserInfoDto
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -77,16 +79,16 @@ class AccountFragmentHome : Fragment() {
         // Мониторинг состояния логина пользователя
         viewModel.user.observe(viewLifecycleOwner) {
             if (it != null) {
-                inflateHomeFragment(true, user = it)
+                inflateHomeFragment(true, userInfoDto = it)
             } else {
-                inflateHomeFragment(false, user = null)
+                inflateHomeFragment(false, userInfoDto = null)
             }
         }
     }
 
-    private fun inflateHomeFragment(loggedIn: Boolean, user: User?) {
+    private fun inflateHomeFragment(loggedIn: Boolean, userInfoDto: UserInfoDto?) {
         if (loggedIn) {
-            binding.welcomeTv.text = "Добро пожаловать, ${user?.username}!"
+            binding.welcomeTv.text = "Добро пожаловать, ${userInfoDto?.username}!"
             binding.loggedCl.visibility = View.VISIBLE
             binding.unloggedCl.visibility = View.GONE
         } else {
@@ -112,6 +114,11 @@ class AccountFragmentHome : Fragment() {
         }
 
         binding.myAccButton.setOnClickListener {
+            showMyAccountDialog()
+        }
+
+        binding.supportButton.setOnClickListener {
+            sendSupportEmail()
         }
     }
 
@@ -279,11 +286,20 @@ class AccountFragmentHome : Fragment() {
             } else {
                 CoroutineScope(Dispatchers.Main).launch {
                     val status = viewModel.sendAccConfirmation(usernameOrEmailText)
-                    if (status == passwordSuccessfullyReset) {
-                        showDialogMessage(passwordSuccessfullyReset, dialog)
-                    } else {
-                        usernameOrEmailErrorTv.visibility = View.VISIBLE
-                        usernameOrEmailErrorTv.text = status
+                    when (status) {
+                        passwordSuccessfullyReset -> {
+                            showDialogMessage(passwordSuccessfullyReset, dialog)
+                        }
+
+                        null -> {
+                            usernameOrEmailErrorTv.visibility = View.VISIBLE
+                            usernameOrEmailErrorTv.text = "Возникла непредвиденная ошибка"
+                        }
+
+                        else -> {
+                            usernameOrEmailErrorTv.visibility = View.VISIBLE
+                            usernameOrEmailErrorTv.text = status
+                        }
                     }
                 }
             }
@@ -293,6 +309,19 @@ class AccountFragmentHome : Fragment() {
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
+
+        dialog.show()
+    }
+
+    private fun showMyAccountDialog() {
+        val dialog = Dialog(requireContext())
+        val view = layoutInflater.inflate(R.layout.dialog_my_account, null)
+        dialog.setContentView(view)
+
+        val usernameTv = view.findViewById<TextView>(R.id.username_tv)
+        val emailTv = view.findViewById<TextView>(R.id.email_tv)
+        val accountStatusTv = view.findViewById<TextView>(R.id.account_status)
+        val confirmAccountButton = view.findViewById<Button>(R.id.send_email_confirmation)
 
         dialog.show()
     }
@@ -336,5 +365,14 @@ class AccountFragmentHome : Fragment() {
     private fun hideError(textView: TextView) {
         textView.text = null
         textView.visibility = View.GONE
+    }
+
+    private fun sendSupportEmail() {
+        val recipientEmail = getString(R.string.support_email)
+
+        val emailIntent = Intent(Intent.ACTION_SENDTO)
+        emailIntent.data = Uri.parse("mailto:$recipientEmail")
+
+        startActivity(emailIntent)
     }
 }
