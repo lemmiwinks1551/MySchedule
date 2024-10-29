@@ -2,35 +2,28 @@ package com.example.projectnailsschedule.domain.usecase.account
 
 import android.util.Log
 import com.example.projectnailsschedule.BuildConfig
-import com.example.projectnailsschedule.domain.models.dto.RegistrationRequestDto
 import com.example.projectnailsschedule.domain.models.dto.StatusResponseDto
-import com.example.projectnailsschedule.domain.repository.api.ForgotPasswordApi
+import com.example.projectnailsschedule.domain.models.dto.UserInfoDto
+import com.example.projectnailsschedule.domain.repository.api.ResendConfirmationEmailApi
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class SendAccConfirmation {
+class ResendConfirmationEmailUseCase {
     private val log = this::class.simpleName
 
-    suspend fun execute(usernameOrEmail: String): Response<StatusResponseDto>? {
+    suspend fun execute(user: UserInfoDto): Response<StatusResponseDto>? {
         val baseUrl = getBaseUrl()
 
         return try {
             val client = createOkHttpClient()
             val retrofit = createRetrofit(baseUrl, client)
 
-            val forgotPasswordApi = retrofit.create(ForgotPasswordApi::class.java)
+            val resendConfirmationEmailApi = retrofit.create(ResendConfirmationEmailApi::class.java)
 
-            return request(
-                forgotPasswordApi,
-                RegistrationRequestDto(
-                    username = usernameOrEmail,
-                    email = usernameOrEmail,
-                    password = ""
-                )
-            )
+            return executeRequest(resendConfirmationEmailApi, user)
 
         } catch (e: Exception) {
             Log.e(log, e.toString())
@@ -62,10 +55,10 @@ class SendAccConfirmation {
             .build()
     }
 
-    private suspend fun request(
-        forgotPasswordApi: ForgotPasswordApi,
-        registrationRequestDto: RegistrationRequestDto
+    private suspend fun executeRequest(
+        resendConfirmationEmailApi: ResendConfirmationEmailApi,
+        user: UserInfoDto
     ): Response<StatusResponseDto> {
-        return forgotPasswordApi.forgotPassword(registrationRequestDto)
+        return resendConfirmationEmailApi.resendConfirmationEmailApi(user)
     }
 }

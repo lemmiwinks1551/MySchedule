@@ -22,8 +22,6 @@ import com.example.projectnailsschedule.domain.models.dto.UserInfoDto
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -46,6 +44,10 @@ class AccountFragmentHome : Fragment() {
     private val logoutError = "Не удалось выполнить выход"
     private val passwordSuccessfullyReset =
         "Успешно! Письмо для сброса пароля отправлено на почту пользователя"
+    private val emailResetSuccess =
+        "Новый токен отправлен на почту"
+    private val emailResetError =
+        "С момента отправки предыдущего токена не прошло 24 часа."
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -344,6 +346,29 @@ class AccountFragmentHome : Fragment() {
                         accountStatusTv.text = "Аккаунт пользователя не подтвержден"
                         accountStatusTv.setTextColor(resources.getColor(R.color.red_weekend))
                         confirmAccountButton.visibility = View.VISIBLE
+                    }
+                }
+            }
+        }
+
+        confirmAccountButton.setOnClickListener {
+            CoroutineScope(Dispatchers.Main).launch {
+                val errorMessageTv = view.findViewById<TextView>(R.id.account_confirmation_error)
+                val status = viewModel.resendConfirmationEmail()
+
+                when (status) {
+                    null -> {
+                        errorMessageTv.visibility = View.VISIBLE
+                        errorMessageTv.text = "Возникла непредвиденная ошибка"
+                    }
+
+                    emailResetError -> {
+                        errorMessageTv.visibility = View.VISIBLE
+                        errorMessageTv.text = emailResetError
+                    }
+
+                    else -> {
+                        showDialogMessage(status, dialog)
                     }
                 }
             }

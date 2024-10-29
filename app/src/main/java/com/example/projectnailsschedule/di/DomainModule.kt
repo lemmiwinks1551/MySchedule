@@ -11,6 +11,7 @@ import com.example.projectnailsschedule.domain.usecase.account.GetUserInfoApiUse
 import com.example.projectnailsschedule.domain.usecase.account.LoginUseCase
 import com.example.projectnailsschedule.domain.usecase.account.LogoutUseCase
 import com.example.projectnailsschedule.domain.usecase.account.RegistrationUseCase
+import com.example.projectnailsschedule.domain.usecase.account.ResendConfirmationEmailUseCase
 import com.example.projectnailsschedule.domain.usecase.account.SendAccConfirmation
 import com.example.projectnailsschedule.domain.usecase.account.SendPasswordResetConfirmation
 import com.example.projectnailsschedule.domain.usecase.account.SetJwt
@@ -299,5 +300,10 @@ class DomainModule {
     @Provides
     fun getUserApiUseCase(): GetUserInfoApiUseCase {
         return GetUserInfoApiUseCase()
+    }
+
+    @Provides
+    fun getResendConfirmationEmailUseCase(): ResendConfirmationEmailUseCase {
+        return ResendConfirmationEmailUseCase()
     }
 }

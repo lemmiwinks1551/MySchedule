@@ -11,6 +11,7 @@ import com.example.projectnailsschedule.domain.usecase.account.GetUserInfoApiUse
 import com.example.projectnailsschedule.domain.usecase.account.LoginUseCase
 import com.example.projectnailsschedule.domain.usecase.account.LogoutUseCase
 import com.example.projectnailsschedule.domain.usecase.account.RegistrationUseCase
+import com.example.projectnailsschedule.domain.usecase.account.ResendConfirmationEmailUseCase
 import com.example.projectnailsschedule.domain.usecase.account.SendAccConfirmation
 import com.example.projectnailsschedule.domain.usecase.account.SendPasswordResetConfirmation
 import com.example.projectnailsschedule.domain.usecase.account.SetJwt
@@ -32,6 +33,7 @@ class AccountViewModel @Inject constructor(
     private var setJwt: SetJwt,
     private var getJwt: GetJwt,
     private var getUserInfoApi: GetUserInfoApiUseCase,
+    private var resendConfirmationEmailUseCase: ResendConfirmationEmailUseCase
 ) : ViewModel() {
     private val log = this::class.simpleName
 
@@ -200,6 +202,10 @@ class AccountViewModel @Inject constructor(
 
     suspend fun sendPasswordResetConfirmation(): Boolean {
         return sendPasswordResetConfirmation.execute()
+    }
+
+    suspend fun resendConfirmationEmail() : String? {
+        return resendConfirmationEmailUseCase.execute(user.value!!)?.body()?.status
     }
 
     // Account

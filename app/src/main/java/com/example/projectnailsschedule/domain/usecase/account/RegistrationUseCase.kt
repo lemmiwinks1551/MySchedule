@@ -2,7 +2,7 @@ package com.example.projectnailsschedule.domain.usecase.account
 
 import com.example.projectnailsschedule.BuildConfig
 import com.example.projectnailsschedule.domain.models.dto.RegistrationRequestDto
-import com.example.projectnailsschedule.domain.models.dto.RegistrationResponseDto
+import com.example.projectnailsschedule.domain.models.dto.StatusResponseDto
 import com.example.projectnailsschedule.domain.repository.api.RegistrationApi
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -59,7 +59,7 @@ class RegistrationUseCase {
     private suspend fun executeRegistrationRequest(
         registrationApi: RegistrationApi,
         registrationRequestDto: RegistrationRequestDto
-    ): Response<RegistrationResponseDto> {
+    ): Response<StatusResponseDto> {
         return registrationApi.registerUser(registrationRequestDto)
     }
 }

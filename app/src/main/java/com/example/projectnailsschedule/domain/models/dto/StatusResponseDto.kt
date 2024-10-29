@@ -1,5 +1,5 @@
 package com.example.projectnailsschedule.domain.models.dto
 
-data class RegistrationResponseDto(
+data class StatusResponseDto(
     val status: String
 )
