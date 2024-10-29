@@ -3,7 +3,6 @@ package com.example.projectnailsschedule.presentation.account
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.auth0.android.jwt.JWT
 import com.example.projectnailsschedule.domain.models.User
 import com.example.projectnailsschedule.domain.models.dto.UserInfoDto
 import com.example.projectnailsschedule.domain.models.dto.UserInfoDtoManager
@@ -19,6 +18,7 @@ import com.example.projectnailsschedule.util.Util
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -36,8 +36,6 @@ class AccountViewModel @Inject constructor(
     private val log = this::class.simpleName
 
     var user = MutableLiveData<UserInfoDto?>(null)
-    val setUsername: (login: String) -> Unit = { }
-    private val clearUser: () -> Unit = { user.postValue(null) }
 
     var requestDone = MutableLiveData(true)
 
@@ -54,14 +52,9 @@ class AccountViewModel @Inject constructor(
         }
 
     init {
-        // Получаем юзера из синглтона, если там null - пробуем получить его через api
-        val currentUser = UserInfoDtoManager.getUserDto()
-        if (currentUser != null) {
-            user.postValue(currentUser)
-        } else {
-            CoroutineScope(Dispatchers.Main).launch {
-                user.postValue(getUserInfoApi())
-            }
+        // Обновляем состояние пользователя
+        CoroutineScope(Dispatchers.Main).launch {
+            getUserInfoApi()
         }
     }
 
@@ -71,6 +64,7 @@ class AccountViewModel @Inject constructor(
         if (!isRequestFree()) return null
 
         requestStarted()
+
         return try {
             // Выполнить запрос и установить JWT в Shared Pref
             val response = loginUseCase.execute(User(login, password))
@@ -84,8 +78,7 @@ class AccountViewModel @Inject constructor(
                 val userInfoDto = getUserInfoApi()
 
                 if (userInfoDto != null) {
-                    UserInfoDtoManager.setUserDto(userInfoDto)
-                    user.postValue(userInfoDto)
+                    getUserInfoApi()
                 } else {
                     return null
                 }
@@ -135,15 +128,6 @@ class AccountViewModel @Inject constructor(
         user.postValue(null)
 
         return true
-    }
-
-    private fun extractUsernameFromJwt(jwt: String): String? {
-        // Извлекаем логин из поля "sub"
-        return try {
-            JWT(jwt).getClaim("sub").asString().toString()
-        } catch (e: Exception) {
-            null
-        }
     }
 
     // Registration + check
@@ -220,17 +204,27 @@ class AccountViewModel @Inject constructor(
 
     // Account
 
-    private fun updateUser() {
-
+    private fun updateUser(userInfoDto: UserInfoDto) {
+        user.postValue(userInfoDto)
     }
 
-    private suspend fun getUserInfoApi(): UserInfoDto? {
-        val jwt = getJwt.execute() ?: return null
-        val username = Util().extractUsernameFromJwt(jwt) ?: return null
-        val userInfo = getUserInfoApi.execute(username, jwt)?.body() ?: return null
+    suspend fun getUserInfoApi() {
+        if (!isRequestFree()) return
 
-        // Обновляем данные о пользователе
-        UserInfoDtoManager.setUserDto(userInfo)
-        return userInfo
+        requestStarted()
+
+        delay(3000) // Задержка, если нужна
+
+        return try {
+            val jwt = getJwt.execute() ?: return
+            val username = Util().extractUsernameFromJwt(jwt) ?: return
+            val userInfo = getUserInfoApi.execute(username, jwt)?.body() ?: return
+
+            // Обновляем данные о пользователе
+            UserInfoDtoManager.setUserDto(userInfo)
+            updateUser(userInfo)
+        } finally {
+            requestFinished()
+        }
     }
 }

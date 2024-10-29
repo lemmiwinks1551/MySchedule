@@ -22,7 +22,10 @@ import com.example.projectnailsschedule.domain.models.dto.UserInfoDto
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class AccountFragmentHome : Fragment() {
@@ -322,6 +325,34 @@ class AccountFragmentHome : Fragment() {
         val emailTv = view.findViewById<TextView>(R.id.email_tv)
         val accountStatusTv = view.findViewById<TextView>(R.id.account_status)
         val confirmAccountButton = view.findViewById<Button>(R.id.send_email_confirmation)
+
+        CoroutineScope(Dispatchers.IO).launch {
+            // Обновляем данные о пользователе
+            viewModel.getUserInfoApi()
+
+            withContext(Dispatchers.Main) {
+                if (viewModel.user.value == null) {
+                    showDialogMessage("Пользователь не определен", dialog)
+                } else {
+                    usernameTv.text = "Имя пользователя: ${viewModel.user.value!!.username}"
+                    emailTv.text = "Email пользователя: ${viewModel.user.value!!.userEmail}"
+
+                    if (viewModel.user.value!!.emailVerified == true) {
+                        accountStatusTv.text = "Аккаунт пользователя подтвержден"
+                        confirmAccountButton.visibility = View.GONE
+                    } else {
+                        accountStatusTv.text = "Аккаунт пользователя не подтвержден"
+                        accountStatusTv.setTextColor(resources.getColor(R.color.red_weekend))
+                        confirmAccountButton.visibility = View.VISIBLE
+                    }
+                }
+            }
+        }
+
+        dialog.window?.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
 
         dialog.show()
     }
