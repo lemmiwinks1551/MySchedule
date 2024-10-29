@@ -213,8 +213,6 @@ class AccountViewModel @Inject constructor(
 
         requestStarted()
 
-        delay(3000) // Задержка, если нужна
-
         return try {
             val jwt = getJwt.execute() ?: return
             val username = Util().extractUsernameFromJwt(jwt) ?: return
