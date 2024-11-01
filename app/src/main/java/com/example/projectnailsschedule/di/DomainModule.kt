@@ -13,7 +13,6 @@ import com.example.projectnailsschedule.domain.usecase.account.LogoutUseCase
 import com.example.projectnailsschedule.domain.usecase.account.RegistrationUseCase
 import com.example.projectnailsschedule.domain.usecase.account.ResendConfirmationEmailUseCase
 import com.example.projectnailsschedule.domain.usecase.account.SendAccConfirmation
-import com.example.projectnailsschedule.domain.usecase.account.SendPasswordResetConfirmation
 import com.example.projectnailsschedule.domain.usecase.account.SetJwt
 import com.example.projectnailsschedule.domain.usecase.apiUC.GetFaqUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.GetProductionCalendarDateInfoUseCase
@@ -280,11 +279,6 @@ class DomainModule {
     @Provides
     fun provideSendAccountConfirmation(): SendAccConfirmation {
         return SendAccConfirmation()
-    }
-
-    @Provides
-    fun provideSendPasswordResetConfirmation(context: Context): SendPasswordResetConfirmation {
-        return SendPasswordResetConfirmation(context)
     }
 
     @Provides

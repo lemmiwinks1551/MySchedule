@@ -13,13 +13,11 @@ import com.example.projectnailsschedule.domain.usecase.account.LogoutUseCase
 import com.example.projectnailsschedule.domain.usecase.account.RegistrationUseCase
 import com.example.projectnailsschedule.domain.usecase.account.ResendConfirmationEmailUseCase
 import com.example.projectnailsschedule.domain.usecase.account.SendAccConfirmation
-import com.example.projectnailsschedule.domain.usecase.account.SendPasswordResetConfirmation
 import com.example.projectnailsschedule.domain.usecase.account.SetJwt
 import com.example.projectnailsschedule.util.Util
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -29,7 +27,6 @@ class AccountViewModel @Inject constructor(
     private var logoutUseCase: LogoutUseCase,
     private var registrationUseCase: RegistrationUseCase,
     private var sendAccConfirmation: SendAccConfirmation,
-    private var sendPasswordResetConfirmation: SendPasswordResetConfirmation,
     private var setJwt: SetJwt,
     private var getJwt: GetJwt,
     private var getUserInfoApi: GetUserInfoApiUseCase,
@@ -56,7 +53,9 @@ class AccountViewModel @Inject constructor(
     init {
         // Обновляем состояние пользователя
         CoroutineScope(Dispatchers.Main).launch {
+            requestStarted()
             getUserInfoApi()
+            requestFinished()
         }
     }
 
@@ -64,35 +63,27 @@ class AccountViewModel @Inject constructor(
 
     suspend fun login(login: String, password: String): String? {
         if (!isRequestFree()) return null
-
         requestStarted()
 
         return try {
             // Выполнить запрос и установить JWT в Shared Pref
             val response = loginUseCase.execute(User(login, password))
+
             if (response?.code() == 403) {
-                requestFinished()
                 return "403"
             }
-            if (response?.body() != null) {
-                jwt = response.body()!!.token
 
-                val userInfoDto = getUserInfoApi()
+            response?.body()?.token?.let { token ->
+                jwt = token
 
-                if (userInfoDto != null) {
-                    getUserInfoApi()
-                } else {
-                    return null
-                }
+                getUserInfoApi()
 
-                requestFinished()
-                return "Вход выполнен"
-            } else {
-                throw Exception()
-            }
+                "Вход выполнен"
+            } ?: throw Exception()
         } catch (e: Exception) {
-            requestFinished()
             null
+        } finally {
+            requestFinished()
         }
     }
 
@@ -200,11 +191,7 @@ class AccountViewModel @Inject constructor(
         return status
     }
 
-    suspend fun sendPasswordResetConfirmation(): Boolean {
-        return sendPasswordResetConfirmation.execute()
-    }
-
-    suspend fun resendConfirmationEmail() : String? {
+    suspend fun resendConfirmationEmail(): String? {
         return resendConfirmationEmailUseCase.execute(user.value!!)?.body()?.status
     }
 
@@ -215,11 +202,8 @@ class AccountViewModel @Inject constructor(
     }
 
     suspend fun getUserInfoApi() {
-        if (!isRequestFree()) return
-
         requestStarted()
-
-        return try {
+        try {
             val jwt = getJwt.execute() ?: return
             val username = Util().extractUsernameFromJwt(jwt) ?: return
             val userInfo = getUserInfoApi.execute(username, jwt)?.body() ?: return
@@ -227,6 +211,8 @@ class AccountViewModel @Inject constructor(
             // Обновляем данные о пользователе
             UserInfoDtoManager.setUserDto(userInfo)
             updateUser(userInfo)
+        } catch (e: Exception) {
+            Log.e(log, e.message.toString())
         } finally {
             requestFinished()
         }

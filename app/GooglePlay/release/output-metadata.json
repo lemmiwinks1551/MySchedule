@@ -1,0 +1,20 @@
+{
+  "version": 3,
+  "artifactType": {
+    "type": "APK",
+    "kind": "Directory"
+  },
+  "applicationId": "com.lemmiwinks.myschedule",
+  "variantName": "GooglePlayRelease",
+  "elements": [
+    {
+      "type": "SINGLE",
+      "filters": [],
+      "attributes": [],
+      "versionCode": 54,
+      "versionName": "7.54",
+      "outputFile": "app-GooglePlay-release.apk"
+    }
+  ],
+  "elementType": "File"
+}

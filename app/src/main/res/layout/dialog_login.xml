@@ -59,7 +59,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:text="Забыл пароль"
+            android:text="Забыл пароль?"
             android:fontFamily="@font/roboto_medium_italic"
             android:visibility="visible"
             app:layout_constraintBottom_toTopOf="@+id/login_button"
