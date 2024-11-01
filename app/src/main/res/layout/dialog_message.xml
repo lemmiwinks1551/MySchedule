@@ -20,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:fontFamily="@font/roboto_black"
+            android:textStyle="bold"
             android:gravity="center"
             android:text="Сообщение"
             android:textColor="@color/black"

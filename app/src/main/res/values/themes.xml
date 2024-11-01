@@ -1,10 +1,6 @@
 <resources>
     <style name="Theme.Main" parent="Theme.MaterialComponents.Light.DarkActionBar.Bridge">
 
-        <!-- The primary branding color for the app. By default, this is the color applied to the
-     action bar background. -->
-        <item name="android:fontFamily">@font/roboto_regular</item>
-
         <item name="colorPrimary">@color/Gradient5</item>
         <item name="colorButtonNormal">@color/Gradient6</item>
 
@@ -224,8 +220,7 @@
         <item name="android:textColorHint">@color/MyNewThemeGray6</item>
     </style>
 
-    <!--Старая дефолтная тема, добавить нужно в выбор темы в настройках-->
-    <style name="Theme.MainOld" parent="Theme.MaterialComponents.Light.DarkActionBar.Bridge">
+    <style name="MyNewThemeClassic" parent="Theme.MaterialComponents.Light.DarkActionBar.Bridge">
 
         <!-- The primary branding color for the app. By default, this is the color applied to the
      action bar background. -->

@@ -18,9 +18,10 @@ import com.example.projectnailsschedule.presentation.settings.SettingsViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 
-private const val NUM_PAGES = 6
+private const val NUM_PAGES = 7
 
 private val iconArray = arrayOf(
+    R.drawable.gradient_rectangle_shape,
     R.drawable.background_default,
     R.drawable.background_pink,
     R.drawable.background_gray,
@@ -31,6 +32,7 @@ private val iconArray = arrayOf(
 
 private val themesArray = arrayOf(
     "Theme.Main",
+    "MyNewThemeClassic",
     "MyNewThemePink",
     "MyNewThemeGray",
     "MyNewThemeGreen",
@@ -141,6 +143,7 @@ class SelectThemeDialogFragment : DialogFragment() {
             3 -> themesArray[3]
             4 -> themesArray[4]
             5 -> themesArray[5]
+            6 -> themesArray[6]
             else -> ""
         }
     }
@@ -153,6 +156,7 @@ class SelectThemeDialogFragment : DialogFragment() {
             themesArray[3] -> 3
             themesArray[4] -> 4
             themesArray[5] -> 5
+            themesArray[6] -> 6
             else -> 0
         }
     }
