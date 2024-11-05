@@ -7,7 +7,7 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 interface ResendConfirmationEmailApi {
-    @POST("/api/v1/auth/resend_confirmation_email")
+    @POST("/api/v1/auth/resend-confirmation-email")
     suspend fun resendConfirmationEmailApi(
         @Body userInfoDto: UserInfoDto
     ): Response<StatusResponseDto>

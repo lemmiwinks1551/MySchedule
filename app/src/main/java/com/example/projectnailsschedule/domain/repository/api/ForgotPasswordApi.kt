@@ -7,7 +7,7 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 interface ForgotPasswordApi {
-    @POST("/api/v1/auth/forgot_password")
+    @POST("/api/v1/auth/forgot-password")
     suspend fun forgotPassword(
         @Body registrationRequestDto: RegistrationRequestDto
     ): Response<StatusResponseDto>
