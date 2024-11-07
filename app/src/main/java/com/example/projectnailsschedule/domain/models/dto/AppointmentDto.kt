@@ -14,43 +14,43 @@ data class AppointmentDto(
 
  val userName: String? = null,
 
- val syncTimestamp: String? = null,
+ var syncTimestamp: String? = null,
 
- val syncStatus: String? = null,
+ var syncStatus: String? = null,
 
- val appointmentDate: String? = null,
+ var appointmentDate: String? = null,
 
- val appointmentTime: String? = null,
+ var appointmentTime: String? = null,
 
- val appointmentNotes: String? = null,
+ var appointmentNotes: String? = null,
 
     // Поля клиента в записи
 
- val clientId: String? = null,
+ var clientId: String? = null,
 
- val clientName: String? = null,
+ var clientName: String? = null,
 
- val clientPhone: String? = null,
+ var clientPhone: String? = null,
 
- val clientTelegram: String? = null,
+ var clientTelegram: String? = null,
 
- val clientInstagram: String? = null,
+ var clientInstagram: String? = null,
 
- val clientVk: String? = null,
+ var clientVk: String? = null,
 
- val clientWhatsapp: String? = null,
+ var clientWhatsapp: String? = null,
 
- val clientNotes: String? = null,
+ var clientNotes: String? = null,
 
- val clientPhoto: String? = null,
+ var clientPhoto: String? = null,
 
     // Поля процедуры в записи
 
- val procedureId: String? = null,
+ var procedureId: String? = null,
 
- val procedureName: String? = null,
+ var procedureName: String? = null,
 
- val procedurePrice: String? = null,
+ var procedurePrice: String? = null,
 
- val procedureNotes: String? = null
+ var procedureNotes: String? = null
 )

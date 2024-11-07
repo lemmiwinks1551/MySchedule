@@ -13,7 +13,7 @@ class ScheduleSyncRepositoryImpl(context: Context) : ScheduleSyncRepository {
     }
 
     override suspend fun update(appointmentDto: AppointmentDto) {
-        dao.insert(appointmentDto)
+        dao.update(appointmentDto)
     }
 
     override suspend fun delete(appointmentDto: AppointmentDto) {
