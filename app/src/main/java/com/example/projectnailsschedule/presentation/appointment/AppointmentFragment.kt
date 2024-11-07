@@ -213,6 +213,7 @@ class AppointmentFragment : Fragment() {
 
             lifecycleScope.launch {
                 dateParamsViewModel.updateAppointment(currentAppointment)
+                dateParamsViewModel.updateAppointmentSyncDb(currentAppointment)
             }
 
             Toast.makeText(context, getString(R.string.toast_edited), Toast.LENGTH_LONG).show()

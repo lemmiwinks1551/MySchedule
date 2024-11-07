@@ -11,21 +11,21 @@ import androidx.lifecycle.LifecycleOwner
 
 class NetworkObserver(
     context: Context,
-    private val onNetworkAvailable: () -> Unit
+    private val onNetworkStatusChanged: (Boolean) -> Unit // Pass true for connected, false for disconnected
 ) : DefaultLifecycleObserver {
-    private val log = this::class.simpleName
 
+    private val log = this::class.simpleName
     private val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
     private val networkCallback = object : ConnectivityManager.NetworkCallback() {
         override fun onAvailable(network: Network) {
             Log.e(log, "Есть интернет")
-
-            onNetworkAvailable()
+            onNetworkStatusChanged(true)  // Network is available
         }
 
         override fun onLost(network: Network) {
             Log.e(log, "Нет интернета")
+            onNetworkStatusChanged(false) // Network is lost
         }
     }
 

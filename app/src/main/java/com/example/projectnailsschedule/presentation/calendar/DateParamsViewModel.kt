@@ -11,6 +11,8 @@ import com.example.projectnailsschedule.domain.models.ProductionCalendarDateMode
 import com.example.projectnailsschedule.domain.models.UserDataManager
 import com.example.projectnailsschedule.domain.usecase.apiUC.GetProductionCalendarDateInfoUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.GetProductionCalendarYearUseCase
+import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.GetByLocalAppointmentIdUseCase
+import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.UpdateAppointmentDtoUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.DeleteAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.InsertAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.SearchAppointmentUseCase
@@ -25,6 +27,7 @@ import com.example.projectnailsschedule.domain.usecase.socUC.StartTelegramUc
 import com.example.projectnailsschedule.domain.usecase.socUC.StartVkUc
 import com.example.projectnailsschedule.domain.usecase.socUC.StartWhatsAppUc
 import com.example.projectnailsschedule.presentation.calendar.calendarRecyclerView.CalendarRvAdapter
+import com.example.projectnailsschedule.util.Util
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -48,7 +51,9 @@ class DateParamsViewModel @Inject constructor(
     private val startWhatsAppUc: StartWhatsAppUc,
     private val startPhoneUc: StartPhoneUc,
     private val getProductionCalendarDateInfoUseCase: GetProductionCalendarDateInfoUseCase,
-    private val getProductionCalendarYearUseCase: GetProductionCalendarYearUseCase
+    private val getProductionCalendarYearUseCase: GetProductionCalendarYearUseCase,
+    private val updateAppointmentDtoUseCase: UpdateAppointmentDtoUseCase,
+    private val getByLocalAppointmentIdUseCase: GetByLocalAppointmentIdUseCase
 ) : ViewModel() {
     private val tagDateColor = "DateColor"
 
@@ -164,6 +169,34 @@ class DateParamsViewModel @Inject constructor(
         )
         selectedDate.postValue(selectedDate.value)
         return updateAppointmentUseCase.execute(appointmentModelDb)
+    }
+
+    suspend fun updateAppointmentSyncDb(appointmentModelDb: AppointmentModelDb) {
+        val appointmentDto = getByLocalAppointmentIdUseCase.execute(appointmentModelDb._id!!)
+
+        with(appointmentDto) {
+            syncTimestamp = Util().generateTimestamp()
+            syncStatus = "NotSynchronized"
+            appointmentDate = appointmentModelDb.date
+            appointmentTime = appointmentModelDb.time
+            appointmentNotes = appointmentModelDb.notes
+
+            clientId = appointmentModelDb.clientId.toString()
+            clientName = appointmentModelDb.name
+            clientPhone = appointmentModelDb.phone
+            clientTelegram = appointmentModelDb.telegram
+            clientInstagram = appointmentModelDb.instagram
+            clientVk = appointmentModelDb.vk
+            clientWhatsapp = appointmentModelDb.whatsapp
+            clientNotes = appointmentModelDb.clientNotes
+            clientPhoto = appointmentModelDb.photo
+
+            procedureId = null
+            procedureName = appointmentModelDb.procedure
+            procedurePrice = appointmentModelDb.procedurePrice
+            procedureNotes = appointmentModelDb.procedureNotes
+        }
+        updateAppointmentDtoUseCase.execute(appointmentDto)
     }
 
     suspend fun searchAppointment(searchQuery: String): MutableList<AppointmentModelDb> {

@@ -3,6 +3,7 @@ package com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC
 import com.example.projectnailsschedule.BuildConfig
 import com.example.projectnailsschedule.domain.models.dto.AppointmentDto
 import com.example.projectnailsschedule.domain.repository.api.userDataApi.AppointmentsApi
+import kotlinx.coroutines.delay
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Response
@@ -23,7 +24,7 @@ class PostAppointmentUseCase {
 
             // Выполняем запрос на авторизацию
             val response = executeRequest(appointmentsApi, appointmentDto, jwt)
-
+            delay(100L)
             return response.code().toString()
         } catch (e: Exception) {
             "Возникла непредвиденная ошибка"

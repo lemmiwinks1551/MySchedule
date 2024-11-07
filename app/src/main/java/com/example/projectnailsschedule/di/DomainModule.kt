@@ -19,9 +19,10 @@ import com.example.projectnailsschedule.domain.usecase.apiUC.GetFaqUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.GetProductionCalendarDateInfoUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.GetProductionCalendarYearUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.SendUserDataUseCase
-import com.example.projectnailsschedule.domain.usecase.apiUC.dtoUC.GetAllScheduleSyncDb
-import com.example.projectnailsschedule.domain.usecase.apiUC.dtoUC.GetNotSyncAppointmentsUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.DeleteAppointmentDtoUseCase
+import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.GetAllScheduleSyncDb
+import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.GetByLocalAppointmentIdUseCase
+import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.GetNotSyncAppointmentsUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.InsertAppointmentDtoUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.PostAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.UpdateAppointmentDtoUseCase
@@ -339,6 +340,11 @@ class DomainModule {
     @Provides
     fun getNotSyncAppointments(repository: ScheduleSyncRepository): GetNotSyncAppointmentsUseCase {
         return GetNotSyncAppointmentsUseCase(repository)
+    }
+
+    @Provides
+    fun getByLocalAppointmentId(repository: ScheduleSyncRepository): GetByLocalAppointmentIdUseCase {
+        return GetByLocalAppointmentIdUseCase(repository)
     }
 
     // Schedule sync API

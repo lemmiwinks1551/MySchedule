@@ -34,6 +34,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.util.Timer
+import java.util.TimerTask
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
 
@@ -49,6 +51,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
     private lateinit var networkObserver: NetworkObserver
+    private var timer = Timer()
 
     @Inject
     lateinit var uncaughtExceptionHandler: Thread.UncaughtExceptionHandler
@@ -203,11 +206,41 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Добавляем Observer к состоянию сети
-        networkObserver = NetworkObserver(this) {
-            CoroutineScope(Dispatchers.IO).launch {
-                mainViewModel.mergeDatabase()
+        networkObserver = NetworkObserver(this) { isConnected ->
+            if (isConnected) {
+                startSyncTimer()
+                showToast("Выполняем синхронизацию с сервером")
+            } else {
+                stopSyncTimer()
+                showToast("Синхроназиция с сервером завершена")
             }
         }
+
         lifecycle.addObserver(networkObserver)
+    }
+
+    private fun startSyncTimer() {
+        stopSyncTimer()
+
+        timer = Timer()
+        timer.scheduleAtFixedRate(object : TimerTask() {
+            override fun run() {
+                CoroutineScope(Dispatchers.IO).launch {
+                    mainViewModel.mergeDatabase()
+                }
+            }
+        }, 0L, 10000L) // 10 секунд интервал
+    }
+
+    private fun stopSyncTimer() {
+        timer.cancel()
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(
+            applicationContext,
+            message,
+            Toast.LENGTH_LONG
+        ).show()
     }
 }
