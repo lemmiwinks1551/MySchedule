@@ -1,0 +1,154 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "cb92439779c09f41fb925bafddeeba76",
+    "entities": [
+      {
+        "tableName": "ScheduleRemoteDb",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`syncUUID` TEXT NOT NULL, `localAppointmentId` INTEGER NOT NULL, `userName` TEXT, `syncTimestamp` TEXT, `syncStatus` TEXT, `appointmentDate` TEXT, `appointmentTime` TEXT, `appointmentNotes` TEXT, `clientId` TEXT, `clientName` TEXT, `clientPhone` TEXT, `clientTelegram` TEXT, `clientInstagram` TEXT, `clientVk` TEXT, `clientWhatsapp` TEXT, `clientNotes` TEXT, `clientPhoto` TEXT, `procedureId` TEXT, `procedureName` TEXT, `procedurePrice` TEXT, `procedureNotes` TEXT, PRIMARY KEY(`syncUUID`))",
+        "fields": [
+          {
+            "fieldPath": "syncUUID",
+            "columnName": "syncUUID",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "localAppointmentId",
+            "columnName": "localAppointmentId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "userName",
+            "columnName": "userName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "syncTimestamp",
+            "columnName": "syncTimestamp",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "syncStatus",
+            "columnName": "syncStatus",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "appointmentDate",
+            "columnName": "appointmentDate",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "appointmentTime",
+            "columnName": "appointmentTime",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "appointmentNotes",
+            "columnName": "appointmentNotes",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "clientId",
+            "columnName": "clientId",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "clientName",
+            "columnName": "clientName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "clientPhone",
+            "columnName": "clientPhone",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "clientTelegram",
+            "columnName": "clientTelegram",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "clientInstagram",
+            "columnName": "clientInstagram",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "clientVk",
+            "columnName": "clientVk",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "clientWhatsapp",
+            "columnName": "clientWhatsapp",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "clientNotes",
+            "columnName": "clientNotes",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "clientPhoto",
+            "columnName": "clientPhoto",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "procedureId",
+            "columnName": "procedureId",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "procedureName",
+            "columnName": "procedureName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "procedurePrice",
+            "columnName": "procedurePrice",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "procedureNotes",
+            "columnName": "procedureNotes",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "syncUUID"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'cb92439779c09f41fb925bafddeeba76')"
+    ]
+  }
+}

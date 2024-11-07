@@ -60,4 +60,7 @@ interface ScheduleDao {
         clientNotes: String?,
         clientPhoto: String?,
     )
+
+    @Query("SELECT * FROM schedule")
+    suspend fun getAll(): List<AppointmentModelDb>
 }

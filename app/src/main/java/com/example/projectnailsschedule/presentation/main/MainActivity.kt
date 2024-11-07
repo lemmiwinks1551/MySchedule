@@ -48,6 +48,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
+    private lateinit var networkObserver: NetworkObserver
 
     @Inject
     lateinit var uncaughtExceptionHandler: Thread.UncaughtExceptionHandler
@@ -200,5 +201,13 @@ class MainActivity : AppCompatActivity() {
                 mainViewModel.sendUserData()
             }
         }
+
+        // Добавляем Observer к состоянию сети
+        networkObserver = NetworkObserver(this) {
+            CoroutineScope(Dispatchers.IO).launch {
+                mainViewModel.mergeDatabase()
+            }
+        }
+        lifecycle.addObserver(networkObserver)
     }
 }

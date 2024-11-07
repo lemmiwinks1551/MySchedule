@@ -1,0 +1,11 @@
+package com.example.projectnailsschedule.domain.usecase.apiUC.dtoUC
+
+import com.example.projectnailsschedule.domain.models.dto.AppointmentDto
+import com.example.projectnailsschedule.domain.repository.repo.ScheduleSyncRepository
+
+class GetAllScheduleSyncDb(private val scheduleSyncRepository: ScheduleSyncRepository) {
+
+    suspend fun execute(): List<AppointmentDto> {
+        return scheduleSyncRepository.getAll()
+    }
+}

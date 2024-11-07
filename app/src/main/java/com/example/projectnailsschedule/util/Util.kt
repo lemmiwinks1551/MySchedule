@@ -397,6 +397,16 @@ class Util {
         }
     }
 
+    fun generateUuid(): String {
+        return UUID.randomUUID().toString()
+    }
+
+    fun generateTimestamp(): String {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+        dateFormat.timeZone = TimeZone.getTimeZone("UTC")
+        return dateFormat.format(Date())
+    }
+
 /*    fun checkFilePermission(context: Context) {
         val file = File(context.cacheDir, "prod_calendar_cache/72e709892e011caf0fd76b690aeef240.0")
         val userDataManager = UserDataManager

@@ -40,4 +40,8 @@ class ScheduleRepositoryImpl(context: Context) : ScheduleRepository {
             )
         }
     }
+
+    override suspend fun getAll(): List<AppointmentModelDb> {
+        return dao.getAll()
+    }
 }

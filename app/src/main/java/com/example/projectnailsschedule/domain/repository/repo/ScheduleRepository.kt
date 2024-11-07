@@ -17,4 +17,6 @@ interface ScheduleRepository {
     suspend fun getDateAppointments(date: LocalDate): MutableList<AppointmentModelDb>
 
     suspend fun updateClientInAppointments(clientModelDb: ClientModelDb)
+
+    suspend fun getAll(): List<AppointmentModelDb>
 }

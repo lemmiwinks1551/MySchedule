@@ -1,0 +1,30 @@
+package com.example.projectnailsschedule.data.repository
+
+import android.content.Context
+import com.example.projectnailsschedule.data.storage.ScheduleSyncDb
+import com.example.projectnailsschedule.domain.models.dto.AppointmentDto
+import com.example.projectnailsschedule.domain.repository.repo.ScheduleSyncRepository
+
+class ScheduleSyncRepositoryImpl(context: Context) : ScheduleSyncRepository {
+    private var dao = ScheduleSyncDb.getDb(context).getDao()
+
+    override suspend fun insert(appointmentDto: AppointmentDto): Long {
+        return dao.insert(appointmentDto)
+    }
+
+    override suspend fun update(appointmentDto: AppointmentDto) {
+        dao.insert(appointmentDto)
+    }
+
+    override suspend fun delete(appointmentDto: AppointmentDto) {
+        dao.delete(appointmentDto)
+    }
+
+    override suspend fun getAll(): List<AppointmentDto> {
+        return dao.getAll()
+    }
+
+    override suspend fun getNotSyncAppointments(): List<AppointmentDto> {
+        return dao.getNotSyncAppointments()
+    }
+}
