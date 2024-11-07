@@ -8,8 +8,8 @@ import com.example.projectnailsschedule.domain.models.dto.UserInfoDtoManager
 import com.example.projectnailsschedule.domain.usecase.account.GetJwt
 import com.example.projectnailsschedule.domain.usecase.account.GetUserInfoApiUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.SendUserDataUseCase
-import com.example.projectnailsschedule.domain.usecase.apiUC.dtoUC.GetAllScheduleSyncDb
-import com.example.projectnailsschedule.domain.usecase.apiUC.dtoUC.GetNotSyncAppointmentsUseCase
+import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.GetAllScheduleSyncDb
+import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.GetNotSyncAppointmentsUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.DeleteAppointmentDtoUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.InsertAppointmentDtoUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.PostAppointmentUseCase
@@ -65,13 +65,13 @@ class MainViewModel @Inject constructor(
     }
 
     suspend fun mergeDatabase() {
-        // Если пользователь не залогинился - выходим из функции
-        val userDto = getUserInfoApi() ?: return
+        // Если пользователь не залогинился - выходим
+        getUserInfoApi() ?: return
 
         // Получаем все записи, которые пользоватль создал локально
         val localScheduleDb = getAllScheduleDbUseCase.execute()
 
-        // Получаем все записи, которые добавленые в БД для синхронизации
+        // Получаем все записи добавленые в БД для синхронизации
         val scheduleSyncDb = getScheduleSyncDb()
 
         // Получаем уникальные id в базе данных для синхронизации с сервером
@@ -110,7 +110,6 @@ class MainViewModel @Inject constructor(
 
                 insertAppointmentDtoUseCase.execute(appointmentDto)
             }
-
         }
 
         syncLocalDbWithRemoteDb()
@@ -120,7 +119,12 @@ class MainViewModel @Inject constructor(
         val allNotSyncAppointments = getNotSyncAppointmentsUseCase.execute()
 
         for (notSyncAppointment in allNotSyncAppointments) {
-            postAppointmentUseCase.execute(notSyncAppointment, getJwt.execute()!!)
+            val result = postAppointmentUseCase.execute(notSyncAppointment, getJwt.execute()!!)
+            if (result == "200") {
+                // Устанавливает статус Synchronized в БД ScheduleRemoteDb
+                notSyncAppointment.syncStatus = "Synchronized"
+                updateAppointmentDtoUseCase.execute(notSyncAppointment)
+            }
         }
     }
 }
