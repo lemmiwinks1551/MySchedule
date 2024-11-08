@@ -229,7 +229,7 @@ class MainActivity : AppCompatActivity() {
                     mainViewModel.mergeDatabase()
                 }
             }
-        }, 0L, 10000L) // 10 секунд интервал
+        }, 0L, 3000L) // 3 секунды интервал
     }
 
     private fun stopSyncTimer() {

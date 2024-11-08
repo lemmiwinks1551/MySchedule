@@ -8,12 +8,14 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import com.example.projectnailsschedule.BuildConfig
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentAboutBinding
 import com.example.projectnailsschedule.util.Util
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class AboutFragment : Fragment() {
@@ -36,11 +38,14 @@ class AboutFragment : Fragment() {
 
         setVersionTextView()
 
-        /*        CoroutineScope(Dispatchers.IO).launch {
-                    addTestData()
-                }*/
 
-        aboutViewModel.updateUserData("$log ${object{}.javaClass.enclosingMethod?.name}")
+        if (BuildConfig.DEBUG) {
+            CoroutineScope(Dispatchers.IO).launch {
+                addTestData()
+            }
+        }
+
+        aboutViewModel.updateUserData("$log ${object {}.javaClass.enclosingMethod?.name}")
 
         return binding.root
     }
@@ -57,7 +62,7 @@ class AboutFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        aboutViewModel.updateUserData("$log ${object{}.javaClass.enclosingMethod?.name}")
+        aboutViewModel.updateUserData("$log ${object {}.javaClass.enclosingMethod?.name}")
         _binding = null
     }
 

@@ -53,7 +53,7 @@ class DateParamsViewModel @Inject constructor(
     private val getProductionCalendarDateInfoUseCase: GetProductionCalendarDateInfoUseCase,
     private val getProductionCalendarYearUseCase: GetProductionCalendarYearUseCase,
     private val updateAppointmentDtoUseCase: UpdateAppointmentDtoUseCase,
-    private val getByLocalAppointmentIdUseCase: GetByLocalAppointmentIdUseCase
+    private val getByLocalAppointmentIdUseCase: GetByLocalAppointmentIdUseCase,
 ) : ViewModel() {
     private val tagDateColor = "DateColor"
 
@@ -168,10 +168,19 @@ class DateParamsViewModel @Inject constructor(
             appointmentModelDb
         )
         selectedDate.postValue(selectedDate.value)
-        return updateAppointmentUseCase.execute(appointmentModelDb)
+
+        val updateAppointmentResult = updateAppointmentUseCase.execute(appointmentModelDb)
+
+        if (updateAppointmentResult) {
+            // Если запись успешно изменена локально -
+            // Обноляем измененную запись в БД для синхронизации
+            updateAppointmentSyncDb(appointmentModelDb)
+        }
+
+        return updateAppointmentResult
     }
 
-    suspend fun updateAppointmentSyncDb(appointmentModelDb: AppointmentModelDb) {
+    private suspend fun updateAppointmentSyncDb(appointmentModelDb: AppointmentModelDb) {
         val appointmentDto = getByLocalAppointmentIdUseCase.execute(appointmentModelDb._id!!)
 
         with(appointmentDto) {
@@ -199,6 +208,17 @@ class DateParamsViewModel @Inject constructor(
         updateAppointmentDtoUseCase.execute(appointmentDto)
     }
 
+    private suspend fun deleteAppointmentSyncDb(appointmentModelDb: AppointmentModelDb) {
+        val appointmentDto = getByLocalAppointmentIdUseCase.execute(appointmentModelDb._id!!)
+
+        with(appointmentDto) {
+            syncTimestamp = Util().generateTimestamp()
+            syncStatus = "DELETED"
+        }
+
+        updateAppointmentDtoUseCase.execute(appointmentDto)
+    }
+
     suspend fun searchAppointment(searchQuery: String): MutableList<AppointmentModelDb> {
         return searchAppointmentUseCase.execute(searchQuery)
     }
@@ -207,13 +227,24 @@ class DateParamsViewModel @Inject constructor(
         appointmentModelDb: AppointmentModelDb,
         position: Int = -1
     ) {
-        deleteAppointmentUseCase.execute(appointmentModelDb)
+        val deleteAppointmentResult = deleteAppointmentUseCase.execute(appointmentModelDb)
+        if (deleteAppointmentResult) {
+            // Если запись успешно изменена локально -
+            // Обноляем измененную запись в БД для синхронизации
+            updateAppointmentSyncDb(appointmentModelDb)
+        }
         if (position == -1) {
             selectedDate.value!!.appointmentsList?.removeAt(position)
         } else {
             selectedDate.value!!.appointmentsList?.remove(appointmentModelDb)
         }
         selectedDate.postValue(selectedDate.value)
+
+        if (deleteAppointmentResult) {
+            // Если запись успешно удалена локально -
+            // Обновляем запись в БД для синхронизации
+            deleteAppointmentSyncDb(appointmentModelDb)
+        }
     }
 
     fun getAppointmentPositionInDate(

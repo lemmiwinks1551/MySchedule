@@ -13,5 +13,9 @@ interface AppointmentsApi {
         @Header("Authorization") token: String
     ): Response<Unit>
 
-    //
+    @POST("/api/v1/user-data/delete-appointment")
+    suspend fun deleteAppointment(
+        @Body appointmentDto: AppointmentDto,
+        @Header("Authorization") token: String
+    ): Response<Unit>
 }

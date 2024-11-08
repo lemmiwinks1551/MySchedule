@@ -24,6 +24,9 @@ interface ScheduleRemoteDbDao {
     @Query("SELECT * FROM ScheduleRemoteDb WHERE syncStatus = :syncStatus")
     suspend fun getNotSyncAppointments(syncStatus: String = "NotSynchronized"): List<AppointmentDto>
 
+    @Query("SELECT * FROM ScheduleRemoteDb WHERE syncStatus = :syncStatus")
+    suspend fun getDeletedAppointments(syncStatus: String = "DELETED"): List<AppointmentDto>
+
     @Query("SELECT * FROM ScheduleRemoteDb WHERE localAppointmentId = :localAppointmentId")
-    suspend fun getByLocalAppointmentId (localAppointmentId: Long): AppointmentDto
+    suspend fun getByLocalAppointmentId(localAppointmentId: Long): AppointmentDto
 }

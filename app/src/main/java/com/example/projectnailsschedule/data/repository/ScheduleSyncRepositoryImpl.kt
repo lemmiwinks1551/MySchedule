@@ -28,6 +28,10 @@ class ScheduleSyncRepositoryImpl(context: Context) : ScheduleSyncRepository {
         return dao.getNotSyncAppointments()
     }
 
+    override suspend fun getDeletedAppointments(): List<AppointmentDto> {
+        return dao.getDeletedAppointments()
+    }
+
     override suspend fun getByLocalAppointmentId(localAppointmentId: Long): AppointmentDto {
         return dao.getByLocalAppointmentId(localAppointmentId)
     }

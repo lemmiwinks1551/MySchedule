@@ -8,9 +8,11 @@ import com.example.projectnailsschedule.domain.models.dto.UserInfoDtoManager
 import com.example.projectnailsschedule.domain.usecase.account.GetJwt
 import com.example.projectnailsschedule.domain.usecase.account.GetUserInfoApiUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.SendUserDataUseCase
-import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.GetAllScheduleSyncDb
-import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.GetNotSyncAppointmentsUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.DeleteAppointmentDtoUseCase
+import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.DeleteRemoteAppointmentUseCase
+import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.GetAllScheduleSyncDb
+import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.GetDeletedAppointmentsUseCase
+import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.GetNotSyncAppointmentsUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.InsertAppointmentDtoUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.PostAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.UpdateAppointmentDtoUseCase
@@ -35,8 +37,10 @@ class MainViewModel @Inject constructor(
     private var updateAppointmentDtoUseCase: UpdateAppointmentDtoUseCase,
     private var deleteAppointmentDtoUseCase: DeleteAppointmentDtoUseCase,
     private var getNotSyncAppointmentsUseCase: GetNotSyncAppointmentsUseCase,
+    private var getDeletedAppointmentsUseCase: GetDeletedAppointmentsUseCase,
 
-    private var postAppointmentUseCase: PostAppointmentUseCase
+    private var postAppointmentUseCase: PostAppointmentUseCase,
+    private var deleteRemoteAppointmentUseCase: DeleteRemoteAppointmentUseCase
 ) : ViewModel() {
     private val log = this::class.simpleName
 
@@ -126,9 +130,15 @@ class MainViewModel @Inject constructor(
                 updateAppointmentDtoUseCase.execute(notSyncAppointment)
             }
         }
+
+        val deletedAppointments = getDeletedAppointmentsUseCase.execute()
+
+        for (deletedAppointment in deletedAppointments) {
+            val result = deleteRemoteAppointmentUseCase.execute(deletedAppointment, getJwt.execute()!!)
+            if (result == "200") {
+                // Удаляем запись из локальной БД для синхронизации
+                deleteAppointmentDtoUseCase.execute(deletedAppointment)
+            }
+        }
     }
 }
-
-
-
-

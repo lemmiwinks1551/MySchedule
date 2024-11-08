@@ -14,5 +14,7 @@ interface ScheduleSyncRepository {
 
     suspend fun getNotSyncAppointments(): List<AppointmentDto>
 
+    suspend fun getDeletedAppointments(): List<AppointmentDto>
+
     suspend fun getByLocalAppointmentId(localAppointmentId: Long): AppointmentDto
 }
