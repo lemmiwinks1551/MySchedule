@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import com.example.projectnailsschedule.domain.models.dto.AppointmentDto
+import java.util.Date
 
 @Dao
 interface ScheduleRemoteDbDao {
@@ -28,5 +29,9 @@ interface ScheduleRemoteDbDao {
     suspend fun getDeletedAppointments(syncStatus: String = "DELETED"): List<AppointmentDto>
 
     @Query("SELECT * FROM ScheduleRemoteDb WHERE localAppointmentId = :localAppointmentId")
-    suspend fun getByLocalAppointmentId(localAppointmentId: Long): AppointmentDto
+    suspend fun getByLocalAppointmentId(localAppointmentId: Long): AppointmentDto?
+
+    @Query("SELECT MAX(syncTimestamp) FROM ScheduleRemoteDb")
+    suspend fun getMaxAppointmentTimestamp(): Date?
+
 }

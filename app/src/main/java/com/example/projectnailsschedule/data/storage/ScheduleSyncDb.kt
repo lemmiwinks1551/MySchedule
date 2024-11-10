@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
+import com.example.projectnailsschedule.data.storage.converters.Converters
 import com.example.projectnailsschedule.domain.models.dto.AppointmentDto
 import com.example.projectnailsschedule.domain.repository.dao.ScheduleRemoteDbDao
 
@@ -11,6 +13,7 @@ import com.example.projectnailsschedule.domain.repository.dao.ScheduleRemoteDbDa
     entities = [AppointmentDto::class],
     version = 1
 )
+@TypeConverters(Converters::class)
 abstract class ScheduleSyncDb : RoomDatabase() {
     abstract fun getDao(): ScheduleRemoteDbDao
 

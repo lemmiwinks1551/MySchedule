@@ -12,7 +12,9 @@ import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.Delete
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.DeleteRemoteAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.GetAllScheduleSyncDb
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.GetDeletedAppointmentsUseCase
+import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.GetMaxAppointmentTimestampUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.GetNotSyncAppointmentsUseCase
+import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.GetUserRemoteAppointmentsUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.InsertAppointmentDtoUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.PostAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.UpdateAppointmentDtoUseCase
@@ -38,9 +40,11 @@ class MainViewModel @Inject constructor(
     private var deleteAppointmentDtoUseCase: DeleteAppointmentDtoUseCase,
     private var getNotSyncAppointmentsUseCase: GetNotSyncAppointmentsUseCase,
     private var getDeletedAppointmentsUseCase: GetDeletedAppointmentsUseCase,
+    private var getMaxAppointmentTimestampUseCase: GetMaxAppointmentTimestampUseCase,
 
     private var postAppointmentUseCase: PostAppointmentUseCase,
-    private var deleteRemoteAppointmentUseCase: DeleteRemoteAppointmentUseCase
+    private var deleteRemoteAppointmentUseCase: DeleteRemoteAppointmentUseCase,
+    private var getUserRemoteAppointmentsUseCase: GetUserRemoteAppointmentsUseCase
 ) : ViewModel() {
     private val log = this::class.simpleName
 
@@ -68,7 +72,19 @@ class MainViewModel @Inject constructor(
         return getAllScheduleSyncDb.execute()
     }
 
-    suspend fun mergeDatabase() {
+    suspend fun syncRemoteToLocal() {
+        // Получаем юзера, если пользователь не залогинился - выходим
+        //val user = getUserInfoApi() ?: return
+
+        // Получаем самую позднюю локальную запись по временной метке
+        val lastTimestamp = getMaxAppointmentTimestampUseCase.execute()
+
+        // Получаем записи юзера на сервере (нужно как-то сокращать количество записей для выгрузки
+        // а то получится очень много трафика будет скушано (по временной метке как-то ...)
+        // val userRemoteAppointments = getUserRemoteAppointmentsUseCase.execute(user)
+    }
+
+    suspend fun syncLocalToRemote() {
         // Если пользователь не залогинился - выходим
         getUserInfoApi() ?: return
 
@@ -123,6 +139,7 @@ class MainViewModel @Inject constructor(
         val allNotSyncAppointments = getNotSyncAppointmentsUseCase.execute()
 
         for (notSyncAppointment in allNotSyncAppointments) {
+
             val result = postAppointmentUseCase.execute(notSyncAppointment, getJwt.execute()!!)
             if (result == "200") {
                 // Устанавливает статус Synchronized в БД ScheduleRemoteDb

@@ -53,7 +53,7 @@ class DateParamsViewModel @Inject constructor(
     private val getProductionCalendarDateInfoUseCase: GetProductionCalendarDateInfoUseCase,
     private val getProductionCalendarYearUseCase: GetProductionCalendarYearUseCase,
     private val updateAppointmentDtoUseCase: UpdateAppointmentDtoUseCase,
-    private val getByLocalAppointmentIdUseCase: GetByLocalAppointmentIdUseCase,
+    private val getByLocalAppointmentIdUseCase: GetByLocalAppointmentIdUseCase
 ) : ViewModel() {
     private val tagDateColor = "DateColor"
 
@@ -181,7 +181,8 @@ class DateParamsViewModel @Inject constructor(
     }
 
     private suspend fun updateAppointmentSyncDb(appointmentModelDb: AppointmentModelDb) {
-        val appointmentDto = getByLocalAppointmentIdUseCase.execute(appointmentModelDb._id!!)
+        val appointmentDto =
+            getByLocalAppointmentIdUseCase.execute(appointmentModelDb._id!!) ?: return
 
         with(appointmentDto) {
             syncTimestamp = Util().generateTimestamp()
@@ -205,11 +206,14 @@ class DateParamsViewModel @Inject constructor(
             procedurePrice = appointmentModelDb.procedurePrice
             procedureNotes = appointmentModelDb.procedureNotes
         }
+
         updateAppointmentDtoUseCase.execute(appointmentDto)
     }
 
     private suspend fun deleteAppointmentSyncDb(appointmentModelDb: AppointmentModelDb) {
-        val appointmentDto = getByLocalAppointmentIdUseCase.execute(appointmentModelDb._id!!)
+        // Если не смогли найти в таблице для синхронизации эту запись - скорее всего пользователь
+        // создал и удалил её оффлайн, потому что в таблицу
+        val appointmentDto = getByLocalAppointmentIdUseCase.execute(appointmentModelDb._id!!) ?: return
 
         with(appointmentDto) {
             syncTimestamp = Util().generateTimestamp()
@@ -228,11 +232,7 @@ class DateParamsViewModel @Inject constructor(
         position: Int = -1
     ) {
         val deleteAppointmentResult = deleteAppointmentUseCase.execute(appointmentModelDb)
-        if (deleteAppointmentResult) {
-            // Если запись успешно изменена локально -
-            // Обноляем измененную запись в БД для синхронизации
-            updateAppointmentSyncDb(appointmentModelDb)
-        }
+
         if (position == -1) {
             selectedDate.value!!.appointmentsList?.removeAt(position)
         } else {

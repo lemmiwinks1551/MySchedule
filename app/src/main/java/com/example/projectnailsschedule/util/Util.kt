@@ -401,10 +401,15 @@ class Util {
         return UUID.randomUUID().toString()
     }
 
-    fun generateTimestamp(): String {
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-        dateFormat.timeZone = TimeZone.getTimeZone("UTC")
-        return dateFormat.format(Date())
+    fun generateTimestamp(): Date {
+        return Date()
+    }
+
+    fun convertTimestampToISO8601String(timestamp: Long): String {
+        val date = Date(timestamp)
+        val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.getDefault())
+        format.timeZone = TimeZone.getTimeZone("UTC")
+        return format.format(date)
     }
 
 /*    fun checkFilePermission(context: Context) {

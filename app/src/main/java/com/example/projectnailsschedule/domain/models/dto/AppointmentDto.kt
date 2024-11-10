@@ -2,6 +2,7 @@ package com.example.projectnailsschedule.domain.models.dto
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.util.Date
 
 @Entity(tableName = "ScheduleRemoteDb")
 data class AppointmentDto(
@@ -14,7 +15,7 @@ data class AppointmentDto(
 
  val userName: String? = null,
 
- var syncTimestamp: String? = null,
+ var syncTimestamp: Date,
 
  var syncStatus: String? = null,
 

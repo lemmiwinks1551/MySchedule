@@ -1,6 +1,7 @@
 package com.example.projectnailsschedule.domain.repository.repo
 
 import com.example.projectnailsschedule.domain.models.dto.AppointmentDto
+import java.util.Date
 
 interface ScheduleSyncRepository {
 
@@ -16,5 +17,7 @@ interface ScheduleSyncRepository {
 
     suspend fun getDeletedAppointments(): List<AppointmentDto>
 
-    suspend fun getByLocalAppointmentId(localAppointmentId: Long): AppointmentDto
+    suspend fun getByLocalAppointmentId(localAppointmentId: Long): AppointmentDto?
+
+    suspend fun getMaxAppointmentTimestamp(): Date?
 }

@@ -5,7 +5,7 @@ import com.example.projectnailsschedule.domain.repository.repo.ScheduleSyncRepos
 
 class GetByLocalAppointmentIdUseCase(private val scheduleSyncRepository: ScheduleSyncRepository) {
 
-    suspend fun execute(localAppointmentId: Long): AppointmentDto {
+    suspend fun execute(localAppointmentId: Long): AppointmentDto? {
         return scheduleSyncRepository.getByLocalAppointmentId(localAppointmentId)
     }
 }
