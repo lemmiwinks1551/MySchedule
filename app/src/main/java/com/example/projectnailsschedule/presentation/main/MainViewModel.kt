@@ -1,5 +1,6 @@
 package com.example.projectnailsschedule.presentation.main
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.projectnailsschedule.domain.models.UserDataManager
 import com.example.projectnailsschedule.domain.models.dto.AppointmentDto
@@ -22,6 +23,8 @@ import com.example.projectnailsschedule.domain.usecase.appointmentUC.GetAllSched
 import com.example.projectnailsschedule.domain.usecase.settingsUC.GetUserThemeUseCase
 import com.example.projectnailsschedule.util.Util
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.text.SimpleDateFormat
+import java.util.Locale
 import java.util.UUID
 import javax.inject.Inject
 
@@ -35,9 +38,11 @@ class MainViewModel @Inject constructor(
     private var getAllScheduleDbUseCase: GetAllScheduleDbUseCase,
 
     private var getAllScheduleSyncDb: GetAllScheduleSyncDb,
+
     private var insertAppointmentDtoUseCase: InsertAppointmentDtoUseCase,
     private var updateAppointmentDtoUseCase: UpdateAppointmentDtoUseCase,
     private var deleteAppointmentDtoUseCase: DeleteAppointmentDtoUseCase,
+
     private var getNotSyncAppointmentsUseCase: GetNotSyncAppointmentsUseCase,
     private var getDeletedAppointmentsUseCase: GetDeletedAppointmentsUseCase,
     private var getMaxAppointmentTimestampUseCase: GetMaxAppointmentTimestampUseCase,
@@ -74,88 +79,68 @@ class MainViewModel @Inject constructor(
 
     suspend fun syncRemoteToLocal() {
         // Получаем юзера, если пользователь не залогинился - выходим
-        //val user = getUserInfoApi() ?: return
+        val user = getUserInfoApi() ?: return
 
-        // Получаем самую позднюю локальную запись по временной метке
-        val lastTimestamp = getMaxAppointmentTimestampUseCase.execute()
+        // Получаем самую позднюю локальную запись по временной метке, если не нашел запись - выходим
+        val lastTimestamp = getMaxAppointmentTimestampUseCase.execute() ?: return
 
         // Получаем записи юзера на сервере (нужно как-то сокращать количество записей для выгрузки
         // а то получится очень много трафика будет скушано (по временной метке как-то ...)
-        // val userRemoteAppointments = getUserRemoteAppointmentsUseCase.execute(user)
+        // TODO: в бд обрезаются миллисекунды 
+        Log.i(
+            log,
+            SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault()).format(lastTimestamp)
+        )
+
+        val userRemoteAppointments = getUserRemoteAppointmentsUseCase.execute(user)
     }
 
-    suspend fun syncLocalToRemote() {
-        // Если пользователь не залогинился - выходим
-        getUserInfoApi() ?: return
+    // Отправляет записи из локальной базы данных на сервер и обрабатывает статус синхронизации
+    suspend fun postLocalDbToRemote() {
+        // Получаем информацию о текущем пользователе
+        val user = getUserInfoApi() ?: return
 
-        // Получаем все записи, которые пользоватль создал локально
-        val localScheduleDb = getAllScheduleDbUseCase.execute()
+        // Извлекаем записи, которые еще не были синхронизированы
+        val notSyncedAppointments = getNotSyncAppointmentsUseCase.execute()
 
-        // Получаем все записи добавленые в БД для синхронизации
-        val scheduleSyncDb = getScheduleSyncDb()
+        // Устанавливаем имя пользователя для записей, у которых оно отсутствует
+        setUsernameForSyncRecords(notSyncedAppointments, user)
 
-        // Получаем уникальные id в базе данных для синхронизации с сервером
-        val syncDbIds = scheduleSyncDb.map { it.localAppointmentId }.toSet()
+        // Отправляем несинхронизированные записи на сервер
+        for (appointment in notSyncedAppointments) {
+            val result = postAppointmentUseCase.execute(appointment, getJwt.execute()!!)
 
-        // Добавляем все записи, которых еще нет в БД для синхронизации
-        for (localAppointment in localScheduleDb) {
-            if (localAppointment._id !in syncDbIds) {
-
-                // если id локальной записи нет в scheduleSyncDb - добавляем её в ScheduleSyncDb
-                val appointmentDto = AppointmentDto(
-                    syncUUID = UUID.randomUUID().toString(),
-                    localAppointmentId = localAppointment._id!!,
-                    userName = UserInfoDtoManager.getUserDto()!!.username,
-                    syncTimestamp = Util().generateTimestamp(),
-                    syncStatus = "NotSynchronized",
-                    appointmentDate = localAppointment.date,
-                    appointmentTime = localAppointment.time,
-                    appointmentNotes = localAppointment.notes,
-
-                    clientId = localAppointment.clientId.toString(),
-                    clientName = localAppointment.name,
-                    clientPhone = localAppointment.phone,
-                    clientTelegram = localAppointment.telegram,
-                    clientInstagram = localAppointment.instagram,
-                    clientVk = localAppointment.vk,
-                    clientWhatsapp = localAppointment.whatsapp,
-                    clientNotes = localAppointment.clientNotes,
-                    clientPhoto = localAppointment.photo,
-
-                    procedureId = null,
-                    procedureName = localAppointment.procedure,
-                    procedurePrice = localAppointment.procedurePrice,
-                    procedureNotes = localAppointment.procedureNotes
-                )
-
-                insertAppointmentDtoUseCase.execute(appointmentDto)
-            }
-        }
-
-        syncLocalDbWithRemoteDb()
-    }
-
-    private suspend fun syncLocalDbWithRemoteDb() {
-        val allNotSyncAppointments = getNotSyncAppointmentsUseCase.execute()
-
-        for (notSyncAppointment in allNotSyncAppointments) {
-
-            val result = postAppointmentUseCase.execute(notSyncAppointment, getJwt.execute()!!)
             if (result == "200") {
-                // Устанавливает статус Synchronized в БД ScheduleRemoteDb
-                notSyncAppointment.syncStatus = "Synchronized"
-                updateAppointmentDtoUseCase.execute(notSyncAppointment)
+                // Обновляем статус синхронизации для успешно отправленных записей
+                appointment.syncStatus = "Synchronized"
+                updateAppointmentDtoUseCase.execute(appointment)
             }
         }
 
+        // Обрабатываем удаленные записи, чтобы синхронизировать их с сервером
         val deletedAppointments = getDeletedAppointmentsUseCase.execute()
+        for (appointment in deletedAppointments) {
+            val result = deleteRemoteAppointmentUseCase.execute(appointment, getJwt.execute()!!)
 
-        for (deletedAppointment in deletedAppointments) {
-            val result = deleteRemoteAppointmentUseCase.execute(deletedAppointment, getJwt.execute()!!)
             if (result == "200") {
-                // Удаляем запись из локальной БД для синхронизации
-                deleteAppointmentDtoUseCase.execute(deletedAppointment)
+                // Удаляем запись из локальной таблицы синхронизации, если она успешно удалена на сервере
+                deleteAppointmentDtoUseCase.execute(appointment)
             }
         }
     }
+
+    // Устанавливает имя пользователя для записей без него перед синхронизацией
+    private suspend fun setUsernameForSyncRecords(
+        notSyncedAppointments: List<AppointmentDto>,
+        user: UserInfoDto
+    ) {
+        // Добавляем имя пользователя ко всем записям, у которых оно отсутствует
+        for (appointment in notSyncedAppointments) {
+            if (appointment.userName == null) {
+                appointment.userName = user.username
+                updateAppointmentDtoUseCase.execute(appointment)
+            }
+        }
+    }
+
 }

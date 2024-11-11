@@ -226,8 +226,8 @@ class MainActivity : AppCompatActivity() {
         timer.scheduleAtFixedRate(object : TimerTask() {
             override fun run() {
                 CoroutineScope(Dispatchers.IO).launch {
-                    mainViewModel.syncLocalToRemote()
-                    mainViewModel.syncRemoteToLocal()
+                    mainViewModel.postLocalDbToRemote()
+                    // mainViewModel.syncRemoteToLocal()
                 }
             }
         }, 0L, 3000L) // 3 секунды интервал

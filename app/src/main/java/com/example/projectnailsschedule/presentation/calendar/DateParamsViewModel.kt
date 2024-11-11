@@ -9,9 +9,12 @@ import com.example.projectnailsschedule.domain.models.CalendarDateModelDb
 import com.example.projectnailsschedule.domain.models.DateParams
 import com.example.projectnailsschedule.domain.models.ProductionCalendarDateModel
 import com.example.projectnailsschedule.domain.models.UserDataManager
+import com.example.projectnailsschedule.domain.models.dto.AppointmentDto
+import com.example.projectnailsschedule.domain.models.dto.UserInfoDtoManager
 import com.example.projectnailsschedule.domain.usecase.apiUC.GetProductionCalendarDateInfoUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.GetProductionCalendarYearUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.GetByLocalAppointmentIdUseCase
+import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.InsertAppointmentDtoUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.UpdateAppointmentDtoUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.DeleteAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.InsertAppointmentUseCase
@@ -33,6 +36,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import java.time.LocalDate
+import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
@@ -41,17 +45,23 @@ class DateParamsViewModel @Inject constructor(
     private val selectCalendarDateByDateUseCase: SelectCalendarDateByDateUseCase,
     private val insertCalendarDateUseCase: InsertCalendarDateUseCase,
     private val calendarDbDeleteObj: CalendarDbDeleteObj,
+
     private var insertAppointmentUseCase: InsertAppointmentUseCase,
     private val updateAppointmentUseCase: UpdateAppointmentUseCase,
     private var searchAppointmentUseCase: SearchAppointmentUseCase,
     private var deleteAppointmentUseCase: DeleteAppointmentUseCase,
+
+    private var insertAppointmentDtoUseCase: InsertAppointmentDtoUseCase,
+
     private val startVkUc: StartVkUc,
     private val startTelegramUc: StartTelegramUc,
     private val startInstagramUc: StartInstagramUc,
     private val startWhatsAppUc: StartWhatsAppUc,
     private val startPhoneUc: StartPhoneUc,
+
     private val getProductionCalendarDateInfoUseCase: GetProductionCalendarDateInfoUseCase,
     private val getProductionCalendarYearUseCase: GetProductionCalendarYearUseCase,
+
     private val updateAppointmentDtoUseCase: UpdateAppointmentDtoUseCase,
     private val getByLocalAppointmentIdUseCase: GetByLocalAppointmentIdUseCase
 ) : ViewModel() {
@@ -159,7 +169,12 @@ class DateParamsViewModel @Inject constructor(
             )
         }
         selectedDate.postValue(selectedDate.value)
-        return insertAppointmentUseCase.execute(appointmentModelDb)
+
+        val id = insertAppointmentUseCase.execute(appointmentModelDb)
+
+        insertAppointmentSyncDb(appointmentModelDb, id)
+
+        return id
     }
 
     suspend fun updateAppointment(appointmentModelDb: AppointmentModelDb): Boolean {
@@ -178,6 +193,39 @@ class DateParamsViewModel @Inject constructor(
         }
 
         return updateAppointmentResult
+    }
+
+    private suspend fun insertAppointmentSyncDb(appointmentModelDb: AppointmentModelDb, id: Long) {
+        with(appointmentModelDb) {
+            val appointmentDto = AppointmentDto(
+                syncUUID = UUID.randomUUID().toString(),
+                localAppointmentId = id,
+                userName = UserInfoDtoManager.getUserDto()?.username,
+                syncTimestamp = Util().generateTimestamp(),
+                syncStatus = "NotSynchronized",
+                appointmentDate = date,
+                appointmentTime = time,
+                appointmentNotes = notes,
+
+                clientId = clientId.toString(),
+                clientName = name,
+                clientPhone = phone,
+                clientTelegram = telegram,
+                clientInstagram = instagram,
+                clientVk = vk,
+                clientWhatsapp = whatsapp,
+                clientNotes = clientNotes,
+                clientPhoto = photo,
+
+                procedureId = null,
+                procedureName = procedure,
+                procedurePrice = procedurePrice,
+                procedureNotes = procedureNotes
+            )
+            // Добавляем запись в базу данных для синхронизации
+            insertAppointmentDtoUseCase.execute(appointmentDto)
+        }
+
     }
 
     private suspend fun updateAppointmentSyncDb(appointmentModelDb: AppointmentModelDb) {
@@ -213,7 +261,8 @@ class DateParamsViewModel @Inject constructor(
     private suspend fun deleteAppointmentSyncDb(appointmentModelDb: AppointmentModelDb) {
         // Если не смогли найти в таблице для синхронизации эту запись - скорее всего пользователь
         // создал и удалил её оффлайн, потому что в таблицу
-        val appointmentDto = getByLocalAppointmentIdUseCase.execute(appointmentModelDb._id!!) ?: return
+        val appointmentDto =
+            getByLocalAppointmentIdUseCase.execute(appointmentModelDb._id!!) ?: return
 
         with(appointmentDto) {
             syncTimestamp = Util().generateTimestamp()
