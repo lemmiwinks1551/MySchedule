@@ -11,21 +11,16 @@ import com.example.projectnailsschedule.domain.usecase.account.GetUserInfoApiUse
 import com.example.projectnailsschedule.domain.usecase.apiUC.SendUserDataUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.DeleteAppointmentDtoUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.DeleteRemoteAppointmentUseCase
-import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.GetAllScheduleSyncDb
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.GetDeletedAppointmentsUseCase
-import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.GetMaxAppointmentTimestampUseCase
+import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.GetLastLocalAppointmentTimestamp
+import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.GetLastRemoteAppointmentTimestamp
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.GetNotSyncAppointmentsUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.GetUserRemoteAppointmentsUseCase
-import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.InsertAppointmentDtoUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.PostAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.UpdateAppointmentDtoUseCase
-import com.example.projectnailsschedule.domain.usecase.appointmentUC.GetAllScheduleDbUseCase
 import com.example.projectnailsschedule.domain.usecase.settingsUC.GetUserThemeUseCase
 import com.example.projectnailsschedule.util.Util
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.text.SimpleDateFormat
-import java.util.Locale
-import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
@@ -35,21 +30,19 @@ class MainViewModel @Inject constructor(
     private var getUserInfoApi: GetUserInfoApiUseCase,
     private var getJwt: GetJwt,
 
-    private var getAllScheduleDbUseCase: GetAllScheduleDbUseCase,
-
-    private var getAllScheduleSyncDb: GetAllScheduleSyncDb,
-
-    private var insertAppointmentDtoUseCase: InsertAppointmentDtoUseCase,
+    // Local update
     private var updateAppointmentDtoUseCase: UpdateAppointmentDtoUseCase,
     private var deleteAppointmentDtoUseCase: DeleteAppointmentDtoUseCase,
 
     private var getNotSyncAppointmentsUseCase: GetNotSyncAppointmentsUseCase,
     private var getDeletedAppointmentsUseCase: GetDeletedAppointmentsUseCase,
-    private var getMaxAppointmentTimestampUseCase: GetMaxAppointmentTimestampUseCase,
+    private var getLastLocalAppointmentTimestamp: GetLastLocalAppointmentTimestamp,
 
+    // API
     private var postAppointmentUseCase: PostAppointmentUseCase,
     private var deleteRemoteAppointmentUseCase: DeleteRemoteAppointmentUseCase,
-    private var getUserRemoteAppointmentsUseCase: GetUserRemoteAppointmentsUseCase
+    private var getUserRemoteAppointmentsUseCase: GetUserRemoteAppointmentsUseCase,
+    private var getLastRemoteAppointmentTimestamp: GetLastRemoteAppointmentTimestamp
 ) : ViewModel() {
     private val log = this::class.simpleName
 
@@ -73,24 +66,19 @@ class MainViewModel @Inject constructor(
         return getUserThemeUseCase.execute()
     }
 
-    private suspend fun getScheduleSyncDb(): List<AppointmentDto> {
-        return getAllScheduleSyncDb.execute()
-    }
-
     suspend fun syncRemoteToLocal() {
         // Получаем юзера, если пользователь не залогинился - выходим
         val user = getUserInfoApi() ?: return
 
         // Получаем самую позднюю локальную запись по временной метке, если не нашел запись - выходим
-        val lastTimestamp = getMaxAppointmentTimestampUseCase.execute() ?: return
+        val lastLocalTimestamp = getLastLocalAppointmentTimestamp.execute() ?: return
+        val lastRemoteTimestamp = getLastRemoteAppointmentTimestamp.execute(user, getJwt.execute()!!) ?: return
 
-        // Получаем записи юзера на сервере (нужно как-то сокращать количество записей для выгрузки
-        // а то получится очень много трафика будет скушано (по временной метке как-то ...)
-        // TODO: в бд обрезаются миллисекунды 
-        Log.i(
-            log,
-            SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault()).format(lastTimestamp)
-        )
+        if (lastLocalTimestamp.time == lastRemoteTimestamp.time) {
+            // Если время последнего изменения локально = времени последнего изменения удаленно
+            // синхронизация не требуется
+            return
+        }
 
         val userRemoteAppointments = getUserRemoteAppointmentsUseCase.execute(user)
     }

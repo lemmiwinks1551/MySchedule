@@ -227,10 +227,10 @@ class MainActivity : AppCompatActivity() {
             override fun run() {
                 CoroutineScope(Dispatchers.IO).launch {
                     mainViewModel.postLocalDbToRemote()
-                    // mainViewModel.syncRemoteToLocal()
+                    mainViewModel.syncRemoteToLocal()
                 }
             }
-        }, 0L, 3000L) // 3 секунды интервал
+        }, 0L, 1000L) // 10 секунд интервал
     }
 
     private fun stopSyncTimer() {

@@ -2,11 +2,11 @@ package com.example.projectnailsschedule.domain.repository.api.userDataApi
 
 import com.example.projectnailsschedule.domain.models.dto.AppointmentDto
 import com.example.projectnailsschedule.domain.models.dto.UserInfoDto
-import com.example.projectnailsschedule.domain.models.dto.UserInfoDtoManager
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.Header
 import retrofit2.http.POST
+import java.util.Date
 
 interface AppointmentsApi {
     @POST("/api/v1/user-data/post-appointment")
@@ -25,4 +25,10 @@ interface AppointmentsApi {
     suspend fun getUserRemoteAppointments(
         @Body user: UserInfoDto
     ): List<AppointmentDto>
+
+    @POST("/api/v1/user-data/get-last-remote-appointment-timestamp")
+    suspend fun getLastRemoteAppointmentTimestamp(
+        @Body user: UserInfoDto,
+        @Header("Authorization") token: String
+    ): Date
 }

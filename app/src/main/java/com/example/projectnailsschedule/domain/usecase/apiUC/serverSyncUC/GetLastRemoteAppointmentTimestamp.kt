@@ -2,25 +2,20 @@ package com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC
 
 import com.example.projectnailsschedule.BuildConfig
 import com.example.projectnailsschedule.data.storage.converters.DateTypeAdapter
-import com.example.projectnailsschedule.domain.models.dto.AppointmentDto
+import com.example.projectnailsschedule.domain.models.dto.UserInfoDto
 import com.example.projectnailsschedule.domain.repository.api.userDataApi.AppointmentsApi
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import kotlinx.coroutines.delay
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.Date
 
-class PostAppointmentUseCase {
+class GetLastRemoteAppointmentTimestamp {
     private val log = this::class.simpleName
-    val gson: Gson = GsonBuilder()
-        .registerTypeAdapter(Date::class.java, DateTypeAdapter())
-        .create()
 
-    suspend fun execute(appointmentDto: AppointmentDto, jwt: String): String {
+    suspend fun execute(user: UserInfoDto, token: String): Date? {
         val baseUrl = getBaseUrl()
 
         return try {
@@ -29,12 +24,11 @@ class PostAppointmentUseCase {
 
             val appointmentsApi = retrofit.create(AppointmentsApi::class.java)
 
-            // Выполняем запрос на авторизацию
-            val response = executeRequest(appointmentsApi, appointmentDto, jwt)
-            delay(100L)
-            return response.code().toString()
+            val response = executeRequest(appointmentsApi, user, token)
+
+            return response
         } catch (e: Exception) {
-            "Возникла непредвиденная ошибка"
+            null
         }
     }
 
@@ -58,16 +52,15 @@ class PostAppointmentUseCase {
         return Retrofit.Builder()
             .baseUrl(baseUrl)
             .client(client)
-            .addConverterFactory(GsonConverterFactory.create(gson))
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
 
     private suspend fun executeRequest(
         appointmentsApi: AppointmentsApi,
-        appointmentDto: AppointmentDto,
-        jwt: String
-    ): Response<Unit> {
-        return appointmentsApi.postAppointment(appointmentDto, jwt)
+        user: UserInfoDto,
+        token: String
+    ): Date {
+        return appointmentsApi.getLastRemoteAppointmentTimestamp(user, token)
     }
 }

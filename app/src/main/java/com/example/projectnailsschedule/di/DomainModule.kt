@@ -24,7 +24,8 @@ import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.Delete
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.GetAllScheduleSyncDb
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.GetByLocalAppointmentIdUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.GetDeletedAppointmentsUseCase
-import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.GetMaxAppointmentTimestampUseCase
+import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.GetLastLocalAppointmentTimestamp
+import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.GetLastRemoteAppointmentTimestamp
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.GetNotSyncAppointmentsUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.GetUserRemoteAppointmentsUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.InsertAppointmentDtoUseCase
@@ -357,8 +358,8 @@ class DomainModule {
     }
 
     @Provides
-    fun getGetMaxAppointmentTimestampUseCase(repository: ScheduleSyncRepository): GetMaxAppointmentTimestampUseCase {
-        return GetMaxAppointmentTimestampUseCase(repository)
+    fun getGetMaxAppointmentTimestampUseCase(repository: ScheduleSyncRepository): GetLastLocalAppointmentTimestamp {
+        return GetLastLocalAppointmentTimestamp(repository)
     }
 
     // Schedule sync API
@@ -376,5 +377,10 @@ class DomainModule {
     @Provides
     fun getGetUserRemoteAppointmentUseCase(): GetUserRemoteAppointmentsUseCase {
         return GetUserRemoteAppointmentsUseCase()
+    }
+
+    @Provides
+    fun getLastRemoteAppointmentTimestampUseCase(): GetLastRemoteAppointmentTimestamp {
+        return GetLastRemoteAppointmentTimestamp()
     }
 }
