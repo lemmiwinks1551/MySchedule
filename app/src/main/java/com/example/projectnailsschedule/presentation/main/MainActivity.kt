@@ -226,11 +226,10 @@ class MainActivity : AppCompatActivity() {
         timer.scheduleAtFixedRate(object : TimerTask() {
             override fun run() {
                 CoroutineScope(Dispatchers.IO).launch {
-                    mainViewModel.postLocalDbToRemote()
-                    mainViewModel.syncRemoteToLocal()
+                    mainViewModel.synchronizationCheck()
                 }
             }
-        }, 0L, 1000L) // 10 секунд интервал
+        }, 0L, 3000L) // 10 секунд интервал
     }
 
     private fun stopSyncTimer() {

@@ -3,6 +3,7 @@ package com.example.projectnailsschedule.domain.repository.dao
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.example.projectnailsschedule.domain.models.dto.AppointmentDto
@@ -10,7 +11,7 @@ import java.util.Date
 
 @Dao
 interface ScheduleRemoteDbDao {
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(appointmentDto: AppointmentDto): Long
 
     @Update
@@ -34,4 +35,6 @@ interface ScheduleRemoteDbDao {
     @Query("SELECT MAX(syncTimestamp) FROM ScheduleRemoteDb")
     suspend fun getMaxAppointmentTimestamp(): Date?
 
+    @Query("SELECT * FROM ScheduleRemoteDb WHERE syncUUID = :syncUUID")
+    suspend fun getBySyncUUID(syncUUID: String): AppointmentDto?
 }

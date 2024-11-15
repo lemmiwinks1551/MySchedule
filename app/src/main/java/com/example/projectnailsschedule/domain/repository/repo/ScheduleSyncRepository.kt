@@ -20,4 +20,6 @@ interface ScheduleSyncRepository {
     suspend fun getByLocalAppointmentId(localAppointmentId: Long): AppointmentDto?
 
     suspend fun getMaxAppointmentTimestamp(): Date?
+
+    suspend fun getBySyncUUID(uuid: String): AppointmentDto?
 }

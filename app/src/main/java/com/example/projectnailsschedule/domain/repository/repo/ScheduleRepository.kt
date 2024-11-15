@@ -19,4 +19,6 @@ interface ScheduleRepository {
     suspend fun updateClientInAppointments(clientModelDb: ClientModelDb)
 
     suspend fun getAll(): List<AppointmentModelDb>
+
+    suspend fun getById(id: Long): AppointmentModelDb
 }

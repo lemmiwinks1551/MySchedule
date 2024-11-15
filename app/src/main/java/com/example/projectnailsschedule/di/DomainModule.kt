@@ -19,18 +19,20 @@ import com.example.projectnailsschedule.domain.usecase.apiUC.GetFaqUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.GetProductionCalendarDateInfoUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.GetProductionCalendarYearUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.SendUserDataUseCase
-import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.DeleteAppointmentDtoUseCase
+import com.example.projectnailsschedule.domain.usecase.apiUC.localSyncDbUC.DeleteAppointmentDtoUseCase
+import com.example.projectnailsschedule.domain.usecase.apiUC.localSyncDbUC.GetAllScheduleSyncDb
+import com.example.projectnailsschedule.domain.usecase.apiUC.localSyncDbUC.GetByLocalAppointmentIdUseCase
+import com.example.projectnailsschedule.domain.usecase.apiUC.localSyncDbUC.GetBySyncUuidUseCase
+import com.example.projectnailsschedule.domain.usecase.apiUC.localSyncDbUC.GetDeletedAppointmentsUseCase
+import com.example.projectnailsschedule.domain.usecase.apiUC.localSyncDbUC.GetNotSyncAppointmentsUseCase
+import com.example.projectnailsschedule.domain.usecase.apiUC.localSyncDbUC.GetUserLastLocalAppointmentTimestamp
+import com.example.projectnailsschedule.domain.usecase.apiUC.localSyncDbUC.InsertAppointmentDtoUseCase
+import com.example.projectnailsschedule.domain.usecase.apiUC.localSyncDbUC.UpdateAppointmentDtoUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.DeleteRemoteAppointmentUseCase
-import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.GetAllScheduleSyncDb
-import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.GetByLocalAppointmentIdUseCase
-import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.GetDeletedAppointmentsUseCase
-import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.GetLastLocalAppointmentTimestamp
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.GetLastRemoteAppointmentTimestamp
-import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.GetNotSyncAppointmentsUseCase
+import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.GetUserRemoteAppointmentsAfterTimestampUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.GetUserRemoteAppointmentsUseCase
-import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.InsertAppointmentDtoUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.PostAppointmentUseCase
-import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.UpdateAppointmentDtoUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.DeleteAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.GetAllScheduleDbUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.InsertAppointmentUseCase
@@ -348,18 +350,23 @@ class DomainModule {
     }
 
     @Provides
-    fun getDeletedAppointments(repository: ScheduleSyncRepository): GetDeletedAppointmentsUseCase {
-        return GetDeletedAppointmentsUseCase(repository)
-    }
-
-    @Provides
     fun getByLocalAppointmentId(repository: ScheduleSyncRepository): GetByLocalAppointmentIdUseCase {
         return GetByLocalAppointmentIdUseCase(repository)
     }
 
     @Provides
-    fun getGetMaxAppointmentTimestampUseCase(repository: ScheduleSyncRepository): GetLastLocalAppointmentTimestamp {
-        return GetLastLocalAppointmentTimestamp(repository)
+    fun getGetMaxAppointmentTimestampUseCase(repository: ScheduleSyncRepository): GetUserLastLocalAppointmentTimestamp {
+        return GetUserLastLocalAppointmentTimestamp(repository)
+    }
+
+    @Provides
+    fun getGetDeletedAppointmentsUseCase(repository: ScheduleSyncRepository): GetDeletedAppointmentsUseCase {
+        return GetDeletedAppointmentsUseCase(repository)
+    }
+
+    @Provides
+    fun getGetBySyncUuidUseCase(repository: ScheduleSyncRepository): GetBySyncUuidUseCase {
+        return GetBySyncUuidUseCase(repository)
     }
 
     // Schedule sync API
@@ -382,5 +389,10 @@ class DomainModule {
     @Provides
     fun getLastRemoteAppointmentTimestampUseCase(): GetLastRemoteAppointmentTimestamp {
         return GetLastRemoteAppointmentTimestamp()
+    }
+
+    @Provides
+    fun getGetRemoteAppointmentsAfterTimestampUseCase(): GetUserRemoteAppointmentsAfterTimestampUseCase {
+        return GetUserRemoteAppointmentsAfterTimestampUseCase()
     }
 }

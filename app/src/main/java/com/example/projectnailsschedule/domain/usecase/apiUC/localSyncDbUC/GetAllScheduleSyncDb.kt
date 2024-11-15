@@ -1,4 +1,4 @@
-package com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC
+package com.example.projectnailsschedule.domain.usecase.apiUC.localSyncDbUC
 
 import com.example.projectnailsschedule.domain.models.dto.AppointmentDto
 import com.example.projectnailsschedule.domain.repository.repo.ScheduleSyncRepository

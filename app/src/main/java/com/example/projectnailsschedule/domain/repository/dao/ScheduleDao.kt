@@ -43,12 +43,14 @@ interface ScheduleDao {
     )
     fun searchAppointment(searchQuery: String): MutableList<AppointmentModelDb>
 
-    @Query("UPDATE schedule SET " +
-            "name = :clientName, phone = :clientPhone, " +
-            "vk = :clientVk, telegram = :clientTelegram, " +
-            "instagram = :clientInstagram, whatsapp = :clientWhatsapp, " +
-            "clientNotes = :clientNotes, photo = :clientPhoto " +
-            "WHERE clientId = :clientId")
+    @Query(
+        "UPDATE schedule SET " +
+                "name = :clientName, phone = :clientPhone, " +
+                "vk = :clientVk, telegram = :clientTelegram, " +
+                "instagram = :clientInstagram, whatsapp = :clientWhatsapp, " +
+                "clientNotes = :clientNotes, photo = :clientPhoto " +
+                "WHERE clientId = :clientId"
+    )
     suspend fun updateClientInAppointments(
         clientId: Long,
         clientName: String?,
@@ -63,4 +65,7 @@ interface ScheduleDao {
 
     @Query("SELECT * FROM schedule")
     suspend fun getAll(): List<AppointmentModelDb>
+
+    @Query("SELECT * FROM schedule WHERE _id = :id")
+    suspend fun getById(id: Long): AppointmentModelDb
 }

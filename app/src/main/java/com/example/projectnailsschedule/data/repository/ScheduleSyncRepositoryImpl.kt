@@ -40,4 +40,8 @@ class ScheduleSyncRepositoryImpl(context: Context) : ScheduleSyncRepository {
     override suspend fun getMaxAppointmentTimestamp(): Date? {
         return dao.getMaxAppointmentTimestamp()
     }
+
+    override suspend fun getBySyncUUID(uuid: String): AppointmentDto? {
+        return dao.getBySyncUUID(uuid)
+    }
 }

@@ -9,9 +9,9 @@ data class AppointmentDto(
     // Общие поля записи
 
     @PrimaryKey
- val syncUUID: String,
+    val syncUUID: String,
 
-    val localAppointmentId: Long,
+    var localAppointmentId: Long,
 
     var userName: String? = null,
 
