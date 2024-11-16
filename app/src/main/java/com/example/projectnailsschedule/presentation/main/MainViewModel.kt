@@ -92,7 +92,7 @@ class MainViewModel @Inject constructor(
             // Локально данных нет, а удаленно есть - получаем данные
             lastLocalTimestamp == null && lastRemoteTimestamp != null -> {
                 Log.i(log, "Локальные данные не найдены - получаем данные с сервера")
-                pullRemoteToLocalDb(null)
+                pullRemoteToLocalDb(Date(0))
             }
 
             // Локально данные есть, а удаленно нет - отправляем данные
@@ -161,7 +161,7 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private suspend fun pullRemoteToLocalDb(timestamp: Date? = null) {
+    private suspend fun pullRemoteToLocalDb(timestamp: Date) {
         Log.i(log, "Получаем данные из удаленной БД")
         getUserInfoApi() ?: return
         val jwt = getJwt.execute() ?: return
@@ -196,13 +196,14 @@ class MainViewModel @Inject constructor(
                 updatedAppointment.localAppointmentId = localId
 
                 // обновляем в БД для синхронизации
-                updateAppointmentDtoUseCase.execute(updatedAppointment)
+                insertAppointmentDtoUseCase.execute(updatedAppointment)
                 return
             }
 
             // Если запись уже существует - сверяем даты, если дата "свежее" - заменяем
             if (updatedAppointment.syncTimestamp.after(localAppointment.syncTimestamp)) {
                 Log.i(log, "Вносим данные в локальную БД (обновляем запись)")
+                updatedAppointment.syncStatus = "Synchronized"
                 insertAppointmentDtoUseCase.execute(updatedAppointment)
                 updateInLocalDb(updatedAppointment)
             }
