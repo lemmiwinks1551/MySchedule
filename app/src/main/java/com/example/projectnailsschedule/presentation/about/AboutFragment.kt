@@ -38,12 +38,11 @@ class AboutFragment : Fragment() {
 
         setVersionTextView()
 
-
-        if (BuildConfig.DEBUG) {
+/*        if (BuildConfig.DEBUG) {
             CoroutineScope(Dispatchers.IO).launch {
                 addTestData()
             }
-        }
+        }*/
 
         aboutViewModel.updateUserData("$log ${object {}.javaClass.enclosingMethod?.name}")
 

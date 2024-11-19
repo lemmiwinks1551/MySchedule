@@ -97,6 +97,7 @@ class MainViewModel @Inject constructor(
 
             // Локально данные есть, а удаленно нет - отправляем данные
             lastLocalTimestamp != null && lastRemoteTimestamp == null -> {
+                // TODO: Реализовать удаление записи с другого устройства
                 Log.i(log, "Удаленные данные устарели - отправляем данные на сервер")
                 pushLocalDbToRemote()
             }

@@ -53,6 +53,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var networkObserver: NetworkObserver
     private var timer = Timer()
 
+    private lateinit var connectedIcon: MenuItem
+    private lateinit var disconnectedIcon: MenuItem
+
     @Inject
     lateinit var uncaughtExceptionHandler: Thread.UncaughtExceptionHandler
 
@@ -124,7 +127,6 @@ class MainActivity : AppCompatActivity() {
 
         ruStoreAd.interstitialAd(context = applicationContext)
 
-        initObservers()
     }
 
     override fun onResume() {
@@ -152,6 +154,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)
+        connectedIcon = menu.findItem(R.id.cloud_connected)!!
+        disconnectedIcon = menu.findItem(R.id.cloud_disconnected)!!
+
+        initObservers()
+
         return true
     }
 
@@ -209,10 +216,8 @@ class MainActivity : AppCompatActivity() {
         networkObserver = NetworkObserver(this) { isConnected ->
             if (isConnected) {
                 startSyncTimer()
-                showToast("Выполняем синхронизацию с сервером")
             } else {
                 stopSyncTimer()
-                showToast("Синхроназиция с сервером завершена")
             }
         }
 
@@ -221,26 +226,33 @@ class MainActivity : AppCompatActivity() {
 
     private fun startSyncTimer() {
         stopSyncTimer()
-
-        timer = Timer()
-        timer.scheduleAtFixedRate(object : TimerTask() {
-            override fun run() {
-                CoroutineScope(Dispatchers.IO).launch {
-                    mainViewModel.synchronizationCheck()
-                }
-            }
-        }, 0L, 3000L) // 10 секунд интервал
+        setCloudStatusIcon()
     }
 
     private fun stopSyncTimer() {
         timer.cancel()
     }
 
-    private fun showToast(message: String) {
-        Toast.makeText(
-            applicationContext,
-            message,
-            Toast.LENGTH_LONG
-        ).show()
+    private fun setCloudStatusIcon() {
+        timer = Timer()
+        timer.scheduleAtFixedRate(object : TimerTask() {
+            override fun run() {
+                CoroutineScope(Dispatchers.Main).launch {
+                    // Проверяем, залогинен ли пользователь
+                    val user = mainViewModel.getUserInfoApi()
+
+                    if (user != null) {
+                        if (user.enabled == true) {
+                            connectedIcon.setVisible(true)
+                            disconnectedIcon.setVisible(false)
+                            mainViewModel.synchronizationCheck()
+                        }
+                    } else {
+                        connectedIcon.setVisible(false)
+                        disconnectedIcon.setVisible(true)
+                    }
+                }
+            }
+        }, 0L, 5000L)
     }
 }
