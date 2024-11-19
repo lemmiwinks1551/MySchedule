@@ -22,6 +22,7 @@ import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.GetLas
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.GetUserRemoteAppointmentsAfterTimestampUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.PostAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.DeleteAppointmentUseCase
+import com.example.projectnailsschedule.domain.usecase.appointmentUC.GetAppointmentById
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.InsertAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.UpdateAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.settingsUC.GetUserThemeUseCase
@@ -50,6 +51,7 @@ class MainViewModel @Inject constructor(
     private var getDeletedAppointmentsUseCase: GetDeletedAppointmentsUseCase,
     private var getUserLastLocalAppointmentTimestamp: GetUserLastLocalAppointmentTimestamp,
     private var getGetBySyncUuidUseCase: GetBySyncUuidUseCase,
+    private var getAppointmentById: GetAppointmentById,
 
     // API
     private var postAppointmentUseCase: PostAppointmentUseCase,
@@ -97,7 +99,6 @@ class MainViewModel @Inject constructor(
 
             // Локально данные есть, а удаленно нет - отправляем данные
             lastLocalTimestamp != null && lastRemoteTimestamp == null -> {
-                // TODO: Реализовать удаление записи с другого устройства
                 Log.i(log, "Удаленные данные устарели - отправляем данные на сервер")
                 pushLocalDbToRemote()
             }
@@ -204,9 +205,27 @@ class MainViewModel @Inject constructor(
             // Если запись уже существует - сверяем даты, если дата "свежее" - заменяем
             if (updatedAppointment.syncTimestamp.after(localAppointment.syncTimestamp)) {
                 Log.i(log, "Вносим данные в локальную БД (обновляем запись)")
-                updatedAppointment.syncStatus = "Synchronized"
-                insertAppointmentDtoUseCase.execute(updatedAppointment)
-                updateInLocalDb(updatedAppointment)
+
+                when (updatedAppointment.syncStatus!!) {
+                    "Synchronized" -> {
+                        // Если запись была обновлена - обновляем её во всех БД
+                        updatedAppointment.syncStatus = "Synchronized"
+                        insertAppointmentDtoUseCase.execute(updatedAppointment)
+                        updateInLocalDb(updatedAppointment)
+                    }
+
+                    "DELETED" -> {
+                        // Если запись была удалена - удаляем её локально
+                        // а в БД для синхронизации ставим статус DELETED
+                        updatedAppointment.syncStatus = "DELETED"
+                        insertAppointmentDtoUseCase.execute(updatedAppointment)
+                        val scheduleAppointment =
+                            getAppointmentById.execute(localAppointment.localAppointmentId)
+                        if (scheduleAppointment != null) {
+                            deleteAppointmentUseCase.execute(scheduleAppointment)
+                        }
+                    }
+                }
             }
         }
     }

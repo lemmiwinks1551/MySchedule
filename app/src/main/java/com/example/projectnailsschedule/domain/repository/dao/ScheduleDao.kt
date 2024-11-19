@@ -67,5 +67,5 @@ interface ScheduleDao {
     suspend fun getAll(): List<AppointmentModelDb>
 
     @Query("SELECT * FROM schedule WHERE _id = :id")
-    suspend fun getById(id: Long): AppointmentModelDb
+    suspend fun getById(id: Long): AppointmentModelDb?
 }

@@ -45,7 +45,7 @@ class ScheduleRepositoryImpl(context: Context) : ScheduleRepository {
         return dao.getAll()
     }
 
-    override suspend fun getById(id: Long): AppointmentModelDb {
+    override suspend fun getById(id: Long): AppointmentModelDb? {
         return dao.getById(id)
     }
 }
