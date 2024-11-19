@@ -122,6 +122,10 @@ class MainViewModel @Inject constructor(
             // Удаленное изменение позднее - получаем данные с сервера
             lastLocalTimestamp.before(lastRemoteTimestamp) -> {
                 Log.i(log, "Локальные данные устарели - получаем данные с сервера")
+                Log.i(
+                    log,
+                    "Последнее локальное обновление $lastLocalTimestamp Последнее удаленное обновление: $lastRemoteTimestamp"
+                )
                 pullRemoteToLocalDb(lastLocalTimestamp)
             }
         }
@@ -164,7 +168,7 @@ class MainViewModel @Inject constructor(
     }
 
     private suspend fun pullRemoteToLocalDb(timestamp: Date) {
-        Log.i(log, "Получаем данные из удаленной БД")
+        Log.i(log, "Получаем данные с сервера")
         getUserInfoApi() ?: return
         val jwt = getJwt.execute() ?: return
 
@@ -192,37 +196,48 @@ class MainViewModel @Inject constructor(
             // Если локальной записи такой нет - создаем её
             if (localAppointment == null) {
                 Log.i(log, "Вносим данные в локальную БД (новая запись)")
-                val localId = insertInLocalDb(updatedAppointment)
-
-                // устанавливаем связь через локальный айди
-                updatedAppointment.localAppointmentId = localId
-
-                // обновляем в БД для синхронизации
-                insertAppointmentDtoUseCase.execute(updatedAppointment)
-                return
-            }
-
-            // Если запись уже существует - сверяем даты, если дата "свежее" - заменяем
-            if (updatedAppointment.syncTimestamp.after(localAppointment.syncTimestamp)) {
-                Log.i(log, "Вносим данные в локальную БД (обновляем запись)")
-
                 when (updatedAppointment.syncStatus!!) {
-                    "Synchronized" -> {
-                        // Если запись была обновлена - обновляем её во всех БД
-                        updatedAppointment.syncStatus = "Synchronized"
+                    "NotSynchronized" -> {
+                        val localId = insertInLocalDb(updatedAppointment)
+                        // устанавливаем связь через локальный айди
+                        updatedAppointment.localAppointmentId = localId
+
+                        // обновляем в БД для синхронизации
                         insertAppointmentDtoUseCase.execute(updatedAppointment)
-                        updateInLocalDb(updatedAppointment)
                     }
 
                     "DELETED" -> {
-                        // Если запись была удалена - удаляем её локально
-                        // а в БД для синхронизации ставим статус DELETED
-                        updatedAppointment.syncStatus = "DELETED"
-                        insertAppointmentDtoUseCase.execute(updatedAppointment)
-                        val scheduleAppointment =
-                            getAppointmentById.execute(localAppointment.localAppointmentId)
-                        if (scheduleAppointment != null) {
-                            deleteAppointmentUseCase.execute(scheduleAppointment)
+                        continue
+                    }
+                }
+            }
+
+            // Если запись уже существует - сверяем даты, если дата "свежее" - заменяем
+            if (localAppointment != null) {
+                if (updatedAppointment.syncTimestamp.after(localAppointment.syncTimestamp)) {
+                    Log.i(log, "Вносим данные в локальную БД (обновляем запись)")
+
+                    when (updatedAppointment.syncStatus!!) {
+                        "NotSynchronized" -> {
+                            // Если запись была обновлена - обновляем её во всех БД
+                            Log.i(log, "Вносим данные в локальную БД (обновляем запись)")
+                            // TODO: логика ломается, локальный ID ломается и не то обновляет!!!
+                            updatedAppointment.syncStatus = "Synchronized"
+                            updatedAppointment.localAppointmentId = localAppointment.localAppointmentId
+                            insertAppointmentDtoUseCase.execute(updatedAppointment)
+                            updateInLocalDb(updatedAppointment)
+                        }
+
+                        "DELETED" -> {
+                            // Если запись была удалена - удаляем её локально
+                            // а в БД для синхронизации ставим статус DELETED
+                            updatedAppointment.syncStatus = "DELETED"
+                            insertAppointmentDtoUseCase.execute(updatedAppointment)
+                            val scheduleAppointment =
+                                getAppointmentById.execute(localAppointment.localAppointmentId)
+                            if (scheduleAppointment != null) {
+                                deleteAppointmentUseCase.execute(scheduleAppointment)
+                            }
                         }
                     }
                 }
