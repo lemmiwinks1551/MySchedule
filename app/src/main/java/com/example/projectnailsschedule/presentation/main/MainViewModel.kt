@@ -113,58 +113,43 @@ class MainViewModel @Inject constructor(
         val remoteAppointmentsCount = getUserRemoteDbCountUseCase.execute(getJwt.execute()!!)
 
         // TODO: Если с одного устройства 2 пользоватля зайдут - проблема
-
         // TODO: кэша много скапливается - проблема. Кэшируется код?
 
-        when {
-            // Локально данных нет, а удаленно есть - получаем данные
-            // или количество записей локально < чем количество записей удаленно
-            lastLocalTimestamp == null && lastRemoteTimestamp != null -> {
-                Log.i(log, "Локальные данные не найдены - получаем данные с сервера")
-                pullRemoteToLocalDb(Date(0))
-            }
-
-            localAppointmentsCount < remoteAppointmentsCount!! -> {
-                Log.i(log, "Локальных данных меньше, чем на сервере - получаем данные с сервера")
-                Log.i(
-                    log,
-                    "Локальных данных $localAppointmentsCount - удаленных данных $remoteAppointmentsCount"
-                )
-                pullRemoteToLocalDb(Date(0))
-            }
-
-            // Локально данные есть, а удаленно нет - отправляем данные
-            lastLocalTimestamp != null && lastRemoteTimestamp == null -> {
-                Log.i(log, "Удаленные данные устарели - отправляем данные на сервер")
-                pushLocalDbToRemote()
-            }
-
-            // Нет данных ни локально, ни удаленно - ничего не делаем
-            lastLocalTimestamp == null && lastRemoteTimestamp == null -> {
-                Log.i(log, "Данные локально и удаленно не найдены")
-            }
-
-            // Данные синхронизированы - выходим
-            lastLocalTimestamp!!.time == lastRemoteTimestamp!!.time -> {
-                Log.i(log, "Данные синхронизированы")
-            }
-
-            // Локальное изменение позднее - отправляем данные на сервер
-            lastLocalTimestamp.after(lastRemoteTimestamp) -> {
-                Log.i(log, "Локальное изменение позднее - отправляем данные на сервер")
-                pushLocalDbToRemote()
-            }
-
-            // Удаленное изменение позднее - получаем данные с сервера
-            lastLocalTimestamp.before(lastRemoteTimestamp) -> {
-                Log.i(log, "Локальные данные устарели - получаем данные с сервера")
-                Log.i(
-                    log,
-                    "Последнее локальное обновление $lastLocalTimestamp Последнее удаленное обновление: $lastRemoteTimestamp"
-                )
-                pullRemoteToLocalDb(lastLocalTimestamp)
-            }
+        if (lastLocalTimestamp == null && lastRemoteTimestamp != null) {
+            Log.i(log, "Локальные данные не найдены - получаем данные с сервера")
+            pullRemoteToLocalDb(Date(0))
         }
+
+        if (localAppointmentsCount < remoteAppointmentsCount!!) {
+            Log.i(log, "Локальных данных меньше, чем на сервере - получаем данные с сервера")
+            Log.i(log, "Локальных данных $localAppointmentsCount - удаленных данных $remoteAppointmentsCount")
+            pullRemoteToLocalDb(Date(0))
+        }
+
+        if (lastLocalTimestamp != null && lastRemoteTimestamp == null) {
+            Log.i(log, "Удаленные данные устарели - отправляем данные на сервер")
+            pushLocalDbToRemote()
+        }
+
+        if (lastLocalTimestamp == null && lastRemoteTimestamp == null) {
+            Log.i(log, "Данные локально и удаленно не найдены")
+        }
+
+        if (lastLocalTimestamp != null && lastRemoteTimestamp != null && lastLocalTimestamp.time == lastRemoteTimestamp.time) {
+            Log.i(log, "Данные синхронизированы")
+        }
+
+        if (lastLocalTimestamp != null && lastRemoteTimestamp != null && lastLocalTimestamp.after(lastRemoteTimestamp)) {
+            Log.i(log, "Локальное изменение позднее - отправляем данные на сервер")
+            pushLocalDbToRemote()
+        }
+
+        if (lastLocalTimestamp != null && lastRemoteTimestamp != null && lastLocalTimestamp.before(lastRemoteTimestamp)) {
+            Log.i(log, "Локальные данные устарели - получаем данные с сервера")
+            Log.i(log, "Последнее локальное обновление: $lastLocalTimestamp Последнее удаленное обновление: $lastRemoteTimestamp")
+            pullRemoteToLocalDb(lastLocalTimestamp)
+        }
+
     }
 
     // Отправляет записи из локальной базы данных на сервер и обрабатывает статус синхронизации
@@ -230,6 +215,7 @@ class MainViewModel @Inject constructor(
             val localAppointment = getGetBySyncUuidUseCase.execute(updatedAppointment.syncUUID)
 
             // Если локальной записи такой нет - создаем её
+            // или понимаем, что такая запись уже была удалена и выходим из обработки
             if (localAppointment == null) {
                 Log.i(log, "Вносим данные в локальную БД (новая запись)")
                 when (updatedAppointment.syncStatus!!) {
@@ -241,8 +227,11 @@ class MainViewModel @Inject constructor(
                         // обновляем в БД для синхронизации
                         insertAppointmentDtoUseCase.execute(updatedAppointment)
                     }
-
                     "DELETED" -> {
+                        Log.i(log, "Запись была удалена ранее")
+                        // TODO: не оптимальное поведение, приложение понимает, что на сервере есть
+                        //  записи, которых нет локально, пробует обновиться, видит, что запись
+                        //  удалена по статусу записи на сервере и пропускает обновление
                         continue
                     }
                 }
@@ -257,7 +246,7 @@ class MainViewModel @Inject constructor(
                         "NotSynchronized" -> {
                             // Если запись была обновлена - обновляем её во всех БД
                             Log.i(log, "Вносим данные в локальную БД (обновляем запись)")
-                            // TODO: логика ломается, локальный ID ломается и не то обновляет!!!
+
                             updatedAppointment.syncStatus = "Synchronized"
                             updatedAppointment.localAppointmentId =
                                 localAppointment.localAppointmentId
