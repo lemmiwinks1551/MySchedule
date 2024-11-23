@@ -22,4 +22,6 @@ interface ScheduleSyncRepository {
     suspend fun getMaxAppointmentTimestamp(): Date?
 
     suspend fun getBySyncUUID(uuid: String): AppointmentDto?
+
+    suspend fun getCount(): Long
 }

@@ -37,4 +37,9 @@ interface AppointmentsApi {
         @Header("Authorization") token: String,
         @Body timestamp: Date?
     ): List<AppointmentDto>
+
+    @POST("/api/v1/user-data/get-count")
+    suspend fun getCount(
+        @Header("Authorization") token: String
+    ): Long
 }

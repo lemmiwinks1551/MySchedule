@@ -26,13 +26,13 @@
         android:id="@+id/cloud_connected"
         android:icon="@drawable/baseline_cloud_connected_24"
         android:title="Соединение с облаком установлено"
-        android:visible="true"
+        android:visible="false"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/cloud_disconnected"
         android:icon="@drawable/baseline_cloud_disconnected"
         android:title="Соединение с облаком потеряно"
-        android:visible="false"
+        android:visible="true"
         app:showAsAction="always" />
 </menu>

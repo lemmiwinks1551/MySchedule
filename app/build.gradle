@@ -153,4 +153,8 @@ dependencies {
     implementation 'com.github.dhaval2404:imagepicker:2.1'
 
     implementation 'com.auth0.android:jwtdecode:2.0.0'
+
+    // RXJava
+    implementation group: 'io.reactivex.rxjava3', name: 'rxjava', version: '3.1.9'
+
 }

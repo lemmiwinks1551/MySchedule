@@ -37,4 +37,7 @@ interface ScheduleRemoteDbDao {
 
     @Query("SELECT * FROM ScheduleRemoteDb WHERE syncUUID = :syncUUID")
     suspend fun getBySyncUUID(syncUUID: String): AppointmentDto?
+
+    @Query("SELECT COUNT(*) FROM ScheduleRemoteDb")
+    suspend fun getCount(): Long
 }

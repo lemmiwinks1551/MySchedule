@@ -1,6 +1,7 @@
 package com.example.projectnailsschedule.presentation.main
 
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
 import com.example.projectnailsschedule.domain.models.UserDataManager
@@ -12,6 +13,7 @@ import com.example.projectnailsschedule.domain.usecase.account.GetUserInfoApiUse
 import com.example.projectnailsschedule.domain.usecase.apiUC.SendUserDataUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.localSyncDbUC.DeleteAppointmentDtoUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.localSyncDbUC.GetBySyncUuidUseCase
+import com.example.projectnailsschedule.domain.usecase.apiUC.localSyncDbUC.GetCountSyncDbUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.localSyncDbUC.GetDeletedAppointmentsUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.localSyncDbUC.GetNotSyncAppointmentsUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.localSyncDbUC.GetUserLastLocalAppointmentTimestamp
@@ -20,6 +22,7 @@ import com.example.projectnailsschedule.domain.usecase.apiUC.localSyncDbUC.Updat
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.DeleteRemoteAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.GetLastRemoteAppointmentTimestamp
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.GetUserRemoteAppointmentsAfterTimestampUseCase
+import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.GetUserRemoteDbCountUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.PostAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.DeleteAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.GetAppointmentById
@@ -52,14 +55,19 @@ class MainViewModel @Inject constructor(
     private var getUserLastLocalAppointmentTimestamp: GetUserLastLocalAppointmentTimestamp,
     private var getGetBySyncUuidUseCase: GetBySyncUuidUseCase,
     private var getAppointmentById: GetAppointmentById,
+    private var getCountSyncDbUseCase: GetCountSyncDbUseCase,
 
     // API
     private var postAppointmentUseCase: PostAppointmentUseCase,
     private var deleteRemoteAppointmentUseCase: DeleteRemoteAppointmentUseCase,
     private var getUserLastRemoteAppointmentTimestamp: GetLastRemoteAppointmentTimestamp,
-    private var getUserRemoteAppointmentsAfterTimestampUseCase: GetUserRemoteAppointmentsAfterTimestampUseCase
+    private var getUserRemoteAppointmentsAfterTimestampUseCase: GetUserRemoteAppointmentsAfterTimestampUseCase,
+    private var getUserRemoteDbCountUseCase: GetUserRemoteDbCountUseCase
 ) : ViewModel() {
-    private val log = this::class.simpleName
+    private val log = "Sync"
+
+    val syncStatus = MutableLiveData(false)
+    val menuStatus = MutableLiveData(false)
 
     suspend fun getUserInfoApi(): UserInfoDto? {
         val jwt = getJwt.execute() ?: return null
@@ -83,17 +91,45 @@ class MainViewModel @Inject constructor(
 
     suspend fun synchronizationCheck() {
         // Получаем юзера, если пользователь не залогинился - выходим
-        val user = getUserInfoApi() ?: return
+        val user = getUserInfoApi()
+
+        if (user == null) {
+            // Если пользователь не залогинился - устанавливаем статус false и выходим
+            syncStatus.postValue(false)
+            return
+        }
+
+        syncStatus.postValue(true)
 
         // Получаем временные метки последней записи локально и удаленно
         val lastLocalTimestamp = getUserLastLocalAppointmentTimestamp.execute()
         val lastRemoteTimestamp =
             getUserLastRemoteAppointmentTimestamp.execute(user, getJwt.execute()!!)
 
+        // Получаем общее количество записей в БД для синхронизации
+        val localAppointmentsCount = getCountSyncDbUseCase.execute()
+
+        // Получаем общее количество записей в удаленной БД
+        val remoteAppointmentsCount = getUserRemoteDbCountUseCase.execute(getJwt.execute()!!)
+
+        // TODO: Если с одного устройства 2 пользоватля зайдут - проблема
+
+        // TODO: кэша много скапливается - проблема. Кэшируется код?
+
         when {
             // Локально данных нет, а удаленно есть - получаем данные
+            // или количество записей локально < чем количество записей удаленно
             lastLocalTimestamp == null && lastRemoteTimestamp != null -> {
                 Log.i(log, "Локальные данные не найдены - получаем данные с сервера")
+                pullRemoteToLocalDb(Date(0))
+            }
+
+            localAppointmentsCount < remoteAppointmentsCount!! -> {
+                Log.i(log, "Локальных данных меньше, чем на сервере - получаем данные с сервера")
+                Log.i(
+                    log,
+                    "Локальных данных $localAppointmentsCount - удаленных данных $remoteAppointmentsCount"
+                )
                 pullRemoteToLocalDb(Date(0))
             }
 
@@ -115,7 +151,7 @@ class MainViewModel @Inject constructor(
 
             // Локальное изменение позднее - отправляем данные на сервер
             lastLocalTimestamp.after(lastRemoteTimestamp) -> {
-                Log.i(log, "Удаленные данные устарели - отправляем данные на сервер")
+                Log.i(log, "Локальное изменение позднее - отправляем данные на сервер")
                 pushLocalDbToRemote()
             }
 
@@ -223,7 +259,8 @@ class MainViewModel @Inject constructor(
                             Log.i(log, "Вносим данные в локальную БД (обновляем запись)")
                             // TODO: логика ломается, локальный ID ломается и не то обновляет!!!
                             updatedAppointment.syncStatus = "Synchronized"
-                            updatedAppointment.localAppointmentId = localAppointment.localAppointmentId
+                            updatedAppointment.localAppointmentId =
+                                localAppointment.localAppointmentId
                             insertAppointmentDtoUseCase.execute(updatedAppointment)
                             updateInLocalDb(updatedAppointment)
                         }

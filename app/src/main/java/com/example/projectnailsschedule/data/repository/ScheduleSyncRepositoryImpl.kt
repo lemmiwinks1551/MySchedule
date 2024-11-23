@@ -44,4 +44,8 @@ class ScheduleSyncRepositoryImpl(context: Context) : ScheduleSyncRepository {
     override suspend fun getBySyncUUID(uuid: String): AppointmentDto? {
         return dao.getBySyncUUID(uuid)
     }
+
+    override suspend fun getCount(): Long {
+        return dao.getCount()
+    }
 }

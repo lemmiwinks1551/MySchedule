@@ -23,6 +23,7 @@ import com.example.projectnailsschedule.domain.usecase.apiUC.localSyncDbUC.Delet
 import com.example.projectnailsschedule.domain.usecase.apiUC.localSyncDbUC.GetAllScheduleSyncDb
 import com.example.projectnailsschedule.domain.usecase.apiUC.localSyncDbUC.GetByLocalAppointmentIdUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.localSyncDbUC.GetBySyncUuidUseCase
+import com.example.projectnailsschedule.domain.usecase.apiUC.localSyncDbUC.GetCountSyncDbUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.localSyncDbUC.GetDeletedAppointmentsUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.localSyncDbUC.GetNotSyncAppointmentsUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.localSyncDbUC.GetUserLastLocalAppointmentTimestamp
@@ -32,6 +33,7 @@ import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.Delete
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.GetLastRemoteAppointmentTimestamp
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.GetUserRemoteAppointmentsAfterTimestampUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.GetUserRemoteAppointmentsUseCase
+import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.GetUserRemoteDbCountUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.PostAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.DeleteAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.GetAllScheduleDbUseCase
@@ -375,6 +377,11 @@ class DomainModule {
         return GetBySyncUuidUseCase(repository)
     }
 
+    @Provides
+    fun getGetCountSyncDbUseCase(repository: ScheduleSyncRepository): GetCountSyncDbUseCase {
+        return GetCountSyncDbUseCase(repository)
+    }
+
     // Schedule sync API
 
     @Provides
@@ -400,5 +407,10 @@ class DomainModule {
     @Provides
     fun getGetRemoteAppointmentsAfterTimestampUseCase(): GetUserRemoteAppointmentsAfterTimestampUseCase {
         return GetUserRemoteAppointmentsAfterTimestampUseCase()
+    }
+
+    @Provides
+    fun getGetUserRemoteDbCountUseCase(): GetUserRemoteDbCountUseCase {
+        return GetUserRemoteDbCountUseCase()
     }
 }

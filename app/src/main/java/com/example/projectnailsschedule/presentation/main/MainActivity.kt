@@ -1,6 +1,7 @@
 package com.example.projectnailsschedule.presentation.main
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -30,12 +31,14 @@ import com.google.android.play.core.ktx.isFlexibleUpdateAllowed
 import com.google.android.play.core.ktx.isImmediateUpdateAllowed
 import com.my.target.ads.MyTargetView
 import dagger.hilt.android.AndroidEntryPoint
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.disposables.Disposable
+import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.util.Timer
-import java.util.TimerTask
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
 
@@ -50,11 +53,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
-    private lateinit var networkObserver: NetworkObserver
-    private var timer = Timer()
 
     private lateinit var connectedIcon: MenuItem
     private lateinit var disconnectedIcon: MenuItem
+    private var disposable: Disposable? = null
 
     @Inject
     lateinit var uncaughtExceptionHandler: Thread.UncaughtExceptionHandler
@@ -76,6 +78,28 @@ class MainActivity : AppCompatActivity() {
             delay(5.seconds)
             appUpdateManager.completeUpdate()
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        disposable = Observable.interval(0, 5, TimeUnit.SECONDS)
+            .subscribeOn(Schedulers.io())
+            .subscribe({
+                val threadName = Thread.currentThread().name
+                val startTime = System.currentTimeMillis()
+
+                Log.i("Sync", "Синхронизация началась на потоке: $threadName в $startTime")
+
+                lifecycleScope.launch(Dispatchers.IO) {
+                    try {
+                        mainViewModel.synchronizationCheck()
+                    } catch (e: Exception) {
+                        Log.e("Sync", e.message.toString())
+                    }
+                }
+            }, { error ->
+                Log.e("Sync", "Ошибка в Observable: ${error.message}")
+            })
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -127,6 +151,7 @@ class MainActivity : AppCompatActivity() {
 
         ruStoreAd.interstitialAd(context = applicationContext)
 
+        initObservers()
     }
 
     override fun onResume() {
@@ -156,9 +181,7 @@ class MainActivity : AppCompatActivity() {
         menuInflater.inflate(R.menu.main, menu)
         connectedIcon = menu.findItem(R.id.cloud_connected)!!
         disconnectedIcon = menu.findItem(R.id.cloud_disconnected)!!
-
-        initObservers()
-
+        mainViewModel.menuStatus.postValue(true)
         return true
     }
 
@@ -212,47 +235,46 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        // Добавляем Observer к состоянию сети
-        networkObserver = NetworkObserver(this) { isConnected ->
-            if (isConnected) {
-                startSyncTimer()
-            } else {
-                stopSyncTimer()
+        mainViewModel.syncStatus.observe(this) {
+            if (mainViewModel.menuStatus.value == true) {
+                if (it) {
+                    // показываем облачку ОК
+                    connectedIcon.setVisible(true)
+                    disconnectedIcon.setVisible(false)
+                } else {
+                    // показываем облачку офф
+                    connectedIcon.setVisible(false)
+                    disconnectedIcon.setVisible(true)
+                }
             }
         }
 
-        lifecycle.addObserver(networkObserver)
-    }
+        /*lifecycleScope.launch(Dispatchers.IO) {
+            while (isActive) {
+                val threadName = Thread.currentThread().name
+                val startTime = System.currentTimeMillis()
 
-    private fun startSyncTimer() {
-        stopSyncTimer()
-        setCloudStatusIcon()
-    }
+                Log.i("Sync", "Синхронизация началась на потоке: $threadName в $startTime")
 
-    private fun stopSyncTimer() {
-        timer.cancel()
-    }
+                // Проверяем, залогинен ли пользователь
+                val user = mainViewModel.getUserInfoApi() ?: return@launch
 
-    private fun setCloudStatusIcon() {
-        timer = Timer()
-        timer.scheduleAtFixedRate(object : TimerTask() {
-            override fun run() {
-                CoroutineScope(Dispatchers.Main).launch {
-                    // Проверяем, залогинен ли пользователь
-                    val user = mainViewModel.getUserInfoApi()
-
-                    if (user != null) {
-                        if (user.enabled == true) {
-                            connectedIcon.setVisible(true)
-                            disconnectedIcon.setVisible(false)
-                            mainViewModel.synchronizationCheck()
-                        }
-                    } else {
-                        connectedIcon.setVisible(false)
-                        disconnectedIcon.setVisible(true)
+                // Если пользователь залогинился - пробуем синхронизироваться с сервером
+                if (user.enabled == true) {
+                    try {
+                        mainViewModel.synchronizationCheck()
+                    } catch (e: Exception) {
+                        Log.e("Sync", e.message.toString())
                     }
                 }
+
+                delay(5000)
             }
-        }, 0L, 5000L)
+        }*/
+    }
+
+    override fun onStop() {
+        super.onStop()
+        disposable?.dispose()
     }
 }
