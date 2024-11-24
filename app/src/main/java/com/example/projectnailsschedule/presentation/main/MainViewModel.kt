@@ -122,7 +122,10 @@ class MainViewModel @Inject constructor(
 
         if (localAppointmentsCount < remoteAppointmentsCount!!) {
             Log.i(log, "Локальных данных меньше, чем на сервере - получаем данные с сервера")
-            Log.i(log, "Локальных данных $localAppointmentsCount - удаленных данных $remoteAppointmentsCount")
+            Log.i(
+                log,
+                "Локальных данных $localAppointmentsCount - удаленных данных $remoteAppointmentsCount"
+            )
             pullRemoteToLocalDb(Date(0))
         }
 
@@ -139,17 +142,25 @@ class MainViewModel @Inject constructor(
             Log.i(log, "Данные синхронизированы")
         }
 
-        if (lastLocalTimestamp != null && lastRemoteTimestamp != null && lastLocalTimestamp.after(lastRemoteTimestamp)) {
+        if (lastLocalTimestamp != null && lastRemoteTimestamp != null && lastLocalTimestamp.after(
+                lastRemoteTimestamp
+            )
+        ) {
             Log.i(log, "Локальное изменение позднее - отправляем данные на сервер")
             pushLocalDbToRemote()
         }
 
-        if (lastLocalTimestamp != null && lastRemoteTimestamp != null && lastLocalTimestamp.before(lastRemoteTimestamp)) {
+        if (lastLocalTimestamp != null && lastRemoteTimestamp != null && lastLocalTimestamp.before(
+                lastRemoteTimestamp
+            )
+        ) {
             Log.i(log, "Локальные данные устарели - получаем данные с сервера")
-            Log.i(log, "Последнее локальное обновление: $lastLocalTimestamp Последнее удаленное обновление: $lastRemoteTimestamp")
+            Log.i(
+                log,
+                "Последнее локальное обновление: $lastLocalTimestamp Последнее удаленное обновление: $lastRemoteTimestamp"
+            )
             pullRemoteToLocalDb(lastLocalTimestamp)
         }
-
     }
 
     // Отправляет записи из локальной базы данных на сервер и обрабатывает статус синхронизации
@@ -218,22 +229,21 @@ class MainViewModel @Inject constructor(
             // или понимаем, что такая запись уже была удалена и выходим из обработки
             if (localAppointment == null) {
                 Log.i(log, "Вносим данные в локальную БД (новая запись)")
-                when (updatedAppointment.syncStatus!!) {
-                    "NotSynchronized" -> {
-                        val localId = insertInLocalDb(updatedAppointment)
-                        // устанавливаем связь через локальный айди
-                        updatedAppointment.localAppointmentId = localId
+                if (updatedAppointment.syncStatus!! == "NotSynchronized") {
+                    val localId = insertInLocalDb(updatedAppointment)
+                    // устанавливаем связь через локальный айди
+                    updatedAppointment.localAppointmentId = localId
 
-                        // обновляем в БД для синхронизации
-                        insertAppointmentDtoUseCase.execute(updatedAppointment)
-                    }
-                    "DELETED" -> {
-                        Log.i(log, "Запись была удалена ранее")
-                        // TODO: не оптимальное поведение, приложение понимает, что на сервере есть
-                        //  записи, которых нет локально, пробует обновиться, видит, что запись
-                        //  удалена по статусу записи на сервере и пропускает обновление
-                        continue
-                    }
+                    // обновляем в БД для синхронизации
+                    insertAppointmentDtoUseCase.execute(updatedAppointment)
+                }
+
+                if (updatedAppointment.syncStatus!! == "DELETED") {
+                    Log.i(log, "Запись была удалена ранее")
+                    // TODO: не оптимальное поведение, приложение понимает, что на сервере есть
+                    //  записи, которых нет локально, пробует обновиться, видит, что запись
+                    //  удалена по статусу записи на сервере и пропускает обновление
+                    continue
                 }
             }
 
@@ -242,28 +252,45 @@ class MainViewModel @Inject constructor(
                 if (updatedAppointment.syncTimestamp.after(localAppointment.syncTimestamp)) {
                     Log.i(log, "Вносим данные в локальную БД (обновляем запись)")
 
-                    when (updatedAppointment.syncStatus!!) {
-                        "NotSynchronized" -> {
-                            // Если запись была обновлена - обновляем её во всех БД
-                            Log.i(log, "Вносим данные в локальную БД (обновляем запись)")
-
-                            updatedAppointment.syncStatus = "Synchronized"
-                            updatedAppointment.localAppointmentId =
-                                localAppointment.localAppointmentId
-                            insertAppointmentDtoUseCase.execute(updatedAppointment)
-                            updateInLocalDb(updatedAppointment)
+                    if (localAppointment.syncStatus == "DELETED") {
+                        Log.i(
+                            log, "Запись, которую необходимо обновить была удалена локально. " +
+                                    "Обновление отменяется. Удаляем запись с сервера"
+                        )
+                        // Ставим Статус DELETED на сервер
+                        val result = deleteRemoteAppointmentUseCase.execute(
+                            updatedAppointment,
+                            getJwt.execute()!!
+                        )
+                        if (result == "200") {
+                            // Если Статус DELETED на сервере установлен - удаляем из таблицы для синхронизации
+                            deleteAppointmentDtoUseCase.execute(localAppointment)
                         }
+                        return
+                    }
 
-                        "DELETED" -> {
-                            // Если запись была удалена - удаляем её локально
-                            // а в БД для синхронизации ставим статус DELETED
-                            updatedAppointment.syncStatus = "DELETED"
-                            insertAppointmentDtoUseCase.execute(updatedAppointment)
-                            val scheduleAppointment =
-                                getAppointmentById.execute(localAppointment.localAppointmentId)
-                            if (scheduleAppointment != null) {
-                                deleteAppointmentUseCase.execute(scheduleAppointment)
-                            }
+                    if (updatedAppointment.syncStatus!! == "NotSynchronized") {
+                        // Если запись была обновлена - обновляем её во всех БД
+                        Log.i(log, "Статус на сервер NotSynchronized, обновляем локальную запись")
+
+                        updatedAppointment.syncStatus = "Synchronized"
+                        updatedAppointment.localAppointmentId =
+                            localAppointment.localAppointmentId
+                        insertAppointmentDtoUseCase.execute(updatedAppointment)
+                        updateInLocalDb(updatedAppointment)
+                    }
+
+                    if (updatedAppointment.syncStatus!! == "DELETED") {
+                        // Если запись была удалена - удаляем её локально
+                        // а в БД для синхронизации ставим статус DELETED
+                        /*                        updatedAppointment.syncStatus = "DELETED"
+                                                insertAppointmentDtoUseCase.execute(updatedAppointment)*/
+                        // Удаляем её локально из БД для синхронизации и из локальной БД
+                        deleteAppointmentDtoUseCase.execute(updatedAppointment)
+                        val scheduleAppointment =
+                            getAppointmentById.execute(localAppointment.localAppointmentId)
+                        if (scheduleAppointment != null) {
+                            deleteAppointmentUseCase.execute(scheduleAppointment)
                         }
                     }
                 }
@@ -278,21 +305,23 @@ class MainViewModel @Inject constructor(
             val appointmentModelDb = AppointmentModelDb(
                 _id = null,
                 date = appointmentDate,
+                time = appointmentTime,
+                notes = appointmentNotes,
+                deleted = false,
+
                 clientId = null,
                 name = clientName,
-                time = appointmentTime,
-                clientNotes = clientNotes,
-                procedure = procedureName,
-                procedurePrice = procedurePrice,
-                procedureNotes = null,
+                photo = clientPhoto,
                 phone = clientPhone,
-                vk = clientVk,
                 telegram = clientTelegram,
                 instagram = clientInstagram,
+                vk = clientVk,
                 whatsapp = clientWhatsapp,
-                notes = clientNotes,
-                photo = clientPhoto,
-                deleted = false
+                clientNotes = clientNotes,
+
+                procedure = procedureName,
+                procedurePrice = procedurePrice,
+                procedureNotes = procedureNotes
             )
             return insertAppointmentUseCase.execute(appointmentModelDb)
         }
@@ -304,21 +333,23 @@ class MainViewModel @Inject constructor(
             val appointmentModelDb = AppointmentModelDb(
                 _id = appointmentDto.localAppointmentId,
                 date = appointmentDate,
+                time = appointmentTime,
+                notes = appointmentNotes,
+                deleted = false,
+
                 clientId = null,
                 name = clientName,
-                time = appointmentTime,
-                clientNotes = clientNotes,
-                procedure = procedureName,
-                procedurePrice = procedurePrice,
-                procedureNotes = null,
+                photo = clientPhoto,
                 phone = clientPhone,
-                vk = clientVk,
                 telegram = clientTelegram,
                 instagram = clientInstagram,
+                vk = clientVk,
                 whatsapp = clientWhatsapp,
-                notes = clientNotes,
-                photo = clientPhoto,
-                deleted = false
+                clientNotes = clientNotes,
+
+                procedure = procedureName,
+                procedurePrice = procedurePrice,
+                procedureNotes = procedureNotes
             )
             updateAppointmentUseCase.execute(appointmentModelDb)
         }
