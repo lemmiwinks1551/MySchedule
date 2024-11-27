@@ -30,6 +30,8 @@ import com.example.projectnailsschedule.domain.usecase.apiUC.localSyncDbUC.GetUs
 import com.example.projectnailsschedule.domain.usecase.apiUC.localSyncDbUC.InsertAppointmentDtoUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.localSyncDbUC.UpdateAppointmentDtoUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.DeleteRemoteAppointmentUseCase
+import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.DisableSyncUseCase
+import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.EnableSyncUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.GetLastRemoteAppointmentTimestamp
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.GetUserRemoteAppointmentsAfterTimestampUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.GetUserRemoteAppointmentsUseCase
@@ -412,5 +414,15 @@ class DomainModule {
     @Provides
     fun getGetUserRemoteDbCountUseCase(): GetUserRemoteDbCountUseCase {
         return GetUserRemoteDbCountUseCase()
+    }
+
+    @Provides
+    fun getEnableSyncUseCase(): EnableSyncUseCase {
+        return EnableSyncUseCase()
+    }
+
+    @Provides
+    fun getDisableSyncUseCase(): DisableSyncUseCase {
+        return DisableSyncUseCase()
     }
 }

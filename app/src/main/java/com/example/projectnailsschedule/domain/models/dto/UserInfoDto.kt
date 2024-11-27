@@ -6,6 +6,7 @@ data class UserInfoDto(
     val userEmail: String?,
     val emailVerified: Boolean?,
     val enabled: Boolean?,
+    val syncEnabled: Boolean?,
     val accountNonLocked: Boolean?,
     val authorities: List<String>?,
     val credentialsNonExpired: Boolean?,

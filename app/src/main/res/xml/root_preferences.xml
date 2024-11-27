@@ -14,6 +14,7 @@
     <SwitchPreference
         app:icon="@drawable/baseline_cloud_connected_24"
         app:key="synchronization"
+        app:enabled="false"
         app:summary="Включить/Выключить синхронизацию"
         app:title="Синхронизация (beta)" />
 

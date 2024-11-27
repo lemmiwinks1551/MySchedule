@@ -42,4 +42,16 @@ interface AppointmentsApi {
     suspend fun getCount(
         @Header("Authorization") token: String
     ): Long
+
+    @POST("/api/v1/user-data/enable-sync")
+    suspend fun enableSync(
+        @Body user: UserInfoDto,
+        @Header("Authorization") token: String
+    ): Boolean
+
+    @POST("/api/v1/user-data/disable-sync")
+    suspend fun disableSync(
+        @Body user: UserInfoDto,
+        @Header("Authorization") token: String
+    ): Boolean
 }
