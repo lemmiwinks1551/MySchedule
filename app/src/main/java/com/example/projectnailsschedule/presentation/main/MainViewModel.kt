@@ -94,7 +94,15 @@ class MainViewModel @Inject constructor(
         val user = getUserInfoApi()
 
         if (user == null) {
-            // Если пользователь не залогинился - устанавливаем статус false и выходим
+            // Если пользователь не залогинился
+            // устанавливаем статус false и выходим
+            syncStatus.postValue(false)
+            return
+        }
+
+        if (user.syncEnabled == false) {
+            // Если у пользователя установлен syncEnabled == false
+            // устанавливаем статус false и выходим
             syncStatus.postValue(false)
             return
         }
