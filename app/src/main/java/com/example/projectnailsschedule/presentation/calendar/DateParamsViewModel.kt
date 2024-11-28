@@ -215,7 +215,7 @@ class DateParamsViewModel @Inject constructor(
                 clientVk = vk,
                 clientWhatsapp = whatsapp,
                 clientNotes = clientNotes,
-                clientPhoto = photo,
+                clientPhoto = null,
 
                 procedureId = null,
                 procedureName = procedure,
