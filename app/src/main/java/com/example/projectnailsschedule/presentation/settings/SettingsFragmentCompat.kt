@@ -101,6 +101,7 @@ class SettingsFragmentCompat : PreferenceFragmentCompat() {
             } else {
                 withContext(Dispatchers.Main) {
                     // пользователь не залогинен - блокируем изменение статуса
+                    synchronization.summary = "Включить/Выключить синхронизацию\nНеобходимо войти в аккаунт"
                     synchronization.isEnabled = false
                     synchronization.onPreferenceClickListener = null
                 }
