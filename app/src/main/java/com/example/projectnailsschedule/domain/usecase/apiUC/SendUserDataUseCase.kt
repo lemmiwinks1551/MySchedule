@@ -8,6 +8,7 @@ import android.util.Log
 import com.example.projectnailsschedule.BuildConfig
 import com.example.projectnailsschedule.domain.models.UserData
 import com.example.projectnailsschedule.domain.repository.api.EventsApi
+import com.example.projectnailsschedule.util.Util
 import okhttp3.Cache
 import okhttp3.CacheControl
 import okhttp3.Interceptor
@@ -26,10 +27,7 @@ class SendUserDataUseCase @Inject constructor(var context: Context) {
     private val log = this::class.simpleName
 
     suspend fun execute(userData: UserData) {
-        var baseUrl = "https://myschedule.myddns.me"
-        if (!BuildConfig.DEBUG) {
-            baseUrl = "http://10.0.2.2:8080/"
-        }
+        val baseUrl = Util().getBaseUrl()
 
         val interceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
 

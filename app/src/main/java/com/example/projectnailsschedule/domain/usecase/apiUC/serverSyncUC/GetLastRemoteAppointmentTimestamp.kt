@@ -1,11 +1,9 @@
 package com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC
 
-import com.example.projectnailsschedule.BuildConfig
-import com.example.projectnailsschedule.data.storage.converters.DateTypeAdapter
+import android.util.Log
 import com.example.projectnailsschedule.domain.models.dto.UserInfoDto
 import com.example.projectnailsschedule.domain.repository.api.userDataApi.AppointmentsApi
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
+import com.example.projectnailsschedule.util.Util
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -15,7 +13,7 @@ import java.util.Date
 class GetLastRemoteAppointmentTimestamp {
     private val log = this::class.simpleName
 
-    suspend fun execute(user: UserInfoDto, token: String): Date? {
+    suspend fun execute(user: UserInfoDto, token: String): Long? {
         val baseUrl = getBaseUrl()
 
         return try {
@@ -28,16 +26,13 @@ class GetLastRemoteAppointmentTimestamp {
 
             return response
         } catch (e: Exception) {
+            Log.e(log, e.message.toString())
             null
         }
     }
 
     private fun getBaseUrl(): String {
-        return if (BuildConfig.DEBUG) {
-            "http://10.0.2.2:8080/"
-        } else {
-            "https://myschedule.myddns.me"
-        }
+        return Util().getBaseUrl()
     }
 
     private fun createOkHttpClient(): OkHttpClient {
@@ -60,7 +55,7 @@ class GetLastRemoteAppointmentTimestamp {
         appointmentsApi: AppointmentsApi,
         user: UserInfoDto,
         token: String
-    ): Date {
+    ): Long {
         return appointmentsApi.getLastRemoteAppointmentTimestamp(user, token)
     }
 }

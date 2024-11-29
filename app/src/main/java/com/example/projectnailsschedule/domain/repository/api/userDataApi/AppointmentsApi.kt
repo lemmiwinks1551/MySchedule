@@ -30,12 +30,12 @@ interface AppointmentsApi {
     suspend fun getLastRemoteAppointmentTimestamp(
         @Body user: UserInfoDto,
         @Header("Authorization") token: String
-    ): Date
+    ): Long
 
     @POST("/api/v1/user-data/get-remote-appointment-after-timestamp")
     suspend fun getRemoteAppointmentsAfterTimestamp(
         @Header("Authorization") token: String,
-        @Body timestamp: Date?
+        @Body timestamp: Long?
     ): List<AppointmentDto>
 
     @POST("/api/v1/user-data/get-count")

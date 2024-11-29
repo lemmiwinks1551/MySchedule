@@ -5,6 +5,7 @@ import com.example.projectnailsschedule.domain.models.dto.AppointmentDto
 import com.example.projectnailsschedule.domain.models.dto.UserInfoDto
 import com.example.projectnailsschedule.domain.models.dto.UserInfoDtoManager
 import com.example.projectnailsschedule.domain.repository.api.userDataApi.AppointmentsApi
+import com.example.projectnailsschedule.util.Util
 import kotlinx.coroutines.delay
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -33,11 +34,7 @@ class GetUserRemoteAppointmentsUseCase {
     }
 
     private fun getBaseUrl(): String {
-        return if (BuildConfig.DEBUG) {
-            "http://10.0.2.2:8080/"
-        } else {
-            "https://myschedule.myddns.me"
-        }
+        return Util().getBaseUrl()
     }
 
     private fun createOkHttpClient(): OkHttpClient {

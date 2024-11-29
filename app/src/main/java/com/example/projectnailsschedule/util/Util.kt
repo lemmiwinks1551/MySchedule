@@ -11,6 +11,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import com.auth0.android.jwt.JWT
+import com.example.projectnailsschedule.BuildConfig
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.data.storage.ClientsDb
 import com.example.projectnailsschedule.data.storage.ProceduresDb
@@ -410,6 +411,16 @@ class Util {
         val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.getDefault())
         format.timeZone = TimeZone.getTimeZone("UTC")
         return format.format(date)
+    }
+
+    fun getBaseUrl(): String {
+        //return "https://myschedule.myddns.me"
+
+        return if (BuildConfig.DEBUG) {
+            "http://10.0.2.2:8080/"
+        } else {
+            "https://myschedule.myddns.me"
+        }
     }
 
 /*    fun checkFilePermission(context: Context) {

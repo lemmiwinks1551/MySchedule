@@ -2,11 +2,9 @@ package com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC
 
 import android.util.Log
 import com.example.projectnailsschedule.BuildConfig
-import com.example.projectnailsschedule.data.storage.converters.DateTypeAdapter
 import com.example.projectnailsschedule.domain.models.dto.AppointmentDto
 import com.example.projectnailsschedule.domain.repository.api.userDataApi.AppointmentsApi
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
+import com.example.projectnailsschedule.util.Util
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -15,11 +13,8 @@ import java.util.Date
 
 class GetUserRemoteAppointmentsAfterTimestampUseCase {
     private val log = this::class.simpleName
-    val gson: Gson = GsonBuilder()
-        .registerTypeAdapter(Date::class.java, DateTypeAdapter())
-        .create()
 
-    suspend fun execute(token: String, timestamp: Date?): List<AppointmentDto>? {
+    suspend fun execute(token: String, timestamp: Long?): List<AppointmentDto>? {
         val baseUrl = getBaseUrl()
 
         return try {
@@ -38,11 +33,7 @@ class GetUserRemoteAppointmentsAfterTimestampUseCase {
     }
 
     private fun getBaseUrl(): String {
-        return if (BuildConfig.DEBUG) {
-            "http://10.0.2.2:8080/"
-        } else {
-            "https://myschedule.myddns.me"
-        }
+        return Util().getBaseUrl()
     }
 
     private fun createOkHttpClient(): OkHttpClient {
@@ -57,7 +48,6 @@ class GetUserRemoteAppointmentsAfterTimestampUseCase {
         return Retrofit.Builder()
             .baseUrl(baseUrl)
             .client(client)
-            .addConverterFactory(GsonConverterFactory.create(gson))
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
@@ -65,7 +55,7 @@ class GetUserRemoteAppointmentsAfterTimestampUseCase {
     private suspend fun executeRequest(
         appointmentsApi: AppointmentsApi,
         token: String,
-        timestamp: Date?
+        timestamp: Long?
     ): List<AppointmentDto> {
         return appointmentsApi.getRemoteAppointmentsAfterTimestamp(token, timestamp)
     }

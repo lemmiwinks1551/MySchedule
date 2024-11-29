@@ -4,7 +4,6 @@ import android.content.Context
 import com.example.projectnailsschedule.data.storage.ScheduleSyncDb
 import com.example.projectnailsschedule.domain.models.dto.AppointmentDto
 import com.example.projectnailsschedule.domain.repository.repo.ScheduleSyncRepository
-import java.util.Date
 
 class ScheduleSyncRepositoryImpl(context: Context) : ScheduleSyncRepository {
     private var dao = ScheduleSyncDb.getDb(context).getDao()
@@ -37,7 +36,7 @@ class ScheduleSyncRepositoryImpl(context: Context) : ScheduleSyncRepository {
         return dao.getByLocalAppointmentId(localAppointmentId)
     }
 
-    override suspend fun getMaxAppointmentTimestamp(): Date? {
+    override suspend fun getMaxAppointmentTimestamp(): Long? {
         return dao.getMaxAppointmentTimestamp()
     }
 

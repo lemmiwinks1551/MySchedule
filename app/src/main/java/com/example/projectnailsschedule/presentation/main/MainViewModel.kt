@@ -125,7 +125,7 @@ class MainViewModel @Inject constructor(
 
         if (lastLocalTimestamp == null && lastRemoteTimestamp != null) {
             Log.i(log, "Локальные данные не найдены - получаем данные с сервера")
-            pullRemoteToLocalDb(Date(0))
+            pullRemoteToLocalDb(Date(0).time)
         }
 
         if (localAppointmentsCount < remoteAppointmentsCount!!) {
@@ -134,7 +134,7 @@ class MainViewModel @Inject constructor(
                 log,
                 "Локальных данных $localAppointmentsCount - удаленных данных $remoteAppointmentsCount"
             )
-            pullRemoteToLocalDb(Date(0))
+            pullRemoteToLocalDb(Date(0).time)
         }
 
         if (lastLocalTimestamp != null && lastRemoteTimestamp == null) {
@@ -146,21 +146,18 @@ class MainViewModel @Inject constructor(
             Log.i(log, "Данные локально и удаленно не найдены")
         }
 
-        if (lastLocalTimestamp != null && lastRemoteTimestamp != null && lastLocalTimestamp.time == lastRemoteTimestamp.time) {
+        if (lastLocalTimestamp != null && lastRemoteTimestamp != null && lastLocalTimestamp == lastRemoteTimestamp) {
             Log.i(log, "Данные синхронизированы")
         }
 
-        if (lastLocalTimestamp != null && lastRemoteTimestamp != null && lastLocalTimestamp.after(
-                lastRemoteTimestamp
-            )
+        if (lastLocalTimestamp != null && lastRemoteTimestamp != null && lastLocalTimestamp > lastRemoteTimestamp
         ) {
             Log.i(log, "Локальное изменение позднее - отправляем данные на сервер")
             pushLocalDbToRemote()
         }
 
-        if (lastLocalTimestamp != null && lastRemoteTimestamp != null && lastLocalTimestamp.before(
-                lastRemoteTimestamp
-            )
+        if (lastLocalTimestamp != null && lastRemoteTimestamp != null && lastLocalTimestamp <
+            lastRemoteTimestamp
         ) {
             Log.i(log, "Локальные данные устарели - получаем данные с сервера")
             Log.i(
@@ -207,7 +204,7 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private suspend fun pullRemoteToLocalDb(timestamp: Date) {
+    private suspend fun pullRemoteToLocalDb(timestamp: Long) {
         Log.i(log, "Получаем данные с сервера")
         getUserInfoApi() ?: return
         val jwt = getJwt.execute() ?: return
@@ -227,7 +224,7 @@ class MainViewModel @Inject constructor(
     }
 
     private suspend fun updateDbForSync(appointments: List<AppointmentDto>) {
-        Log.i(log, "Вносим данные в локальную БД")
+        Log.i(log, "Вносим данные в локальную БД. Записей для обработки: ${appointments.size}")
 
         for (updatedAppointment in appointments) {
             // проверяем, существует ли такая запись уже по uuid
@@ -247,7 +244,7 @@ class MainViewModel @Inject constructor(
                 }
 
                 if (updatedAppointment.syncStatus!! == "DELETED") {
-                    Log.i(log, "Запись была удалена ранее")
+                    Log.i(log, "Вносим данные в локальную БД (запись удалена, выход)")
                     // TODO: не оптимальное поведение, приложение понимает, что на сервере есть
                     //  записи, которых нет локально, пробует обновиться, видит, что запись
                     //  удалена по статусу записи на сервере и пропускает обновление
@@ -279,7 +276,7 @@ class MainViewModel @Inject constructor(
 
                     if (updatedAppointment.syncStatus!! == "NotSynchronized") {
                         // Если запись была обновлена - обновляем её во всех БД
-                        Log.i(log, "Статус на сервер NotSynchronized, обновляем локальную запись")
+                        Log.i(log, "Статус на сервере NotSynchronized, обновляем локальную запись")
 
                         updatedAppointment.syncStatus = "Synchronized"
                         updatedAppointment.localAppointmentId =
@@ -289,6 +286,7 @@ class MainViewModel @Inject constructor(
                     }
 
                     if (updatedAppointment.syncStatus!! == "DELETED") {
+                        Log.i(log, "Статус на сервере DELETED, удаляем локальную запись")
                         // Если запись была удалена - удаляем её локально
                         // а в БД для синхронизации ставим статус DELETED
                         /*                        updatedAppointment.syncStatus = "DELETED"
@@ -331,6 +329,10 @@ class MainViewModel @Inject constructor(
                 procedurePrice = procedurePrice,
                 procedureNotes = procedureNotes
             )
+            Log.i(
+                log,
+                "Вносим данные в локальную БД. Новая запись создана SyncUUID: ${appointmentDto.syncUUID}"
+            )
             return insertAppointmentUseCase.execute(appointmentModelDb)
         }
     }
@@ -360,6 +362,7 @@ class MainViewModel @Inject constructor(
                 procedureNotes = procedureNotes
             )
             updateAppointmentUseCase.execute(appointmentModelDb)
+            Log.i(log, "Запись обновлена SyncUUID: ${appointmentDto.syncUUID}")
         }
     }
 

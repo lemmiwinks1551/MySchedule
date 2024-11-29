@@ -1,18 +1,15 @@
 package com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC
 
 import com.example.projectnailsschedule.BuildConfig
-import com.example.projectnailsschedule.data.storage.converters.DateTypeAdapter
 import com.example.projectnailsschedule.domain.models.dto.AppointmentDto
 import com.example.projectnailsschedule.domain.repository.api.userDataApi.AppointmentsApi
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
+import com.example.projectnailsschedule.util.Util
 import kotlinx.coroutines.delay
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.util.Date
 
 class PostAppointmentUseCase {
     private val log = this::class.simpleName
@@ -36,11 +33,7 @@ class PostAppointmentUseCase {
     }
 
     private fun getBaseUrl(): String {
-        return if (BuildConfig.DEBUG) {
-            "http://10.0.2.2:8080/"
-        } else {
-            "https://myschedule.myddns.me"
-        }
+        return Util().getBaseUrl()
     }
 
     private fun createOkHttpClient(): OkHttpClient {

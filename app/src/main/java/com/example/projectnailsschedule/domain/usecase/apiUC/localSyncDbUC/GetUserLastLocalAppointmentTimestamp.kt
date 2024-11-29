@@ -5,7 +5,7 @@ import java.util.Date
 
 class GetUserLastLocalAppointmentTimestamp(private val scheduleSyncRepository: ScheduleSyncRepository) {
 
-    suspend fun execute(): Date? {
+    suspend fun execute(): Long? {
         return scheduleSyncRepository.getMaxAppointmentTimestamp()
     }
 }
