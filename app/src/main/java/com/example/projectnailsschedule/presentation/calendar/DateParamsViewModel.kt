@@ -201,7 +201,7 @@ class DateParamsViewModel @Inject constructor(
                 syncUUID = UUID.randomUUID().toString(),
                 localAppointmentId = id,
                 userName = UserInfoDtoManager.getUserDto()?.username,
-                syncTimestamp = Util().generateTimestamp(),
+                syncTimestamp = Util().generateTimestamp().time,
                 syncStatus = "NotSynchronized",
                 appointmentDate = date,
                 appointmentTime = time,
@@ -233,7 +233,7 @@ class DateParamsViewModel @Inject constructor(
             getByLocalAppointmentIdUseCase.execute(appointmentModelDb._id!!) ?: return
 
         with(appointmentDto) {
-            syncTimestamp = Util().generateTimestamp()
+            syncTimestamp = Util().generateTimestamp().time
             syncStatus = "NotSynchronized"
             appointmentDate = appointmentModelDb.date
             appointmentTime = appointmentModelDb.time
@@ -265,7 +265,7 @@ class DateParamsViewModel @Inject constructor(
             getByLocalAppointmentIdUseCase.execute(appointmentModelDb._id!!) ?: return
 
         with(appointmentDto) {
-            syncTimestamp = Util().generateTimestamp()
+            syncTimestamp = Util().generateTimestamp().time
             syncStatus = "DELETED"
         }
 

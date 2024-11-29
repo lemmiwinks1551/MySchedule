@@ -15,7 +15,7 @@ data class AppointmentDto(
 
     var userName: String? = null,
 
-    var syncTimestamp: Date,
+    var syncTimestamp: Long,
 
     var syncStatus: String? = null,
 

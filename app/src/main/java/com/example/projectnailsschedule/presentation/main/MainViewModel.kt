@@ -257,7 +257,7 @@ class MainViewModel @Inject constructor(
 
             // Если запись уже существует - сверяем даты, если дата "свежее" - заменяем
             if (localAppointment != null) {
-                if (updatedAppointment.syncTimestamp.after(localAppointment.syncTimestamp)) {
+                if (updatedAppointment.syncTimestamp > localAppointment.syncTimestamp) {
                     Log.i(log, "Вносим данные в локальную БД (обновляем запись)")
 
                     if (localAppointment.syncStatus == "DELETED") {

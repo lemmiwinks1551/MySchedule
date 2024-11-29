@@ -16,9 +16,6 @@ import java.util.Date
 
 class PostAppointmentUseCase {
     private val log = this::class.simpleName
-    val gson: Gson = GsonBuilder()
-        .registerTypeAdapter(Date::class.java, DateTypeAdapter())
-        .create()
 
     suspend fun execute(appointmentDto: AppointmentDto, jwt: String): String {
         val baseUrl = getBaseUrl()
@@ -58,7 +55,6 @@ class PostAppointmentUseCase {
         return Retrofit.Builder()
             .baseUrl(baseUrl)
             .client(client)
-            .addConverterFactory(GsonConverterFactory.create(gson))
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
