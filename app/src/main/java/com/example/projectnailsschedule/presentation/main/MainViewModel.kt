@@ -137,6 +137,15 @@ class MainViewModel @Inject constructor(
             pullRemoteToLocalDb(Date(0).time)
         }
 
+        if (localAppointmentsCount > remoteAppointmentsCount) {
+            Log.i(log, "Локальных данных больше, чем на сервере - отправляем данные на сервер")
+            Log.i(
+                log,
+                "Локальных данных $localAppointmentsCount - удаленных данных $remoteAppointmentsCount"
+            )
+            pushLocalDbToRemote()
+        }
+
         if (lastLocalTimestamp != null && lastRemoteTimestamp == null) {
             Log.i(log, "Удаленные данные устарели - отправляем данные на сервер")
             pushLocalDbToRemote()
