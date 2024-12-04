@@ -37,6 +37,10 @@ import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.GetUse
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.GetUserRemoteAppointmentsUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.GetUserRemoteDbCountUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.PostAppointmentUseCase
+import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.serverCalendarColorApiUC.GetAfterTimestampCalendarDateUseCase
+import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.serverCalendarColorApiUC.GetRemoteCountCCalendarDateUseCase
+import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.serverCalendarColorApiUC.GetLastRemoteTimestampCalendarDateUseCase
+import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.serverCalendarColorApiUC.PostCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.DeleteAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.GetAllScheduleDbUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.GetAppointmentById
@@ -44,10 +48,17 @@ import com.example.projectnailsschedule.domain.usecase.appointmentUC.InsertAppoi
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.SearchAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.UpdateAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.UpdateClientInAppointmentsUseCase
-import com.example.projectnailsschedule.domain.usecase.calendarUC.CalendarDbDeleteObj
+import com.example.projectnailsschedule.domain.usecase.calendarUC.DeleteCalendarDateUseCase
+import com.example.projectnailsschedule.domain.usecase.calendarUC.GetByIdCalendarDateUseCase
+import com.example.projectnailsschedule.domain.usecase.calendarUC.GetBySyncUuidCalendarDateUseCase
+import com.example.projectnailsschedule.domain.usecase.calendarUC.GetCountCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.GetDateAppointments
+import com.example.projectnailsschedule.domain.usecase.calendarUC.GetDeletedCalendarDateUseCase
+import com.example.projectnailsschedule.domain.usecase.calendarUC.GetNotSyncCalendarDateUseCase
+import com.example.projectnailsschedule.domain.usecase.calendarUC.GetUserLastLocalCalendarDateTimestamp
 import com.example.projectnailsschedule.domain.usecase.calendarUC.InsertCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.SelectCalendarDateByDateUseCase
+import com.example.projectnailsschedule.domain.usecase.calendarUC.UpdateCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.clientsUC.DeleteClientUseCase
 import com.example.projectnailsschedule.domain.usecase.clientsUC.GetClientByIdUseCase
 import com.example.projectnailsschedule.domain.usecase.clientsUC.InsertClientUseCase
@@ -215,8 +226,8 @@ class DomainModule {
     }
 
     @Provides
-    fun provideDeleteCalendarObj(repository: CalendarRepository): CalendarDbDeleteObj {
-        return CalendarDbDeleteObj(repository)
+    fun provideDeleteCalendarObj(repository: CalendarRepository): DeleteCalendarDateUseCase {
+        return DeleteCalendarDateUseCase(repository)
     }
 
     // Settings
@@ -424,5 +435,72 @@ class DomainModule {
     @Provides
     fun getDisableSyncUseCase(): DisableSyncUseCase {
         return DisableSyncUseCase()
+    }
+
+    // Color calendar
+
+    @Provides
+    fun getPostCalendarColorUseCase(): PostCalendarDateUseCase {
+        return PostCalendarDateUseCase()
+    }
+
+    @Provides
+    fun getDeleteCalendarColorUseCase(): com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.serverCalendarColorApiUC.DeleteRemoteCalendarDateUseCase {
+        return com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.serverCalendarColorApiUC.DeleteRemoteCalendarDateUseCase()
+    }
+
+    @Provides
+    fun getGetAfterTimestampCalendarColorUseCase(): GetAfterTimestampCalendarDateUseCase {
+        return GetAfterTimestampCalendarDateUseCase()
+    }
+
+    @Provides
+    fun getLastTimestampCalendarColorUseCase(): GetLastRemoteTimestampCalendarDateUseCase {
+        return GetLastRemoteTimestampCalendarDateUseCase()
+    }
+
+    @Provides
+    fun getCountCalendarColorUseCase(): GetRemoteCountCCalendarDateUseCase {
+        return GetRemoteCountCCalendarDateUseCase()
+    }
+
+    @Provides
+    fun getUpdateCalendarDateUseCase(repository: CalendarRepository): UpdateCalendarDateUseCase {
+        return UpdateCalendarDateUseCase(repository)
+    }
+
+    @Provides
+    fun getGetNotSyncCalendarDateUseCase(repository: CalendarRepository): GetNotSyncCalendarDateUseCase {
+        return GetNotSyncCalendarDateUseCase(repository)
+    }
+
+    @Provides
+    fun getGetDeletedCalendarDateUseCase(repository: CalendarRepository): GetDeletedCalendarDateUseCase {
+        return GetDeletedCalendarDateUseCase(repository)
+
+    }
+
+    @Provides
+    fun getGetUserLastLocalCalendarDateTimestamp(repository: CalendarRepository): GetUserLastLocalCalendarDateTimestamp {
+        return GetUserLastLocalCalendarDateTimestamp(repository)
+
+    }
+
+    @Provides
+    fun getGetBySyncUuidCalendarDateUseCase(repository: CalendarRepository): GetBySyncUuidCalendarDateUseCase {
+        return GetBySyncUuidCalendarDateUseCase(repository)
+
+    }
+
+    @Provides
+    fun getGetByIdCalendarDateUseCase(repository: CalendarRepository): GetByIdCalendarDateUseCase {
+        return GetByIdCalendarDateUseCase(repository)
+
+    }
+
+    @Provides
+    fun getGetCountCalendarDateUseCase(repository: CalendarRepository): GetCountCalendarDateUseCase {
+        return GetCountCalendarDateUseCase(repository)
+
     }
 }

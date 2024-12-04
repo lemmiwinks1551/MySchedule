@@ -16,5 +16,17 @@ data class CalendarDateModelDb(
     val date: String? = null,
 
     @ColumnInfo(name = "color")
-    val color: String? = null
+    var color: String? = null,
+
+    @ColumnInfo(name = "syncUUID")
+    val syncUUID: String? = null,
+
+    @ColumnInfo(name = "userName")
+    var userName: String? = null,
+
+    @ColumnInfo(name = "syncTimestamp")
+    var syncTimestamp: Long? = null,
+
+    @ColumnInfo(name = "syncStatus")
+    var syncStatus: String? = null,
 ) : Parcelable

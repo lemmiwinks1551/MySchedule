@@ -82,7 +82,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        disposable = Observable.interval(0, 5, TimeUnit.SECONDS)
+/*        disposable = Observable.interval(0, 5, TimeUnit.SECONDS)
             .subscribeOn(Schedulers.io())
             .subscribe({
                 val threadName = Thread.currentThread().name
@@ -92,14 +92,15 @@ class MainActivity : AppCompatActivity() {
 
                 lifecycleScope.launch(Dispatchers.IO) {
                     try {
-                        mainViewModel.synchronizationCheck()
+                        //mainViewModel.synchronizationCheck()
+                        mainViewModel.synchronizationCheckCalendarDate()
                     } catch (e: Exception) {
                         Log.e("Sync", e.message.toString())
                     }
                 }
             }, { error ->
                 Log.e("Sync", "Ошибка в Observable: ${error.message}")
-            })
+            })*/
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -182,6 +183,8 @@ class MainActivity : AppCompatActivity() {
         connectedIcon = menu.findItem(R.id.cloud_connected)!!
         disconnectedIcon = menu.findItem(R.id.cloud_disconnected)!!
         mainViewModel.menuStatus.postValue(true)
+
+        syncByClick()
         return true
     }
 
@@ -248,33 +251,36 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-
-        /*lifecycleScope.launch(Dispatchers.IO) {
-            while (isActive) {
-                val threadName = Thread.currentThread().name
-                val startTime = System.currentTimeMillis()
-
-                Log.i("Sync", "Синхронизация началась на потоке: $threadName в $startTime")
-
-                // Проверяем, залогинен ли пользователь
-                val user = mainViewModel.getUserInfoApi() ?: return@launch
-
-                // Если пользователь залогинился - пробуем синхронизироваться с сервером
-                if (user.enabled == true) {
-                    try {
-                        mainViewModel.synchronizationCheck()
-                    } catch (e: Exception) {
-                        Log.e("Sync", e.message.toString())
-                    }
-                }
-
-                delay(5000)
-            }
-        }*/
     }
 
     override fun onStop() {
         super.onStop()
         disposable?.dispose()
+    }
+
+    private fun syncByClick() {
+        disconnectedIcon.setOnMenuItemClickListener {
+            lifecycleScope.launch(Dispatchers.IO) {
+                try {
+                    //mainViewModel.synchronizationCheck()
+                    mainViewModel.synchronizationCheckCalendarDate()
+                } catch (e: Exception) {
+                    Log.e("Sync", e.message.toString())
+                }
+            }
+            true
+        }
+
+        connectedIcon.setOnMenuItemClickListener {
+            lifecycleScope.launch(Dispatchers.IO) {
+                try {
+                    //mainViewModel.synchronizationCheck()
+                    mainViewModel.synchronizationCheckCalendarDate()
+                } catch (e: Exception) {
+                    Log.e("Sync", e.message.toString())
+                }
+            }
+            true
+        }
     }
 }

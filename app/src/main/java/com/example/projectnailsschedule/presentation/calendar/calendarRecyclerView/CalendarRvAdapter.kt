@@ -29,6 +29,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
+import java.util.UUID
 
 class CalendarRvAdapter(
     private val daysInMonth: ArrayList<String>,
@@ -247,24 +248,32 @@ class CalendarRvAdapter(
         Log.d("Color", "Insert color for date $ruFormatDate")
         val calendarDateModelDb = CalendarDateModelDb(
             date = ruFormatDate,
-            color = color
+            color = color,
+            syncUUID = UUID.randomUUID().toString(),
+            syncTimestamp = Util().generateTimestamp().time,
+            syncStatus = "NotSynchronized"
         )
         insertColorToCalendarDb(calendarDateModelDb = calendarDateModelDb)
     }
 
     private suspend fun replaceColor(id: Int, ruFormatDate: String, color: String) {
         Log.e("Color", "Replacing color for date $ruFormatDate")
-        val calendarDateModelDb = CalendarDateModelDb(
-            _id = id,
-            date = ruFormatDate,
-            color = color
+        val currentData = dateParamsViewModel.getByIdCalendarDateUseCase.execute(id.toLong())
+        val newData = currentData?.copy(
+            color = color,
+            syncTimestamp = Util().generateTimestamp().time,
+            syncStatus = "NotSynchronized"
         )
-        insertColorToCalendarDb(calendarDateModelDb = calendarDateModelDb)
+        insertColorToCalendarDb(calendarDateModelDb = newData!!)
     }
 
     private suspend fun calendarDbDeleteObj(id: Int) {
-        val calendarDbObj = CalendarDateModelDb(_id = id)
-        dateParamsViewModel.calendarDbDeleteObj(calendarDbObj)
+        val currentData = dateParamsViewModel.getByIdCalendarDateUseCase.execute(id.toLong())
+        val newData = currentData?.copy(
+            syncTimestamp = Util().generateTimestamp().time,
+            syncStatus = "DELETED"
+        )
+        dateParamsViewModel.updateCalendarDate(newData!!)
     }
 
     private suspend fun insertColorToCalendarDb(calendarDateModelDb: CalendarDateModelDb) {

@@ -20,10 +20,12 @@ import com.example.projectnailsschedule.domain.usecase.appointmentUC.DeleteAppoi
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.InsertAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.SearchAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.UpdateAppointmentUseCase
-import com.example.projectnailsschedule.domain.usecase.calendarUC.CalendarDbDeleteObj
+import com.example.projectnailsschedule.domain.usecase.calendarUC.DeleteCalendarDateUseCase
+import com.example.projectnailsschedule.domain.usecase.calendarUC.GetByIdCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.GetDateAppointments
 import com.example.projectnailsschedule.domain.usecase.calendarUC.InsertCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.SelectCalendarDateByDateUseCase
+import com.example.projectnailsschedule.domain.usecase.calendarUC.UpdateCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.socUC.StartInstagramUc
 import com.example.projectnailsschedule.domain.usecase.socUC.StartPhoneUc
 import com.example.projectnailsschedule.domain.usecase.socUC.StartTelegramUc
@@ -43,9 +45,14 @@ import javax.inject.Inject
 class DateParamsViewModel @Inject constructor(
     private val getDateAppointments: GetDateAppointments,
     private val selectCalendarDateByDateUseCase: SelectCalendarDateByDateUseCase,
-    private val insertCalendarDateUseCase: InsertCalendarDateUseCase,
-    private val calendarDbDeleteObj: CalendarDbDeleteObj,
 
+    // Calendar Date Db
+    private val insertCalendarDateUseCase: InsertCalendarDateUseCase,
+    private val updateCalendarDateUseCase: UpdateCalendarDateUseCase,
+    private val deleteCalendarDateUseCase: DeleteCalendarDateUseCase,
+    val getByIdCalendarDateUseCase: GetByIdCalendarDateUseCase,
+
+    // Schedule Db
     private var insertAppointmentUseCase: InsertAppointmentUseCase,
     private val updateAppointmentUseCase: UpdateAppointmentUseCase,
     private var searchAppointmentUseCase: SearchAppointmentUseCase,
@@ -152,8 +159,12 @@ class DateParamsViewModel @Inject constructor(
         return insertCalendarDateUseCase.execute(calendarDateModelDb)
     }
 
+    suspend fun updateCalendarDate(calendarDateModelDb: CalendarDateModelDb): Boolean{
+        return updateCalendarDateUseCase.execute(calendarDateModelDb)
+    }
+
     suspend fun calendarDbDeleteObj(calendarDateModelDb: CalendarDateModelDb): Boolean {
-        return calendarDbDeleteObj.execute(calendarDateModelDb)
+        return deleteCalendarDateUseCase.execute(calendarDateModelDb)
     }
 
     suspend fun insertAppointment(

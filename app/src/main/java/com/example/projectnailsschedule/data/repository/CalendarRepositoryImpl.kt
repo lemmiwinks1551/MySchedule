@@ -6,24 +6,52 @@ import com.example.projectnailsschedule.domain.models.CalendarDateModelDb
 import com.example.projectnailsschedule.domain.repository.repo.CalendarRepository
 
 class CalendarRepositoryImpl(context: Context) : CalendarRepository {
-    private var calendarDb = CalendarDb.getDb(context)
+    private var dao = CalendarDb.getDb(context).getDao()
 
-    override suspend fun insertDate(calendarDateModelDb: CalendarDateModelDb): Boolean {
-        calendarDb.getDao().insert(calendarDateModelDb)
+    override suspend fun insert(calendarDateModelDb: CalendarDateModelDb): Boolean {
+        dao.insert(calendarDateModelDb)
         return true
     }
 
-    override suspend fun updateDate(calendarDateModelDb: CalendarDateModelDb): Boolean {
-        calendarDb.getDao().update(calendarDateModelDb)
+    override suspend fun update(calendarDateModelDb: CalendarDateModelDb): Boolean {
+        dao.update(calendarDateModelDb)
         return true
     }
 
-    override suspend fun deleteDate(calendarDateModelDb: CalendarDateModelDb): Boolean {
-        calendarDb.getDao().delete(calendarDateModelDb)
+    override suspend fun delete(calendarDateModelDb: CalendarDateModelDb): Boolean {
+        dao.delete(calendarDateModelDb)
         return true
     }
 
-    override suspend fun selectDate(date: String): CalendarDateModelDb {
-        return calendarDb.getDao().selectDate(date)
+    override suspend fun select(date: String): CalendarDateModelDb {
+        return dao.selectDate(date)
+    }
+
+    override suspend fun getAll(): List<CalendarDateModelDb> {
+        return dao.getAll()
+    }
+
+    override suspend fun getNotSync(): List<CalendarDateModelDb> {
+        return dao.getNotSync()
+    }
+
+    override suspend fun getDeleted(): List<CalendarDateModelDb> {
+        return dao.getDeleted()
+    }
+
+    override suspend fun getByLocalId(id: Long): CalendarDateModelDb? {
+        return dao.getById(id)
+    }
+
+    override suspend fun getMaxTimestamp(): Long? {
+        return dao.getMaxTimestamp()
+    }
+
+    override suspend fun getBySyncUUID(uuid: String): CalendarDateModelDb? {
+        return dao.getBySyncUUID(uuid)
+    }
+
+    override suspend fun getCount(): Long {
+        return dao.getCount()
     }
 }
