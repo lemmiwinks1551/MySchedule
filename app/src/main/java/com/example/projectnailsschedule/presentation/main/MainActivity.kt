@@ -38,9 +38,13 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.util.Date
 import java.util.concurrent.TimeUnit
+import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
+import kotlin.time.DurationUnit
+import kotlin.time.toDuration
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -60,12 +64,9 @@ class MainActivity : AppCompatActivity() {
 
     @Inject
     lateinit var uncaughtExceptionHandler: Thread.UncaughtExceptionHandler
-
     private var drawerLayout: DrawerLayout? = null
     private var navView: NavigationView? = null
-
     private val ruStoreAd = RuStoreAd()
-
     private val installStateUpdatedListener = InstallStateUpdatedListener { state ->
         if (state.installStatus == InstallStatus.DOWNLOADED) {
             Toast.makeText(
@@ -80,27 +81,45 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private val isSyncing = AtomicBoolean(false)
+    private val updatePeriodSec = 1L
+
     override fun onStart() {
         super.onStart()
-/*        disposable = Observable.interval(0, 5, TimeUnit.SECONDS)
+        disposable = Observable.interval(0, updatePeriodSec, TimeUnit.SECONDS)
             .subscribeOn(Schedulers.io())
             .subscribe({
-                val threadName = Thread.currentThread().name
-                val startTime = System.currentTimeMillis()
+                if (isSyncing.compareAndSet(false, true)) {
+                    val threadName = Thread.currentThread().name
+                    val startTime = System.currentTimeMillis()
+                    val starTime = Date()
+                    Log.i("Timer", "Синхронизация началась на потоке: $threadName в $startTime")
 
-                Log.i("Sync", "Синхронизация началась на потоке: $threadName в $startTime")
-
-                lifecycleScope.launch(Dispatchers.IO) {
-                    try {
-                        //mainViewModel.synchronizationCheck()
-                        mainViewModel.synchronizationCheckCalendarDate()
-                    } catch (e: Exception) {
-                        Log.e("Sync", e.message.toString())
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        try {
+                            // Выполняем синхронизацию
+                            mainViewModel.synchronizationCheck()
+                            mainViewModel.synchronizationCheckCalendarDate()
+                        } catch (e: Exception) {
+                            Log.e("Sync", "Ошибка во время синхронизации: ${e.message}")
+                        } finally {
+                            // Освобождаем флаг
+                            val endTime = Date()
+                            val duration =
+                                (endTime.time - starTime.time).toDuration(DurationUnit.MILLISECONDS)
+                            Log.i(
+                                "Timer",
+                                "Синхронизация выполнена. Затрачено времени $duration"
+                            )
+                            isSyncing.set(false)
+                        }
                     }
+                } else {
+                    Log.i("Sync", "Синхронизация уже выполняется, новая задача не запускается.")
                 }
             }, { error ->
                 Log.e("Sync", "Ошибка в Observable: ${error.message}")
-            })*/
+            })
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -184,7 +203,7 @@ class MainActivity : AppCompatActivity() {
         disconnectedIcon = menu.findItem(R.id.cloud_disconnected)!!
         mainViewModel.menuStatus.postValue(true)
 
-        syncByClick()
+        // syncByClick()
         return true
     }
 
@@ -262,7 +281,7 @@ class MainActivity : AppCompatActivity() {
         disconnectedIcon.setOnMenuItemClickListener {
             lifecycleScope.launch(Dispatchers.IO) {
                 try {
-                    //mainViewModel.synchronizationCheck()
+                    mainViewModel.synchronizationCheck()
                     mainViewModel.synchronizationCheckCalendarDate()
                 } catch (e: Exception) {
                     Log.e("Sync", e.message.toString())
