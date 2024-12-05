@@ -191,8 +191,7 @@ class AppointmentFragment : Fragment() {
     private fun editAppointment() {
         // create appointmentParams object
         with(binding) {
-            currentAppointment = AppointmentModelDb(
-                _id = currentAppointment._id,
+            val updateAppointment = currentAppointment.copy(
                 date = dayEditText.text.toString(),
                 clientId = appointmentClientId,
                 name = nameEt.text.toString(),
@@ -200,7 +199,6 @@ class AppointmentFragment : Fragment() {
                 clientNotes = clientNotesEt.text.toString(),
                 procedure = procedureEt.text.toString(),
                 procedurePrice = procedurePriceEt.text.toString(),
-                procedureNotes = null,
                 phone = clientPhoneEt.text.toString(),
                 vk = clientVkLinkEt.text.toString(),
                 telegram = clientTelegramEt.text.toString(),
@@ -208,11 +206,10 @@ class AppointmentFragment : Fragment() {
                 whatsapp = clientWhatsappEt.text.toString(),
                 notes = appointmentNotesEt.text.toString(),
                 photo = clientsViewModel.selectedClient?.photo,
-                deleted = false
             )
 
             lifecycleScope.launch {
-                dateParamsViewModel.updateAppointment(currentAppointment)
+                dateParamsViewModel.updateAppointment(updateAppointment)
             }
 
             Toast.makeText(context, getString(R.string.toast_edited), Toast.LENGTH_LONG).show()

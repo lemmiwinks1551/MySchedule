@@ -1,11 +1,11 @@
 package com.example.projectnailsschedule.domain.usecase.apiUC.localSyncDbUC
 
-import com.example.projectnailsschedule.domain.models.dto.AppointmentDto
-import com.example.projectnailsschedule.domain.repository.repo.ScheduleSyncRepository
+import com.example.projectnailsschedule.domain.models.AppointmentModelDb
+import com.example.projectnailsschedule.domain.repository.repo.ScheduleRepository
 
-class GetBySyncUuidUseCase(private val scheduleSyncRepository: ScheduleSyncRepository) {
+class GetBySyncUuidUseCase(private val scheduleRepository: ScheduleRepository) {
 
-    suspend fun execute(uuid: String): AppointmentDto? {
-        return scheduleSyncRepository.getBySyncUUID(uuid)
+    suspend fun execute(uuid: String): AppointmentModelDb? {
+        return scheduleRepository.getBySyncUUID(uuid)
     }
 }

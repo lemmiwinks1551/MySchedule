@@ -16,6 +16,7 @@ import java.time.LocalTime
 @Parcelize
 @Entity(tableName = "schedule")
 data class AppointmentModelDb(
+
     // Общие поля
     @PrimaryKey(autoGenerate = true)
     var _id: Long? = null,
@@ -31,7 +32,6 @@ data class AppointmentModelDb(
 
     @ColumnInfo(name = "deleted")
     val deleted: Boolean,
-
 
     // Поля клиента
     @ColumnInfo(name = "clientId")
@@ -61,7 +61,6 @@ data class AppointmentModelDb(
     @ColumnInfo(name = "clientNotes")
     var clientNotes: String? = null,
 
-
     //Поля процедуры
     @ColumnInfo(name = "procedure")
     val procedure: String? = null,
@@ -71,6 +70,19 @@ data class AppointmentModelDb(
 
     @ColumnInfo(name = "procedureNotes")
     val procedureNotes: String? = null,
+
+    // Поля для синхронизации
+    @ColumnInfo(name = "syncUUID")
+    var syncUUID: String? = null,
+
+    @ColumnInfo(name = "userName")
+    var userName: String? = null,
+
+    @ColumnInfo(name = "syncTimestamp")
+    var syncTimestamp: Long? = null,
+
+    @ColumnInfo(name = "syncStatus")
+    var syncStatus: String? = null
 
 ) : Parcelable {
 

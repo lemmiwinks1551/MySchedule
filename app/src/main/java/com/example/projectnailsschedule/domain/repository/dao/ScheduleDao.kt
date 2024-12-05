@@ -68,4 +68,19 @@ interface ScheduleDao {
 
     @Query("SELECT * FROM schedule WHERE _id = :id")
     suspend fun getById(id: Long): AppointmentModelDb?
+
+    @Query("SELECT * FROM schedule WHERE syncStatus = :syncStatus")
+    suspend fun getNotSyncAppointments(syncStatus: String = "NotSynchronized"): List<AppointmentModelDb>
+
+    @Query("SELECT * FROM schedule WHERE syncStatus = :syncStatus")
+    suspend fun getDeletedAppointments(syncStatus: String = "DELETED"): List<AppointmentModelDb>
+
+    @Query("SELECT MAX(syncTimestamp) FROM schedule")
+    suspend fun getMaxAppointmentTimestamp(): Long?
+
+    @Query("SELECT * FROM schedule WHERE syncUUID = :syncUUID")
+    suspend fun getBySyncUUID(syncUUID: String): AppointmentModelDb?
+
+    @Query("SELECT COUNT(*) FROM schedule")
+    suspend fun getCount(): Long
 }

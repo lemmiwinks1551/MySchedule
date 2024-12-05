@@ -9,18 +9,11 @@ import com.example.projectnailsschedule.domain.models.CalendarDateModelDb
 import com.example.projectnailsschedule.domain.models.DateParams
 import com.example.projectnailsschedule.domain.models.ProductionCalendarDateModel
 import com.example.projectnailsschedule.domain.models.UserDataManager
-import com.example.projectnailsschedule.domain.models.dto.AppointmentDto
-import com.example.projectnailsschedule.domain.models.dto.UserInfoDtoManager
 import com.example.projectnailsschedule.domain.usecase.apiUC.GetProductionCalendarDateInfoUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.GetProductionCalendarYearUseCase
-import com.example.projectnailsschedule.domain.usecase.apiUC.localSyncDbUC.GetByLocalAppointmentIdUseCase
-import com.example.projectnailsschedule.domain.usecase.apiUC.localSyncDbUC.InsertAppointmentDtoUseCase
-import com.example.projectnailsschedule.domain.usecase.apiUC.localSyncDbUC.UpdateAppointmentDtoUseCase
-import com.example.projectnailsschedule.domain.usecase.appointmentUC.DeleteAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.InsertAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.SearchAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.UpdateAppointmentUseCase
-import com.example.projectnailsschedule.domain.usecase.calendarUC.DeleteCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.GetByIdCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.GetDateAppointments
 import com.example.projectnailsschedule.domain.usecase.calendarUC.InsertCalendarDateUseCase
@@ -49,16 +42,12 @@ class DateParamsViewModel @Inject constructor(
     // Calendar Date Db
     private val insertCalendarDateUseCase: InsertCalendarDateUseCase,
     private val updateCalendarDateUseCase: UpdateCalendarDateUseCase,
-    private val deleteCalendarDateUseCase: DeleteCalendarDateUseCase,
     val getByIdCalendarDateUseCase: GetByIdCalendarDateUseCase,
 
     // Schedule Db
     private var insertAppointmentUseCase: InsertAppointmentUseCase,
     private val updateAppointmentUseCase: UpdateAppointmentUseCase,
     private var searchAppointmentUseCase: SearchAppointmentUseCase,
-    private var deleteAppointmentUseCase: DeleteAppointmentUseCase,
-
-    private var insertAppointmentDtoUseCase: InsertAppointmentDtoUseCase,
 
     private val startVkUc: StartVkUc,
     private val startTelegramUc: StartTelegramUc,
@@ -67,10 +56,7 @@ class DateParamsViewModel @Inject constructor(
     private val startPhoneUc: StartPhoneUc,
 
     private val getProductionCalendarDateInfoUseCase: GetProductionCalendarDateInfoUseCase,
-    private val getProductionCalendarYearUseCase: GetProductionCalendarYearUseCase,
-
-    private val updateAppointmentDtoUseCase: UpdateAppointmentDtoUseCase,
-    private val getByLocalAppointmentIdUseCase: GetByLocalAppointmentIdUseCase
+    private val getProductionCalendarYearUseCase: GetProductionCalendarYearUseCase
 ) : ViewModel() {
     private val tagDateColor = "DateColor"
 
@@ -100,11 +86,9 @@ class DateParamsViewModel @Inject constructor(
     }
 
     fun updateSelectedDate(dateParams: DateParams) {
-        val updatedDateParams =
-            selectedDate.value?.copy(
-                date = dateParams.date,
-                appointmentsList = dateParams.appointmentsList
-            )
+        val updatedDateParams = selectedDate.value?.copy(
+            date = dateParams.date, appointmentsList = dateParams.appointmentsList
+        )
         selectedDate.postValue(updatedDateParams)
     }
 
@@ -159,128 +143,39 @@ class DateParamsViewModel @Inject constructor(
         return insertCalendarDateUseCase.execute(calendarDateModelDb)
     }
 
-    suspend fun updateCalendarDate(calendarDateModelDb: CalendarDateModelDb): Boolean{
+    suspend fun updateCalendarDate(calendarDateModelDb: CalendarDateModelDb): Boolean {
         return updateCalendarDateUseCase.execute(calendarDateModelDb)
     }
 
-    suspend fun calendarDbDeleteObj(calendarDateModelDb: CalendarDateModelDb): Boolean {
-        return deleteCalendarDateUseCase.execute(calendarDateModelDb)
-    }
-
     suspend fun insertAppointment(
-        appointmentModelDb: AppointmentModelDb,
-        position: Int = -1
+        appointmentModelDb: AppointmentModelDb, position: Int = -1
     ): Long {
         if (position == -1) {
             selectedDate.value?.appointmentsList?.add(appointmentModelDb)
         } else {
             selectedDate.value!!.appointmentsList?.add(
-                position,
-                appointmentModelDb
+                position, appointmentModelDb
             )
         }
         selectedDate.postValue(selectedDate.value)
 
-        val id = insertAppointmentUseCase.execute(appointmentModelDb)
+        appointmentModelDb.syncUUID = UUID.randomUUID().toString()
+        appointmentModelDb.syncTimestamp = Util().generateTimestamp().time
+        appointmentModelDb.syncStatus = "NotSynchronized"
 
-        insertAppointmentSyncDb(appointmentModelDb, id)
-
-        return id
+        return insertAppointmentUseCase.execute(appointmentModelDb)
     }
 
     suspend fun updateAppointment(appointmentModelDb: AppointmentModelDb): Boolean {
         selectedDate.value?.appointmentsList?.set(
-            appointmentPosition!!,
-            appointmentModelDb
+            appointmentPosition!!, appointmentModelDb
         )
         selectedDate.postValue(selectedDate.value)
 
-        val updateAppointmentResult = updateAppointmentUseCase.execute(appointmentModelDb)
+        appointmentModelDb.syncTimestamp = Util().generateTimestamp().time
+        appointmentModelDb.syncStatus = "NotSynchronized"
 
-        if (updateAppointmentResult) {
-            // Если запись успешно изменена локально -
-            // Обноляем измененную запись в БД для синхронизации
-            updateAppointmentSyncDb(appointmentModelDb)
-        }
-
-        return updateAppointmentResult
-    }
-
-    private suspend fun insertAppointmentSyncDb(appointmentModelDb: AppointmentModelDb, id: Long) {
-        with(appointmentModelDb) {
-            val appointmentDto = AppointmentDto(
-                syncUUID = UUID.randomUUID().toString(),
-                localAppointmentId = id,
-                userName = UserInfoDtoManager.getUserDto()?.username,
-                syncTimestamp = Util().generateTimestamp().time,
-                syncStatus = "NotSynchronized",
-                appointmentDate = date,
-                appointmentTime = time,
-                appointmentNotes = notes,
-
-                clientId = clientId.toString(),
-                clientName = name,
-                clientPhone = phone,
-                clientTelegram = telegram,
-                clientInstagram = instagram,
-                clientVk = vk,
-                clientWhatsapp = whatsapp,
-                clientNotes = clientNotes,
-                clientPhoto = null,
-
-                procedureId = null,
-                procedureName = procedure,
-                procedurePrice = procedurePrice,
-                procedureNotes = procedureNotes
-            )
-            // Добавляем запись в базу данных для синхронизации
-            insertAppointmentDtoUseCase.execute(appointmentDto)
-        }
-
-    }
-
-    private suspend fun updateAppointmentSyncDb(appointmentModelDb: AppointmentModelDb) {
-        val appointmentDto =
-            getByLocalAppointmentIdUseCase.execute(appointmentModelDb._id!!) ?: return
-
-        with(appointmentDto) {
-            syncTimestamp = Util().generateTimestamp().time
-            syncStatus = "NotSynchronized"
-            appointmentDate = appointmentModelDb.date
-            appointmentTime = appointmentModelDb.time
-            appointmentNotes = appointmentModelDb.notes
-
-            clientId = appointmentModelDb.clientId.toString()
-            clientName = appointmentModelDb.name
-            clientPhone = appointmentModelDb.phone
-            clientTelegram = appointmentModelDb.telegram
-            clientInstagram = appointmentModelDb.instagram
-            clientVk = appointmentModelDb.vk
-            clientWhatsapp = appointmentModelDb.whatsapp
-            clientNotes = appointmentModelDb.clientNotes
-            clientPhoto = appointmentModelDb.photo
-
-            procedureId = null
-            procedureName = appointmentModelDb.procedure
-            procedurePrice = appointmentModelDb.procedurePrice
-            procedureNotes = appointmentModelDb.procedureNotes
-        }
-
-        updateAppointmentDtoUseCase.execute(appointmentDto)
-    }
-
-    private suspend fun deleteAppointmentSyncDb(appointmentModelDb: AppointmentModelDb) {
-        // Если не смогли найти в таблице для синхронизации эту запись - скорее всего пользователь
-        // создал и удалил её оффлайн, потому что в таблицу
-        val appointmentDto =
-            getByLocalAppointmentIdUseCase.execute(appointmentModelDb._id!!) ?: return
-
-        with(appointmentDto) {
-            syncTimestamp = Util().generateTimestamp().time
-            syncStatus = "DELETED"
-        }
-
-        updateAppointmentDtoUseCase.execute(appointmentDto)
+        return updateAppointmentUseCase.execute(appointmentModelDb)
     }
 
     suspend fun searchAppointment(searchQuery: String): MutableList<AppointmentModelDb> {
@@ -288,10 +183,12 @@ class DateParamsViewModel @Inject constructor(
     }
 
     suspend fun deleteAppointment(
-        appointmentModelDb: AppointmentModelDb,
-        position: Int = -1
+        appointmentModelDb: AppointmentModelDb, position: Int = -1
     ) {
-        val deleteAppointmentResult = deleteAppointmentUseCase.execute(appointmentModelDb)
+        appointmentModelDb.syncTimestamp = Util().generateTimestamp().time
+        appointmentModelDb.syncStatus = "DELETED"
+
+        updateAppointmentUseCase.execute(appointmentModelDb)
 
         if (position == -1) {
             selectedDate.value!!.appointmentsList?.removeAt(position)
@@ -299,17 +196,10 @@ class DateParamsViewModel @Inject constructor(
             selectedDate.value!!.appointmentsList?.remove(appointmentModelDb)
         }
         selectedDate.postValue(selectedDate.value)
-
-        if (deleteAppointmentResult) {
-            // Если запись успешно удалена локально -
-            // Обновляем запись в БД для синхронизации
-            deleteAppointmentSyncDb(appointmentModelDb)
-        }
     }
 
     fun getAppointmentPositionInDate(
-        appointmentModelDb: AppointmentModelDb,
-        appointmentList: MutableList<AppointmentModelDb>
+        appointmentModelDb: AppointmentModelDb, appointmentList: MutableList<AppointmentModelDb>
     ): Int {
         return appointmentList.indexOf(appointmentModelDb)
     }

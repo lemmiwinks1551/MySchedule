@@ -1,9 +1,7 @@
 package com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC
 
-import com.example.projectnailsschedule.BuildConfig
-import com.example.projectnailsschedule.domain.models.dto.AppointmentDto
+import com.example.projectnailsschedule.domain.models.AppointmentModelDb
 import com.example.projectnailsschedule.domain.models.dto.UserInfoDto
-import com.example.projectnailsschedule.domain.models.dto.UserInfoDtoManager
 import com.example.projectnailsschedule.domain.repository.api.userDataApi.AppointmentsApi
 import com.example.projectnailsschedule.util.Util
 import kotlinx.coroutines.delay
@@ -15,7 +13,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 class GetUserRemoteAppointmentsUseCase {
     private val log = this::class.simpleName
 
-    suspend fun execute(user: UserInfoDto): List<AppointmentDto>? {
+    suspend fun execute(user: UserInfoDto): List<AppointmentModelDb>? {
         val baseUrl = getBaseUrl()
 
         return try {
@@ -56,7 +54,7 @@ class GetUserRemoteAppointmentsUseCase {
     private suspend fun executeRequest(
         appointmentsApi: AppointmentsApi,
         user: UserInfoDto
-    ): List<AppointmentDto> {
+    ): List<AppointmentModelDb> {
         return appointmentsApi.getUserRemoteAppointments(user)
     }
 }

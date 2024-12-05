@@ -1,6 +1,5 @@
 package com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC
 
-import com.example.projectnailsschedule.BuildConfig
 import com.example.projectnailsschedule.domain.repository.api.userDataApi.AppointmentsApi
 import com.example.projectnailsschedule.util.Util
 import okhttp3.OkHttpClient

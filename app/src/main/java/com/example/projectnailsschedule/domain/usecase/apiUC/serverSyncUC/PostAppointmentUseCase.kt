@@ -1,7 +1,6 @@
 package com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC
 
-import com.example.projectnailsschedule.BuildConfig
-import com.example.projectnailsschedule.domain.models.dto.AppointmentDto
+import com.example.projectnailsschedule.domain.models.AppointmentModelDb
 import com.example.projectnailsschedule.domain.repository.api.userDataApi.AppointmentsApi
 import com.example.projectnailsschedule.util.Util
 import kotlinx.coroutines.delay
@@ -14,7 +13,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 class PostAppointmentUseCase {
     private val log = this::class.simpleName
 
-    suspend fun execute(appointmentDto: AppointmentDto, jwt: String): String {
+    suspend fun execute(appointment: AppointmentModelDb, jwt: String): String {
         val baseUrl = getBaseUrl()
 
         return try {
@@ -24,7 +23,7 @@ class PostAppointmentUseCase {
             val appointmentsApi = retrofit.create(AppointmentsApi::class.java)
 
             // Выполняем запрос на авторизацию
-            val response = executeRequest(appointmentsApi, appointmentDto, jwt)
+            val response = executeRequest(appointmentsApi, appointment, jwt)
             delay(100L)
             return response.code().toString()
         } catch (e: Exception) {
@@ -54,7 +53,7 @@ class PostAppointmentUseCase {
 
     private suspend fun executeRequest(
         appointmentsApi: AppointmentsApi,
-        appointmentDto: AppointmentDto,
+        appointmentDto: AppointmentModelDb,
         jwt: String
     ): Response<Unit> {
         return appointmentsApi.postAppointment(appointmentDto, jwt)

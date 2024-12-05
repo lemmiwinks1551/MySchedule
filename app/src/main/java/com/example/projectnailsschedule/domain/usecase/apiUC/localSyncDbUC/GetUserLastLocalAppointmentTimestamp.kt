@@ -1,11 +1,10 @@
 package com.example.projectnailsschedule.domain.usecase.apiUC.localSyncDbUC
 
-import com.example.projectnailsschedule.domain.repository.repo.ScheduleSyncRepository
-import java.util.Date
+import com.example.projectnailsschedule.domain.repository.repo.ScheduleRepository
 
-class GetUserLastLocalAppointmentTimestamp(private val scheduleSyncRepository: ScheduleSyncRepository) {
+class GetUserLastLocalAppointmentTimestamp(private val scheduleRepository: ScheduleRepository) {
 
     suspend fun execute(): Long? {
-        return scheduleSyncRepository.getMaxAppointmentTimestamp()
+        return scheduleRepository.getMaxTimestamp()
     }
 }

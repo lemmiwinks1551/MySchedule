@@ -1,20 +1,18 @@
 package com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC
 
 import android.util.Log
-import com.example.projectnailsschedule.BuildConfig
-import com.example.projectnailsschedule.domain.models.dto.AppointmentDto
+import com.example.projectnailsschedule.domain.models.AppointmentModelDb
 import com.example.projectnailsschedule.domain.repository.api.userDataApi.AppointmentsApi
 import com.example.projectnailsschedule.util.Util
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.util.Date
 
 class GetUserRemoteAppointmentsAfterTimestampUseCase {
     private val log = this::class.simpleName
 
-    suspend fun execute(token: String, timestamp: Long?): List<AppointmentDto>? {
+    suspend fun execute(token: String, timestamp: Long?): List<AppointmentModelDb>? {
         val baseUrl = getBaseUrl()
 
         return try {
@@ -56,7 +54,7 @@ class GetUserRemoteAppointmentsAfterTimestampUseCase {
         appointmentsApi: AppointmentsApi,
         token: String,
         timestamp: Long?
-    ): List<AppointmentDto> {
+    ): List<AppointmentModelDb> {
         return appointmentsApi.getRemoteAppointmentsAfterTimestamp(token, timestamp)
     }
 }

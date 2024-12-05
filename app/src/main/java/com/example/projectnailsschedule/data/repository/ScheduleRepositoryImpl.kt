@@ -48,4 +48,24 @@ class ScheduleRepositoryImpl(context: Context) : ScheduleRepository {
     override suspend fun getById(id: Long): AppointmentModelDb? {
         return dao.getById(id)
     }
+
+    override suspend fun getNotSyncAppointments(): List<AppointmentModelDb> {
+        return dao.getNotSyncAppointments()
+    }
+
+    override suspend fun getDeletedAppointments(): List<AppointmentModelDb> {
+        return dao.getDeletedAppointments()
+    }
+
+    override suspend fun getMaxTimestamp(): Long? {
+        return dao.getMaxAppointmentTimestamp()
+    }
+
+    override suspend fun getBySyncUUID(uuid: String): AppointmentModelDb? {
+        return dao.getBySyncUUID(uuid)
+    }
+
+    override suspend fun getCount(): Long {
+        return dao.getCount()
+    }
 }

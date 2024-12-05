@@ -1,7 +1,6 @@
 package com.example.projectnailsschedule.domain.repository.api.calendarColorApi
 
 import com.example.projectnailsschedule.domain.models.CalendarDateModelDb
-import com.example.projectnailsschedule.domain.models.dto.AppointmentDto
 import com.example.projectnailsschedule.domain.models.dto.UserInfoDto
 import retrofit2.Response
 import retrofit2.http.Body

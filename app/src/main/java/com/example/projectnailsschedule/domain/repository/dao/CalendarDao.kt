@@ -7,7 +7,6 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.example.projectnailsschedule.domain.models.CalendarDateModelDb
-import com.example.projectnailsschedule.domain.models.dto.AppointmentDto
 
 @Dao
 interface CalendarDao {

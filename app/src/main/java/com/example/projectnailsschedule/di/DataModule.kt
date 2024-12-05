@@ -1,13 +1,11 @@
 package com.example.projectnailsschedule.di
 
 import android.content.Context
-import com.example.projectnailsschedule.data.repository.ScheduleSyncRepositoryImpl
 import com.example.projectnailsschedule.data.repository.ClientRepositoryImpl
 import com.example.projectnailsschedule.data.repository.CalendarRepositoryImpl
 import com.example.projectnailsschedule.data.repository.ProcedureRepositoryImpl
 import com.example.projectnailsschedule.data.repository.ScheduleRepositoryImpl
 import com.example.projectnailsschedule.data.repository.SettingsRepositoryImpl
-import com.example.projectnailsschedule.domain.repository.repo.ScheduleSyncRepository
 import com.example.projectnailsschedule.domain.repository.repo.ClientsRepository
 import com.example.projectnailsschedule.domain.repository.repo.CalendarRepository
 import com.example.projectnailsschedule.domain.repository.repo.ProcedureRepository
@@ -52,11 +50,5 @@ class DataModule {
     @Singleton
     fun provideDatesRepository(@ApplicationContext context: Context): CalendarRepository {
         return CalendarRepositoryImpl(context)
-    }
-
-    @Provides
-    @Singleton
-    fun provideScheduleRemoteRepository(@ApplicationContext context: Context): ScheduleSyncRepository {
-        return ScheduleSyncRepositoryImpl(context)
     }
 }

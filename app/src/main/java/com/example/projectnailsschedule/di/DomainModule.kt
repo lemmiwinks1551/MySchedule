@@ -5,7 +5,6 @@ import com.example.projectnailsschedule.domain.repository.repo.CalendarRepositor
 import com.example.projectnailsschedule.domain.repository.repo.ClientsRepository
 import com.example.projectnailsschedule.domain.repository.repo.ProcedureRepository
 import com.example.projectnailsschedule.domain.repository.repo.ScheduleRepository
-import com.example.projectnailsschedule.domain.repository.repo.ScheduleSyncRepository
 import com.example.projectnailsschedule.domain.repository.repo.SettingsRepository
 import com.example.projectnailsschedule.domain.usecase.account.GetJwt
 import com.example.projectnailsschedule.domain.usecase.account.GetUserInfoApiUseCase
@@ -19,16 +18,11 @@ import com.example.projectnailsschedule.domain.usecase.apiUC.GetFaqUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.GetProductionCalendarDateInfoUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.GetProductionCalendarYearUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.SendUserDataUseCase
-import com.example.projectnailsschedule.domain.usecase.apiUC.localSyncDbUC.DeleteAppointmentDtoUseCase
-import com.example.projectnailsschedule.domain.usecase.apiUC.localSyncDbUC.GetAllScheduleSyncDb
-import com.example.projectnailsschedule.domain.usecase.apiUC.localSyncDbUC.GetByLocalAppointmentIdUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.localSyncDbUC.GetBySyncUuidUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.localSyncDbUC.GetCountSyncDbUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.localSyncDbUC.GetDeletedAppointmentsUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.localSyncDbUC.GetNotSyncAppointmentsUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.localSyncDbUC.GetUserLastLocalAppointmentTimestamp
-import com.example.projectnailsschedule.domain.usecase.apiUC.localSyncDbUC.InsertAppointmentDtoUseCase
-import com.example.projectnailsschedule.domain.usecase.apiUC.localSyncDbUC.UpdateAppointmentDtoUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.DeleteRemoteAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.DisableSyncUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.EnableSyncUseCase
@@ -38,8 +32,8 @@ import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.GetUse
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.GetUserRemoteDbCountUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.PostAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.serverCalendarColorApiUC.GetAfterTimestampCalendarDateUseCase
-import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.serverCalendarColorApiUC.GetRemoteCountCCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.serverCalendarColorApiUC.GetLastRemoteTimestampCalendarDateUseCase
+import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.serverCalendarColorApiUC.GetRemoteCountCCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.serverCalendarColorApiUC.PostCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.DeleteAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.GetAllScheduleDbUseCase
@@ -343,55 +337,29 @@ class DomainModule {
         return ResendConfirmationEmailUseCase()
     }
 
-    // ScheduleSyncDb
-
     @Provides
-    fun getInsertAppointmentDtoUseCase(repository: ScheduleSyncRepository): InsertAppointmentDtoUseCase {
-        return InsertAppointmentDtoUseCase(repository)
-    }
-
-    @Provides
-    fun getUpdateAppointmentDtoUseCase(repository: ScheduleSyncRepository): UpdateAppointmentDtoUseCase {
-        return UpdateAppointmentDtoUseCase(repository)
-    }
-
-    @Provides
-    fun getDeleteAppointmentDtoUseCase(repository: ScheduleSyncRepository): DeleteAppointmentDtoUseCase {
-        return DeleteAppointmentDtoUseCase(repository)
-    }
-
-    @Provides
-    fun getGetAllScheduleSyncDbUseCase(repository: ScheduleSyncRepository): GetAllScheduleSyncDb {
-        return GetAllScheduleSyncDb(repository)
-    }
-
-    @Provides
-    fun getNotSyncAppointments(repository: ScheduleSyncRepository): GetNotSyncAppointmentsUseCase {
+    fun getNotSyncAppointments(repository: ScheduleRepository): GetNotSyncAppointmentsUseCase {
         return GetNotSyncAppointmentsUseCase(repository)
     }
 
-    @Provides
-    fun getByLocalAppointmentId(repository: ScheduleSyncRepository): GetByLocalAppointmentIdUseCase {
-        return GetByLocalAppointmentIdUseCase(repository)
-    }
 
     @Provides
-    fun getGetMaxAppointmentTimestampUseCase(repository: ScheduleSyncRepository): GetUserLastLocalAppointmentTimestamp {
+    fun getGetMaxAppointmentTimestampUseCase(repository: ScheduleRepository): GetUserLastLocalAppointmentTimestamp {
         return GetUserLastLocalAppointmentTimestamp(repository)
     }
 
     @Provides
-    fun getGetDeletedAppointmentsUseCase(repository: ScheduleSyncRepository): GetDeletedAppointmentsUseCase {
+    fun getGetDeletedAppointmentsUseCase(repository: ScheduleRepository): GetDeletedAppointmentsUseCase {
         return GetDeletedAppointmentsUseCase(repository)
     }
 
     @Provides
-    fun getGetBySyncUuidUseCase(repository: ScheduleSyncRepository): GetBySyncUuidUseCase {
+    fun getGetBySyncUuidUseCase(repository: ScheduleRepository): GetBySyncUuidUseCase {
         return GetBySyncUuidUseCase(repository)
     }
 
     @Provides
-    fun getGetCountSyncDbUseCase(repository: ScheduleSyncRepository): GetCountSyncDbUseCase {
+    fun getGetCountSyncDbUseCase(repository: ScheduleRepository): GetCountSyncDbUseCase {
         return GetCountSyncDbUseCase(repository)
     }
 
