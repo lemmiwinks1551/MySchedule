@@ -98,7 +98,7 @@ class MainActivity : AppCompatActivity() {
                     lifecycleScope.launch(Dispatchers.IO) {
                         try {
                             // Выполняем синхронизацию
-                            mainViewModel.synchronizationCheck()
+                            mainViewModel.synchronizationCheckAppointments()
                             mainViewModel.synchronizationCheckCalendarDate()
                         } catch (e: Exception) {
                             Log.e("Sync", "Ошибка во время синхронизации: ${e.message}")
@@ -281,7 +281,7 @@ class MainActivity : AppCompatActivity() {
         disconnectedIcon.setOnMenuItemClickListener {
             lifecycleScope.launch(Dispatchers.IO) {
                 try {
-                    mainViewModel.synchronizationCheck()
+                    mainViewModel.synchronizationCheckAppointments()
                     mainViewModel.synchronizationCheckCalendarDate()
                 } catch (e: Exception) {
                     Log.e("Sync", e.message.toString())

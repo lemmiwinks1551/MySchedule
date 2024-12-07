@@ -22,7 +22,7 @@ import com.example.projectnailsschedule.domain.usecase.apiUC.localSyncDbUC.GetBy
 import com.example.projectnailsschedule.domain.usecase.apiUC.localSyncDbUC.GetCountSyncDbUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.localSyncDbUC.GetDeletedAppointmentsUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.localSyncDbUC.GetNotSyncAppointmentsUseCase
-import com.example.projectnailsschedule.domain.usecase.apiUC.localSyncDbUC.GetUserLastLocalAppointmentTimestamp
+import com.example.projectnailsschedule.domain.usecase.apiUC.localSyncDbUC.GetMaxAppointmentsTimestamp
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.DeleteRemoteAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.DisableSyncUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.EnableSyncUseCase
@@ -49,7 +49,7 @@ import com.example.projectnailsschedule.domain.usecase.calendarUC.GetCountCalend
 import com.example.projectnailsschedule.domain.usecase.calendarUC.GetDateAppointments
 import com.example.projectnailsschedule.domain.usecase.calendarUC.GetDeletedCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.GetNotSyncCalendarDateUseCase
-import com.example.projectnailsschedule.domain.usecase.calendarUC.GetUserLastLocalCalendarDateTimestamp
+import com.example.projectnailsschedule.domain.usecase.calendarUC.GetMaxCalendarDateTimestamp
 import com.example.projectnailsschedule.domain.usecase.calendarUC.InsertCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.SelectCalendarDateByDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.UpdateCalendarDateUseCase
@@ -344,8 +344,8 @@ class DomainModule {
 
 
     @Provides
-    fun getGetMaxAppointmentTimestampUseCase(repository: ScheduleRepository): GetUserLastLocalAppointmentTimestamp {
-        return GetUserLastLocalAppointmentTimestamp(repository)
+    fun getGetMaxAppointmentTimestampUseCase(repository: ScheduleRepository): GetMaxAppointmentsTimestamp {
+        return GetMaxAppointmentsTimestamp(repository)
     }
 
     @Provides
@@ -449,8 +449,8 @@ class DomainModule {
     }
 
     @Provides
-    fun getGetUserLastLocalCalendarDateTimestamp(repository: CalendarRepository): GetUserLastLocalCalendarDateTimestamp {
-        return GetUserLastLocalCalendarDateTimestamp(repository)
+    fun getGetUserLastLocalCalendarDateTimestamp(repository: CalendarRepository): GetMaxCalendarDateTimestamp {
+        return GetMaxCalendarDateTimestamp(repository)
 
     }
 

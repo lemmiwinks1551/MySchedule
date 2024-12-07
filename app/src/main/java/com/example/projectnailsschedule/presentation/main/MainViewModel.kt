@@ -12,29 +12,25 @@ import com.example.projectnailsschedule.domain.usecase.account.GetJwt
 import com.example.projectnailsschedule.domain.usecase.account.GetUserInfoApiUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.SendUserDataUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.localSyncDbUC.GetBySyncUuidUseCase
-import com.example.projectnailsschedule.domain.usecase.apiUC.localSyncDbUC.GetCountSyncDbUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.localSyncDbUC.GetDeletedAppointmentsUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.localSyncDbUC.GetNotSyncAppointmentsUseCase
-import com.example.projectnailsschedule.domain.usecase.apiUC.localSyncDbUC.GetUserLastLocalAppointmentTimestamp
+import com.example.projectnailsschedule.domain.usecase.apiUC.localSyncDbUC.GetMaxAppointmentsTimestamp
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.DeleteRemoteAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.GetLastRemoteAppointmentTimestamp
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.GetUserRemoteAppointmentsAfterTimestampUseCase
-import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.GetUserRemoteDbCountUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.PostAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.serverCalendarColorApiUC.DeleteRemoteCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.serverCalendarColorApiUC.GetAfterTimestampCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.serverCalendarColorApiUC.GetLastRemoteTimestampCalendarDateUseCase
-import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.serverCalendarColorApiUC.GetRemoteCountCCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.serverCalendarColorApiUC.PostCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.DeleteAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.InsertAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.UpdateAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.DeleteCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.GetBySyncUuidCalendarDateUseCase
-import com.example.projectnailsschedule.domain.usecase.calendarUC.GetCountCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.GetDeletedCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.GetNotSyncCalendarDateUseCase
-import com.example.projectnailsschedule.domain.usecase.calendarUC.GetUserLastLocalCalendarDateTimestamp
+import com.example.projectnailsschedule.domain.usecase.calendarUC.GetMaxCalendarDateTimestamp
 import com.example.projectnailsschedule.domain.usecase.calendarUC.InsertCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.UpdateCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.settingsUC.GetUserThemeUseCase
@@ -50,41 +46,35 @@ class MainViewModel @Inject constructor(
     private var getUserInfoApi: GetUserInfoApiUseCase,
     private var getJwt: GetJwt,
 
-    // LocalDb
+    // Appointments DB
     private var insertAppointmentUseCase: InsertAppointmentUseCase,
     private val updateAppointmentUseCase: UpdateAppointmentUseCase,
     private var deleteAppointmentUseCase: DeleteAppointmentUseCase,
-
-    // Db for sync
     private var getNotSyncAppointmentsUseCase: GetNotSyncAppointmentsUseCase,
     private var getDeletedAppointmentsUseCase: GetDeletedAppointmentsUseCase,
-    private var getUserLastLocalAppointmentTimestamp: GetUserLastLocalAppointmentTimestamp,
+    private var getMaxAppointmentsTimestamp: GetMaxAppointmentsTimestamp,
     private var getGetBySyncUuidUseCase: GetBySyncUuidUseCase,
-    private var getCountSyncDbUseCase: GetCountSyncDbUseCase,
 
-    // API
+    // Appointments API
     private var postAppointmentUseCase: PostAppointmentUseCase,
     private var deleteRemoteAppointmentUseCase: DeleteRemoteAppointmentUseCase,
     private var getUserLastRemoteAppointmentTimestamp: GetLastRemoteAppointmentTimestamp,
     private var getUserRemoteAppointmentsAfterTimestampUseCase: GetUserRemoteAppointmentsAfterTimestampUseCase,
-    private var getUserRemoteDbCountUseCase: GetUserRemoteDbCountUseCase,
 
-    // Calendar color API
-    private var postRemoteCalendarDateUseCase: PostCalendarDateUseCase,
-    private var deleteRemoteCalendarDateUseCase: DeleteRemoteCalendarDateUseCase,
-    private var getLastRemoteTimestampCalendarDateUseCase: GetLastRemoteTimestampCalendarDateUseCase,
-    private var getRemoteAfterTimestampCalendarDateUseCase: GetAfterTimestampCalendarDateUseCase,
-    private var getRemoteCountCCalendarDateUseCase: GetRemoteCountCCalendarDateUseCase,
-
-    // Calendar color local db:
+    // CalendarDate DB:
     private var insertCalendarDateUseCase: InsertCalendarDateUseCase,
     private var deleteCalendarDateUseCase: DeleteCalendarDateUseCase,
     private var updateCalendarDateUseCase: UpdateCalendarDateUseCase,
     private var getNotSyncCalendarDateUseCase: GetNotSyncCalendarDateUseCase,
     private var getDeletedCalendarDateUseCase: GetDeletedCalendarDateUseCase,
-    private var getUserLastLocalCalendarDateTimestamp: GetUserLastLocalCalendarDateTimestamp,
+    private var getMaxCalendarDateTimestamp: GetMaxCalendarDateTimestamp,
     private var getBySyncUuidCalendarDateUseCase: GetBySyncUuidCalendarDateUseCase,
-    private var getCountCalendarDateUseCase: GetCountCalendarDateUseCase
+
+    // CalendarDate API
+    private var postRemoteCalendarDateUseCase: PostCalendarDateUseCase,
+    private var deleteRemoteCalendarDateUseCase: DeleteRemoteCalendarDateUseCase,
+    private var getLastRemoteTimestampCalendarDateUseCase: GetLastRemoteTimestampCalendarDateUseCase,
+    private var getRemoteAfterTimestampCalendarDateUseCase: GetAfterTimestampCalendarDateUseCase,
 ) : ViewModel() {
     private val log = "SyncAppointments"
     private val logCalendar = "SyncCalendar"
@@ -112,103 +102,69 @@ class MainViewModel @Inject constructor(
         return getUserThemeUseCase.execute()
     }
 
-    //////////// Appointments
-    suspend fun synchronizationCheck() {
+    // Appointments
+    suspend fun synchronizationCheckAppointments() {
         // Получаем юзера, если пользователь не залогинился - выходим
         val user = getUserInfoApi()
-
-        if (user == null) {
-            // Если пользователь не залогинился
-            // устанавливаем статус false и выходим
-            syncStatus.postValue(false)
+        val jwt = getJwt.execute()
+        if (!checkSyncConditions(user, jwt)) {
             return
         }
-
-        if (user.syncEnabled == false) {
-            // Если у пользователя установлен syncEnabled == false
-            // устанавливаем статус false и выходим
-            syncStatus.postValue(false)
-            return
-        }
-
-        syncStatus.postValue(true)
 
         // Получаем временные метки последней записи локально и удаленно
-        val lastLocalTimestamp = getUserLastLocalAppointmentTimestamp.execute()
+        val lastLocalTimestamp = getMaxAppointmentsTimestamp.execute()
         val lastRemoteTimestamp =
-            getUserLastRemoteAppointmentTimestamp.execute(user, getJwt.execute()!!)
+            getUserLastRemoteAppointmentTimestamp.execute(user!!, getJwt.execute()!!)
 
-        // Получаем общее количество записей в БД для синхронизации
-        val localAppointmentsCount = getCountSyncDbUseCase.execute()
+        Log.i(logCalendar, "Последнее обновление и количество получены")
 
-        // Получаем общее количество записей в удаленной БД
-        val remoteAppointmentsCount = getUserRemoteDbCountUseCase.execute(getJwt.execute()!!)
-
-        // TODO: Если с одного устройства 2 пользоватля зайдут - проблема
-        // TODO: кэша много скапливается - проблема. Кэшируется код?
-
+        // Проверка есть ли данные локально
         if (lastLocalTimestamp == null && lastRemoteTimestamp != null) {
             Log.i(log, "Локальные данные не найдены - получаем данные с сервера")
-            pullRemoteToLocalDb(Date(0).time)
+            pullAppointments(Date(0).time, jwt!!)
         }
 
-        if (localAppointmentsCount < remoteAppointmentsCount!!) {
-            Log.i(log, "Локальных данных меньше, чем на сервере - получаем данные с сервера")
+        // Проверка, устарели ли удаленные данные
+        if (lastLocalTimestamp != null && lastRemoteTimestamp != null && lastLocalTimestamp > lastRemoteTimestamp) {
+            Log.i(log, "Удаленные данные устарели - отправляем данные на сервера")
             Log.i(
                 log,
-                "Локальных данных $localAppointmentsCount - удаленных данных $remoteAppointmentsCount"
+                "Последнее локальное обновление: ${Date(lastLocalTimestamp)} " + "Последнее удаленное обновление: ${
+                    Date(lastRemoteTimestamp)
+                } "
             )
-            pullRemoteToLocalDb(Date(0).time)
+            pushAppointments(user)
         }
 
-        if (localAppointmentsCount > remoteAppointmentsCount) {
-            Log.i(log, "Локальных данных больше, чем на сервере - отправляем данные на сервер")
-            Log.i(
-                log,
-                "Локальных данных $localAppointmentsCount - удаленных данных $remoteAppointmentsCount"
-            )
-            push()
-        }
-
-        if (lastLocalTimestamp != null && lastRemoteTimestamp == null) {
-            Log.i(log, "Удаленные данные устарели - отправляем данные на сервер")
-            push()
-        }
-
-        if (lastLocalTimestamp == null && lastRemoteTimestamp == null) {
-            Log.i(log, "Данные локально и удаленно не найдены")
-        }
-
-        if (lastLocalTimestamp != null && lastRemoteTimestamp != null && lastLocalTimestamp == lastRemoteTimestamp) {
-            Log.i(log, "Данные синхронизированы")
-        }
-
-        if (lastLocalTimestamp != null && lastRemoteTimestamp != null && lastLocalTimestamp > lastRemoteTimestamp
-        ) {
-            Log.i(log, "Локальное изменение позднее - отправляем данные на сервер")
-            push()
-        }
-
-        if (lastLocalTimestamp != null && lastRemoteTimestamp != null && lastLocalTimestamp <
-            lastRemoteTimestamp
-        ) {
+        // Проверка, устарели ли локальные данные
+        if (lastLocalTimestamp != null && lastRemoteTimestamp != null && lastLocalTimestamp < lastRemoteTimestamp) {
             Log.i(log, "Локальные данные устарели - получаем данные с сервера")
             Log.i(
                 log,
-                "Последнее локальное обновление: ${Date(lastLocalTimestamp)} " +
-                        "Последнее удаленное обновление: ${Date(lastRemoteTimestamp)} "
+                "Последнее локальное обновление: ${Date(lastLocalTimestamp)} " + "Последнее удаленное обновление: ${
+                    Date(lastRemoteTimestamp)
+                } "
             )
-            pullRemoteToLocalDb(lastLocalTimestamp)
+            pullAppointments(lastLocalTimestamp, jwt!!)
         }
+
+        // Выполняем побочные проверки
+        debugChecks(lastLocalTimestamp, lastRemoteTimestamp)
     }
 
-    private suspend fun push() {
-        Log.i(log, "Отправляем данные на удаленную БД")
+    private suspend fun pushAppointments(user: UserInfoDto) {
+        Log.i(log, "Выполняем метод pushAppointments()")
+        /**
+         *  1.  Выбирает все записи со статусом NotSynchronized
+         *  1.1 Отправляет все записи на сервер
+         *  1.2 Если, запись успешно обновлена на сервер (код 200) -> устанавливает статус Synchronized */
 
-        // Получаем информацию о текущем пользователе
-        val user = getUserInfoApi() ?: return
+        /**
+         *  1.  Выбирает все записи со статусом DELETED
+         *  1.1 Отправляет все записи на сервер
+         *  1.2 Если, запись успешно удалена на сервер (код 200) -> удаляет запись локально */
 
-        // Извлекаем записи, которые еще не были синхронизированы
+        // Получаем записи, которые еще не были синхронизированы (syncStatus = "NotSynchronized")
         val notSyncedAppointments = getNotSyncAppointmentsUseCase.execute()
 
         // Устанавливаем имя пользователя для записей, у которых оно отсутствует
@@ -217,46 +173,48 @@ class MainViewModel @Inject constructor(
         // Отправляем несинхронизированные записи на сервер
         for (appointment in notSyncedAppointments) {
             val result = postAppointmentUseCase.execute(appointment, getJwt.execute()!!)
-
             if (result == "200") {
-                // Обновляем статус синхронизации для успешно отправленных записей
+                // Обновляем статус синхронизации локально, если запись успешно обновлена на сервере
                 appointment.syncStatus = "Synchronized"
                 updateAppointmentUseCase.execute(appointment)
             }
         }
 
-        // Обрабатываем удаленные записи, чтобы синхронизировать их с сервером
+        // Получаем записи, которые были удалены (syncStatus = "DELETED")
         val deletedAppointments = getDeletedAppointmentsUseCase.execute()
+
         for (appointment in deletedAppointments) {
             val result = deleteRemoteAppointmentUseCase.execute(appointment, getJwt.execute()!!)
 
             if (result == "200") {
-                // Удаляем запись из локальной таблицы синхронизации, если она успешно удалена на сервере
+                // Удаляем запись локально, если она успешно удалена на сервере
                 deleteAppointmentUseCase.execute(appointment)
             }
         }
     }
 
-    private suspend fun pullRemoteToLocalDb(timestamp: Long) {
-        Log.i(log, "Получаем данные с сервера")
-        getUserInfoApi() ?: return
-        val jwt = getJwt.execute() ?: return
+    private suspend fun pullAppointments(timestamp: Long, jwt: String) {
+        Log.i(log, "Выполняем метод pullAppointments()")
+        /**
+         *  1.  Получает с сервера все записи, у которых дата ПОЗЖЕ указаной в timestamp
+         *  2.
+         *  3.   */
 
         // Получаем все данные, у которых дата обновления > последней даты обновления в локальной БД
         val appointmentsToUpdate = getUserRemoteAppointmentsAfterTimestampUseCase.execute(
-            jwt,
-            timestamp
+            jwt, timestamp
         )
 
         if (appointmentsToUpdate != null) {
             Log.i(log, "Данные для обновления получены")
-            updateLocalDb(appointmentsToUpdate)
+            updateAppointmentsDb(appointmentsToUpdate)
         } else {
             Log.i(log, "Данные для обновления не получены")
         }
     }
 
-    private suspend fun updateLocalDb(appointments: List<AppointmentModelDb>) {
+    private suspend fun updateAppointmentsDb(appointments: List<AppointmentModelDb>) {
+        Log.i(log, "Выполняем метод updateAppointmentsDb()")
         Log.i(log, "Вносим данные в локальную БД. Записей для обработки: ${appointments.size}")
 
         for (updatedAppointment in appointments) {
@@ -269,11 +227,10 @@ class MainViewModel @Inject constructor(
             val localAppointment = getGetBySyncUuidUseCase.execute(updatedAppointment.syncUUID!!)
 
             // Если локальной записи такой нет - создаем её
-            // или понимаем, что такая запись уже была удалена и выходим из обработки
             if (localAppointment == null) {
                 Log.i(log, "Вносим данные в локальную БД (новая запись)")
                 if (updatedAppointment.syncStatus!! == "NotSynchronized") {
-                    // Обнуляем id, чтобы не затереть такую же запись
+                    // Обнуляем id, чтобы не затереть другую запись
                     val newAppointment =
                         updatedAppointment.copy(_id = null, syncStatus = "Synchronized")
 
@@ -281,10 +238,7 @@ class MainViewModel @Inject constructor(
                 }
 
                 if (updatedAppointment.syncStatus!! == "DELETED") {
-                    Log.i(log, "Вносим данные в локальную БД (запись удалена, выход)")
-                    // TODO: не оптимальное поведение, приложение понимает, что на сервере есть
-                    //  записи, которых нет локально, пробует обновиться, видит, что запись
-                    //  удалена по статусу записи на сервере и пропускает обновление
+                    Log.i(log, "Запись удалена, не обновляем")
                     continue
                 }
             }
@@ -296,13 +250,12 @@ class MainViewModel @Inject constructor(
 
                     if (localAppointment.syncStatus == "DELETED") {
                         Log.i(
-                            log, "Запись, которую необходимо обновить была удалена локально. " +
-                                    "Обновление отменяется. Удаляем запись с сервера"
+                            log,
+                            "Запись, которую необходимо обновить была удалена локально. " + "Обновление отменяется. Удаляем запись с сервера"
                         )
                         // Ставим Статус DELETED на сервер
                         val result = deleteRemoteAppointmentUseCase.execute(
-                            updatedAppointment,
-                            getJwt.execute()!!
+                            updatedAppointment, getJwt.execute()!!
                         )
                         if (result == "200") {
                             // Если Статус DELETED на сервере установлен - удаляем из локальной БД
@@ -314,10 +267,13 @@ class MainViewModel @Inject constructor(
                     if (updatedAppointment.syncStatus!! == "NotSynchronized") {
                         // Если запись была обновлена - обновляем её во всех БД
                         Log.i(
-                            log, "Запись с таким UUID найдена. " +
-                                    "Дата обновления позднее. " +
-                                    "Статус: NotSynchronized"
+                            logCalendar,
+                            "Статус на сервере NotSynchronized, обновляем локальную запись"
                         )
+                        updatedAppointment._id = localAppointment._id
+
+                        // Заглушка, пока не настроена синхронизация клиентов - не обновляем поле clientID
+                        updatedAppointment.clientId = localAppointment.clientId
 
                         updatedAppointment.syncStatus = "Synchronized"
                         updateAppointmentUseCase.execute(updatedAppointment)
@@ -334,8 +290,7 @@ class MainViewModel @Inject constructor(
 
     // Устанавливает имя пользователя для записей без него перед синхронизацией
     private suspend fun setUsernameAppointments(
-        notSyncedAppointments: List<AppointmentModelDb>,
-        user: UserInfoDto
+        notSyncedAppointments: List<AppointmentModelDb>, user: UserInfoDto
     ) {
         // Добавляем имя пользователя ко всем записям, у которых оно отсутствует
         for (appointment in notSyncedAppointments) {
@@ -345,112 +300,74 @@ class MainViewModel @Inject constructor(
             }
         }
     }
-
-
-    //////////// CalendarDate
+    
+    // CalendarDate
     suspend fun synchronizationCheckCalendarDate() {
         // Получаем юзера, если пользователь не залогинился - выходим
         val user = getUserInfoApi()
-
-        if (user == null) {
-            // Если пользователь не залогинился
-            // устанавливаем статус false и выходим
-            syncStatus.postValue(false)
+        val jwt = getJwt.execute()
+        if (!checkSyncConditions(user, jwt)) {
             return
         }
-
-        if (user.syncEnabled == false) {
-            // Если у пользователя установлен syncEnabled == false
-            // устанавливаем статус false и выходим
-            syncStatus.postValue(false)
-            return
-        }
-
-        syncStatus.postValue(true)
 
         // Получаем временные метки последней записи локально и удаленно
-        val lastLocalTimestamp = getUserLastLocalCalendarDateTimestamp.execute()
+        val lastLocalTimestamp = getMaxCalendarDateTimestamp.execute()
         val lastRemoteTimestamp =
-            getLastRemoteTimestampCalendarDateUseCase.execute(user, getJwt.execute()!!)
-
-        // Получаем общее количество записей в БД для синхронизации
-        val localAppointmentsCount = getCountCalendarDateUseCase.execute()
-
-        // Получаем общее количество записей в удаленной БД
-        val remoteAppointmentsCount = getRemoteCountCCalendarDateUseCase.execute(getJwt.execute()!!)
+            getLastRemoteTimestampCalendarDateUseCase.execute(user!!, getJwt.execute()!!)
 
         Log.i(logCalendar, "Последнее обновление и количество получены")
 
+        // Проверка есть ли данные локально
         if (lastLocalTimestamp == null && lastRemoteTimestamp != null) {
             Log.i(logCalendar, "Локальные данные не найдены - получаем данные с сервера")
-            pullRemoteToLocalDbCalendarDate(Date(0).time)
+            pullCalendarDate(Date(0).time, jwt!!)
         }
 
-        if (localAppointmentsCount < remoteAppointmentsCount!!) {
+        // Проверка, устарели ли удаленные данные
+        if (lastLocalTimestamp != null && lastRemoteTimestamp != null && lastLocalTimestamp > lastRemoteTimestamp) {
+            Log.i(log, "Удаленные данные устарели - отправляем данные на сервера")
             Log.i(
-                logCalendar,
-                "Локальных данных меньше, чем на сервере - получаем данные с сервера"
+                log,
+                "Последнее локальное обновление: ${Date(lastLocalTimestamp)} " + "Последнее удаленное обновление: ${
+                    Date(lastRemoteTimestamp)
+                } "
             )
+            pushCalendarDate(user)
+        }
+
+        // Проверка есть ли данные локально
+        if (lastLocalTimestamp != null && lastRemoteTimestamp != null && lastLocalTimestamp < lastRemoteTimestamp) {
+            Log.i(log, "Локальные данные устарели - получаем данные с сервера")
             Log.i(
-                logCalendar,
-                "Локальных данных $localAppointmentsCount - удаленных данных $remoteAppointmentsCount"
+                log,
+                "Последнее локальное обновление: ${Date(lastLocalTimestamp)} " + "Последнее удаленное обновление: ${
+                    Date(lastRemoteTimestamp)
+                } "
             )
-            pullRemoteToLocalDbCalendarDate(Date(0).time)
+            pullCalendarDate(lastLocalTimestamp, jwt!!)
         }
 
-        if (localAppointmentsCount > remoteAppointmentsCount) {
-            Log.i(
-                logCalendar,
-                "Локальных данных больше, чем на сервере - отправляем данные на сервер"
-            )
-            Log.i(
-                logCalendar,
-                "Локальных данных $localAppointmentsCount - удаленных данных $remoteAppointmentsCount"
-            )
-            pushLocalDbToRemoteCalendarDate()
-        }
-
-        if (lastLocalTimestamp != null && lastRemoteTimestamp == null) {
-            Log.i(logCalendar, "Удаленные данные устарели - отправляем данные на сервер")
-            pushLocalDbToRemoteCalendarDate()
-        }
-
-        if (lastLocalTimestamp == null && lastRemoteTimestamp == null) {
-            Log.i(logCalendar, "Данные локально и удаленно не найдены")
-        }
-
-        if (lastLocalTimestamp != null && lastRemoteTimestamp != null && lastLocalTimestamp == lastRemoteTimestamp) {
-            Log.i(logCalendar, "Данные синхронизированы")
-        }
-
-        if (lastLocalTimestamp != null && lastRemoteTimestamp != null && lastLocalTimestamp > lastRemoteTimestamp
-        ) {
-            Log.i(logCalendar, "Локальное изменение позднее - отправляем данные на сервер")
-            pushLocalDbToRemoteCalendarDate()
-        }
-
-        if (lastLocalTimestamp != null && lastRemoteTimestamp != null && lastLocalTimestamp < lastRemoteTimestamp
-        ) {
-            Log.i(logCalendar, "Локальные данные устарели - получаем данные с сервера")
-            Log.i(
-                logCalendar,
-                "Последнее локальное обновление: $lastLocalTimestamp Последнее удаленное обновление: $lastRemoteTimestamp"
-            )
-            pullRemoteToLocalDbCalendarDate(lastLocalTimestamp)
-        }
+        // Выполняем побочные проверки
+        debugChecks(lastLocalTimestamp, lastRemoteTimestamp)
     }
 
-    private suspend fun pushLocalDbToRemoteCalendarDate() {
-        Log.i(logCalendar, "Отправляем данные на удаленную БД")
+    private suspend fun pushCalendarDate(user: UserInfoDto) {
+        Log.i(log, "Выполняем метод pushCalendarDate()")
+        /**
+         *  1.  Выбирает все записи со статусом NotSynchronized
+         *  1.1 Отправляет все записи на сервер
+         *  1.2 Если, запись успешно обновлена на сервер (код 200) -> устанавливает статус Synchronized */
 
-        // Получаем информацию о текущем пользователе
-        val user = getUserInfoApi() ?: return
+        /**
+         *  1.  Выбирает все записи со статусом DELETED
+         *  1.1 Отправляет все записи на сервер
+         *  1.2 Если, запись успешно удалена на сервер (код 200) -> удаляет запись локально */
 
-        // Извлекаем записи, которые еще не были синхронизированы
+        // Получаем записи, которые еще не были синхронизированы (syncStatus = "NotSynchronized")
         val notSyncedAppointments = getNotSyncCalendarDateUseCase.execute()
 
         // Устанавливаем имя пользователя для записей, у которых оно отсутствует
-        setUsernameForSyncRecordsCalendarDate(notSyncedAppointments, user)
+        setUsernameCalendarDate(notSyncedAppointments, user)
 
         // Отправляем несинхронизированные записи на сервер
         for (calendarDateModelDb in notSyncedAppointments) {
@@ -458,13 +375,13 @@ class MainViewModel @Inject constructor(
                 postRemoteCalendarDateUseCase.execute(calendarDateModelDb, getJwt.execute()!!)
 
             if (result == "200") {
-                // Обновляем статус синхронизации для успешно отправленных записей
+                // Обновляем статус синхронизации локально, если запись успешно обновлена на сервере
                 calendarDateModelDb.syncStatus = "Synchronized"
                 updateCalendarDateUseCase.execute(calendarDateModelDb)
             }
         }
 
-        // Обрабатываем удаленные записи
+        // Получаем записи, которые были удалены (syncStatus = "DELETED")
         val deletedCalendarDate = getDeletedCalendarDateUseCase.execute()
 
         for (calendarDateModelDb in deletedCalendarDate) {
@@ -478,42 +395,45 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private suspend fun pullRemoteToLocalDbCalendarDate(timestamp: Long) {
-        Log.i(logCalendar, "Получаем данные с сервера")
-        getUserInfoApi() ?: return
-        val jwt = getJwt.execute() ?: return
+    private suspend fun pullCalendarDate(timestamp: Long, jwt: String) {
+        Log.i(log, "Выполняем метод pullCalendarDate()")
+        /**
+         *  1.  Получает с сервера все записи, у которых дата ПОЗЖЕ указаной в timestamp
+         *  2.
+         *  3.   */
 
         // Получаем все данные, у которых дата обновления > последней даты обновления в локальной БД
-        val calendarDateDateToUpdate = getRemoteAfterTimestampCalendarDateUseCase.execute(
-            jwt,
-            timestamp
+        val calendarDatesToUpdate = getRemoteAfterTimestampCalendarDateUseCase.execute(
+            jwt, timestamp
         )
 
-        if (calendarDateDateToUpdate != null) {
+        if (calendarDatesToUpdate != null) {
             Log.i(logCalendar, "Данные для обновления получены")
-            updateDbForSyncCalendarDate(calendarDateDateToUpdate)
+            updateCalendarDateDb(calendarDatesToUpdate)
         } else {
             Log.i(logCalendar, "Данные для обновления не получены")
         }
     }
 
-    private suspend fun updateDbForSyncCalendarDate(calendarDateToUpdate: List<CalendarDateModelDb>) {
+    private suspend fun updateCalendarDateDb(calendarDateToUpdate: List<CalendarDateModelDb>) {
+        Log.i(log, "Выполняем метод updateAppointmentsDb()")
         Log.i(
-            logCalendar,
-            "Вносим данные в локальную БД. Записей для обработки: ${calendarDateToUpdate.size}"
+            log, "Вносим данные в локальную БД. Записей для обработки: ${calendarDateToUpdate.size}"
         )
 
         for (updatedCalendarDate in calendarDateToUpdate) {
             // проверяем, существует ли такая запись уже по uuid
-            val localCalendarDateModel =
-                getBySyncUuidCalendarDateUseCase.execute(updatedCalendarDate.syncUUID!!)
+            if (updatedCalendarDate.syncUUID == null) {
+                continue
+            }
+
+            val localCalendarDate = getBySyncUuidCalendarDateUseCase.execute(updatedCalendarDate.syncUUID)
 
             // Если локальной записи такой нет - создаем её
-            // или понимаем, что такая запись уже была удалена и выходим из обработки
-            if (localCalendarDateModel == null) {
+            if (localCalendarDate == null) {
                 Log.i(logCalendar, "Вносим данные в локальную БД (новая запись)")
                 if (updatedCalendarDate.syncStatus!! == "NotSynchronized") {
-                    // Обнуляем id, чтобы не затереть такую же запись
+                    // Обнуляем id, чтобы не затереть другую запись
                     val newLocalCalendarDate =
                         updatedCalendarDate.copy(_id = null, syncStatus = "Synchronized")
 
@@ -521,30 +441,28 @@ class MainViewModel @Inject constructor(
                 }
 
                 if (updatedCalendarDate.syncStatus!! == "DELETED") {
-                    Log.i(logCalendar, "Вносим данные в локальную БД (запись удалена, выходим)")
+                    Log.i(log, "Запись удалена, не обновляем")
                     continue
                 }
             }
 
             // Если запись уже существует - сверяем даты, если дата "свежее" - заменяем
-            if (localCalendarDateModel != null) {
-                if (updatedCalendarDate.syncTimestamp!! > localCalendarDateModel.syncTimestamp!!) {
+            if (localCalendarDate != null) {
+                if (updatedCalendarDate.syncTimestamp!! > localCalendarDate.syncTimestamp!!) {
                     Log.i(logCalendar, "Вносим данные в локальную БД (обновляем запись)")
 
-                    if (localCalendarDateModel.syncStatus == "DELETED") {
+                    if (localCalendarDate.syncStatus == "DELETED") {
                         Log.i(
                             logCalendar,
-                            "Запись, которую необходимо обновить была удалена локально. " +
-                                    "Обновление отменяется. Удаляем запись с сервера"
+                            "Запись, которую необходимо обновить была удалена локально. " + "Обновление отменяется. Удаляем запись с сервера"
                         )
                         // Ставим Статус DELETED на сервер
                         val result = deleteRemoteCalendarDateUseCase.execute(
-                            updatedCalendarDate,
-                            getJwt.execute()!!
+                            updatedCalendarDate, getJwt.execute()!!
                         )
                         if (result == "200") {
                             // Если Статус DELETED на сервере установлен - удаляем из локальной бд
-                            deleteCalendarDateUseCase.execute(localCalendarDateModel)
+                            deleteCalendarDateUseCase.execute(localCalendarDate)
                         }
                         return
                     }
@@ -555,14 +473,14 @@ class MainViewModel @Inject constructor(
                             logCalendar,
                             "Статус на сервере NotSynchronized, обновляем локальную запись"
                         )
-                        localCalendarDateModel.color = updatedCalendarDate.color
-                        localCalendarDateModel.syncStatus = "Synchronized"
-                        updateCalendarDateUseCase.execute(localCalendarDateModel)
+                        localCalendarDate.color = updatedCalendarDate.color
+                        localCalendarDate.syncStatus = "Synchronized"
+                        updateCalendarDateUseCase.execute(localCalendarDate)
                     }
 
                     if (updatedCalendarDate.syncStatus!! == "DELETED") {
                         Log.i(logCalendar, "Статус на сервере DELETED, удаляем локальную запись")
-                        deleteCalendarDateUseCase.execute(localCalendarDateModel)
+                        deleteCalendarDateUseCase.execute(localCalendarDate)
                     }
                 }
             }
@@ -570,9 +488,8 @@ class MainViewModel @Inject constructor(
     }
 
     // Устанавливает имя пользователя для записей без него перед синхронизацией
-    private suspend fun setUsernameForSyncRecordsCalendarDate(
-        notSyncedList: List<CalendarDateModelDb>,
-        user: UserInfoDto
+    private suspend fun setUsernameCalendarDate(
+        notSyncedList: List<CalendarDateModelDb>, user: UserInfoDto
     ) {
         // Добавляем имя пользователя ко всем записям, у которых оно отсутствует
         for (calendarDateModel in notSyncedList) {
@@ -580,6 +497,44 @@ class MainViewModel @Inject constructor(
                 calendarDateModel.userName = user.username
                 updateCalendarDateUseCase.execute(calendarDateModel)
             }
+        }
+    }
+
+
+    /////////// Common
+    private fun checkSyncConditions(user: UserInfoDto?, jwt: String?): Boolean {
+        if (user == null) {
+            // Если пользователь не залогинился
+            // устанавливаем статус false и выходим
+            syncStatus.postValue(false)
+            return false
+        }
+
+        if (user.syncEnabled == false) {
+            // Если у пользователя установлен syncEnabled == false
+            // устанавливаем статус false и выходим
+            syncStatus.postValue(false)
+            return false
+        }
+
+        if (jwt == null) {
+            // Если у пользователя нет токена - выходим
+            syncStatus.postValue(false)
+            return false
+        }
+
+        syncStatus.postValue(true)
+        return true
+    }
+
+    private fun debugChecks(lastLocalTimestamp: Long?, lastRemoteTimestamp: Long?) {
+        // Проверки для дебага
+        if (lastLocalTimestamp == null && lastRemoteTimestamp == null) {
+            Log.i(log, "Данные локально и удаленно не найдены")
+        }
+
+        if (lastLocalTimestamp != null && lastRemoteTimestamp != null && lastLocalTimestamp == lastRemoteTimestamp) {
+            Log.i(log, "Данные синхронизированы")
         }
     }
 }
