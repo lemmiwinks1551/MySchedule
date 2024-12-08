@@ -143,9 +143,9 @@ class MainViewModel @Inject constructor(
          *  1.2 Если, запись успешно обновлена на сервер (код 200) -> устанавливает статус Synchronized */
 
         /**
-         *  1.  Выбирает все записи со статусом DELETED
-         *  1.1 Отправляет все записи на сервер
-         *  1.2 Если, запись успешно удалена на сервер (код 200) -> удаляет запись локально */
+         *  2.  Выбирает все записи со статусом DELETED
+         *  2.1 Отправляет все записи на сервер
+         *  2.2 Если, запись успешно удалена на сервер (код 200) -> удаляет запись локально */
 
         // Получаем записи, которые еще не были синхронизированы (syncStatus = "NotSynchronized")
         val notSyncedData = getNotSyncAppointmentsUseCase.execute()
@@ -159,7 +159,7 @@ class MainViewModel @Inject constructor(
         // Устанавливаем имя пользователя для записей, у которых оно отсутствует
         setUsernameAppointments(notSyncedAndDeletedData, user)
 
-        // Отправляем несинхронизированные записи на сервер
+        // Отправляем несинхронизированные и удаленные записи на сервер
         for (appointment in notSyncedAndDeletedData) {
             if (appointment.syncStatus == notSynchronizedStatus) {
                 val result = postAppointmentUseCase.execute(appointment, getJwt.execute()!!)
@@ -328,8 +328,8 @@ class MainViewModel @Inject constructor(
 
         /**
          *  1.  Выбирает все записи со статусом DELETED
-         *  1.1 Отправляет все записи на сервер
-         *  1.2 Если, запись успешно удалена на сервер (код 200) -> удаляет запись локально */
+         *  2.1 Отправляет все записи на сервер
+         *  2.2 Если, запись успешно удалена на сервер (код 200) -> удаляет запись локально */
 
         // Получаем записи, которые еще не были синхронизированы (syncStatus = "NotSynchronized")
         val notSyncedData = getNotSyncCalendarDateUseCase.execute()
@@ -343,7 +343,7 @@ class MainViewModel @Inject constructor(
         // Устанавливаем имя пользователя для записей, у которых оно отсутствует
         setUsernameCalendarDate(notSyncedAndDeletedData, user)
 
-        // Отправляем несинхронизированные записи на сервер
+        // Отправляем несинхронизированные и удаленные записи на сервер
         for (calendarDateModelDb in notSyncedAndDeletedData) {
             if (calendarDateModelDb.syncStatus == notSynchronizedStatus) {
                 val result = postRemoteCalendarDateUseCase.execute(calendarDateModelDb, getJwt.execute()!!)
