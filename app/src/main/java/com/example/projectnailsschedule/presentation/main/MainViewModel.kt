@@ -13,7 +13,6 @@ import com.example.projectnailsschedule.domain.usecase.account.GetUserInfoApiUse
 import com.example.projectnailsschedule.domain.usecase.apiUC.SendUserDataUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.localSyncDbUC.GetBySyncUuidUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.localSyncDbUC.GetDeletedAppointmentsUseCase
-import com.example.projectnailsschedule.domain.usecase.apiUC.localSyncDbUC.GetMaxAppointmentsTimestamp
 import com.example.projectnailsschedule.domain.usecase.apiUC.localSyncDbUC.GetNotSyncAppointmentsUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.DeleteRemoteAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.GetLastRemoteAppointmentTimestamp
@@ -29,7 +28,6 @@ import com.example.projectnailsschedule.domain.usecase.appointmentUC.UpdateAppoi
 import com.example.projectnailsschedule.domain.usecase.calendarUC.DeleteCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.GetBySyncUuidCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.GetDeletedCalendarDateUseCase
-import com.example.projectnailsschedule.domain.usecase.calendarUC.GetMaxCalendarDateTimestamp
 import com.example.projectnailsschedule.domain.usecase.calendarUC.GetNotSyncCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.InsertCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.UpdateCalendarDateUseCase
@@ -66,7 +64,6 @@ class MainViewModel @Inject constructor(
     private var deleteAppointmentUseCase: DeleteAppointmentUseCase,
     private var getNotSyncAppointmentsUseCase: GetNotSyncAppointmentsUseCase,
     private var getDeletedAppointmentsUseCase: GetDeletedAppointmentsUseCase,
-    private var getMaxAppointmentsTimestamp: GetMaxAppointmentsTimestamp,
     private var getGetBySyncUuidUseCase: GetBySyncUuidUseCase,
 
     // Appointments API
@@ -81,7 +78,6 @@ class MainViewModel @Inject constructor(
     private var updateCalendarDateUseCase: UpdateCalendarDateUseCase,
     private var getNotSyncCalendarDateUseCase: GetNotSyncCalendarDateUseCase,
     private var getDeletedCalendarDateUseCase: GetDeletedCalendarDateUseCase,
-    private var getMaxCalendarDateTimestamp: GetMaxCalendarDateTimestamp,
     private var getBySyncUuidCalendarDateUseCase: GetBySyncUuidCalendarDateUseCase,
 
     // CalendarDate API
@@ -163,11 +159,10 @@ class MainViewModel @Inject constructor(
         val deletedData = getDeletedAppointmentsUseCase.execute()
 
         // Создаем общий лист несинхронизированных и удаленных записей
-        val notSyncedAndDeletedData = notSyncedData + deletedData
+        val notSyncedAndDeletedData = (notSyncedData + deletedData).sortedBy { it.syncTimestamp }
 
         // Устанавливаем имя пользователя для записей, у которых оно отсутствует
         setUsernameAppointments(notSyncedAndDeletedData, user)
-
         // Отправляем несинхронизированные и удаленные записи на сервер
         for (appointment in notSyncedAndDeletedData) {
             if (appointment.syncStatus == notSynchronizedStatus) {
@@ -331,7 +326,7 @@ class MainViewModel @Inject constructor(
         val deletedData = getDeletedCalendarDateUseCase.execute()
 
         // Создаем общий лист несинхронизированных и удаленных записей
-        val notSyncedAndDeletedData = notSyncedData + deletedData
+        val notSyncedAndDeletedData = (notSyncedData + deletedData).sortedBy { it.syncTimestamp }
 
         // Устанавливаем имя пользователя для записей, у которых оно отсутствует
         setUsernameCalendarDate(notSyncedAndDeletedData, user)
