@@ -95,6 +95,9 @@ class MainViewModel @Inject constructor(
     val syncStatus = MutableLiveData(false)
     val menuStatus = MutableLiveData(false)
 
+    private var appointmentsForPull = listOf<AppointmentModelDb>()
+    private var calendarDatesForPull = listOf<CalendarDateModelDb>()
+
     suspend fun getUserInfoApi(): UserInfoDto? {
         val jwt = getJwt.execute() ?: return null
         val username = Util().extractUsernameFromJwt(jwt) ?: return null
@@ -129,14 +132,13 @@ class MainViewModel @Inject constructor(
         val lastRemoteTimestamp =
             getUserLastRemoteAppointmentTimestamp.execute(user!!, jwt!!) ?: 0L
 
-        when (checkLastTimestamp(lastLocalTimestamp, lastRemoteTimestamp, logAppointments)) {
-            localOutdated -> {
-                pullAppointments(lastLocalTimestamp, jwt)
-            }
+        if (localOutdated(lastLocalTimestamp, lastRemoteTimestamp, logAppointments)) {
+            pullAppointments(lastLocalTimestamp, jwt)
+        }
 
-            remoteOutdated -> {
-                pushAppointments(user, jwt)
-            }
+        if (getAppointmentsForPush()) {
+            Log.i(logAppointments, remoteOutdated)
+            pushAppointments(user, jwt)
         }
     }
 
@@ -152,19 +154,11 @@ class MainViewModel @Inject constructor(
          *  2.1 Отправляет все записи на сервер
          *  2.2 Если, запись успешно удалена на сервер (код 200) -> удаляет запись локально */
 
-        // Получаем записи, которые еще не были синхронизированы (syncStatus = "NotSynchronized")
-        val notSyncedData = getNotSyncAppointmentsUseCase.execute()
-
-        // Получаем записи, которые были удалены (syncStatus = "DELETED")
-        val deletedData = getDeletedAppointmentsUseCase.execute()
-
-        // Создаем общий лист несинхронизированных и удаленных записей
-        val notSyncedAndDeletedData = (notSyncedData + deletedData).sortedBy { it.syncTimestamp }
-
         // Устанавливаем имя пользователя для записей, у которых оно отсутствует
-        setUsernameAppointments(notSyncedAndDeletedData, user)
+        setUsernameAppointments(appointmentsForPull, user)
+
         // Отправляем несинхронизированные и удаленные записи на сервер
-        for (appointment in notSyncedAndDeletedData) {
+        for (appointment in appointmentsForPull) {
             when (appointment.syncStatus) {
                 notSynchronizedStatus -> {
                     val serverResponse = postAppointmentUseCase.execute(appointment, jwt)
@@ -174,6 +168,7 @@ class MainViewModel @Inject constructor(
                         updateAppointmentUseCase.execute(appointment)
                     }
                 }
+
                 deletedStatus -> {
                     val serverResponse = deleteRemoteAppointmentUseCase.execute(appointment, jwt)
                     if (serverResponse == okServerResponse) {
@@ -297,14 +292,13 @@ class MainViewModel @Inject constructor(
         val lastRemoteTimestamp =
             getLastRemoteTimestampCalendarDateUseCase.execute(user!!, jwt!!) ?: 0L
 
-        when (checkLastTimestamp(lastLocalTimestamp, lastRemoteTimestamp, logCalendar)) {
-            localOutdated -> {
-                pullCalendarDate(lastLocalTimestamp, jwt)
-            }
+        if (localOutdated(lastLocalTimestamp, lastRemoteTimestamp, logCalendar)) {
+            pullCalendarDate(lastLocalTimestamp, jwt)
+        }
 
-            remoteOutdated -> {
-                pushCalendarDate(user, jwt)
-            }
+        if (getCalendarDatesForPush()) {
+            Log.i(logCalendar, remoteOutdated)
+            pushCalendarDate(user, jwt)
         }
     }
 
@@ -320,20 +314,11 @@ class MainViewModel @Inject constructor(
          *  2.1 Отправляет все записи на сервер
          *  2.2 Если, запись успешно удалена на сервер (код 200) -> удаляет запись локально */
 
-        // Получаем записи, которые еще не были синхронизированы (syncStatus = "NotSynchronized")
-        val notSyncedData = getNotSyncCalendarDateUseCase.execute()
-
-        // Получаем записи, которые были удалены (syncStatus = "DELETED")
-        val deletedData = getDeletedCalendarDateUseCase.execute()
-
-        // Создаем общий лист несинхронизированных и удаленных записей
-        val notSyncedAndDeletedData = (notSyncedData + deletedData).sortedBy { it.syncTimestamp }
-
         // Устанавливаем имя пользователя для записей, у которых оно отсутствует
-        setUsernameCalendarDate(notSyncedAndDeletedData, user)
+        setUsernameCalendarDate(calendarDatesForPull, user)
 
         // Отправляем несинхронизированные и удаленные записи на сервер
-        for (calendarDateModelDb in notSyncedAndDeletedData) {
+        for (calendarDateModelDb in calendarDatesForPull) {
             when (calendarDateModelDb.syncStatus) {
                 notSynchronizedStatus -> {
                     val serverResponse =
@@ -481,35 +466,52 @@ class MainViewModel @Inject constructor(
         return true
     }
 
-    private fun checkLastTimestamp(
+    private fun localOutdated(
         lastLocalTimestamp: Long,
         lastRemoteTimestamp: Long,
         log: String
-    ): String {
-        // Проверка, устарели ли удаленные данные
-        if (lastLocalTimestamp > lastRemoteTimestamp) {
-            Log.i(log, "Удаленные данные устарели - отправляем данные на сервера")
+    ): Boolean {
+        // Проверка, устарели ли локальные данные
+        return if (lastLocalTimestamp < lastRemoteTimestamp) {
+            Log.i(log, localOutdated)
             Log.i(
                 log,
-                "Последнее локальное обновление: ${Date(lastLocalTimestamp)} " + "Последнее удаленное обновление: ${
-                    Date(lastRemoteTimestamp)
-                } "
+                "Последнее локальное обновление: ${Date(lastLocalTimestamp)} "
+                        + "Последнее удаленное обновление: ${Date(lastRemoteTimestamp)}"
             )
-            return remoteOutdated
+            true
+        } else {
+            false
         }
+    }
 
-        // Проверка, устарели ли локальные данные
-        if (lastLocalTimestamp < lastRemoteTimestamp) {
-            Log.i(logAppointments, "Локальные данные устарели - получаем данные с сервера")
-            Log.i(
-                logAppointments,
-                "Последнее локальное обновление: ${Date(lastLocalTimestamp)} " + "Последнее удаленное обновление: ${
-                    Date(lastRemoteTimestamp)
-                } "
-            )
-            return localOutdated
-        }
-        Log.i(log, localAndRemoteSynchronized)
-        return localAndRemoteSynchronized
+    private suspend fun getAppointmentsForPush(): Boolean {
+        // todo Добавить SQL-Запрос получения количества NotSynchronized и DELETED статусов
+        //  для бОльшей производительности функции. Если их больше 0 то - выгружать уже список
+        // Получаем записи, которые еще не были синхронизированы (syncStatus = "NotSynchronized")
+        val notSyncedData = getNotSyncAppointmentsUseCase.execute()
+
+        // Получаем записи, которые были удалены (syncStatus = "DELETED")
+        val deletedData = getDeletedAppointmentsUseCase.execute()
+
+        // Создаем общий лист несинхронизированных и удаленных записей
+        appointmentsForPull = (notSyncedData + deletedData).sortedBy { it.syncTimestamp }
+
+        return appointmentsForPull.isNotEmpty()
+    }
+
+    private suspend fun getCalendarDatesForPush(): Boolean {
+        // todo Добавить SQL-Запрос получения количества NotSynchronized и DELETED статусов
+        //  для бОльшей производительности функции. Если их больше 0 то - выгружать уже список
+        // Получаем записи, которые еще не были синхронизированы (syncStatus = "NotSynchronized")
+        val notSyncedData = getNotSyncCalendarDateUseCase.execute()
+
+        // Получаем записи, которые были удалены (syncStatus = "DELETED")
+        val deletedData = getDeletedCalendarDateUseCase.execute()
+
+        // Создаем общий лист несинхронизированных и удаленных записей
+        calendarDatesForPull = (notSyncedData + deletedData).sortedBy { it.syncTimestamp }
+
+        return calendarDatesForPull.isNotEmpty()
     }
 }

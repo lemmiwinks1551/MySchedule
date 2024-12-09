@@ -256,7 +256,6 @@ class CalendarRvAdapter(
             syncTimestamp = time,
             syncStatus = "NotSynchronized"
         )
-        dateParamsViewModel.setCalendarLastUpdateUseCase.execute(time)
         dateParamsViewModel.insertCalendarDate(calendarDateModelDb)
     }
 
@@ -269,7 +268,6 @@ class CalendarRvAdapter(
             syncTimestamp = time,
             syncStatus = "NotSynchronized"
         )
-        dateParamsViewModel.setCalendarLastUpdateUseCase.execute(time)
         dateParamsViewModel.updateCalendarDate(newData!!)
     }
 
@@ -281,8 +279,6 @@ class CalendarRvAdapter(
             syncTimestamp = time,
             syncStatus = "DELETED"
         )
-
-        dateParamsViewModel.setCalendarLastUpdateUseCase.execute(time)
         dateParamsViewModel.updateCalendarDate(newData!!)
     }
 

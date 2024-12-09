@@ -60,10 +60,6 @@ class DateParamsViewModel @Inject constructor(
 
     private val getProductionCalendarDateInfoUseCase: GetProductionCalendarDateInfoUseCase,
     private val getProductionCalendarYearUseCase: GetProductionCalendarYearUseCase,
-
-    // Shared preferences
-    private var setAppointmentLastUpdateUseCase: SetAppointmentLastUpdateUseCase,
-    var setCalendarLastUpdateUseCase: SetCalendarLastUpdateUseCase
 ) : ViewModel() {
     private val tagDateColor = "DateColor"
 
@@ -170,9 +166,6 @@ class DateParamsViewModel @Inject constructor(
         appointmentModelDb.syncUUID = UUID.randomUUID().toString()
         appointmentModelDb.syncTimestamp = time
         appointmentModelDb.syncStatus = "NotSynchronized"
-
-        // Обновляем дату последнего изменения в SharedPref
-        setAppointmentLastUpdateUseCase.execute(time)
         return insertAppointmentUseCase.execute(appointmentModelDb)
     }
 
@@ -185,9 +178,6 @@ class DateParamsViewModel @Inject constructor(
         val time = Date().time
         appointmentModelDb.syncTimestamp = time
         appointmentModelDb.syncStatus = "NotSynchronized"
-
-        // Обновляем дату последнего изменения в SharedPref
-        setAppointmentLastUpdateUseCase.execute(time)
         return updateAppointmentUseCase.execute(appointmentModelDb)
     }
 
@@ -204,9 +194,6 @@ class DateParamsViewModel @Inject constructor(
         appointmentModelDb.syncStatus = "DELETED"
 
         updateAppointmentUseCase.execute(appointmentModelDb)
-
-        // Обновляем дату последнего изменения в SharedPref
-        setAppointmentLastUpdateUseCase.execute(time)
 
         if (position == -1) {
             selectedDate.value!!.appointmentsList?.removeAt(position)
