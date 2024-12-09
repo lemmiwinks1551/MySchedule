@@ -479,22 +479,22 @@ class DomainModule {
     // Shared preferences
 
     @Provides
-    fun GetAppointmentLastUpdateUseCase(repository: SettingsRepository): GetAppointmentLastUpdateUseCase {
+    fun getGetAppointmentLastUpdateUseCase(repository: SettingsRepository): GetAppointmentLastUpdateUseCase {
         return GetAppointmentLastUpdateUseCase(repository)
     }
 
     @Provides
-    fun SetAppointmentLastUpdateUseCase(repository: SettingsRepository): SetAppointmentLastUpdateUseCase {
+    fun getSetAppointmentLastUpdateUseCase(repository: SettingsRepository): SetAppointmentLastUpdateUseCase {
         return SetAppointmentLastUpdateUseCase(repository)
     }
 
     @Provides
-    fun GetCalendarDateLastUpdateUseCase(repository: SettingsRepository): GetCalendarDateLastUpdateUseCase {
+    fun getGetCalendarDateLastUpdateUseCase(repository: SettingsRepository): GetCalendarDateLastUpdateUseCase {
         return GetCalendarDateLastUpdateUseCase(repository)
     }
 
     @Provides
-    fun SetCalendarDateLastUpdateUseCase(repository: SettingsRepository): SetCalendarLastUpdateUseCase {
+    fun getSetCalendarDateLastUpdateUseCase(repository: SettingsRepository): SetCalendarLastUpdateUseCase {
         return SetCalendarLastUpdateUseCase(repository)
     }
 }
