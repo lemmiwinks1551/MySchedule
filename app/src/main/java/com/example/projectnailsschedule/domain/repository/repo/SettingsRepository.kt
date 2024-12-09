@@ -19,4 +19,12 @@ interface SettingsRepository {
     fun setJwt(jwt: String?): Boolean
 
     fun getJwt(): String?
+
+    fun setAppointmentsLastUpdate(time: Long)
+
+    fun getAppointmentsLastUpdate(): Long
+
+    fun setCalendarDateLastUpdate(time: Long)
+
+    fun getCalendarDateLastUpdate(): Long
 }

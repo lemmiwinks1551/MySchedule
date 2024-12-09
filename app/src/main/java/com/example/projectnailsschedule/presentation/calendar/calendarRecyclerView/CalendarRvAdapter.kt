@@ -232,38 +232,43 @@ class CalendarRvAdapter(
 
         if (id == null) {
             // if date is not exists in database
-            insertDateWithNewColor(ruFormatDate = ruFormatDate, color = color)
+            insertCalendarDate(ruFormatDate = ruFormatDate, color = color)
         } else {
             if (color == "default") {
                 // if color is deleted - delete from db
                 calendarDbDeleteObj(id = id)
             } else {
                 // if date already exists in database
-                replaceColor(id = id, ruFormatDate = ruFormatDate, color = color)
+                updateCalendarDate(id = id, ruFormatDate = ruFormatDate, color = color)
             }
         }
     }
 
-    private suspend fun insertDateWithNewColor(ruFormatDate: String, color: String) {
+    private suspend fun insertCalendarDate(ruFormatDate: String, color: String) {
         Log.d("Color", "Insert color for date $ruFormatDate")
+        val time = Util().generateTimestamp().time
+
         val calendarDateModelDb = CalendarDateModelDb(
             date = ruFormatDate,
             color = color,
             syncUUID = UUID.randomUUID().toString(),
-            syncTimestamp = Util().generateTimestamp().time,
+            syncTimestamp = time,
             syncStatus = "NotSynchronized"
         )
+        dateParamsViewModel.setCalendarLastUpdateUseCase.execute(time)
         insertColorToCalendarDb(calendarDateModelDb = calendarDateModelDb)
     }
 
-    private suspend fun replaceColor(id: Int, ruFormatDate: String, color: String) {
+    private suspend fun updateCalendarDate(id: Int, ruFormatDate: String, color: String) {
         Log.e("Color", "Replacing color for date $ruFormatDate")
         val currentData = dateParamsViewModel.getByIdCalendarDateUseCase.execute(id.toLong())
+        val time = Util().generateTimestamp().time
         val newData = currentData?.copy(
             color = color,
-            syncTimestamp = Util().generateTimestamp().time,
+            syncTimestamp = time,
             syncStatus = "NotSynchronized"
         )
+        dateParamsViewModel.setCalendarLastUpdateUseCase.execute(time)
         insertColorToCalendarDb(calendarDateModelDb = newData!!)
     }
 

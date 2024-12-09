@@ -21,8 +21,8 @@ import com.example.projectnailsschedule.domain.usecase.apiUC.SendUserDataUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.localSyncDbUC.GetBySyncUuidUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.localSyncDbUC.GetCountSyncDbUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.localSyncDbUC.GetDeletedAppointmentsUseCase
-import com.example.projectnailsschedule.domain.usecase.apiUC.localSyncDbUC.GetNotSyncAppointmentsUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.localSyncDbUC.GetMaxAppointmentsTimestamp
+import com.example.projectnailsschedule.domain.usecase.apiUC.localSyncDbUC.GetNotSyncAppointmentsUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.DeleteRemoteAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.DisableSyncUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.EnableSyncUseCase
@@ -48,8 +48,8 @@ import com.example.projectnailsschedule.domain.usecase.calendarUC.GetBySyncUuidC
 import com.example.projectnailsschedule.domain.usecase.calendarUC.GetCountCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.GetDateAppointments
 import com.example.projectnailsschedule.domain.usecase.calendarUC.GetDeletedCalendarDateUseCase
-import com.example.projectnailsschedule.domain.usecase.calendarUC.GetNotSyncCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.GetMaxCalendarDateTimestamp
+import com.example.projectnailsschedule.domain.usecase.calendarUC.GetNotSyncCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.InsertCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.SelectCalendarDateByDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.UpdateCalendarDateUseCase
@@ -65,6 +65,10 @@ import com.example.projectnailsschedule.domain.usecase.proceduresUC.InsertProced
 import com.example.projectnailsschedule.domain.usecase.proceduresUC.SearchProcedureUseCase
 import com.example.projectnailsschedule.domain.usecase.proceduresUC.UpdateProcedureUseCase
 import com.example.projectnailsschedule.domain.usecase.settingsUC.*
+import com.example.projectnailsschedule.domain.usecase.sharedPref.GetAppointmentLastUpdateUseCase
+import com.example.projectnailsschedule.domain.usecase.sharedPref.GetCalendarDateLastUpdateUseCase
+import com.example.projectnailsschedule.domain.usecase.sharedPref.SetAppointmentLastUpdateUseCase
+import com.example.projectnailsschedule.domain.usecase.sharedPref.SetCalendarLastUpdateUseCase
 import com.example.projectnailsschedule.domain.usecase.socUC.*
 import com.example.projectnailsschedule.domain.usecase.util.RestartAppUseCase
 import com.example.projectnailsschedule.domain.usecase.util.UpdateUserDataUseCase
@@ -470,5 +474,27 @@ class DomainModule {
     fun getGetCountCalendarDateUseCase(repository: CalendarRepository): GetCountCalendarDateUseCase {
         return GetCountCalendarDateUseCase(repository)
 
+    }
+
+    // Shared preferences
+
+    @Provides
+    fun GetAppointmentLastUpdateUseCase(repository: SettingsRepository): GetAppointmentLastUpdateUseCase {
+        return GetAppointmentLastUpdateUseCase(repository)
+    }
+
+    @Provides
+    fun SetAppointmentLastUpdateUseCase(repository: SettingsRepository): SetAppointmentLastUpdateUseCase {
+        return SetAppointmentLastUpdateUseCase(repository)
+    }
+
+    @Provides
+    fun GetCalendarDateLastUpdateUseCase(repository: SettingsRepository): GetCalendarDateLastUpdateUseCase {
+        return GetCalendarDateLastUpdateUseCase(repository)
+    }
+
+    @Provides
+    fun SetCalendarDateLastUpdateUseCase(repository: SettingsRepository): SetCalendarLastUpdateUseCase {
+        return SetCalendarLastUpdateUseCase(repository)
     }
 }

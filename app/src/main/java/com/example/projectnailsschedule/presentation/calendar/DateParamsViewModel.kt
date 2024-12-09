@@ -19,6 +19,8 @@ import com.example.projectnailsschedule.domain.usecase.calendarUC.GetDateAppoint
 import com.example.projectnailsschedule.domain.usecase.calendarUC.InsertCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.SelectCalendarDateByDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.UpdateCalendarDateUseCase
+import com.example.projectnailsschedule.domain.usecase.sharedPref.SetAppointmentLastUpdateUseCase
+import com.example.projectnailsschedule.domain.usecase.sharedPref.SetCalendarLastUpdateUseCase
 import com.example.projectnailsschedule.domain.usecase.socUC.StartInstagramUc
 import com.example.projectnailsschedule.domain.usecase.socUC.StartPhoneUc
 import com.example.projectnailsschedule.domain.usecase.socUC.StartTelegramUc
@@ -56,7 +58,11 @@ class DateParamsViewModel @Inject constructor(
     private val startPhoneUc: StartPhoneUc,
 
     private val getProductionCalendarDateInfoUseCase: GetProductionCalendarDateInfoUseCase,
-    private val getProductionCalendarYearUseCase: GetProductionCalendarYearUseCase
+    private val getProductionCalendarYearUseCase: GetProductionCalendarYearUseCase,
+
+    // Shared preferences
+    private var setAppointmentLastUpdateUseCase: SetAppointmentLastUpdateUseCase,
+    var setCalendarLastUpdateUseCase: SetCalendarLastUpdateUseCase
 ) : ViewModel() {
     private val tagDateColor = "DateColor"
 
@@ -159,10 +165,13 @@ class DateParamsViewModel @Inject constructor(
         }
         selectedDate.postValue(selectedDate.value)
 
+        val time = Util().generateTimestamp().time
         appointmentModelDb.syncUUID = UUID.randomUUID().toString()
-        appointmentModelDb.syncTimestamp = Util().generateTimestamp().time
+        appointmentModelDb.syncTimestamp = time
         appointmentModelDb.syncStatus = "NotSynchronized"
 
+        // Обновляем дату последнего изменения в SharedPref
+        setAppointmentLastUpdateUseCase.execute(time)
         return insertAppointmentUseCase.execute(appointmentModelDb)
     }
 
@@ -172,9 +181,12 @@ class DateParamsViewModel @Inject constructor(
         )
         selectedDate.postValue(selectedDate.value)
 
-        appointmentModelDb.syncTimestamp = Util().generateTimestamp().time
+        val time = Util().generateTimestamp().time
+        appointmentModelDb.syncTimestamp = time
         appointmentModelDb.syncStatus = "NotSynchronized"
 
+        // Обновляем дату последнего изменения в SharedPref
+        setAppointmentLastUpdateUseCase.execute(time)
         return updateAppointmentUseCase.execute(appointmentModelDb)
     }
 
