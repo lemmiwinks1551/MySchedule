@@ -29,6 +29,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
+import java.util.Date
 import java.util.UUID
 
 class CalendarRvAdapter(
@@ -236,7 +237,7 @@ class CalendarRvAdapter(
         } else {
             if (color == "default") {
                 // if color is deleted - delete from db
-                calendarDbDeleteObj(id = id)
+                markDeleteCalendarDate(id = id)
             } else {
                 // if date already exists in database
                 updateCalendarDate(id = id, ruFormatDate = ruFormatDate, color = color)
@@ -246,7 +247,7 @@ class CalendarRvAdapter(
 
     private suspend fun insertCalendarDate(ruFormatDate: String, color: String) {
         Log.d("Color", "Insert color for date $ruFormatDate")
-        val time = Util().generateTimestamp().time
+        val time = Date().time
 
         val calendarDateModelDb = CalendarDateModelDb(
             date = ruFormatDate,
@@ -256,25 +257,25 @@ class CalendarRvAdapter(
             syncStatus = "NotSynchronized"
         )
         dateParamsViewModel.setCalendarLastUpdateUseCase.execute(time)
-        insertColorToCalendarDb(calendarDateModelDb = calendarDateModelDb)
+        dateParamsViewModel.insertCalendarDate(calendarDateModelDb)
     }
 
     private suspend fun updateCalendarDate(id: Int, ruFormatDate: String, color: String) {
         Log.e("Color", "Replacing color for date $ruFormatDate")
         val currentData = dateParamsViewModel.getByIdCalendarDateUseCase.execute(id.toLong())
-        val time = Util().generateTimestamp().time
+        val time = Date().time
         val newData = currentData?.copy(
             color = color,
             syncTimestamp = time,
             syncStatus = "NotSynchronized"
         )
         dateParamsViewModel.setCalendarLastUpdateUseCase.execute(time)
-        insertColorToCalendarDb(calendarDateModelDb = newData!!)
+        dateParamsViewModel.updateCalendarDate(newData!!)
     }
 
-    private suspend fun calendarDbDeleteObj(id: Int) {
+    private suspend fun markDeleteCalendarDate(id: Int) {
         val currentData = dateParamsViewModel.getByIdCalendarDateUseCase.execute(id.toLong())
-        val time = Util().generateTimestamp().time
+        val time = Date().time
 
         val newData = currentData?.copy(
             syncTimestamp = time,
@@ -283,10 +284,6 @@ class CalendarRvAdapter(
 
         dateParamsViewModel.setCalendarLastUpdateUseCase.execute(time)
         dateParamsViewModel.updateCalendarDate(newData!!)
-    }
-
-    private suspend fun insertColorToCalendarDb(calendarDateModelDb: CalendarDateModelDb) {
-        dateParamsViewModel.insertCalendarDate(calendarDateModelDb)
     }
 
     private fun initColorsImageButtons(dialogView: View) {

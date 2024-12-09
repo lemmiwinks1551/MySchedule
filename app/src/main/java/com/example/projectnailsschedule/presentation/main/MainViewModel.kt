@@ -135,12 +135,12 @@ class MainViewModel @Inject constructor(
             }
 
             remoteOutdated -> {
-                pushAppointments(user)
+                pushAppointments(user, jwt)
             }
         }
     }
 
-    private suspend fun pushAppointments(user: UserInfoDto) {
+    private suspend fun pushAppointments(user: UserInfoDto, jwt: String) {
         Log.i(logAppointments, "Выполняем метод pushAppointments()")
         /**
          *  1.  Выбирает все записи со статусом NotSynchronized
@@ -165,20 +165,21 @@ class MainViewModel @Inject constructor(
         setUsernameAppointments(notSyncedAndDeletedData, user)
         // Отправляем несинхронизированные и удаленные записи на сервер
         for (appointment in notSyncedAndDeletedData) {
-            if (appointment.syncStatus == notSynchronizedStatus) {
-                val result = postAppointmentUseCase.execute(appointment, getJwt.execute()!!)
-                if (result == okServerResponse) {
-                    // Обновляем статус синхронизации локально, если запись успешно обновлена на сервере
-                    appointment.syncStatus = synchronizedStatus
-                    updateAppointmentUseCase.execute(appointment)
+            when (appointment.syncStatus) {
+                notSynchronizedStatus -> {
+                    val serverResponse = postAppointmentUseCase.execute(appointment, jwt)
+                    if (serverResponse == okServerResponse) {
+                        // Обновляем статус синхронизации локально, если запись успешно обновлена на сервере
+                        appointment.syncStatus = synchronizedStatus
+                        updateAppointmentUseCase.execute(appointment)
+                    }
                 }
-            }
-
-            if (appointment.syncStatus == deletedStatus) {
-                val result = deleteRemoteAppointmentUseCase.execute(appointment, getJwt.execute()!!)
-                if (result == okServerResponse) {
-                    // Удаляем запись локально, если она успешно удалена на сервере
-                    deleteAppointmentUseCase.execute(appointment)
+                deletedStatus -> {
+                    val serverResponse = deleteRemoteAppointmentUseCase.execute(appointment, jwt)
+                    if (serverResponse == okServerResponse) {
+                        // Удаляем запись локально, если она успешно удалена на сервере
+                        deleteAppointmentUseCase.execute(appointment)
+                    }
                 }
             }
         }
@@ -302,13 +303,13 @@ class MainViewModel @Inject constructor(
             }
 
             remoteOutdated -> {
-                pushCalendarDate(user)
+                pushCalendarDate(user, jwt)
             }
         }
     }
 
-    private suspend fun pushCalendarDate(user: UserInfoDto) {
-        Log.i(logAppointments, "Выполняем метод pushCalendarDate()")
+    private suspend fun pushCalendarDate(user: UserInfoDto, jwt: String) {
+        Log.i(logCalendar, "Выполняем метод pushCalendarDate()")
         /**
          *  1.  Выбирает все записи со статусом NotSynchronized
          *  1.1 Отправляет все записи на сервер
@@ -333,22 +334,24 @@ class MainViewModel @Inject constructor(
 
         // Отправляем несинхронизированные и удаленные записи на сервер
         for (calendarDateModelDb in notSyncedAndDeletedData) {
-            if (calendarDateModelDb.syncStatus == notSynchronizedStatus) {
-                val result =
-                    postRemoteCalendarDateUseCase.execute(calendarDateModelDb, getJwt.execute()!!)
-                if (result == okServerResponse) {
-                    // Обновляем статус синхронизации локально, если запись успешно обновлена на сервере
-                    calendarDateModelDb.syncStatus = synchronizedStatus
-                    updateCalendarDateUseCase.execute(calendarDateModelDb)
+            when (calendarDateModelDb.syncStatus) {
+                notSynchronizedStatus -> {
+                    val serverResponse =
+                        postRemoteCalendarDateUseCase.execute(calendarDateModelDb, jwt)
+                    if (serverResponse == okServerResponse) {
+                        // Обновляем статус синхронизации локально, если запись успешно обновлена на сервере
+                        calendarDateModelDb.syncStatus = synchronizedStatus
+                        updateCalendarDateUseCase.execute(calendarDateModelDb)
+                    }
                 }
-            }
 
-            if (calendarDateModelDb.syncStatus == deletedStatus) {
-                val result =
-                    deleteRemoteCalendarDateUseCase.execute(calendarDateModelDb, getJwt.execute()!!)
-                if (result == okServerResponse) {
-                    // Удаляем запись локально, если она успешно удалена на сервере
-                    deleteCalendarDateUseCase.execute(calendarDateModelDb)
+                deletedStatus -> {
+                    val serverResponse =
+                        deleteRemoteCalendarDateUseCase.execute(calendarDateModelDb, jwt)
+                    if (serverResponse == okServerResponse) {
+                        // Удаляем запись локально, если она успешно удалена на сервере
+                        deleteCalendarDateUseCase.execute(calendarDateModelDb)
+                    }
                 }
             }
         }
