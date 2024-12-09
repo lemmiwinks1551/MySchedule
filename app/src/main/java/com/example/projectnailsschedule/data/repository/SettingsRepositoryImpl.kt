@@ -69,7 +69,7 @@ class SettingsRepositoryImpl(context: Context?) : SettingsRepository {
 
     override fun setAppointmentsLastUpdate(time: Long) {
         val editor = sharedPreference.edit()
-        editor.putString(updateKeyAppointments, Date().time.toString())
+        editor.putString(updateKeyAppointments, time.toString())
         editor.apply()
     }
 
@@ -79,7 +79,7 @@ class SettingsRepositoryImpl(context: Context?) : SettingsRepository {
 
     override fun setCalendarDateLastUpdate(time: Long) {
         val editor = sharedPreference.edit()
-        editor.putString(updateKeyCalendarDate, Date().time.toString())
+        editor.putString(updateKeyCalendarDate, time.toString())
         editor.apply()
     }
 

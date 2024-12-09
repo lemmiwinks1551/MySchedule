@@ -93,7 +93,7 @@ class MainActivity : AppCompatActivity() {
                     val threadName = Thread.currentThread().name
                     val startTime = System.currentTimeMillis()
                     val starTime = Date()
-                    Log.i("Timer", "Синхронизация началась на потоке: $threadName в $startTime")
+                    Log.i("SyncTimer", "Синхронизация началась на потоке: $threadName в $startTime")
 
                     lifecycleScope.launch(Dispatchers.IO) {
                         try {
@@ -118,7 +118,7 @@ class MainActivity : AppCompatActivity() {
                     Log.i("Sync", "Синхронизация уже выполняется, новая задача не запускается.")
                 }
             }, { error ->
-                Log.e("Sync", "Ошибка в Observable: ${error.message}")
+                Log.e("SyncTimer", "Ошибка в Observable: ${error.message}")
             })
     }
 

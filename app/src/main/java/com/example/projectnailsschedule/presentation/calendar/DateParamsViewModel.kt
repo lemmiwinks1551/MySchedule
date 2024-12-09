@@ -33,6 +33,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import java.time.LocalDate
+import java.util.Date
 import java.util.UUID
 import javax.inject.Inject
 
@@ -165,7 +166,7 @@ class DateParamsViewModel @Inject constructor(
         }
         selectedDate.postValue(selectedDate.value)
 
-        val time = Util().generateTimestamp().time
+        val time = Date().time
         appointmentModelDb.syncUUID = UUID.randomUUID().toString()
         appointmentModelDb.syncTimestamp = time
         appointmentModelDb.syncStatus = "NotSynchronized"
@@ -181,7 +182,7 @@ class DateParamsViewModel @Inject constructor(
         )
         selectedDate.postValue(selectedDate.value)
 
-        val time = Util().generateTimestamp().time
+        val time = Date().time
         appointmentModelDb.syncTimestamp = time
         appointmentModelDb.syncStatus = "NotSynchronized"
 
@@ -197,10 +198,15 @@ class DateParamsViewModel @Inject constructor(
     suspend fun deleteAppointment(
         appointmentModelDb: AppointmentModelDb, position: Int = -1
     ) {
-        appointmentModelDb.syncTimestamp = Util().generateTimestamp().time
+        val time = Date().time
+
+        appointmentModelDb.syncTimestamp = time
         appointmentModelDb.syncStatus = "DELETED"
 
         updateAppointmentUseCase.execute(appointmentModelDb)
+
+        // Обновляем дату последнего изменения в SharedPref
+        setAppointmentLastUpdateUseCase.execute(time)
 
         if (position == -1) {
             selectedDate.value!!.appointmentsList?.removeAt(position)

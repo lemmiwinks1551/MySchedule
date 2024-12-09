@@ -274,10 +274,14 @@ class CalendarRvAdapter(
 
     private suspend fun calendarDbDeleteObj(id: Int) {
         val currentData = dateParamsViewModel.getByIdCalendarDateUseCase.execute(id.toLong())
+        val time = Util().generateTimestamp().time
+
         val newData = currentData?.copy(
-            syncTimestamp = Util().generateTimestamp().time,
+            syncTimestamp = time,
             syncStatus = "DELETED"
         )
+
+        dateParamsViewModel.setCalendarLastUpdateUseCase.execute(time)
         dateParamsViewModel.updateCalendarDate(newData!!)
     }
 
