@@ -30,6 +30,7 @@ import com.example.projectnailsschedule.domain.usecase.calendarUC.GetBySyncUuidC
 import com.example.projectnailsschedule.domain.usecase.calendarUC.GetDeletedCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.GetNotSyncCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.InsertCalendarDateUseCase
+import com.example.projectnailsschedule.domain.usecase.calendarUC.SelectCalendarDateByDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.UpdateCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.settingsUC.GetUserThemeUseCase
 import com.example.projectnailsschedule.domain.usecase.sharedPref.GetAppointmentLastUpdateUseCase
@@ -79,6 +80,7 @@ class MainViewModel @Inject constructor(
     private var getNotSyncCalendarDateUseCase: GetNotSyncCalendarDateUseCase,
     private var getDeletedCalendarDateUseCase: GetDeletedCalendarDateUseCase,
     private var getBySyncUuidCalendarDateUseCase: GetBySyncUuidCalendarDateUseCase,
+    private val selectCalendarDateByDateUseCase: SelectCalendarDateByDateUseCase,
 
     // CalendarDate API
     private var postRemoteCalendarDateUseCase: PostCalendarDateUseCase,
@@ -128,12 +130,12 @@ class MainViewModel @Inject constructor(
         }
 
         // Получаем временные метки последней записи локально и удаленно
-        val lastLocalTimestamp = getAppointmentLastUpdateUseCase.execute()
+        val lastRemoteUpdateTime = getAppointmentLastUpdateUseCase.execute()
         val lastRemoteTimestamp =
             getUserLastRemoteAppointmentTimestamp.execute(user!!, jwt!!) ?: 0L
 
-        if (localOutdated(lastLocalTimestamp, lastRemoteTimestamp, logAppointments)) {
-            pullAppointments(lastLocalTimestamp, jwt)
+        if (localOutdated(lastRemoteUpdateTime, lastRemoteTimestamp, logAppointments)) {
+            pullAppointments(lastRemoteUpdateTime, jwt)
         }
 
         if (getAppointmentsForPush()) {
@@ -244,6 +246,11 @@ class MainViewModel @Inject constructor(
                 }
 
                 if (updatedAppointment.syncStatus.equals(notSynchronizedStatus)) {
+                    // Если обновляемая запись более старая чем локальная по времени -
+                    // отменяем обновление и переходим к следующей записи
+                    if (updatedAppointment.syncTimestamp!! <= localAppointment.syncTimestamp!!) {
+                        continue
+                    }
                     updatedAppointment._id = localAppointment._id
 
                     // Заглушка, пока не настроена синхронизация клиентов - не обновляем поле clientID
@@ -365,9 +372,16 @@ class MainViewModel @Inject constructor(
         Log.i(logCalendar, "Выполняем метод updateCalendarDateDb()")
 
         for (updatedCalendarDate in calendarDateToUpdate) {
-            // проверяем, существует ли такая запись уже по UUID
+            // Ищем запись сначала по UUID, затем по дате, если UUID не найден
             val localCalendarDate =
                 getBySyncUuidCalendarDateUseCase.execute(updatedCalendarDate.syncUUID!!)
+                    ?: selectCalendarDateByDateUseCase.execute(updatedCalendarDate.date!!)
+
+            if (localCalendarDate.syncUUID != updatedCalendarDate.syncUUID) {
+                // Если запись была создана локально уже, но на сервере её нет - нужно ей присвоить
+                // существующий на сервере UUID по этой записи, чтобы не создавать копии на сервере в БД
+                updateCalendarDateUseCase.execute(localCalendarDate.copy(syncUUID = updatedCalendarDate.syncUUID))
+            }
 
             // Если локальной записи такой нет -> мы получили новую запись
             if (localCalendarDate == null) {
@@ -406,12 +420,14 @@ class MainViewModel @Inject constructor(
                 }
 
                 if (updatedCalendarDate.syncStatus.equals(notSynchronizedStatus)) {
-                    val calendarDateForInput = updatedCalendarDate.copy(
-                        _id = localCalendarDate._id,
-                        syncStatus = synchronizedStatus
-                    )
-                    updateCalendarDateUseCase.execute(calendarDateForInput)
-                    Log.i(logCalendar, "Запись $localSyncUuid обновлена")
+                    if (updatedCalendarDate.syncTimestamp!! > localCalendarDate.syncTimestamp!!) {
+                        val calendarDateForInput = updatedCalendarDate.copy(
+                            _id = localCalendarDate._id,
+                            syncStatus = synchronizedStatus
+                        )
+                        updateCalendarDateUseCase.execute(calendarDateForInput)
+                        Log.i(logCalendar, "Запись $localSyncUuid обновлена")
+                    }
                 }
 
                 if (updatedCalendarDate.syncStatus.equals(deletedStatus)) {
