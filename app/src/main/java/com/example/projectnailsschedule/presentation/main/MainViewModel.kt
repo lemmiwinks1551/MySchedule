@@ -377,12 +377,6 @@ class MainViewModel @Inject constructor(
                 getBySyncUuidCalendarDateUseCase.execute(updatedCalendarDate.syncUUID!!)
                     ?: selectCalendarDateByDateUseCase.execute(updatedCalendarDate.date!!)
 
-            if (localCalendarDate.syncUUID != updatedCalendarDate.syncUUID) {
-                // Если запись была создана локально уже, но на сервере её нет - нужно ей присвоить
-                // существующий на сервере UUID по этой записи, чтобы не создавать копии на сервере в БД
-                updateCalendarDateUseCase.execute(localCalendarDate.copy(syncUUID = updatedCalendarDate.syncUUID))
-            }
-
             // Если локальной записи такой нет -> мы получили новую запись
             if (localCalendarDate == null) {
                 if (updatedCalendarDate.syncStatus!! == notSynchronizedStatus) {
@@ -400,10 +394,14 @@ class MainViewModel @Inject constructor(
                         "${updatedCalendarDate.syncUUID} = $deletedStatus, пропускаем"
                     )
                 }
-            }
+            } else {
+                if (localCalendarDate.syncUUID != updatedCalendarDate.syncUUID) {
+                    // Если запись была создана локально уже, но на сервере её нет - нужно ей присвоить
+                    // существующий на сервере UUID по этой записи, чтобы не создавать копии на сервере в БД
+                    updateCalendarDateUseCase.execute(localCalendarDate.copy(syncUUID = updatedCalendarDate.syncUUID))
+                }
 
-            // Если локальной запись есть -> обновляем существующую запись
-            if (localCalendarDate != null) {
+                // Если локальной запись есть -> обновляем существующую запись
                 val localSyncUuid = localCalendarDate.syncUUID
 
                 if (localCalendarDate.syncStatus.equals(deletedStatus)) {
@@ -434,7 +432,6 @@ class MainViewModel @Inject constructor(
                     deleteCalendarDateUseCase.execute(localCalendarDate)
                     Log.i(logCalendar, "Запись $localSyncUuid удалена")
                 }
-
             }
 
             // Устанавливаем отметку последнего изменения в Shared preferences

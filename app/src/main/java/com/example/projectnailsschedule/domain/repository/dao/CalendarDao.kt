@@ -19,7 +19,7 @@ interface CalendarDao {
     @Delete
     suspend fun delete(calendarDateModelDb: CalendarDateModelDb)
 
-    @Query("SELECT * FROM calendar WHERE date = :date")
+    @Query("SELECT * FROM calendar WHERE date = :date AND syncStatus != 'DELETED'")
     suspend fun selectDate(date: String) : CalendarDateModelDb
 
     @Query("SELECT * FROM calendar")

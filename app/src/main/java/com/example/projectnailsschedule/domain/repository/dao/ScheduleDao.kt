@@ -19,7 +19,7 @@ interface ScheduleDao {
     @Delete
     suspend fun delete(appointmentModelDb: AppointmentModelDb)
 
-    @Query("SELECT * FROM schedule WHERE date = :date ORDER BY time")
+    @Query("SELECT * FROM schedule WHERE date = :date AND syncStatus != 'DELETED' ORDER BY time")
     suspend fun getDateAppointments(date: String): MutableList<AppointmentModelDb>
 
     @Query("SELECT * FROM schedule WHERE date LIKE :dateMonth ORDER BY date")
