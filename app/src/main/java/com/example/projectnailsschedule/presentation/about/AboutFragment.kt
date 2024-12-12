@@ -1,5 +1,7 @@
 package com.example.projectnailsschedule.presentation.about
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,9 +15,7 @@ import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentAboutBinding
 import com.example.projectnailsschedule.util.Util
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+
 
 @AndroidEntryPoint
 class AboutFragment : Fragment() {
@@ -51,6 +51,19 @@ class AboutFragment : Fragment() {
 
     private fun initWidgets() {
         versionTextView = binding.versionTextView
+
+        binding.privacyPolicy.setOnClickListener {
+            val url = "https://myschedule.myddns.me/privacy-policy"
+            val i = Intent(Intent.ACTION_VIEW)
+            i.setData(Uri.parse(url))
+            startActivity(i)
+        }
+        binding.disclaimer.setOnClickListener {
+            val url = "https://myschedule.myddns.me/disclaimer"
+            val i = Intent(Intent.ACTION_VIEW)
+            i.setData(Uri.parse(url))
+            startActivity(i)
+        }
     }
 
     private fun setVersionTextView() {
