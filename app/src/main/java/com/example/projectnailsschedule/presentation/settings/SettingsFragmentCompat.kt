@@ -78,7 +78,7 @@ class SettingsFragmentCompat : PreferenceFragmentCompat() {
 
         lifecycleScope.launch(Dispatchers.IO) {
             val userInfoDto = settingsViewModel.getUserInfoApi()
-            if (userInfoDto != null) {
+            if (userInfoDto != null && userInfoDto.betaTester == true) {
                 withContext(Dispatchers.Main) {
                     // пользователь залогинен - разрешеаем изменение статуса
                     synchronization.isEnabled = true
@@ -101,7 +101,6 @@ class SettingsFragmentCompat : PreferenceFragmentCompat() {
             } else {
                 withContext(Dispatchers.Main) {
                     // пользователь не залогинен - блокируем изменение статуса
-                    synchronization.summary = "Включить/Выключить синхронизацию\nНеобходимо войти в аккаунт"
                     synchronization.isEnabled = false
                     synchronization.onPreferenceClickListener = null
                 }

@@ -10,7 +10,8 @@ data class UserInfoDto(
     val accountNonLocked: Boolean?,
     val authorities: List<String>?,
     val credentialsNonExpired: Boolean?,
-    val accountNonExpired: Boolean?
+    val accountNonExpired: Boolean?,
+    val betaTester: Boolean?
 )
 
 object UserInfoDtoManager {

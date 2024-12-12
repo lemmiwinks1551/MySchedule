@@ -15,8 +15,8 @@
         app:icon="@drawable/baseline_cloud_connected_24"
         app:key="synchronization"
         app:enabled="false"
-        app:summary="Включить/Выключить синхронизацию"
-        app:title="Синхронизация (beta)" />
+        app:summary="Пока только для тестировщиков"
+        app:title="Синхронизация" />
 
     <Preference
         app:icon="@drawable/baseline_question_mark_24"
