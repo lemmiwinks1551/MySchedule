@@ -5,6 +5,6 @@ import com.example.projectnailsschedule.domain.repository.repo.CalendarRepositor
 
 class InsertCalendarDateUseCase(private val calendarRepository: CalendarRepository) {
     suspend fun execute(calendarDateModelDb: CalendarDateModelDb): Boolean {
-        return calendarRepository.insertDate(calendarDateModelDb = calendarDateModelDb)
+        return calendarRepository.insert(calendarDateModelDb = calendarDateModelDb)
     }
 }

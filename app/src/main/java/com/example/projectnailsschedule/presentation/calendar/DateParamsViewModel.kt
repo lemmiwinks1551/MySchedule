@@ -11,45 +11,55 @@ import com.example.projectnailsschedule.domain.models.ProductionCalendarDateMode
 import com.example.projectnailsschedule.domain.models.UserDataManager
 import com.example.projectnailsschedule.domain.usecase.apiUC.GetProductionCalendarDateInfoUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.GetProductionCalendarYearUseCase
-import com.example.projectnailsschedule.domain.usecase.appointmentUC.DeleteAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.InsertAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.SearchAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.UpdateAppointmentUseCase
-import com.example.projectnailsschedule.domain.usecase.calendarUC.CalendarDbDeleteObj
+import com.example.projectnailsschedule.domain.usecase.calendarUC.GetByIdCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.GetDateAppointments
 import com.example.projectnailsschedule.domain.usecase.calendarUC.InsertCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.SelectCalendarDateByDateUseCase
+import com.example.projectnailsschedule.domain.usecase.calendarUC.UpdateCalendarDateUseCase
+import com.example.projectnailsschedule.domain.usecase.sharedPref.SetAppointmentLastUpdateUseCase
+import com.example.projectnailsschedule.domain.usecase.sharedPref.SetCalendarLastUpdateUseCase
 import com.example.projectnailsschedule.domain.usecase.socUC.StartInstagramUc
 import com.example.projectnailsschedule.domain.usecase.socUC.StartPhoneUc
 import com.example.projectnailsschedule.domain.usecase.socUC.StartTelegramUc
 import com.example.projectnailsschedule.domain.usecase.socUC.StartVkUc
 import com.example.projectnailsschedule.domain.usecase.socUC.StartWhatsAppUc
 import com.example.projectnailsschedule.presentation.calendar.calendarRecyclerView.CalendarRvAdapter
+import com.example.projectnailsschedule.util.Util
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import java.time.LocalDate
-import java.time.Year
+import java.util.Date
+import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
 class DateParamsViewModel @Inject constructor(
     private val getDateAppointments: GetDateAppointments,
     private val selectCalendarDateByDateUseCase: SelectCalendarDateByDateUseCase,
+
+    // Calendar Date Db
     private val insertCalendarDateUseCase: InsertCalendarDateUseCase,
-    private val calendarDbDeleteObj: CalendarDbDeleteObj,
+    private val updateCalendarDateUseCase: UpdateCalendarDateUseCase,
+    val getByIdCalendarDateUseCase: GetByIdCalendarDateUseCase,
+
+    // Schedule Db
     private var insertAppointmentUseCase: InsertAppointmentUseCase,
     private val updateAppointmentUseCase: UpdateAppointmentUseCase,
     private var searchAppointmentUseCase: SearchAppointmentUseCase,
-    private var deleteAppointmentUseCase: DeleteAppointmentUseCase,
+
     private val startVkUc: StartVkUc,
     private val startTelegramUc: StartTelegramUc,
     private val startInstagramUc: StartInstagramUc,
     private val startWhatsAppUc: StartWhatsAppUc,
     private val startPhoneUc: StartPhoneUc,
+
     private val getProductionCalendarDateInfoUseCase: GetProductionCalendarDateInfoUseCase,
-    private val getProductionCalendarYearUseCase: GetProductionCalendarYearUseCase
+    private val getProductionCalendarYearUseCase: GetProductionCalendarYearUseCase,
 ) : ViewModel() {
     private val tagDateColor = "DateColor"
 
@@ -79,11 +89,9 @@ class DateParamsViewModel @Inject constructor(
     }
 
     fun updateSelectedDate(dateParams: DateParams) {
-        val updatedDateParams =
-            selectedDate.value?.copy(
-                date = dateParams.date,
-                appointmentsList = dateParams.appointmentsList
-            )
+        val updatedDateParams = selectedDate.value?.copy(
+            date = dateParams.date, appointmentsList = dateParams.appointmentsList
+        )
         selectedDate.postValue(updatedDateParams)
     }
 
@@ -138,32 +146,38 @@ class DateParamsViewModel @Inject constructor(
         return insertCalendarDateUseCase.execute(calendarDateModelDb)
     }
 
-    suspend fun calendarDbDeleteObj(calendarDateModelDb: CalendarDateModelDb): Boolean {
-        return calendarDbDeleteObj.execute(calendarDateModelDb)
+    suspend fun updateCalendarDate(calendarDateModelDb: CalendarDateModelDb): Boolean {
+        return updateCalendarDateUseCase.execute(calendarDateModelDb)
     }
 
     suspend fun insertAppointment(
-        appointmentModelDb: AppointmentModelDb,
-        position: Int = -1
+        appointmentModelDb: AppointmentModelDb, position: Int = -1
     ): Long {
         if (position == -1) {
             selectedDate.value?.appointmentsList?.add(appointmentModelDb)
         } else {
             selectedDate.value!!.appointmentsList?.add(
-                position,
-                appointmentModelDb
+                position, appointmentModelDb
             )
         }
         selectedDate.postValue(selectedDate.value)
+
+        val time = Date().time
+        appointmentModelDb.syncUUID = UUID.randomUUID().toString()
+        appointmentModelDb.syncTimestamp = time
+        appointmentModelDb.syncStatus = "NotSynchronized"
         return insertAppointmentUseCase.execute(appointmentModelDb)
     }
 
     suspend fun updateAppointment(appointmentModelDb: AppointmentModelDb): Boolean {
         selectedDate.value?.appointmentsList?.set(
-            appointmentPosition!!,
-            appointmentModelDb
+            appointmentPosition!!, appointmentModelDb
         )
         selectedDate.postValue(selectedDate.value)
+
+        val time = Date().time
+        appointmentModelDb.syncTimestamp = time
+        appointmentModelDb.syncStatus = "NotSynchronized"
         return updateAppointmentUseCase.execute(appointmentModelDb)
     }
 
@@ -172,10 +186,15 @@ class DateParamsViewModel @Inject constructor(
     }
 
     suspend fun deleteAppointment(
-        appointmentModelDb: AppointmentModelDb,
-        position: Int = -1
+        appointmentModelDb: AppointmentModelDb, position: Int = -1
     ) {
-        deleteAppointmentUseCase.execute(appointmentModelDb)
+        val time = Date().time
+
+        appointmentModelDb.syncTimestamp = time
+        appointmentModelDb.syncStatus = "DELETED"
+
+        updateAppointmentUseCase.execute(appointmentModelDb)
+
         if (position == -1) {
             selectedDate.value!!.appointmentsList?.removeAt(position)
         } else {
@@ -185,8 +204,7 @@ class DateParamsViewModel @Inject constructor(
     }
 
     fun getAppointmentPositionInDate(
-        appointmentModelDb: AppointmentModelDb,
-        appointmentList: MutableList<AppointmentModelDb>
+        appointmentModelDb: AppointmentModelDb, appointmentList: MutableList<AppointmentModelDb>
     ): Int {
         return appointmentList.indexOf(appointmentModelDb)
     }

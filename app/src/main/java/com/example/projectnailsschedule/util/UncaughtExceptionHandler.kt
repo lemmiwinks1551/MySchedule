@@ -34,13 +34,16 @@ class UncaughtExceptionHandler(
             event = "Message ${throwable.message}. StackTrace: ${throwable.stackTrace[0]}"
         )
 
+
+
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 sendUserDataUseCase.execute(userData)
             } catch (e: Exception) {
                 e.printStackTrace()
             } finally {
-                Log.e(log, "$log Exiting process")
+                // Выводим лог ошибки
+                Log.e(log, Log.getStackTraceString(throwable))
                 exitProcess(1)
             }
         }

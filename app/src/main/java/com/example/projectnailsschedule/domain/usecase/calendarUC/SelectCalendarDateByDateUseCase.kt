@@ -5,6 +5,6 @@ import com.example.projectnailsschedule.domain.repository.repo.CalendarRepositor
 
 class SelectCalendarDateByDateUseCase(private val calendarRepository: CalendarRepository) {
     suspend fun execute(date: String): CalendarDateModelDb {
-        return calendarRepository.selectDate(date = date)
+        return calendarRepository.select(date = date)
     }
 }

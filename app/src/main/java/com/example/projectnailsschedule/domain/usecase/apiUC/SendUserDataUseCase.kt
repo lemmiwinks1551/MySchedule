@@ -5,8 +5,10 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
 import android.util.Log
+import com.example.projectnailsschedule.BuildConfig
 import com.example.projectnailsschedule.domain.models.UserData
 import com.example.projectnailsschedule.domain.repository.api.EventsApi
+import com.example.projectnailsschedule.util.Util
 import okhttp3.Cache
 import okhttp3.CacheControl
 import okhttp3.Interceptor
@@ -25,6 +27,7 @@ class SendUserDataUseCase @Inject constructor(var context: Context) {
     private val log = this::class.simpleName
 
     suspend fun execute(userData: UserData) {
+        val baseUrl = Util().getBaseUrl()
 
         val interceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
 
@@ -58,25 +61,28 @@ class SendUserDataUseCase @Inject constructor(var context: Context) {
             .build()
 
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://myschedule.myddns.me")
+            .baseUrl(baseUrl)
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
         val eventsApi = retrofit.create(EventsApi::class.java)
 
-        try {
-            Log.i(log, "Отправляем данные $userData")
-            val response = eventsApi.postUserEvent(userData)
+        // Не отправляем ничего, если запущено из дебага
+        if (!BuildConfig.DEBUG) {
+            try {
+                Log.i(log, "Отправляем данные $userData")
+                val response = eventsApi.postUserEvent(userData)
 
-            if (response.isSuccessful) {
-                Log.i(log, "Данные доставлены успешно $userData")
-            } else {
-                Log.i(log, "Не удалось отправить данные $userData")
+                if (response.isSuccessful) {
+                    Log.i(log, "Данные доставлены успешно $userData")
+                } else {
+                    Log.i(log, "Не удалось отправить данные $userData")
+                }
+            } catch (e: Exception) {
+                Log.i(log, "Не удалось отправить данные $userData, ${e.message}")
+                e.printStackTrace()
             }
-        } catch (e: Exception) {
-            Log.i(log, "Не удалось отправить данные $userData, ${e.message}")
-            e.printStackTrace()
         }
     }
 

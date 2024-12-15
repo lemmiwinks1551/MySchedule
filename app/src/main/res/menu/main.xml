@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <item
         android:id="@+id/search"
         android:icon="@android:drawable/ic_menu_search"
@@ -19,6 +20,19 @@
         android:id="@+id/save_toolbar_button"
         android:title="@string/save_changes_button"
         android:visible="false"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="ifRoom" />
 
+    <item
+        android:id="@+id/cloud_connected"
+        android:icon="@drawable/baseline_cloud_connected_24"
+        android:title="Соединение с облаком установлено"
+        android:visible="false"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/cloud_disconnected"
+        android:icon="@drawable/baseline_cloud_disconnected"
+        android:title="Соединение с облаком потеряно"
+        android:visible="true"
+        app:showAsAction="always" />
 </menu>

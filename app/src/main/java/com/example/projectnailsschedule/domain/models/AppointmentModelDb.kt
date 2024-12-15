@@ -16,29 +16,32 @@ import java.time.LocalTime
 @Parcelize
 @Entity(tableName = "schedule")
 data class AppointmentModelDb(
+
+    // Общие поля
     @PrimaryKey(autoGenerate = true)
     var _id: Long? = null,
 
     @ColumnInfo(name = "date")
     val date: String? = null,
 
+    @ColumnInfo(name = "time")
+    val time: String? = null,
+
+    @ColumnInfo(name = "notes")
+    var notes: String? = null,
+
+    @ColumnInfo(name = "deleted")
+    val deleted: Boolean,
+
+    // Поля клиента
     @ColumnInfo(name = "clientId")
     var clientId: Long? = null,
 
     @ColumnInfo(name = "name")
     var name: String? = null,
 
-    @ColumnInfo(name = "time")
-    val time: String? = null,
-
-    @ColumnInfo(name = "procedure")
-    val procedure: String? = null,
-
-    @ColumnInfo(name = "procedureNotes")
-    val procedureNotes: String? = null,
-
-    @ColumnInfo(name = "procedurePrice")
-    val procedurePrice: String? = null,
+    @ColumnInfo(name = "photo")
+    var photo: String? = null,
 
     @ColumnInfo(name = "phone")
     var phone: String? = null,
@@ -55,17 +58,32 @@ data class AppointmentModelDb(
     @ColumnInfo(name = "whatsapp")
     var whatsapp: String? = null,
 
-    @ColumnInfo(name = "notes")
-    var notes: String? = null,
-
     @ColumnInfo(name = "clientNotes")
     var clientNotes: String? = null,
 
-    @ColumnInfo(name = "photo")
-    var photo: String? = null,
+    //Поля процедуры
+    @ColumnInfo(name = "procedure")
+    val procedure: String? = null,
 
-    @ColumnInfo(name = "deleted")
-    val deleted: Boolean
+    @ColumnInfo(name = "procedurePrice")
+    val procedurePrice: String? = null,
+
+    @ColumnInfo(name = "procedureNotes")
+    val procedureNotes: String? = null,
+
+    // Поля для синхронизации
+    @ColumnInfo(name = "syncUUID")
+    var syncUUID: String? = null,
+
+    @ColumnInfo(name = "userName")
+    var userName: String? = null,
+
+    @ColumnInfo(name = "syncTimestamp")
+    var syncTimestamp: Long? = null,
+
+    @ColumnInfo(name = "syncStatus")
+    var syncStatus: String? = null
+
 ) : Parcelable {
 
     override fun toString(): String {

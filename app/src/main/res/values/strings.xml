@@ -176,5 +176,7 @@
     <string name="set_dark_theme">Dark Theme</string>
     <string name="formatted_date">Установить цвет для даты %1$s</string>
     <string name="faq">Часто задаваемые вопросы</string>
+    <string name="my_account">Мой Аккаунт</string>
+    <string name="warning_message"><![CDATA[Нажимая <b>Согласен</b>, вы подтверждаете своё согласие на передачу данных о записях на сервер \n - Мы не несем ответственности за возможные потери данных или ошибки, вызванные использованием функции синхронизации. Вы можете отключить её в любой момент в настройках приложения.]]></string>
 
 </resources>

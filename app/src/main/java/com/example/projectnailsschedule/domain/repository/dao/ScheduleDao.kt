@@ -19,8 +19,9 @@ interface ScheduleDao {
     @Delete
     suspend fun delete(appointmentModelDb: AppointmentModelDb)
 
-    @Query("SELECT * FROM schedule WHERE date = :date ORDER BY time")
+    @Query("SELECT * FROM schedule WHERE date = :date AND (syncStatus != 'DELETED' OR syncStatus IS NULL) ORDER BY time")
     suspend fun getDateAppointments(date: String): MutableList<AppointmentModelDb>
+
 
     @Query("SELECT * FROM schedule WHERE date LIKE :dateMonth ORDER BY date")
     suspend fun getMonthAppointments(dateMonth: String): MutableList<AppointmentModelDb>
@@ -30,6 +31,7 @@ interface ScheduleDao {
 
     @Query(
         "SELECT * FROM schedule WHERE " +
+                "(syncStatus != 'DELETED' OR syncStatus IS NULL) AND (" +
                 "date LIKE :searchQuery OR " +
                 "name LIKE :searchQuery OR " +
                 "time LIKE :searchQuery OR " +
@@ -39,16 +41,19 @@ interface ScheduleDao {
                 "telegram LIKE :searchQuery OR " +
                 "instagram LIKE :searchQuery OR " +
                 "whatsapp LIKE :searchQuery OR " +
-                "notes LIKE :searchQuery ORDER BY _id DESC"
+                "notes LIKE :searchQuery) " +
+                "ORDER BY _id DESC"
     )
     fun searchAppointment(searchQuery: String): MutableList<AppointmentModelDb>
 
-    @Query("UPDATE schedule SET " +
-            "name = :clientName, phone = :clientPhone, " +
-            "vk = :clientVk, telegram = :clientTelegram, " +
-            "instagram = :clientInstagram, whatsapp = :clientWhatsapp, " +
-            "clientNotes = :clientNotes, photo = :clientPhoto " +
-            "WHERE clientId = :clientId")
+    @Query(
+        "UPDATE schedule SET " +
+                "name = :clientName, phone = :clientPhone, " +
+                "vk = :clientVk, telegram = :clientTelegram, " +
+                "instagram = :clientInstagram, whatsapp = :clientWhatsapp, " +
+                "clientNotes = :clientNotes, photo = :clientPhoto " +
+                "WHERE clientId = :clientId"
+    )
     suspend fun updateClientInAppointments(
         clientId: Long,
         clientName: String?,
@@ -60,4 +65,25 @@ interface ScheduleDao {
         clientNotes: String?,
         clientPhoto: String?,
     )
+
+    @Query("SELECT * FROM schedule")
+    suspend fun getAll(): List<AppointmentModelDb>
+
+    @Query("SELECT * FROM schedule WHERE _id = :id")
+    suspend fun getById(id: Long): AppointmentModelDb?
+
+    @Query("SELECT * FROM schedule WHERE syncStatus = :syncStatus")
+    suspend fun getNotSyncAppointments(syncStatus: String = "NotSynchronized"): List<AppointmentModelDb>
+
+    @Query("SELECT * FROM schedule WHERE syncStatus = :syncStatus")
+    suspend fun getDeletedAppointments(syncStatus: String = "DELETED"): List<AppointmentModelDb>
+
+    @Query("SELECT MAX(syncTimestamp) FROM schedule")
+    suspend fun getMaxAppointmentTimestamp(): Long?
+
+    @Query("SELECT * FROM schedule WHERE syncUUID = :syncUUID")
+    suspend fun getBySyncUUID(syncUUID: String): AppointmentModelDb?
+
+    @Query("SELECT COUNT(*) FROM schedule")
+    suspend fun getCount(): Long
 }

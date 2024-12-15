@@ -18,6 +18,14 @@
     <color name="transparent">#00000000</color>
     <color name="hyperlink">#0000EE</color>
 
+    <!--    Gradient theme  -->
+    <color name="Gradient1">#bf4f4e</color>
+    <color name="Gradient2">#e186a7</color>
+    <color name="Gradient3">#d19fce</color>
+    <color name="Gradient4">#d6d2e3</color>
+    <color name="Gradient5">#B191E6</color>
+    <color name="Gradient6">#ffeb3b</color>
+    <color name="Gradient7">#4BEAE6EB</color>
 
     <!--    Pink theme  -->
     <color name="Pink1">#bf4f4e</color>

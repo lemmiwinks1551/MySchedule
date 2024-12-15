@@ -15,11 +15,11 @@
         android:layout_height="wrap_content" />
 
     <Button
-        android:layout_margin="8dp"
         android:id="@+id/select_theme_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_margin="8dp"
         android:text="@string/set_as_theme" />
 
 </LinearLayout>

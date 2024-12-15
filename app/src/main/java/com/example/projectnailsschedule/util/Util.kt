@@ -10,6 +10,8 @@ import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import com.auth0.android.jwt.JWT
+import com.example.projectnailsschedule.BuildConfig
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.data.storage.ClientsDb
 import com.example.projectnailsschedule.data.storage.ProceduresDb
@@ -17,11 +19,14 @@ import com.example.projectnailsschedule.data.storage.ScheduleDb
 import com.example.projectnailsschedule.domain.models.AppointmentModelDb
 import com.example.projectnailsschedule.domain.models.ClientModelDb
 import com.example.projectnailsschedule.domain.models.ProcedureModelDb
-import com.example.projectnailsschedule.domain.models.UserDataManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
 import java.security.SecureRandom
 import java.text.SimpleDateFormat
@@ -386,6 +391,56 @@ class Util {
         }
 
         return sb.toString()
+    }
+
+    fun extractUsernameFromJwt(jwt: String): String? {
+        // Извлекаем логин из поля "sub"
+        return try {
+            JWT(jwt).getClaim("sub").asString().toString()
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    fun generateUuid(): String {
+        return UUID.randomUUID().toString()
+    }
+
+    fun generateTimestamp(): Date {
+        return Date()
+    }
+
+    fun convertTimestampToISO8601String(timestamp: Long): String {
+        val date = Date(timestamp)
+        val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.getDefault())
+        format.timeZone = TimeZone.getTimeZone("UTC")
+        return format.format(date)
+    }
+
+    fun getBaseUrl(): String {
+        //return "https://myschedule.myddns.me"
+
+        return if (BuildConfig.DEBUG) {
+            "http://10.0.2.2:8080/"
+        } else {
+            "https://myschedule.myddns.me"
+        }
+    }
+
+    fun createOkHttpClient(): OkHttpClient {
+        return OkHttpClient.Builder()
+            .addInterceptor(HttpLoggingInterceptor().apply {
+                level = HttpLoggingInterceptor.Level.BODY
+            })
+            .build()
+    }
+
+    fun createRetrofit(baseUrl: String, client: OkHttpClient): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl(baseUrl)
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
     }
 
 /*    fun checkFilePermission(context: Context) {

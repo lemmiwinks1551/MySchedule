@@ -29,6 +29,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
+import java.util.Date
+import java.util.UUID
 
 class CalendarRvAdapter(
     private val daysInMonth: ArrayList<String>,
@@ -69,6 +71,7 @@ class CalendarRvAdapter(
     private lateinit var redImageView: ImageView
     private lateinit var blueImageView: ImageView
     private lateinit var resetImageView: ImageView
+    private var holders: MutableList<ViewHolder> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -83,6 +86,8 @@ class CalendarRvAdapter(
 
         // set day number in CalendarViewHolder
         holder.date.text = dayInHolder
+
+        setCellBackground(position, holder)
 
         // set appointments count
         if (dayInHolder != "") {
@@ -228,44 +233,53 @@ class CalendarRvAdapter(
 
         if (id == null) {
             // if date is not exists in database
-            insertDateWithNewColor(ruFormatDate = ruFormatDate, color = color)
+            insertCalendarDate(ruFormatDate = ruFormatDate, color = color)
         } else {
             if (color == "default") {
                 // if color is deleted - delete from db
-                calendarDbDeleteObj(id = id)
+                markDeleteCalendarDate(id = id)
             } else {
                 // if date already exists in database
-                replaceColor(id = id, ruFormatDate = ruFormatDate, color = color)
+                updateCalendarDate(id = id, ruFormatDate = ruFormatDate, color = color)
             }
         }
     }
 
-    private suspend fun insertDateWithNewColor(ruFormatDate: String, color: String) {
+    private suspend fun insertCalendarDate(ruFormatDate: String, color: String) {
         Log.d("Color", "Insert color for date $ruFormatDate")
+        val time = Date().time
+
         val calendarDateModelDb = CalendarDateModelDb(
             date = ruFormatDate,
-            color = color
+            color = color,
+            syncUUID = UUID.randomUUID().toString(),
+            syncTimestamp = time,
+            syncStatus = "NotSynchronized"
         )
-        insertColorToCalendarDb(calendarDateModelDb = calendarDateModelDb)
-    }
-
-    private suspend fun replaceColor(id: Int, ruFormatDate: String, color: String) {
-        Log.e("Color", "Replacing color for date $ruFormatDate")
-        val calendarDateModelDb = CalendarDateModelDb(
-            _id = id,
-            date = ruFormatDate,
-            color = color
-        )
-        insertColorToCalendarDb(calendarDateModelDb = calendarDateModelDb)
-    }
-
-    private suspend fun calendarDbDeleteObj(id: Int) {
-        val calendarDbObj = CalendarDateModelDb(_id = id)
-        dateParamsViewModel.calendarDbDeleteObj(calendarDbObj)
-    }
-
-    private suspend fun insertColorToCalendarDb(calendarDateModelDb: CalendarDateModelDb) {
         dateParamsViewModel.insertCalendarDate(calendarDateModelDb)
+    }
+
+    private suspend fun updateCalendarDate(id: Int, ruFormatDate: String, color: String) {
+        Log.e("Color", "Replacing color for date $ruFormatDate")
+        val currentData = dateParamsViewModel.getByIdCalendarDateUseCase.execute(id.toLong())
+        val time = Date().time
+        val newData = currentData?.copy(
+            color = color,
+            syncTimestamp = time,
+            syncStatus = "NotSynchronized"
+        )
+        dateParamsViewModel.updateCalendarDate(newData!!)
+    }
+
+    private suspend fun markDeleteCalendarDate(id: Int) {
+        val currentData = dateParamsViewModel.getByIdCalendarDateUseCase.execute(id.toLong())
+        val time = Date().time
+
+        val newData = currentData?.copy(
+            syncTimestamp = time,
+            syncStatus = "DELETED"
+        )
+        dateParamsViewModel.updateCalendarDate(newData!!)
     }
 
     private fun initColorsImageButtons(dialogView: View) {
@@ -473,5 +487,28 @@ class CalendarRvAdapter(
             textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, animatedValue)
         }
         animator.start()
+    }
+
+    private fun setCellBackground(position: Int, holder: ViewHolder) {
+        // Убираем фон для тех дней месяца, которые "по углам" расположены,
+        // чтобы они не портили заливку с круглыми углами,
+        // потом нужно будет для них отдельные ресурсы сделать
+        holders.add(position, holder)
+
+        if (position == 0 || position == 6) {
+            holder.cellLayout.background = null
+        }
+
+        if (position == 28 || position == 34) {
+            holder.cellLayout.background = null
+        }
+
+        if (position == 41) {
+            holder.cellLayout.background = null
+            holders[35].cellLayout.background = null
+
+            holders[28].cellLayout.setBackgroundResource(R.drawable.calendar_recycler_view_borders)
+            holders[34].cellLayout.setBackgroundResource(R.drawable.calendar_recycler_view_borders)
+        }
     }
 }

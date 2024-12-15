@@ -19,6 +19,27 @@ interface CalendarDao {
     @Delete
     suspend fun delete(calendarDateModelDb: CalendarDateModelDb)
 
-    @Query("SELECT * FROM calendar WHERE date = :date")
+    @Query("SELECT * FROM calendar WHERE date = :date AND (syncStatus != 'DELETED' OR syncStatus IS NULL)")
     suspend fun selectDate(date: String) : CalendarDateModelDb
+
+    @Query("SELECT * FROM calendar")
+    suspend fun getAll(): List<CalendarDateModelDb>
+
+    @Query("SELECT * FROM calendar WHERE syncStatus = :syncStatus")
+    suspend fun getNotSync(syncStatus: String = "NotSynchronized"): List<CalendarDateModelDb>
+
+    @Query("SELECT * FROM calendar WHERE syncStatus = :syncStatus")
+    suspend fun getDeleted(syncStatus: String = "DELETED"): List<CalendarDateModelDb>
+
+    @Query("SELECT * FROM calendar WHERE _id = :id")
+    suspend fun getById(id: Long): CalendarDateModelDb?
+
+    @Query("SELECT MAX(syncTimestamp) FROM calendar")
+    suspend fun getMaxTimestamp(): Long?
+
+    @Query("SELECT * FROM calendar WHERE syncUUID = :syncUUID")
+    suspend fun getBySyncUUID(syncUUID: String): CalendarDateModelDb?
+
+    @Query("SELECT COUNT(*) FROM calendar")
+    suspend fun getCount(): Long
 }

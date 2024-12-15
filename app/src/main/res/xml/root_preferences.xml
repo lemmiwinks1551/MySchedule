@@ -11,9 +11,16 @@
         app:summary="@string/report_technical_issues_or_suggest_new_features"
         app:title="@string/send_feedback" />
 
+    <SwitchPreference
+        app:icon="@drawable/baseline_cloud_connected_24"
+        app:key="synchronization"
+        app:enabled="false"
+        app:summary="Пока только для тестировщиков"
+        app:title="Синхронизация" />
+
     <Preference
         app:icon="@drawable/baseline_question_mark_24"
         app:key="faq"
-        app:title="@string/faq"/>
+        app:title="@string/faq" />
 
 </PreferenceScreen>

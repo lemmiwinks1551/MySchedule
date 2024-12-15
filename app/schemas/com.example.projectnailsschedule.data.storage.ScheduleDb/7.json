@@ -6,7 +6,7 @@
     "entities": [
       {
         "tableName": "schedule",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`_id` INTEGER PRIMARY KEY AUTOINCREMENT, `date` TEXT, `clientId` INTEGER, `name` TEXT, `time` TEXT, `procedure` TEXT, `procedureNotes` TEXT, `procedurePrice` TEXT, `phone` TEXT, `telegram` TEXT, `instagram` TEXT, `vk` TEXT, `whatsapp` TEXT, `notes` TEXT, `clientNotes` TEXT, `photo` TEXT, `deleted` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`_id` INTEGER PRIMARY KEY AUTOINCREMENT, `date` TEXT, `time` TEXT, `notes` TEXT, `deleted` INTEGER NOT NULL, `clientId` INTEGER, `name` TEXT, `photo` TEXT, `phone` TEXT, `telegram` TEXT, `instagram` TEXT, `vk` TEXT, `whatsapp` TEXT, `clientNotes` TEXT, `procedure` TEXT, `procedurePrice` TEXT, `procedureNotes` TEXT)",
         "fields": [
           {
             "fieldPath": "_id",
@@ -21,6 +21,24 @@
             "notNull": false
           },
           {
+            "fieldPath": "time",
+            "columnName": "time",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "notes",
+            "columnName": "notes",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "deleted",
+            "columnName": "deleted",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
             "fieldPath": "clientId",
             "columnName": "clientId",
             "affinity": "INTEGER",
@@ -33,26 +51,8 @@
             "notNull": false
           },
           {
-            "fieldPath": "time",
-            "columnName": "time",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "procedure",
-            "columnName": "procedure",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "procedureNotes",
-            "columnName": "procedureNotes",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "procedurePrice",
-            "columnName": "procedurePrice",
+            "fieldPath": "photo",
+            "columnName": "photo",
             "affinity": "TEXT",
             "notNull": false
           },
@@ -87,28 +87,28 @@
             "notNull": false
           },
           {
-            "fieldPath": "notes",
-            "columnName": "notes",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
             "fieldPath": "clientNotes",
             "columnName": "clientNotes",
             "affinity": "TEXT",
             "notNull": false
           },
           {
-            "fieldPath": "photo",
-            "columnName": "photo",
+            "fieldPath": "procedure",
+            "columnName": "procedure",
             "affinity": "TEXT",
             "notNull": false
           },
           {
-            "fieldPath": "deleted",
-            "columnName": "deleted",
-            "affinity": "INTEGER",
-            "notNull": true
+            "fieldPath": "procedurePrice",
+            "columnName": "procedurePrice",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "procedureNotes",
+            "columnName": "procedureNotes",
+            "affinity": "TEXT",
+            "notNull": false
           }
         ],
         "primaryKey": {

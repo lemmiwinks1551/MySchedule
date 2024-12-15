@@ -43,6 +43,9 @@
         <action
             android:id="@+id/action_nav_calendar_to_backupFragment"
             app:destination="@id/nav_import_export" />
+        <action
+            android:id="@+id/action_nav_calendar_to_accountFragment"
+            app:destination="@id/accountFragment" />
     </fragment>
 
     <fragment
@@ -146,5 +149,10 @@
         android:id="@+id/nav_import_export"
         android:name="com.example.projectnailsschedule.presentation.importExport.ImportExportFragment"
         android:label="@string/menu_import_export" />
+    <fragment
+        android:id="@+id/nav_account"
+        tools:layout="@layout/fragment_account_home"
+        android:name="com.example.projectnailsschedule.presentation.account.AccountFragmentHome"
+        android:label="@string/my_account" />
 
 </navigation>

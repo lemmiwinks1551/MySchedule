@@ -1,5 +1,7 @@
 package com.example.projectnailsschedule.presentation.about
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,12 +10,12 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import com.example.projectnailsschedule.BuildConfig
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.FragmentAboutBinding
 import com.example.projectnailsschedule.util.Util
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class AboutFragment : Fragment() {
@@ -36,17 +38,32 @@ class AboutFragment : Fragment() {
 
         setVersionTextView()
 
-        /*        CoroutineScope(Dispatchers.IO).launch {
-                    addTestData()
-                }*/
+/*        if (BuildConfig.DEBUG) {
+            CoroutineScope(Dispatchers.IO).launch {
+                addTestData()
+            }
+        }*/
 
-        aboutViewModel.updateUserData("$log ${object{}.javaClass.enclosingMethod?.name}")
+        aboutViewModel.updateUserData("$log ${object {}.javaClass.enclosingMethod?.name}")
 
         return binding.root
     }
 
     private fun initWidgets() {
         versionTextView = binding.versionTextView
+
+        binding.privacyPolicy.setOnClickListener {
+            val url = "https://myschedule.myddns.me/privacy-policy"
+            val i = Intent(Intent.ACTION_VIEW)
+            i.setData(Uri.parse(url))
+            startActivity(i)
+        }
+        binding.disclaimer.setOnClickListener {
+            val url = "https://myschedule.myddns.me/disclaimer"
+            val i = Intent(Intent.ACTION_VIEW)
+            i.setData(Uri.parse(url))
+            startActivity(i)
+        }
     }
 
     private fun setVersionTextView() {
@@ -57,7 +74,7 @@ class AboutFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        aboutViewModel.updateUserData("$log ${object{}.javaClass.enclosingMethod?.name}")
+        aboutViewModel.updateUserData("$log ${object {}.javaClass.enclosingMethod?.name}")
         _binding = null
     }
 
