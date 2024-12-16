@@ -54,4 +54,8 @@ class CalendarRepositoryImpl(context: Context) : CalendarRepository {
     override suspend fun getCount(): Long {
         return dao.getCount()
     }
+
+    override suspend fun getOldUpdatedCalendarDate(): List<CalendarDateModelDb> {
+        return dao.getOldUpdatedCalendarDate()
+    }
 }

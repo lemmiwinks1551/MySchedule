@@ -51,6 +51,7 @@ import com.example.projectnailsschedule.domain.usecase.calendarUC.GetDateAppoint
 import com.example.projectnailsschedule.domain.usecase.calendarUC.GetDeletedCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.GetMaxCalendarDateTimestamp
 import com.example.projectnailsschedule.domain.usecase.calendarUC.GetNotSyncCalendarDateUseCase
+import com.example.projectnailsschedule.domain.usecase.calendarUC.GetOldUpdatedCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.InsertCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.SelectCalendarDateByDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.UpdateCalendarDateUseCase
@@ -217,7 +218,7 @@ class DomainModule {
         return ExportUseCase(context)
     }
 
-    // Date colors
+    // CalendarDate
 
     @Provides
     fun provideGetDateColorUseCase(repository: CalendarRepository): SelectCalendarDateByDateUseCase {
@@ -232,6 +233,11 @@ class DomainModule {
     @Provides
     fun provideDeleteCalendarObj(repository: CalendarRepository): DeleteCalendarDateUseCase {
         return DeleteCalendarDateUseCase(repository)
+    }
+
+    @Provides
+    fun getGetOldUpdatedCalendarDateUseCase(repository: CalendarRepository): GetOldUpdatedCalendarDateUseCase {
+        return GetOldUpdatedCalendarDateUseCase(repository)
     }
 
     // Settings

@@ -30,6 +30,7 @@ import com.example.projectnailsschedule.domain.usecase.calendarUC.DeleteCalendar
 import com.example.projectnailsschedule.domain.usecase.calendarUC.GetBySyncUuidCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.GetDeletedCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.GetNotSyncCalendarDateUseCase
+import com.example.projectnailsschedule.domain.usecase.calendarUC.GetOldUpdatedCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.InsertCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.SelectCalendarDateByDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.UpdateCalendarDateUseCase
@@ -83,6 +84,7 @@ class MainViewModel @Inject constructor(
     private var getDeletedCalendarDateUseCase: GetDeletedCalendarDateUseCase,
     private var getBySyncUuidCalendarDateUseCase: GetBySyncUuidCalendarDateUseCase,
     private val selectCalendarDateByDateUseCase: SelectCalendarDateByDateUseCase,
+    private val getOldUpdatedCalendarDateUseCase: GetOldUpdatedCalendarDateUseCase,
 
     // CalendarDate API
     private var postRemoteCalendarDateUseCase: PostCalendarDateUseCase,
@@ -539,6 +541,13 @@ class MainViewModel @Inject constructor(
             appointment.syncTimestamp = null
             appointment.syncStatus = null
             updateAppointmentUseCase.execute(appointment)
+        }
+
+        val calendarDateModelDbList = getOldUpdatedCalendarDateUseCase.execute()
+        for (calendarDate in calendarDateModelDbList) {
+            calendarDate.syncTimestamp = null
+            calendarDate.syncStatus = null
+            updateCalendarDateUseCase.execute(calendarDate)
         }
     }
 }
