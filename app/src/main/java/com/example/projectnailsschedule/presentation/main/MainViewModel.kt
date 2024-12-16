@@ -23,6 +23,7 @@ import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.server
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.serverCalendarColorApiUC.GetLastRemoteTimestampCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.serverCalendarColorApiUC.PostCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.DeleteAppointmentUseCase
+import com.example.projectnailsschedule.domain.usecase.appointmentUC.GetOldUpdatedAppointmentsUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.InsertAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.UpdateAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.DeleteCalendarDateUseCase
@@ -66,6 +67,7 @@ class MainViewModel @Inject constructor(
     private var getNotSyncAppointmentsUseCase: GetNotSyncAppointmentsUseCase,
     private var getDeletedAppointmentsUseCase: GetDeletedAppointmentsUseCase,
     private var getGetBySyncUuidUseCase: GetBySyncUuidUseCase,
+    private var getOldUpdatedAppointmentsUseCase: GetOldUpdatedAppointmentsUseCase,
 
     // Appointments API
     private var postAppointmentUseCase: PostAppointmentUseCase,
@@ -526,5 +528,17 @@ class MainViewModel @Inject constructor(
         calendarDatesForPull = (notSyncedData + deletedData).sortedBy { it.syncTimestamp }
 
         return calendarDatesForPull.isNotEmpty()
+    }
+
+    suspend fun deleteOldDtData() {
+        // Метод исправляет ошибку, когда приложение пытается отправить на сервер данные,
+        // созданные до внедрения синхронизации с сервером
+        // Метод очищает поля syncTimestamp и syncStatus у записей, у которых нет syncUUID
+        val appointmentModelDbList = getOldUpdatedAppointmentsUseCase.execute()
+        for (appointment in appointmentModelDbList) {
+            appointment.syncTimestamp = null
+            appointment.syncStatus = null
+            updateAppointmentUseCase.execute(appointment)
+        }
     }
 }

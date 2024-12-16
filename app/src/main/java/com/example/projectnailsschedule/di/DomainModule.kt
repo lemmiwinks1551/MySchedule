@@ -38,6 +38,7 @@ import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.server
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.DeleteAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.GetAllScheduleDbUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.GetAppointmentById
+import com.example.projectnailsschedule.domain.usecase.appointmentUC.GetOldUpdatedAppointmentsUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.InsertAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.SearchAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.UpdateAppointmentUseCase
@@ -121,6 +122,11 @@ class DomainModule {
     @Provides
     fun getAppointmentById(repository: ScheduleRepository): GetAppointmentById {
         return GetAppointmentById(repository)
+    }
+
+    @Provides
+    fun getGetOldUpdatedAppointmentsUseCase(repository: ScheduleRepository): GetOldUpdatedAppointmentsUseCase {
+        return GetOldUpdatedAppointmentsUseCase(repository)
     }
 
     // Clients
