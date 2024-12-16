@@ -11,9 +11,11 @@ import com.example.projectnailsschedule.domain.models.ProductionCalendarDateMode
 import com.example.projectnailsschedule.domain.models.UserDataManager
 import com.example.projectnailsschedule.domain.usecase.apiUC.GetProductionCalendarDateInfoUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.GetProductionCalendarYearUseCase
+import com.example.projectnailsschedule.domain.usecase.appointmentUC.DeleteAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.InsertAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.SearchAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.UpdateAppointmentUseCase
+import com.example.projectnailsschedule.domain.usecase.calendarUC.DeleteCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.GetByIdCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.GetDateAppointments
 import com.example.projectnailsschedule.domain.usecase.calendarUC.InsertCalendarDateUseCase
@@ -45,11 +47,13 @@ class DateParamsViewModel @Inject constructor(
     // Calendar Date Db
     private val insertCalendarDateUseCase: InsertCalendarDateUseCase,
     private val updateCalendarDateUseCase: UpdateCalendarDateUseCase,
+    val deleteCalendarDateUseCase: DeleteCalendarDateUseCase,
     val getByIdCalendarDateUseCase: GetByIdCalendarDateUseCase,
 
     // Schedule Db
     private var insertAppointmentUseCase: InsertAppointmentUseCase,
     private val updateAppointmentUseCase: UpdateAppointmentUseCase,
+    private val deleteAppointmentUseCase: DeleteAppointmentUseCase,
     private var searchAppointmentUseCase: SearchAppointmentUseCase,
 
     private val startVkUc: StartVkUc,
@@ -176,22 +180,32 @@ class DateParamsViewModel @Inject constructor(
         selectedDate.postValue(selectedDate.value)
 
         val time = Date().time
-        appointmentModelDb.syncTimestamp = time
-        appointmentModelDb.syncStatus = "NotSynchronized"
+        // Если мы обновляем старую запись (созданную до синхронизации -
+        // не ставить ей статус и время, чтобы не запушить на сервер
+        if (appointmentModelDb.syncUUID != null) {
+            appointmentModelDb.syncTimestamp = time
+            appointmentModelDb.syncStatus = "NotSynchronized"
+        } else {
+            appointmentModelDb.syncTimestamp = null
+            appointmentModelDb.syncStatus = null
+        }
         return updateAppointmentUseCase.execute(appointmentModelDb)
-    }
-
-    suspend fun searchAppointment(searchQuery: String): MutableList<AppointmentModelDb> {
-        return searchAppointmentUseCase.execute(searchQuery)
     }
 
     suspend fun deleteAppointment(
         appointmentModelDb: AppointmentModelDb, position: Int = -1
     ) {
         val time = Date().time
-
-        appointmentModelDb.syncTimestamp = time
-        appointmentModelDb.syncStatus = "DELETED"
+        // Если мы обновляем старую запись (созданную до синхронизации -
+        // не ставить ей статус и время, чтобы не запушить на сервер, а просто удалить локально
+        if (appointmentModelDb.syncUUID != null) {
+            appointmentModelDb.syncTimestamp = time
+            appointmentModelDb.syncStatus = "DELETED"
+        } else {
+            appointmentModelDb.syncTimestamp = null
+            appointmentModelDb.syncStatus = null
+            deleteAppointmentUseCase.execute(appointmentModelDb)
+        }
 
         updateAppointmentUseCase.execute(appointmentModelDb)
 
@@ -201,6 +215,10 @@ class DateParamsViewModel @Inject constructor(
             selectedDate.value!!.appointmentsList?.remove(appointmentModelDb)
         }
         selectedDate.postValue(selectedDate.value)
+    }
+
+    suspend fun searchAppointment(searchQuery: String): MutableList<AppointmentModelDb> {
+        return searchAppointmentUseCase.execute(searchQuery)
     }
 
     fun getAppointmentPositionInDate(
