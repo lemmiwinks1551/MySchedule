@@ -27,6 +27,8 @@ class SendUserDataUseCase @Inject constructor(var context: Context) {
     private val log = this::class.simpleName
 
     suspend fun execute(userData: UserData) {
+        return // не отправляем данные, отключено 17.12.2024
+
         val baseUrl = Util().getBaseUrl()
 
         val interceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
