@@ -1,26 +1,33 @@
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <PreferenceCategory app:title="Визуализация" />
     <Preference
         app:icon="@drawable/baseline_color_lens_24"
         app:key="theme"
         app:title="@string/change_application_theme" />
 
+    <SwitchPreference
+        app:key="spinners"
+        app:summary="Выбор даты и времени в виде спиннера"
+        app:title="Спиннеры" />
+
+    <PreferenceCategory app:title="Облако" />
+    <SwitchPreference
+        app:enabled="false"
+        app:icon="@drawable/baseline_cloud_connected_24"
+        app:key="synchronization"
+        app:summary="Пока только для тестировщиков"
+        app:title="Синхронизация" />
+
+    <PreferenceCategory app:title="Прочее" />
     <Preference
         app:icon="@drawable/baseline_announcement_24"
         app:key="feedback"
         app:summary="@string/report_technical_issues_or_suggest_new_features"
         app:title="@string/send_feedback" />
 
-    <SwitchPreference
-        app:icon="@drawable/baseline_cloud_connected_24"
-        app:key="synchronization"
-        app:enabled="false"
-        app:summary="Пока только для тестировщиков"
-        app:title="Синхронизация" />
-
     <Preference
         app:icon="@drawable/baseline_question_mark_24"
         app:key="faq"
         app:title="@string/faq" />
-
 </PreferenceScreen>

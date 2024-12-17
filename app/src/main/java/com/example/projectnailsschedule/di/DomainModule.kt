@@ -277,6 +277,11 @@ class DomainModule {
         return GetUserThemeUseCase(repository)
     }
 
+    @Provides
+    fun getGetSpinnerStatusUseCase(repository: SettingsRepository): GetSpinnersStatusUseCase {
+        return GetSpinnersStatusUseCase(repository)
+    }
+
     // Util
 
     @Provides

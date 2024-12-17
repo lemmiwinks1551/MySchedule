@@ -61,7 +61,7 @@ class AppointmentFragment : Fragment() {
         setTitle()
 
         setHasOptionsMenu(true)
-        dateParamsViewModel.updateUserData("$log ${object{}.javaClass.enclosingMethod?.name}")
+        dateParamsViewModel.updateUserData("$log ${object {}.javaClass.enclosingMethod?.name}")
         return binding.root
     }
 
@@ -105,12 +105,20 @@ class AppointmentFragment : Fragment() {
         with(binding) {
             // set ClickListener on day_edit_text
             dayEditText.setOnClickListener {
-                setDatePicker()
+                if (dateParamsViewModel.spinnerSelected()) {
+                    setSpinnerDatePicker()
+                } else {
+                    setDatePicker()
+                }
             }
 
             // set ClickListener on time_edit_text
             timeEditText.setOnClickListener {
-                setTimePicker()
+                if (dateParamsViewModel.spinnerSelected()) {
+                    setSpinnerTimePicker()
+                } else {
+                    setTimePicker()
+                }
             }
 
             selectClientButton.setOnClickListener {
@@ -155,7 +163,7 @@ class AppointmentFragment : Fragment() {
             currentAppointment = AppointmentModelDb(
                 _id = null,
                 date = dayEditText.text.toString(),
-                clientId =  appointmentClientId,
+                clientId = appointmentClientId,
                 name = nameEt.text.toString(),
                 time = timeEditText.text.toString(),
                 clientNotes = clientNotesEt.text.toString(),
@@ -293,7 +301,7 @@ class AppointmentFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        dateParamsViewModel.updateUserData("$log ${object{}.javaClass.enclosingMethod?.name}")
+        dateParamsViewModel.updateUserData("$log ${object {}.javaClass.enclosingMethod?.name}")
     }
 
     private suspend fun defineAppointment() {
@@ -318,7 +326,8 @@ class AppointmentFragment : Fragment() {
                 // Get client data from the Client database
                 // TODO: предусмотреть, если килент из базы был удален
 
-                clientsViewModel.selectedClient =  clientsViewModel.getClientById(currentAppointment.clientId!!)
+                clientsViewModel.selectedClient =
+                    clientsViewModel.getClientById(currentAppointment.clientId!!)
                 appointmentClientId = clientsViewModel.selectedClient!!._id
 
                 blockClientFields()
@@ -463,6 +472,8 @@ class AppointmentFragment : Fragment() {
                 if (view.isShown) {
                     myCalender[Calendar.HOUR_OF_DAY] = hourOfDay
                     myCalender[Calendar.MINUTE] = minute
+                    val time = String.format("%02d:%02d", hourOfDay, minute)
+                    binding.timeEditText.text = time
                 }
             }
         val timePickerDialog = TimePickerDialog(
@@ -473,8 +484,42 @@ class AppointmentFragment : Fragment() {
             minute,
             true
         )
-        timePickerDialog.setTitle("Choose hour:")
+
+        timePickerDialog.setTitle("Выберите время:")
         timePickerDialog.window!!.setBackgroundDrawableResource(android.R.color.transparent)
         timePickerDialog.show()
     }
+
+    private fun setSpinnerDatePicker() {
+        // spinner date picker
+        val myCalendar = Calendar.getInstance()
+        val year = myCalendar[Calendar.YEAR]
+        val month = myCalendar[Calendar.MONTH]
+        val day = myCalendar[Calendar.DAY_OF_MONTH]
+
+        val myDateListener = DatePickerDialog.OnDateSetListener { view, selectedYear, selectedMonth, selectedDay ->
+            if (view.isShown) {
+                myCalendar.set(Calendar.YEAR, selectedYear)
+                myCalendar.set(Calendar.MONTH, selectedMonth)
+                myCalendar.set(Calendar.DAY_OF_MONTH, selectedDay)
+
+                val date = String.format("%02d.%02d.%04d", selectedDay, selectedMonth + 1, selectedYear)
+                binding.dayEditText.text = date
+            }
+        }
+
+        val datePickerDialog = DatePickerDialog(
+            requireContext(),
+            android.R.style.Theme_Holo_Light_Dialog_NoActionBar,
+            myDateListener,
+            year,
+            month,
+            day
+        )
+
+        datePickerDialog.setTitle("Выберите дату:")
+        datePickerDialog.window!!.setBackgroundDrawableResource(android.R.color.transparent)
+        datePickerDialog.show()
+    }
+
 }

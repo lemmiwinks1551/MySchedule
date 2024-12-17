@@ -21,15 +21,13 @@ import com.example.projectnailsschedule.domain.usecase.calendarUC.GetDateAppoint
 import com.example.projectnailsschedule.domain.usecase.calendarUC.InsertCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.SelectCalendarDateByDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.UpdateCalendarDateUseCase
-import com.example.projectnailsschedule.domain.usecase.sharedPref.SetAppointmentLastUpdateUseCase
-import com.example.projectnailsschedule.domain.usecase.sharedPref.SetCalendarLastUpdateUseCase
+import com.example.projectnailsschedule.domain.usecase.settingsUC.GetSpinnersStatusUseCase
 import com.example.projectnailsschedule.domain.usecase.socUC.StartInstagramUc
 import com.example.projectnailsschedule.domain.usecase.socUC.StartPhoneUc
 import com.example.projectnailsschedule.domain.usecase.socUC.StartTelegramUc
 import com.example.projectnailsschedule.domain.usecase.socUC.StartVkUc
 import com.example.projectnailsschedule.domain.usecase.socUC.StartWhatsAppUc
 import com.example.projectnailsschedule.presentation.calendar.calendarRecyclerView.CalendarRvAdapter
-import com.example.projectnailsschedule.util.Util
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -64,6 +62,9 @@ class DateParamsViewModel @Inject constructor(
 
     private val getProductionCalendarDateInfoUseCase: GetProductionCalendarDateInfoUseCase,
     private val getProductionCalendarYearUseCase: GetProductionCalendarYearUseCase,
+
+    // Settings
+    private val getSpinnersStatusUseCase: GetSpinnersStatusUseCase
 ) : ViewModel() {
     private val tagDateColor = "DateColor"
 
@@ -276,6 +277,10 @@ class DateParamsViewModel @Inject constructor(
 
     suspend fun getYearProcedureCalendar(year: String) {
         // Вернуть информацию о годе из API ProductionCalendar
-        getProductionCalendarYearUseCase.execute(year = year)
+        //getProductionCalendarYearUseCase.execute(year = year)
+    }
+
+    fun spinnerSelected(): Boolean {
+        return getSpinnersStatusUseCase.execute()
     }
 }
