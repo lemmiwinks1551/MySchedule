@@ -277,7 +277,7 @@ class DateParamsViewModel @Inject constructor(
 
     suspend fun getYearProcedureCalendar(year: String) {
         // Вернуть информацию о годе из API ProductionCalendar
-        //getProductionCalendarYearUseCase.execute(year = year)
+        getProductionCalendarYearUseCase.execute(year = year)
     }
 
     fun spinnerSelected(): Boolean {
