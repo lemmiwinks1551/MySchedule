@@ -27,4 +27,6 @@ interface SettingsRepository {
     fun setCalendarDateLastUpdate(time: Long)
 
     fun getCalendarDateLastUpdate(): Long
+
+    fun getSpinnerStatus(): Boolean
 }

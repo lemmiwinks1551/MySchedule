@@ -86,4 +86,7 @@ interface ScheduleDao {
 
     @Query("SELECT COUNT(*) FROM schedule")
     suspend fun getCount(): Long
+
+    @Query("SELECT * FROM schedule WHERE syncUUID IS NULL AND (syncTimestamp IS NOT NULL OR syncStatus IS NOT NULL)")
+    suspend fun getOldUpdatedAppointments(): List<AppointmentModelDb>
 }

@@ -68,4 +68,8 @@ class ScheduleRepositoryImpl(context: Context) : ScheduleRepository {
     override suspend fun getCount(): Long {
         return dao.getCount()
     }
+
+    override suspend fun getOldUpdatedAppointments(): List<AppointmentModelDb> {
+        return dao.getOldUpdatedAppointments()
+    }
 }

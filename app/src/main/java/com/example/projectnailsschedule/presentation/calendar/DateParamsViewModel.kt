@@ -11,23 +11,23 @@ import com.example.projectnailsschedule.domain.models.ProductionCalendarDateMode
 import com.example.projectnailsschedule.domain.models.UserDataManager
 import com.example.projectnailsschedule.domain.usecase.apiUC.GetProductionCalendarDateInfoUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.GetProductionCalendarYearUseCase
+import com.example.projectnailsschedule.domain.usecase.appointmentUC.DeleteAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.InsertAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.SearchAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.UpdateAppointmentUseCase
+import com.example.projectnailsschedule.domain.usecase.calendarUC.DeleteCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.GetByIdCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.GetDateAppointments
 import com.example.projectnailsschedule.domain.usecase.calendarUC.InsertCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.SelectCalendarDateByDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.UpdateCalendarDateUseCase
-import com.example.projectnailsschedule.domain.usecase.sharedPref.SetAppointmentLastUpdateUseCase
-import com.example.projectnailsschedule.domain.usecase.sharedPref.SetCalendarLastUpdateUseCase
+import com.example.projectnailsschedule.domain.usecase.settingsUC.GetSpinnersStatusUseCase
 import com.example.projectnailsschedule.domain.usecase.socUC.StartInstagramUc
 import com.example.projectnailsschedule.domain.usecase.socUC.StartPhoneUc
 import com.example.projectnailsschedule.domain.usecase.socUC.StartTelegramUc
 import com.example.projectnailsschedule.domain.usecase.socUC.StartVkUc
 import com.example.projectnailsschedule.domain.usecase.socUC.StartWhatsAppUc
 import com.example.projectnailsschedule.presentation.calendar.calendarRecyclerView.CalendarRvAdapter
-import com.example.projectnailsschedule.util.Util
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -45,11 +45,13 @@ class DateParamsViewModel @Inject constructor(
     // Calendar Date Db
     private val insertCalendarDateUseCase: InsertCalendarDateUseCase,
     private val updateCalendarDateUseCase: UpdateCalendarDateUseCase,
+    val deleteCalendarDateUseCase: DeleteCalendarDateUseCase,
     val getByIdCalendarDateUseCase: GetByIdCalendarDateUseCase,
 
     // Schedule Db
     private var insertAppointmentUseCase: InsertAppointmentUseCase,
     private val updateAppointmentUseCase: UpdateAppointmentUseCase,
+    private val deleteAppointmentUseCase: DeleteAppointmentUseCase,
     private var searchAppointmentUseCase: SearchAppointmentUseCase,
 
     private val startVkUc: StartVkUc,
@@ -60,6 +62,9 @@ class DateParamsViewModel @Inject constructor(
 
     private val getProductionCalendarDateInfoUseCase: GetProductionCalendarDateInfoUseCase,
     private val getProductionCalendarYearUseCase: GetProductionCalendarYearUseCase,
+
+    // Settings
+    private val getSpinnersStatusUseCase: GetSpinnersStatusUseCase
 ) : ViewModel() {
     private val tagDateColor = "DateColor"
 
@@ -176,22 +181,32 @@ class DateParamsViewModel @Inject constructor(
         selectedDate.postValue(selectedDate.value)
 
         val time = Date().time
-        appointmentModelDb.syncTimestamp = time
-        appointmentModelDb.syncStatus = "NotSynchronized"
+        // Если мы обновляем старую запись (созданную до синхронизации -
+        // не ставить ей статус и время, чтобы не запушить на сервер
+        if (appointmentModelDb.syncUUID != null) {
+            appointmentModelDb.syncTimestamp = time
+            appointmentModelDb.syncStatus = "NotSynchronized"
+        } else {
+            appointmentModelDb.syncTimestamp = null
+            appointmentModelDb.syncStatus = null
+        }
         return updateAppointmentUseCase.execute(appointmentModelDb)
-    }
-
-    suspend fun searchAppointment(searchQuery: String): MutableList<AppointmentModelDb> {
-        return searchAppointmentUseCase.execute(searchQuery)
     }
 
     suspend fun deleteAppointment(
         appointmentModelDb: AppointmentModelDb, position: Int = -1
     ) {
         val time = Date().time
-
-        appointmentModelDb.syncTimestamp = time
-        appointmentModelDb.syncStatus = "DELETED"
+        // Если мы обновляем старую запись (созданную до синхронизации -
+        // не ставить ей статус и время, чтобы не запушить на сервер, а просто удалить локально
+        if (appointmentModelDb.syncUUID != null) {
+            appointmentModelDb.syncTimestamp = time
+            appointmentModelDb.syncStatus = "DELETED"
+        } else {
+            appointmentModelDb.syncTimestamp = null
+            appointmentModelDb.syncStatus = null
+            deleteAppointmentUseCase.execute(appointmentModelDb)
+        }
 
         updateAppointmentUseCase.execute(appointmentModelDb)
 
@@ -201,6 +216,10 @@ class DateParamsViewModel @Inject constructor(
             selectedDate.value!!.appointmentsList?.remove(appointmentModelDb)
         }
         selectedDate.postValue(selectedDate.value)
+    }
+
+    suspend fun searchAppointment(searchQuery: String): MutableList<AppointmentModelDb> {
+        return searchAppointmentUseCase.execute(searchQuery)
     }
 
     fun getAppointmentPositionInDate(
@@ -259,5 +278,9 @@ class DateParamsViewModel @Inject constructor(
     suspend fun getYearProcedureCalendar(year: String) {
         // Вернуть информацию о годе из API ProductionCalendar
         getProductionCalendarYearUseCase.execute(year = year)
+    }
+
+    fun spinnerSelected(): Boolean {
+        return getSpinnersStatusUseCase.execute()
     }
 }

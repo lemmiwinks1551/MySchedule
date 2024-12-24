@@ -25,4 +25,6 @@ interface CalendarRepository {
     suspend fun getBySyncUUID(uuid: String): CalendarDateModelDb?
 
     suspend fun getCount(): Long
+
+    suspend fun getOldUpdatedCalendarDate(): List<CalendarDateModelDb>
 }

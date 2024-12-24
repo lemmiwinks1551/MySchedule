@@ -2,6 +2,7 @@ package com.example.projectnailsschedule.data.repository
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.preference.PreferenceManager
 import com.example.projectnailsschedule.domain.repository.repo.SettingsRepository
 import java.util.Date
 
@@ -18,6 +19,7 @@ class SettingsRepositoryImpl(context: Context?) : SettingsRepository {
 
     private val sharedPreference: SharedPreferences =
         context!!.getSharedPreferences(CUSTOM_PREF_NAME, Context.MODE_PRIVATE)
+    private val defaultSharedPrefs = PreferenceManager.getDefaultSharedPreferences(context!!)
 
     override fun setDarkTheme() {
         val editor = sharedPreference.edit()
@@ -85,5 +87,9 @@ class SettingsRepositoryImpl(context: Context?) : SettingsRepository {
 
     override fun getCalendarDateLastUpdate(): Long {
         return sharedPreference.getString(updateKeyCalendarDate, null)?.toLong() ?: 0L
+    }
+
+    override fun getSpinnerStatus(): Boolean {
+        return defaultSharedPrefs.getBoolean("spinners", false)
     }
 }

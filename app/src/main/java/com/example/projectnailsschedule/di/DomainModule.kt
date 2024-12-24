@@ -38,6 +38,7 @@ import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.server
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.DeleteAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.GetAllScheduleDbUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.GetAppointmentById
+import com.example.projectnailsschedule.domain.usecase.appointmentUC.GetOldUpdatedAppointmentsUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.InsertAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.SearchAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.UpdateAppointmentUseCase
@@ -50,6 +51,7 @@ import com.example.projectnailsschedule.domain.usecase.calendarUC.GetDateAppoint
 import com.example.projectnailsschedule.domain.usecase.calendarUC.GetDeletedCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.GetMaxCalendarDateTimestamp
 import com.example.projectnailsschedule.domain.usecase.calendarUC.GetNotSyncCalendarDateUseCase
+import com.example.projectnailsschedule.domain.usecase.calendarUC.GetOldUpdatedCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.InsertCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.SelectCalendarDateByDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.UpdateCalendarDateUseCase
@@ -121,6 +123,11 @@ class DomainModule {
     @Provides
     fun getAppointmentById(repository: ScheduleRepository): GetAppointmentById {
         return GetAppointmentById(repository)
+    }
+
+    @Provides
+    fun getGetOldUpdatedAppointmentsUseCase(repository: ScheduleRepository): GetOldUpdatedAppointmentsUseCase {
+        return GetOldUpdatedAppointmentsUseCase(repository)
     }
 
     // Clients
@@ -211,7 +218,7 @@ class DomainModule {
         return ExportUseCase(context)
     }
 
-    // Date colors
+    // CalendarDate
 
     @Provides
     fun provideGetDateColorUseCase(repository: CalendarRepository): SelectCalendarDateByDateUseCase {
@@ -226,6 +233,11 @@ class DomainModule {
     @Provides
     fun provideDeleteCalendarObj(repository: CalendarRepository): DeleteCalendarDateUseCase {
         return DeleteCalendarDateUseCase(repository)
+    }
+
+    @Provides
+    fun getGetOldUpdatedCalendarDateUseCase(repository: CalendarRepository): GetOldUpdatedCalendarDateUseCase {
+        return GetOldUpdatedCalendarDateUseCase(repository)
     }
 
     // Settings
@@ -263,6 +275,11 @@ class DomainModule {
     @Provides
     fun provideGetUserThemeUseCase(repository: SettingsRepository): GetUserThemeUseCase {
         return GetUserThemeUseCase(repository)
+    }
+
+    @Provides
+    fun getGetSpinnerStatusUseCase(repository: SettingsRepository): GetSpinnersStatusUseCase {
+        return GetSpinnersStatusUseCase(repository)
     }
 
     // Util

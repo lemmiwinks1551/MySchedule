@@ -86,6 +86,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
+
+        lifecycleScope.launch(Dispatchers.IO) {
+            mainViewModel.deleteOldDtData()
+        }
+
         disposable = Observable.interval(0, updatePeriodSec, TimeUnit.SECONDS)
             .subscribeOn(Schedulers.io())
             .subscribe({

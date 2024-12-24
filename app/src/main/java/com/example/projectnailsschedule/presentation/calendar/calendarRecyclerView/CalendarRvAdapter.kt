@@ -237,7 +237,7 @@ class CalendarRvAdapter(
         } else {
             if (color == "default") {
                 // if color is deleted - delete from db
-                markDeleteCalendarDate(id = id)
+                deleteCalendarDate(id = id)
             } else {
                 // if date already exists in database
                 updateCalendarDate(id = id, ruFormatDate = ruFormatDate, color = color)
@@ -260,26 +260,41 @@ class CalendarRvAdapter(
     }
 
     private suspend fun updateCalendarDate(id: Int, ruFormatDate: String, color: String) {
-        Log.e("Color", "Replacing color for date $ruFormatDate")
+        Log.e("Color", "Updating color for date $ruFormatDate")
         val currentData = dateParamsViewModel.getByIdCalendarDateUseCase.execute(id.toLong())
+
         val time = Date().time
+
         val newData = currentData?.copy(
-            color = color,
-            syncTimestamp = time,
-            syncStatus = "NotSynchronized"
+            color = color
         )
-        dateParamsViewModel.updateCalendarDate(newData!!)
+
+        if (newData!!.syncUUID != null) {
+            newData.syncTimestamp = time
+            newData.syncStatus = "NotSynchronized"
+        } else {
+            newData.syncTimestamp = null
+            newData.syncStatus = null
+        }
+
+        dateParamsViewModel.updateCalendarDate(newData)
     }
 
-    private suspend fun markDeleteCalendarDate(id: Int) {
+    private suspend fun deleteCalendarDate(id: Int) {
         val currentData = dateParamsViewModel.getByIdCalendarDateUseCase.execute(id.toLong())
         val time = Date().time
 
-        val newData = currentData?.copy(
-            syncTimestamp = time,
-            syncStatus = "DELETED"
-        )
-        dateParamsViewModel.updateCalendarDate(newData!!)
+        // Если мы обновляем старую запись (созданную до синхронизации -
+        // не ставить ей статус и время, чтобы не запушить на сервер, а просто удалить локально
+        if (currentData!!.syncUUID != null) {
+            currentData.syncTimestamp = time
+            currentData.syncStatus = "DELETED"
+        } else {
+            currentData.syncTimestamp = null
+            currentData.syncStatus = null
+            dateParamsViewModel.deleteCalendarDateUseCase.execute(currentData)
+        }
+        dateParamsViewModel.updateCalendarDate(currentData)
     }
 
     private fun initColorsImageButtons(dialogView: View) {

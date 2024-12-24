@@ -31,4 +31,6 @@ interface ScheduleRepository {
     suspend fun getBySyncUUID(uuid: String): AppointmentModelDb?
 
     suspend fun getCount(): Long
+
+    suspend fun getOldUpdatedAppointments(): List<AppointmentModelDb>
 }

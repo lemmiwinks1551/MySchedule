@@ -23,12 +23,14 @@ import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.server
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.serverCalendarColorApiUC.GetLastRemoteTimestampCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.serverCalendarColorApiUC.PostCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.DeleteAppointmentUseCase
+import com.example.projectnailsschedule.domain.usecase.appointmentUC.GetOldUpdatedAppointmentsUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.InsertAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.appointmentUC.UpdateAppointmentUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.DeleteCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.GetBySyncUuidCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.GetDeletedCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.GetNotSyncCalendarDateUseCase
+import com.example.projectnailsschedule.domain.usecase.calendarUC.GetOldUpdatedCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.InsertCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.SelectCalendarDateByDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.UpdateCalendarDateUseCase
@@ -66,6 +68,7 @@ class MainViewModel @Inject constructor(
     private var getNotSyncAppointmentsUseCase: GetNotSyncAppointmentsUseCase,
     private var getDeletedAppointmentsUseCase: GetDeletedAppointmentsUseCase,
     private var getGetBySyncUuidUseCase: GetBySyncUuidUseCase,
+    private var getOldUpdatedAppointmentsUseCase: GetOldUpdatedAppointmentsUseCase,
 
     // Appointments API
     private var postAppointmentUseCase: PostAppointmentUseCase,
@@ -81,6 +84,7 @@ class MainViewModel @Inject constructor(
     private var getDeletedCalendarDateUseCase: GetDeletedCalendarDateUseCase,
     private var getBySyncUuidCalendarDateUseCase: GetBySyncUuidCalendarDateUseCase,
     private val selectCalendarDateByDateUseCase: SelectCalendarDateByDateUseCase,
+    private val getOldUpdatedCalendarDateUseCase: GetOldUpdatedCalendarDateUseCase,
 
     // CalendarDate API
     private var postRemoteCalendarDateUseCase: PostCalendarDateUseCase,
@@ -526,5 +530,24 @@ class MainViewModel @Inject constructor(
         calendarDatesForPull = (notSyncedData + deletedData).sortedBy { it.syncTimestamp }
 
         return calendarDatesForPull.isNotEmpty()
+    }
+
+    suspend fun deleteOldDtData() {
+        // Метод исправляет ошибку, когда приложение пытается отправить на сервер данные,
+        // созданные до внедрения синхронизации с сервером
+        // Метод очищает поля syncTimestamp и syncStatus у записей, у которых нет syncUUID
+        val appointmentModelDbList = getOldUpdatedAppointmentsUseCase.execute()
+        for (appointment in appointmentModelDbList) {
+            appointment.syncTimestamp = null
+            appointment.syncStatus = null
+            updateAppointmentUseCase.execute(appointment)
+        }
+
+        val calendarDateModelDbList = getOldUpdatedCalendarDateUseCase.execute()
+        for (calendarDate in calendarDateModelDbList) {
+            calendarDate.syncTimestamp = null
+            calendarDate.syncStatus = null
+            updateCalendarDateUseCase.execute(calendarDate)
+        }
     }
 }
