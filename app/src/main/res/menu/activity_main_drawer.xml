@@ -29,9 +29,9 @@
             android:icon="@drawable/baseline_import_export_24"
             android:title="@string/menu_import_export" />
         <item
-            android:id="@+id/nav_premium"
+            android:id="@+id/nav_purchases_start_fragment"
             android:icon="@drawable/workspace_premium_24dp"
-            android:title="@string/manu_premium" />
+            android:title="@string/menu_premium" />
         <item
             android:id="@+id/nav_about"
             android:icon="@drawable/ic_baseline_info_24"
