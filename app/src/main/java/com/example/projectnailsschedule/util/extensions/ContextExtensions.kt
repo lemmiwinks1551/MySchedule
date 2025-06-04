@@ -1,4 +1,4 @@
-package com.example.projectnailsschedule.util.rustore
+package com.example.projectnailsschedule.util.extensions
 
 import android.content.Context
 import androidx.appcompat.app.AlertDialog
