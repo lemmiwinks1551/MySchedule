@@ -47,8 +47,8 @@
             android:id="@+id/action_nav_calendar_to_accountFragment"
             app:destination="@id/accountFragment" />
         <action
-            android:id="@+id/action_nav_calendar_to_premiumFragment"
-            app:destination="@id/nav_premium" />
+            android:id="@+id/action_nav_calendar_to_nav_premium_start"
+            app:destination="@id/nav_purchases_start_fragment" />
     </fragment>
 
     <fragment
@@ -164,8 +164,17 @@
         android:label="@string/my_account" />
 
     <fragment
-        android:id="@+id/nav_premium"
-        android:name="com.example.projectnailsschedule.presentation.premium.PremiumFragment"
+        android:id="@+id/nav_purchases_start_fragment"
+        android:name="com.example.projectnailsschedule.presentation.premium.startScreen.StartPurchasesFragment"
+        android:label="Премиум" >
+        <action
+            android:id="@+id/action_nav_premium_start_to_nav_premium"
+            app:destination="@id/nav_purchases_main_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_purchases_main_fragment"
+        android:name="com.example.projectnailsschedule.presentation.premium.mainScreen.MainPurchasesFragment"
         android:label="Премиум" />
 
 </navigation>
