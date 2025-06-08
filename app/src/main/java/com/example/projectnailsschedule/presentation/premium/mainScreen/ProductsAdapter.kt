@@ -12,7 +12,7 @@ import ru.rustore.sdk.billingclient.model.product.Product
 import com.example.projectnailsschedule.util.createDiffUtil
 import coil.load
 import com.example.projectnailsschedule.databinding.ItemProductViewHolderBinding
-import com.example.projectnailsschedule.domain.models.rustoreBilling.ext.getStringRes
+import com.example.projectnailsschedule.util.extensions.getStringRes
 
 class ProductsAdapter(
     private val onProductClick: (Product) -> Unit,
