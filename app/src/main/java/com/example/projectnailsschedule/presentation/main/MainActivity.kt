@@ -1,5 +1,6 @@
 package com.example.projectnailsschedule.presentation.main
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -38,6 +39,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import ru.rustore.sdk.billingclient.RuStoreBillingClient
 import java.util.Date
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicBoolean
@@ -83,6 +85,9 @@ class MainActivity : AppCompatActivity() {
 
     private val isSyncing = AtomicBoolean(false)
     private val updatePeriodSec = 1L
+
+    @Inject
+    lateinit var billingClient: RuStoreBillingClient
 
     override fun onStart() {
         super.onStart()
@@ -177,6 +182,15 @@ class MainActivity : AppCompatActivity() {
         ruStoreAd.interstitialAd(context = applicationContext)
 
         initObservers()
+
+        if (savedInstanceState == null) {
+            billingClient.onNewIntent(intent)
+        }
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        billingClient.onNewIntent(intent)
     }
 
     override fun onResume() {
