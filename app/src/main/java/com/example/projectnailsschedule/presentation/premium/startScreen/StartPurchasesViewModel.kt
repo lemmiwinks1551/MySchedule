@@ -1,6 +1,7 @@
 package com.example.projectnailsschedule.presentation.premium.startScreen
 
 import androidx.lifecycle.ViewModel
+import com.example.projectnailsschedule.domain.models.dto.UserInfoDtoManager
 import com.example.projectnailsschedule.domain.models.rustoreBilling.StartPurchasesEvent
 import com.example.projectnailsschedule.domain.models.rustoreBilling.StartPurchasesState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -36,6 +37,8 @@ class StartPurchasesViewModel @Inject constructor() : ViewModel() {
         // пользователь кликает по кнопке "Начать покупки"
         _state.update { it.copy(isLoading = true) } // показываем, что загрузка началась
 
+        if (!requireUserLoginOrEmitError()) return
+
         RuStoreBillingClient.checkPurchasesAvailability()
             // по факту не имеет смысла, т.к. работает и без авторизации в RuStore и даже с удаленным RuStore
             .addOnSuccessListener { result ->
@@ -45,8 +48,18 @@ class StartPurchasesViewModel @Inject constructor() : ViewModel() {
             }
             .addOnFailureListener { throwable ->
                 // Если покупки не доступны
-                _state.update { it.copy(isLoading = false) } // показываем, что загрузка завершена
+                _state.update { it.copy(isLoading = false) }
                 _event.tryEmit(StartPurchasesEvent.Error(throwable))
             }
+    }
+
+    private fun requireUserLoginOrEmitError(): Boolean {
+        // если пользователь не зашел в аакаунт - не даем ниче покупать, т.к. нужен аккаунт и логин для работы с сервером
+        return if (UserInfoDtoManager.getUserDto() == null) {
+            _event.tryEmit(StartPurchasesEvent.Error(Throwable("Необходимо зарегистрироваться и войти в аккаунт")))
+            _state.update { it.copy(isLoading = false) }
+
+            false
+        } else true
     }
 }
