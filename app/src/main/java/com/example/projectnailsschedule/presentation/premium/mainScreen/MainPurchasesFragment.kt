@@ -27,9 +27,8 @@ class MainPurchasesFragment : Fragment() {
 
     private val viewModel: MainPurchasesFragmentViewModel by viewModels()
 
-    private val productsAdapter =
-        // передаем лямбду в конструктор адатера
-        ProductsAdapter(onProductClick = { product -> viewModel.onProductClick(product) })
+    private val productsAdapter = ProductsAdapter(onProductClick = { product -> viewModel.onProductClick(product) })
+    private val purchasesAdapter = PurchasesAdapter()
 
     private var snackbar: Snackbar? = null
 
@@ -71,6 +70,7 @@ class MainPurchasesFragment : Fragment() {
 
     private fun FragmentPremiumBinding.initViews() {
         productsRecycler.adapter = productsAdapter
+        purchasesRecycler.adapter = purchasesAdapter
         swipeRefreshLayout.setOnRefreshListener { viewModel.updateProductsAndPurchases() }
     }
 
@@ -80,6 +80,8 @@ class MainPurchasesFragment : Fragment() {
         emptyProductsView.isVisible = state.isEmpty
 
         productsAdapter.submitList(state.products)
+
+        purchasesAdapter.submitList(state.purchases)
 
         if (state.snackbarResId != null) {
             snackbar = Snackbar.make(root, state.snackbarResId, Snackbar.LENGTH_INDEFINITE)

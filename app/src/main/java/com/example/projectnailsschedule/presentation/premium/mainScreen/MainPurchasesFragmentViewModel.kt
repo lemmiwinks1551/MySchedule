@@ -75,7 +75,7 @@ class MainPurchasesFragmentViewModel @Inject constructor(
                 }
             }.onSuccess { (products, purchases) ->
                 proceedUnfinishedPurchases(purchases) // обрабатываем покупки, которые ещё не подтверждены
-                updateProductList(products, purchases) // обновляем список продуктов на экране
+                updateProductAndPurchasesList(products, purchases) // обновляем список продуктов на экране
             }.onFailure(::handleError) // если ошибка – показываем её
         }
     }
@@ -110,7 +110,7 @@ class MainPurchasesFragmentViewModel @Inject constructor(
     }
 
     // Оставляем на экране только те продукты, которые ещё не куплены
-    private fun updateProductList(products: List<Product>, purchases: List<Purchase>) {
+    private fun updateProductAndPurchasesList(products: List<Product>, purchases: List<Purchase>) {
         val nonBoughtProducts = products.filter { product ->
             purchases.none { product.productId == it.productId }
         }
@@ -118,6 +118,7 @@ class MainPurchasesFragmentViewModel @Inject constructor(
         _state.update { currentState ->
             currentState.copy(
                 products = nonBoughtProducts,
+                purchases = purchases,
                 isLoading = false
             )
         }
