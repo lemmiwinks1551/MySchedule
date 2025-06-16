@@ -6,7 +6,6 @@ import ru.rustore.sdk.billingclient.model.user.UserAuthorizationStatus
 import ru.rustore.sdk.core.tasks.Task
 import javax.inject.Inject
 
-
 class CheckRuStoreLoginStatus @Inject constructor(
     private val billingClient: RuStoreBillingClient
 ) {
