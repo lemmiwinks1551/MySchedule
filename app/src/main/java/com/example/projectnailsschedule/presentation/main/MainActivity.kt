@@ -84,7 +84,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val isSyncing = AtomicBoolean(false)
-    private val updatePeriodSec = 1L
+    private val updatePeriodSec = 5L
 
     @Inject
     lateinit var billingClient: RuStoreBillingClient

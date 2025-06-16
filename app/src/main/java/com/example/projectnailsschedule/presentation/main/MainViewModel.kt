@@ -34,6 +34,8 @@ import com.example.projectnailsschedule.domain.usecase.calendarUC.GetOldUpdatedC
 import com.example.projectnailsschedule.domain.usecase.calendarUC.InsertCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.SelectCalendarDateByDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.UpdateCalendarDateUseCase
+import com.example.projectnailsschedule.domain.usecase.rustore.CheckRuStoreLoginStatus
+import com.example.projectnailsschedule.domain.usecase.rustore.GetPurchasesUseCase
 import com.example.projectnailsschedule.domain.usecase.settingsUC.GetUserThemeUseCase
 import com.example.projectnailsschedule.domain.usecase.sharedPref.GetAppointmentLastUpdateUseCase
 import com.example.projectnailsschedule.domain.usecase.sharedPref.GetCalendarDateLastUpdateUseCase
@@ -96,7 +98,11 @@ class MainViewModel @Inject constructor(
     private var getAppointmentLastUpdateUseCase: GetAppointmentLastUpdateUseCase,
     private var setAppointmentLastUpdateUseCase: SetAppointmentLastUpdateUseCase,
     private var getCalendarDateLastUpdateUseCase: GetCalendarDateLastUpdateUseCase,
-    private var setCalendarLastUpdateUseCase: SetCalendarLastUpdateUseCase
+    private var setCalendarLastUpdateUseCase: SetCalendarLastUpdateUseCase,
+
+    // Billing SDK
+    private var getPurchasesUseCase: GetPurchasesUseCase,
+    private val checkRuStoreLoginStatus: CheckRuStoreLoginStatus
 ) : ViewModel() {
     val syncStatus = MutableLiveData(false)
     val menuStatus = MutableLiveData(false)
@@ -458,29 +464,35 @@ class MainViewModel @Inject constructor(
 
 
     // Common
-    private fun checkSyncConditions(user: UserInfoDto?, jwt: String?): Boolean {
-        if (user == null) {
-            // Если пользователь не залогинился
-            // устанавливаем статус false и выходим
+    private suspend fun checkSyncConditions(user: UserInfoDto?, jwt: String?): Boolean {
+        // Если пользователь не залогинился || у него выключена синхронизация || у него токена нет || Не выполнен вход в RuStore
+        // Устанавливаем статус false и выходим
+        if (user == null || user.syncEnabled == false || jwt == null ||
+            !checkRuStoreLoginStatus.execute().await().authorized
+        ) {
             syncStatus.postValue(false)
             return false
         }
 
-        if (user.syncEnabled == false) {
-            // Если у пользователя установлен syncEnabled == false
-            // устанавливаем статус false и выходим
-            syncStatus.postValue(false)
-            return false
-        }
-
-        if (jwt == null) {
-            // Если у пользователя нет токена - выходим
-            syncStatus.postValue(false)
-            return false
-        }
-
-        syncStatus.postValue(true)
-        return true
+        // Если у пользователя не куплена подписка - выходим
+        val purchases = getPurchasesUseCase.execute()
+        return purchases.fold(
+            onSuccess = {
+                if (it.isNotEmpty()) {
+                    syncStatus.postValue(true)
+                    Log.i("checkSyncConditions", "Подписка куплена")
+                } else {
+                    syncStatus.postValue(false)
+                    Log.i("checkSyncConditions", "Подписка не куплена")
+                }
+                true
+            },
+            onFailure = {
+                syncStatus.postValue(false)
+                Log.i("checkSyncConditions", "Данные о подписке не удалось получить: ${it.message}")
+                false
+            }
+        )
     }
 
     private fun localOutdated(
