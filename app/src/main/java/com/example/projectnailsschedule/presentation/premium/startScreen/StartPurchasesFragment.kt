@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.flowWithLifecycle
@@ -21,8 +20,7 @@ import ru.rustore.sdk.billingclient.model.purchase.PurchaseAvailabilityResult
 import ru.rustore.sdk.billingclient.utils.resolveForBilling
 
 /** Фрагмент, который проверяет, что платежи доступны и пользователи могут совершать покупки.
- * Версия как в документации к SDK
- * Устарел, т.к. покупки больше не требуют установленного RuStore и авторизации в нем */
+ * + Добавлена проверка, что пользователь залогинен в аккаунте и русторе */
 
 @AndroidEntryPoint
 class StartPurchasesFragment : Fragment() {
@@ -68,12 +66,33 @@ class StartPurchasesFragment : Fragment() {
         startPurchasesButton.setOnClickListener {
             viewModel.checkPurchasesAvailability()
         }
+
+        swipeRefreshLayout.setOnRefreshListener {
+            // Проверяем залогинился ли пользователь в свой акк и в RuStore
+            viewModel.checkLogin()
+        }
     }
 
     private fun FragmentStartPurchasesBinding.updateState(state: StartPurchasesState) {
-        progressBar.isVisible = state.isLoading
-        startPurchasesButton.isEnabled = !state.isLoading
+        with(state.isLoading) {
+            startPurchasesButton.isEnabled = !this
+            swipeRefreshLayout.isRefreshing = this
+        }
+
+        rustoreLoginStatus.setImageResource(
+            if (state.isRuStoreLoggedIn == true) R.drawable.baseline_check_circle_outline_24
+            else R.drawable.outline_cancel_24
+        )
+
+        serverLoginStatus.setImageResource(
+            if (state.isAccountLoggedIn == true) R.drawable.baseline_check_circle_outline_24
+            else R.drawable.outline_cancel_24
+        )
+
+        binding?.startPurchasesButton?.isEnabled =
+            state.isRuStoreLoggedIn == true && state.isAccountLoggedIn == true
     }
+
 
     private fun handleEvent(event: StartPurchasesEvent) {
         when (event) {
