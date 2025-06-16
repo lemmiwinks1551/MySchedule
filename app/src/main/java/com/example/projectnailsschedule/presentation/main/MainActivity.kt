@@ -222,15 +222,6 @@ class MainActivity : AppCompatActivity() {
         disconnectedIcon = menu.findItem(R.id.cloud_disconnected)!!
         mainViewModel.menuStatus.postValue(true)
 
-        disconnectedIcon.setOnMenuItemClickListener {
-            navController.navigate(R.id.action_nav_calendar_to_nav_premium_start)
-            true
-        }
-
-        connectedIcon.setOnMenuItemClickListener {
-            navController.navigate(R.id.action_nav_calendar_to_nav_premium_start)
-            true
-        }
         // syncByClick()
         return true
     }
