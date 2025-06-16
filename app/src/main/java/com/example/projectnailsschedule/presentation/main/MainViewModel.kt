@@ -462,7 +462,6 @@ class MainViewModel @Inject constructor(
         }
     }
 
-
     // Common
     private suspend fun checkSyncConditions(user: UserInfoDto?, jwt: String?): Boolean {
         // Если пользователь не залогинился || у него выключена синхронизация || у него токена нет || Не выполнен вход в RuStore
