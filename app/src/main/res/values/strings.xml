@@ -202,7 +202,7 @@
     <string name="billing_purchase_result">Статус покупки продукта</string>
     <string name="billing_purchase_confirm_in_progress">Подтверждаем покупку…</string>
     <string name="billing_purchase_delete_in_progress">Удаляем покупку…</string>
-    <string name="billing_product_confirmed">Продукт подтвержден/подтреблен</string>
+    <string name="billing_product_confirmed">Продукт подтвержден/потреблен</string>
     <string name="billing_product_deleted">Покупка отменена</string>
 
     <string name="billing_purchase_product_id_null">Некорректный параметр: productId</string>
