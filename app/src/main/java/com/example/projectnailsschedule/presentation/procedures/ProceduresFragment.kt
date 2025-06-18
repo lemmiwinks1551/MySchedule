@@ -28,6 +28,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class ProceduresFragment : Fragment() {
@@ -44,6 +45,9 @@ class ProceduresFragment : Fragment() {
     private var recyclerView: RecyclerView? = null
     private var addButton: FloatingActionButton? = null
     private var snackbar: Snackbar? = null
+
+    @Inject
+    lateinit var ruStoreAd: RuStoreAd
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -240,7 +244,7 @@ class ProceduresFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        RuStoreAd().banner(requireContext(), binding.root)
+        ruStoreAd.banner(requireContext(), binding.root, lifecycleScope)
     }
 
     override fun onDestroyView() {

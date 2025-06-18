@@ -19,6 +19,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.ActivityMainBinding
 import com.example.projectnailsschedule.domain.models.UserDataManager
+import com.example.projectnailsschedule.domain.usecase.rustore.GetPurchasesUseCase
 import com.example.projectnailsschedule.util.rustore.RuStoreAd
 import com.google.android.material.navigation.NavigationView
 import com.google.android.play.core.appupdate.AppUpdateManager
@@ -68,7 +69,10 @@ class MainActivity : AppCompatActivity() {
     lateinit var uncaughtExceptionHandler: Thread.UncaughtExceptionHandler
     private var drawerLayout: DrawerLayout? = null
     private var navView: NavigationView? = null
-    private val ruStoreAd = RuStoreAd()
+
+    @Inject
+    lateinit var ruStoreAd: RuStoreAd
+
     private val installStateUpdatedListener = InstallStateUpdatedListener { state ->
         if (state.installStatus == InstallStatus.DOWNLOADED) {
             Toast.makeText(
@@ -179,7 +183,7 @@ class MainActivity : AppCompatActivity() {
         // start advertising
         ruStoreAd.adView = MyTargetView(this)
 
-        ruStoreAd.interstitialAd(context = applicationContext)
+        ruStoreAd.interstitialAd(context = applicationContext, coroutineScope = lifecycleScope)
 
         initObservers()
 
