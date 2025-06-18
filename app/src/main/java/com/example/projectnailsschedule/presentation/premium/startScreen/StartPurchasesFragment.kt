@@ -1,5 +1,7 @@
 package com.example.projectnailsschedule.presentation.premium.startScreen
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -67,6 +69,10 @@ class StartPurchasesFragment : Fragment() {
             viewModel.checkPurchasesAvailability()
         }
 
+        mySubscriptionsButton.setOnClickListener {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("rustore://profile/subscriptions")))
+        }
+
         swipeRefreshLayout.setOnRefreshListener {
             // Проверяем залогинился ли пользователь в свой акк и в RuStore
             viewModel.checkLogin()
@@ -76,6 +82,7 @@ class StartPurchasesFragment : Fragment() {
     private fun FragmentStartPurchasesBinding.updateState(state: StartPurchasesState) {
         with(state.isLoading) {
             startPurchasesButton.isEnabled = !this
+            mySubscriptionsButton.isEnabled = !this
             swipeRefreshLayout.isRefreshing = this
         }
 
@@ -91,8 +98,9 @@ class StartPurchasesFragment : Fragment() {
 
         binding?.startPurchasesButton?.isEnabled =
             state.isRuStoreLoggedIn == true && state.isAccountLoggedIn == true
+        binding?.mySubscriptionsButton?.isEnabled =
+            state.isRuStoreLoggedIn == true && state.isAccountLoggedIn == true
     }
-
 
     private fun handleEvent(event: StartPurchasesEvent) {
         when (event) {
