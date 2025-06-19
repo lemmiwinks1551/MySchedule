@@ -4,11 +4,11 @@ import android.app.Dialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.Preference
@@ -78,9 +78,21 @@ class SettingsFragmentCompat : PreferenceFragmentCompat() {
 
         lifecycleScope.launch(Dispatchers.IO) {
             val userInfoDto = settingsViewModel.getUserInfoApi()
-            if (userInfoDto != null && userInfoDto.betaTester == true) {
+            val authorizedRuStore = settingsViewModel.isAuthorizedRuStore()
+            val subscribed = settingsViewModel.isSubscribed()
+
+            // разрешаем менять настройку если залогинен на сервере и бетатестер или
+            // залогинен на сервере и русторе и у него куплена подписка
+
+            Log.i("SettingsFragmentCompat", (userInfoDto != null &&
+                    (userInfoDto.betaTester == true || (authorizedRuStore && subscribed))
+                    ).toString())
+
+            if (userInfoDto != null &&
+                (userInfoDto.betaTester == true || (authorizedRuStore && subscribed))
+            ) {
                 withContext(Dispatchers.Main) {
-                    // пользователь залогинен - разрешеаем изменение статуса
+                    // разрешеаем изменение статуса
                     synchronization.isEnabled = true
 
                     // если у пользователя уже активированная эта опция - устанавливаем флаг
@@ -89,7 +101,10 @@ class SettingsFragmentCompat : PreferenceFragmentCompat() {
                     // устанавливаем слушаетель
                     synchronization.setOnPreferenceClickListener {
                         if (synchronization.isChecked) {
-                            showDialogSync()
+                            // showDialogSync()
+                            lifecycleScope.launch {
+                                settingsViewModel.enableSync()
+                            }
                         } else {
                             lifecycleScope.launch {
                                 settingsViewModel.disableSync()
@@ -100,7 +115,7 @@ class SettingsFragmentCompat : PreferenceFragmentCompat() {
                 }
             } else {
                 withContext(Dispatchers.Main) {
-                    // пользователь не залогинен - блокируем изменение статуса
+                    // Блокируем изменение статуса
                     synchronization.isEnabled = false
                     synchronization.onPreferenceClickListener = null
                 }
