@@ -109,6 +109,10 @@ class MainPurchasesFragment : Fragment() {
                     lengthLong = true
                 )
             }
+
+            is BillingEvent.RefreshPurchases -> {
+                viewModel.updateProductsAndPurchases()
+            }
         }
     }
 }
