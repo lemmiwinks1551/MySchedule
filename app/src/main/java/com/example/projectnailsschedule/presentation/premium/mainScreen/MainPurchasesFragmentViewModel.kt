@@ -106,7 +106,7 @@ class MainPurchasesFragmentViewModel @Inject constructor(
                 BillingEvent.ShowDialog(
                     InfoDialogState(
                         titleRes = R.string.billing_product_confirmed,
-                        message = "Покупка успешно завершена."
+                        message = "Перейдите в настройки, чтобы выключить синхронизацию"
                     )
                 )
             )

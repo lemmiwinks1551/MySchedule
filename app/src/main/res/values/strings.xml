@@ -183,6 +183,7 @@
     <string name="billing_start_purchases">Начать покупки</string>
 
     <string name="billing_common_ok">ОК</string>
+    <string name="billing_common_later">Позже</string>
     <string name="billing_common_error">Что-то пошло не так</string>
 
     <string name="billing_products_tab">Продукты</string>

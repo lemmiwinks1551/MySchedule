@@ -175,6 +175,10 @@
     <fragment
         android:id="@+id/nav_purchases_main_fragment"
         android:name="com.example.projectnailsschedule.presentation.premium.mainScreen.MainPurchasesFragment"
-        android:label="Премиум" />
+        android:label="Премиум" >
+        <action
+            android:id="@+id/action_nav_purchases_main_fragment_to_nav_settings"
+            app:destination="@id/nav_settings" />
+    </fragment>
 
 </navigation>
