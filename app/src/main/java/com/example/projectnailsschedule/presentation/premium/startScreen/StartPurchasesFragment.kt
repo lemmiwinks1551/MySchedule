@@ -69,9 +69,9 @@ class StartPurchasesFragment : Fragment() {
             viewModel.checkPurchasesAvailability()
         }
 
-        mySubscriptionsButton.setOnClickListener {
+        /*mySubscriptionsButton.setOnClickListener {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("rustore://profile/subscriptions")))
-        }
+        }*/
 
         swipeRefreshLayout.setOnRefreshListener {
             // Проверяем залогинился ли пользователь в свой акк и в RuStore
@@ -82,7 +82,7 @@ class StartPurchasesFragment : Fragment() {
     private fun FragmentStartPurchasesBinding.updateState(state: StartPurchasesState) {
         with(state.isLoading) {
             startPurchasesButton.isEnabled = !this
-            mySubscriptionsButton.isEnabled = !this
+            // mySubscriptionsButton.isEnabled = !this
             swipeRefreshLayout.isRefreshing = this
         }
 
@@ -98,8 +98,8 @@ class StartPurchasesFragment : Fragment() {
 
         binding?.startPurchasesButton?.isEnabled =
             state.isRuStoreLoggedIn == true && state.isAccountLoggedIn == true
-        binding?.mySubscriptionsButton?.isEnabled =
-            state.isRuStoreLoggedIn == true && state.isAccountLoggedIn == true
+//        binding?.mySubscriptionsButton?.isEnabled =
+//            state.isRuStoreLoggedIn == true && state.isAccountLoggedIn == true
     }
 
     private fun handleEvent(event: StartPurchasesEvent) {
