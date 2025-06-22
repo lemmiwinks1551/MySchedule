@@ -34,6 +34,7 @@ import com.example.projectnailsschedule.domain.usecase.calendarUC.GetOldUpdatedC
 import com.example.projectnailsschedule.domain.usecase.calendarUC.InsertCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.SelectCalendarDateByDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.UpdateCalendarDateUseCase
+import com.example.projectnailsschedule.domain.usecase.premium.SetPremiumStatusUseCase
 import com.example.projectnailsschedule.domain.usecase.rustore.CheckRuStoreLoginStatus
 import com.example.projectnailsschedule.domain.usecase.rustore.GetPurchasesUseCase
 import com.example.projectnailsschedule.domain.usecase.settingsUC.GetUserThemeUseCase
@@ -101,8 +102,11 @@ class MainViewModel @Inject constructor(
     private var setCalendarLastUpdateUseCase: SetCalendarLastUpdateUseCase,
 
     // Billing SDK
-    private var getPurchasesUseCase: GetPurchasesUseCase,
-    private val checkRuStoreLoginStatus: CheckRuStoreLoginStatus
+    private val getPurchasesUseCase: GetPurchasesUseCase,
+    private val checkRuStoreLoginStatus: CheckRuStoreLoginStatus,
+
+    // Premium API
+    private val setPremiumStatusUseCase: SetPremiumStatusUseCase
 ) : ViewModel() {
     val syncStatus = MutableLiveData(false)
     val menuStatus = MutableLiveData(false)
@@ -464,42 +468,45 @@ class MainViewModel @Inject constructor(
 
     // Common
     private suspend fun checkSyncConditions(user: UserInfoDto?, jwt: String?): Boolean {
-        // Если пользователь не залогинился или
-        // у него выключена синхронизация или
-        // Не выполнен вход в RuStore то
-        // Устанавливаем статус false и выходим
-        if (user == null || user.syncEnabled == false || jwt == null ||
-            !checkRuStoreLoginStatus.execute().await().authorized
-        ) {
+        // Если пользователь не залогинен или не вошел в RuStore — не продолжаем
+        if (user == null || jwt == null || !checkRuStoreLoginStatus.execute().await().authorized) {
+            syncStatus.postValue(false)
+            return false
+        }
+
+        // --- всегда проверяем подписку и отправляем статус на сервер ---
+        val hasPremium = getPurchasesUseCase.execute().fold(
+            onSuccess = { purchases ->
+                val result = purchases.isNotEmpty()
+                setPremiumStatusUseCase.invoke(jwt, result)
+                Log.i("checkSyncConditions", "Подписка: ${if (result) "куплена" else "не куплена"}")
+                result
+            },
+            onFailure = {
+                setPremiumStatusUseCase.invoke(jwt, false)
+                Log.i("checkSyncConditions", "Не удалось получить данные о подписке: ${it.message}")
+                false
+            }
+        )
+
+        // --- теперь проверяем условия для синхронизации ---
+        if (user.syncEnabled == false) {
             syncStatus.postValue(false)
             return false
         }
 
         if (user.betaTester == true) {
-            // Если пользователь бета тестер - разрешаем синхронизацию
             syncStatus.postValue(true)
             return true
         }
 
-        // Если у пользователя не куплена подписка - выходим
-        val purchases = getPurchasesUseCase.execute()
-        return purchases.fold(
-            onSuccess = {
-                if (it.isNotEmpty()) {
-                    syncStatus.postValue(true)
-                    Log.i("checkSyncConditions", "Подписка куплена")
-                } else {
-                    syncStatus.postValue(false)
-                    Log.i("checkSyncConditions", "Подписка не куплена")
-                }
-                true
-            },
-            onFailure = {
-                syncStatus.postValue(false)
-                Log.i("checkSyncConditions", "Данные о подписке не удалось получить: ${it.message}")
-                false
-            }
-        )
+        if (!hasPremium) {
+            syncStatus.postValue(false)
+            return false
+        }
+
+        syncStatus.postValue(true)
+        return true
     }
 
     private fun localOutdated(
