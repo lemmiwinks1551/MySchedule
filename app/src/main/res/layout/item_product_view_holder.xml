@@ -46,7 +46,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/productImage"
             app:layout_constraintTop_toBottomOf="@id/titleView"
-            tools:text="Подписка" />
+            tools:text="Подписка - 1 месяц" />
 
         <TextView
             android:id="@+id/productStatusView"
@@ -58,7 +58,11 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/productImage"
             app:layout_constraintTop_toBottomOf="@id/productTypeView"
-            tools:text="Активный товар" />
+            tools:text="Доступ ко premium-функциям приложения:
+            \n
+            \n - Отсутствие рекламы
+            \n - Синхронизация с облаком
+            \n - Управление записями через веб-сайт" />
 
         <TextView
             android:id="@+id/priceLabelView"
