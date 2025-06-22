@@ -39,8 +39,12 @@ class ProductsAdapter(
                 product.imageUrl?.let { productImage.load(it) }
 
                 titleView.text = product.title
-                product.productType?.getStringRes()?.let { productTypeView.setText(it) }
-                productStatusView.setText(product.productStatus.getStringRes())
+                productTypeView.text = "Подписка - 1 месяц"
+                productStatusView.text = "Доступ ко premium-функциям приложения:" +
+                        "\n" +
+                        "\n - Отсутствие рекламы" +
+                        "\n - Синхронизация с облаком" +
+                        "\n - Управление записями через веб-сайт"
                 priceLabelView.text = product.priceLabel
             }
         }

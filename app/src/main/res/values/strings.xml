@@ -180,7 +180,7 @@
     <string name="warning_message"><![CDATA[Нажимая <b>Согласен</b>, вы подтверждаете своё согласие на передачу данных о записях на сервер \n - Мы не несем ответственности за возможные потери данных или ошибки, вызванные использованием функции синхронизации. Вы можете отключить её в любой момент в настройках приложения.]]></string>
 
     <string name="menu_premium">Премиум</string>
-    <string name="billing_start_purchases">Начать покупки</string>
+    <string name="billing_start_purchases">Перейти к покупке Premium</string>
 
     <string name="billing_common_ok">ОК</string>
     <string name="billing_common_later">Позже</string>
