@@ -30,6 +30,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class SearchFragment : Fragment() {
@@ -45,6 +46,9 @@ class SearchFragment : Fragment() {
     private var searchView: SearchView? = null
     private var searchRv: RecyclerView? = null
     private var snackbar: Snackbar? = null
+
+    @Inject
+    lateinit var ruStoreAd: RuStoreAd
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -244,7 +248,7 @@ class SearchFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        RuStoreAd().banner(requireContext(), binding.root)
+        ruStoreAd.banner(requireContext(), binding.root, lifecycleScope)
     }
 
     override fun onDestroyView() {

@@ -62,6 +62,7 @@ import com.example.projectnailsschedule.domain.usecase.clientsUC.SearchClientUse
 import com.example.projectnailsschedule.domain.usecase.clientsUC.UpdateClientUseCase
 import com.example.projectnailsschedule.domain.usecase.importExportUC.ExportUseCase
 import com.example.projectnailsschedule.domain.usecase.importExportUC.ImportUseCase
+import com.example.projectnailsschedule.domain.usecase.premium.SetPremiumStatusUseCase
 import com.example.projectnailsschedule.domain.usecase.proceduresUC.DeleteProcedureUseCase
 import com.example.projectnailsschedule.domain.usecase.proceduresUC.InsertProcedureUseCase
 import com.example.projectnailsschedule.domain.usecase.proceduresUC.SearchProcedureUseCase
@@ -314,6 +315,11 @@ class DomainModule {
     @Provides
     fun getFaqUseCase(context: Context): GetFaqUseCase {
         return GetFaqUseCase(context)
+    }
+
+    @Provides
+    fun getSetPremiumStatusUseCase(): SetPremiumStatusUseCase {
+        return SetPremiumStatusUseCase()
     }
 
     // Account API

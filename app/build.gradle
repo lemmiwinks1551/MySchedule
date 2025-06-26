@@ -68,7 +68,7 @@ android {
         GooglePlay {
             dimension "MySchedule"
             applicationId "com.lemmiwinks.myschedule"
-            versionCode 59
+            versionCode 60
             versionName "7." + versionCode
         }
     }
@@ -94,6 +94,7 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment-ktx:2.7.7'
     implementation 'androidx.navigation:navigation-ui-ktx:2.7.7'
     implementation 'com.google.firebase:firebase-database-ktx:20.3.1'
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
@@ -102,13 +103,11 @@ dependencies {
     implementation 'androidx.activity:activity:1.8.2'
     implementation 'androidx.fragment:fragment:1.6.2'
 
-    implementation("ru.rustore.sdk:appupdate:0.1.0")
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
-    implementation("ru.rustore.sdk:review:0.1.6")
     implementation 'com.my.target:mytarget-sdk:5.16.5'
 
     // Room
@@ -156,5 +155,12 @@ dependencies {
 
     // RXJava
     implementation group: 'io.reactivex.rxjava3', name: 'rxjava', version: '3.1.9'
+
+    // Rustore
+    implementation platform("ru.rustore.sdk:bom:2025.05.02")
+    implementation("ru.rustore.sdk:appupdate")
+    implementation("ru.rustore.sdk:review")
+    implementation("ru.rustore.sdk:billingclient")
+    implementation("io.coil-kt:coil:2.2.2")
 
 }

@@ -29,6 +29,7 @@ import kotlinx.coroutines.withContext
 import java.time.ZoneId
 import java.util.Calendar
 import java.util.Date
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class ListMonthViewFragment : Fragment() {
@@ -42,6 +43,9 @@ class ListMonthViewFragment : Fragment() {
     private var layoutManager: LayoutManager? = null
 
     private val binding get() = _binding!!
+
+    @Inject
+    lateinit var ruStoreAd: RuStoreAd
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -165,7 +169,7 @@ class ListMonthViewFragment : Fragment() {
                 layoutManager!!.startSmoothScroll(smoothScroller)
             }
         }
-        RuStoreAd().banner(requireContext(), binding.root)
+        ruStoreAd.banner(requireContext(), binding.root, lifecycleScope)
 
         recoverViewState()
     }

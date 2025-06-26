@@ -1,6 +1,7 @@
 package com.example.projectnailsschedule.presentation.settings
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.projectnailsschedule.domain.models.FaqModel
 import com.example.projectnailsschedule.domain.models.dto.UserInfoDto
 import com.example.projectnailsschedule.domain.models.dto.UserInfoDtoManager
@@ -9,6 +10,8 @@ import com.example.projectnailsschedule.domain.usecase.account.GetUserInfoApiUse
 import com.example.projectnailsschedule.domain.usecase.apiUC.GetFaqUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.DisableSyncUseCase
 import com.example.projectnailsschedule.domain.usecase.apiUC.serverSyncUC.EnableSyncUseCase
+import com.example.projectnailsschedule.domain.usecase.rustore.CheckRuStoreLoginStatus
+import com.example.projectnailsschedule.domain.usecase.rustore.GetPurchasesUseCase
 import com.example.projectnailsschedule.domain.usecase.settingsUC.GetLanguageUseCase
 import com.example.projectnailsschedule.domain.usecase.settingsUC.GetThemeUseCase
 import com.example.projectnailsschedule.domain.usecase.settingsUC.GetUserThemeUseCase
@@ -20,6 +23,9 @@ import com.example.projectnailsschedule.domain.usecase.util.RestartAppUseCase
 import com.example.projectnailsschedule.domain.usecase.util.UpdateUserDataUseCase
 import com.example.projectnailsschedule.util.Util
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -38,7 +44,10 @@ class SettingsViewModel @Inject constructor(
     private var getUserInfoApi: GetUserInfoApiUseCase,
     private var getJwt: GetJwt,
     private var enableSyncUseCase: EnableSyncUseCase,
-    private var disableSyncUseCase: DisableSyncUseCase
+    private var disableSyncUseCase: DisableSyncUseCase,
+
+    private val getRuStoreLoginStatus: CheckRuStoreLoginStatus,
+    private var getPurchasesUseCase: GetPurchasesUseCase,
 ) : ViewModel() {
 
     init {
@@ -107,5 +116,25 @@ class SettingsViewModel @Inject constructor(
         } catch (e: Exception) {
             false
         }
+    }
+
+    suspend fun isAuthorizedRuStore(): Boolean {
+        return viewModelScope.async {
+            withContext(Dispatchers.IO) {
+                getRuStoreLoginStatus.execute().await().authorized
+            }
+        }.await()
+    }
+
+    suspend fun isSubscribed(): Boolean {
+        // Проверяем, куплена ли подписка у пользователя
+        return getPurchasesUseCase.execute().fold(
+            onSuccess = {
+                it.isNotEmpty()
+            },
+            onFailure = {
+                false
+            }
+        )
     }
 }

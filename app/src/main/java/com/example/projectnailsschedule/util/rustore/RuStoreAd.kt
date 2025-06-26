@@ -4,118 +4,155 @@ import android.content.Context
 import android.util.Log
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.projectnailsschedule.BuildConfig
+import com.example.projectnailsschedule.domain.usecase.rustore.GetPurchasesUseCase
 import com.my.target.ads.InterstitialAd
 import com.my.target.ads.MyTargetView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class RuStoreAd {
+class RuStoreAd @Inject constructor(
+    private val getPurchasesUseCase: GetPurchasesUseCase
+) {
     val log = "Ads"
 
     // Banner
     lateinit var adView: MyTargetView
 
     // InterstitialAd
-    lateinit var interstitialAd: InterstitialAd
+    private lateinit var interstitialAd: InterstitialAd
 
-    fun interstitialAd(context: Context) {
-        val log = "InterstitialAd"
-
-        val slotId = 1285135
-
-        // Создаем экземпляр InterstitialAd
-        interstitialAd = InterstitialAd(slotId, context)
-
-        // Устанавливаем слушатель событий
-        interstitialAd.setListener(object : InterstitialAd.InterstitialAdListener {
-            override fun onLoad(ad: InterstitialAd) {
-                // Запускаем показ в отдельном Activity
-                Log.e(log, "onLoad")
-                ad.show()
+    fun interstitialAd(context: Context, coroutineScope: CoroutineScope) {
+        coroutineScope.launch {
+            if (isSubscribed()) {
+                Log.i("RuStoreAd", "Подписка найдена, не показываем interstitialAd")
+                return@launch
             }
+            Log.i("RuStoreAd", "Подписка не найдена, показываем interstitialAd")
 
-            override fun onNoAd(reason: String, ad: InterstitialAd) {
-                Log.e(log, "onNoAd")
+            val log = "InterstitialAd"
+
+            val slotId = 1285135
+
+            // Создаем экземпляр InterstitialAd
+            interstitialAd = InterstitialAd(slotId, context)
+
+            // Устанавливаем слушатель событий
+            interstitialAd.setListener(object : InterstitialAd.InterstitialAdListener {
+                override fun onLoad(ad: InterstitialAd) {
+                    // Запускаем показ в отдельном Activity
+                    Log.e(log, "onLoad")
+                    ad.show()
+                }
+
+                override fun onNoAd(reason: String, ad: InterstitialAd) {
+                    Log.e(log, "onNoAd")
+                }
+
+                override fun onClick(ad: InterstitialAd) {}
+                override fun onDisplay(ad: InterstitialAd) {}
+                override fun onDismiss(ad: InterstitialAd) {}
+                override fun onVideoCompleted(ad: InterstitialAd) {}
+            })
+
+            // Запускаем загрузку данных
+            if (BuildConfig.DEBUG) {
+                Log.d(log, "Debug")
+            } else {
+                Log.d(log, "Prod")
+                interstitialAd.load()
             }
-
-            override fun onClick(ad: InterstitialAd) {}
-            override fun onDisplay(ad: InterstitialAd) {}
-            override fun onDismiss(ad: InterstitialAd) {}
-            override fun onVideoCompleted(ad: InterstitialAd) {}
-        })
-
-        // Запускаем загрузку данных
-        if (BuildConfig.DEBUG) {
-            Log.d(log, "Debug")
-        } else {
-            Log.d(log, "Prod")
-            interstitialAd.load()
         }
     }
 
     fun banner(
         context: Context,
-        layout: ConstraintLayout
+        layout: ConstraintLayout,
+        coroutineScope: CoroutineScope
     ) {
-        val log = "BannerAd"
+        coroutineScope.launch {
+            if (isSubscribed()) {
+                Log.i("RuStoreAd", "Подписка найдена, не показываем banner")
+                return@launch
+            }
+            Log.i("RuStoreAd", "Подписка не найдена, показываем banner")
 
-        val slotId = 1404141
+            val log = "BannerAd"
 
-        // Включение режима отладки
-        // MyTargetManager.setDebugMode(true)
+            val slotId = 1404141
 
-        /*        GlobalScope.launch {
-            val adInfo = AdvertisingIdClient.getAdvertisingIdInfo(context)
-            Log.d("text", adInfo.id ?: "unknown")
-        }*/
+            // Включение режима отладки
+            // MyTargetManager.setDebugMode(true)
 
-        // Создаем экземпляр MyTargetView
-        adView = MyTargetView(context)
+            /*        GlobalScope.launch {
+                val adInfo = AdvertisingIdClient.getAdvertisingIdInfo(context)
+                Log.d("text", adInfo.id ?: "unknown")
+            }*/
 
-        // Задаём id слота
-        adView.setSlotId(slotId)
+            // Создаем экземпляр MyTargetView
+            adView = MyTargetView(context)
 
-        val adViewLayoutParams = ConstraintLayout.LayoutParams(
-            ConstraintLayout.LayoutParams.MATCH_CONSTRAINT,
-            ConstraintLayout.LayoutParams.WRAP_CONTENT
-        )
+            // Задаём id слота
+            adView.setSlotId(slotId)
 
-        adViewLayoutParams.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
-        adViewLayoutParams.startToStart = ConstraintLayout.LayoutParams.PARENT_ID
-        adViewLayoutParams.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID
+            val adViewLayoutParams = ConstraintLayout.LayoutParams(
+                ConstraintLayout.LayoutParams.MATCH_CONSTRAINT,
+                ConstraintLayout.LayoutParams.WRAP_CONTENT
+            )
 
-        adView.layoutParams = adViewLayoutParams
+            adViewLayoutParams.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
+            adViewLayoutParams.startToStart = ConstraintLayout.LayoutParams.PARENT_ID
+            adViewLayoutParams.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID
 
-        adView.listener = object : MyTargetView.MyTargetViewListener {
-            override fun onLoad(myTargetView: MyTargetView) {
-                // Данные успешно загружены, запускаем показ объявлений
-                Log.e(log, "onLoad")
-                layout.addView(adView)
+            adView.layoutParams = adViewLayoutParams
+
+            adView.listener = object : MyTargetView.MyTargetViewListener {
+                override fun onLoad(myTargetView: MyTargetView) {
+                    // Данные успешно загружены, запускаем показ объявлений
+                    Log.e(log, "onLoad")
+                    layout.addView(adView)
+                }
+
+                override fun onNoAd(reason: String, myTargetView: MyTargetView) {
+                    Log.e(log, "onNoAd")
+                }
+
+                override fun onShow(myTargetView: MyTargetView) {
+                    Log.e(log, "onShow")
+                }
+
+                override fun onClick(myTargetView: MyTargetView) {
+                    Log.e(log, "onClick")
+                }
             }
 
-            override fun onNoAd(reason: String, myTargetView: MyTargetView) {
-                Log.e(log, "onNoAd")
+            // Запускаем загрузку данных
+            if (BuildConfig.DEBUG) {
+                Log.d(log, "Debug")
+            } else {
+                // Код для продакшн версии
+                Log.d(log, "Prod")
+                adView.load()
             }
-
-            override fun onShow(myTargetView: MyTargetView) {
-                Log.e(log, "onShow")
-            }
-
-            override fun onClick(myTargetView: MyTargetView) {
-                Log.e(log, "onClick")
-            }
-        }
-
-        // Запускаем загрузку данных
-        if (BuildConfig.DEBUG) {
-            Log.d(log, "Debug")
-        } else {
-            // Код для продакшн версии
-            Log.d(log, "Prod")
-            adView.load()
         }
     }
 
     fun destroyAd() {
         adView.destroy()
         interstitialAd.destroy()
+    }
+
+    private suspend fun isSubscribed(): Boolean {
+        // Проверяем, куплена ли подписка у пользователя
+        delay(5000) // Чтобы слишком часто не запрашивал статус, потом убрать
+        return getPurchasesUseCase.execute().fold(
+            onSuccess = {
+                it.isNotEmpty()
+            },
+            onFailure = {
+                false
+            }
+        )
     }
 }

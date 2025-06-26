@@ -1,5 +1,6 @@
 package com.example.projectnailsschedule.presentation.main
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -18,6 +19,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.projectnailsschedule.R
 import com.example.projectnailsschedule.databinding.ActivityMainBinding
 import com.example.projectnailsschedule.domain.models.UserDataManager
+import com.example.projectnailsschedule.domain.usecase.rustore.GetPurchasesUseCase
 import com.example.projectnailsschedule.util.rustore.RuStoreAd
 import com.google.android.material.navigation.NavigationView
 import com.google.android.play.core.appupdate.AppUpdateManager
@@ -38,6 +40,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import ru.rustore.sdk.billingclient.RuStoreBillingClient
 import java.util.Date
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicBoolean
@@ -66,7 +69,10 @@ class MainActivity : AppCompatActivity() {
     lateinit var uncaughtExceptionHandler: Thread.UncaughtExceptionHandler
     private var drawerLayout: DrawerLayout? = null
     private var navView: NavigationView? = null
-    private val ruStoreAd = RuStoreAd()
+
+    @Inject
+    lateinit var ruStoreAd: RuStoreAd
+
     private val installStateUpdatedListener = InstallStateUpdatedListener { state ->
         if (state.installStatus == InstallStatus.DOWNLOADED) {
             Toast.makeText(
@@ -82,7 +88,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val isSyncing = AtomicBoolean(false)
-    private val updatePeriodSec = 1L
+    private val updatePeriodSec = 5L
+
+    @Inject
+    lateinit var billingClient: RuStoreBillingClient
 
     override fun onStart() {
         super.onStart()
@@ -174,9 +183,18 @@ class MainActivity : AppCompatActivity() {
         // start advertising
         ruStoreAd.adView = MyTargetView(this)
 
-        ruStoreAd.interstitialAd(context = applicationContext)
+        ruStoreAd.interstitialAd(context = applicationContext, coroutineScope = lifecycleScope)
 
         initObservers()
+
+        if (savedInstanceState == null) {
+            billingClient.onNewIntent(intent)
+        }
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        billingClient.onNewIntent(intent)
     }
 
     override fun onResume() {

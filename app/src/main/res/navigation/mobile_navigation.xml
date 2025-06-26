@@ -46,6 +46,9 @@
         <action
             android:id="@+id/action_nav_calendar_to_accountFragment"
             app:destination="@id/accountFragment" />
+        <action
+            android:id="@+id/action_nav_calendar_to_nav_premium_start"
+            app:destination="@id/nav_purchases_start_fragment" />
     </fragment>
 
     <fragment
@@ -117,11 +120,13 @@
             app:popEnterAnim="@anim/nav_default_enter_anim"
             app:popExitAnim="@anim/nav_default_exit_anim" />
     </fragment>
+
     <fragment
         android:id="@+id/nav_client_edit_fragment"
         android:name="com.example.projectnailsschedule.presentation.clients.editClient.ClientEditFragment"
         android:label="@string/client"
         tools:layout="@layout/fragment_client_edit" />
+
     <fragment
         android:id="@+id/selectClient"
         android:name="com.example.projectnailsschedule.presentation.appointment.SelectClientFragment"
@@ -131,6 +136,7 @@
             android:id="@+id/action_selectClient_to_nav_appointment"
             app:destination="@id/nav_appointment" />
     </fragment>
+
     <fragment
         android:id="@+id/fullMonthViewFragment"
         android:name="com.example.projectnailsschedule.presentation.calendar.listMonthView.ListMonthViewFragment"
@@ -145,14 +151,34 @@
         android:name="com.example.projectnailsschedule.presentation.procedures.editProcedure.ProcedureEditFragment"
         tools:layout="@layout/fragment_procedure_edit">
     </fragment>
+
     <fragment
         android:id="@+id/nav_import_export"
         android:name="com.example.projectnailsschedule.presentation.importExport.ImportExportFragment"
         android:label="@string/menu_import_export" />
+
     <fragment
         android:id="@+id/nav_account"
         tools:layout="@layout/fragment_account_home"
         android:name="com.example.projectnailsschedule.presentation.account.AccountFragmentHome"
         android:label="@string/my_account" />
+
+    <fragment
+        android:id="@+id/nav_purchases_start_fragment"
+        android:name="com.example.projectnailsschedule.presentation.premium.startScreen.StartPurchasesFragment"
+        android:label="Премиум" >
+        <action
+            android:id="@+id/action_nav_premium_start_to_nav_premium"
+            app:destination="@id/nav_purchases_main_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_purchases_main_fragment"
+        android:name="com.example.projectnailsschedule.presentation.premium.mainScreen.MainPurchasesFragment"
+        android:label="Премиум" >
+        <action
+            android:id="@+id/action_nav_purchases_main_fragment_to_nav_settings"
+            app:destination="@id/nav_settings" />
+    </fragment>
 
 </navigation>

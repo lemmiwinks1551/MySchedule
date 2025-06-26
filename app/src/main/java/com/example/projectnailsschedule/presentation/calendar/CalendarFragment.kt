@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -26,6 +27,7 @@ import kotlinx.coroutines.launch
 import java.time.ZoneId
 import java.util.Calendar
 import java.util.Date
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class CalendarFragment : Fragment(),
@@ -40,6 +42,9 @@ class CalendarFragment : Fragment(),
     private var calendarRecyclerView: RecyclerView? = null
     private var shortDataRecyclerView: RecyclerView? = null
     private var addButton: FloatingActionButton? = null
+
+    @Inject
+    lateinit var ruStoreAd: RuStoreAd
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -233,7 +238,7 @@ class CalendarFragment : Fragment(),
     }
 
     override fun onResume() {
-        RuStoreAd().banner(requireContext(), binding.root)
+        ruStoreAd.banner(requireContext(), binding.root, lifecycleScope)
 
         super.onResume()
 

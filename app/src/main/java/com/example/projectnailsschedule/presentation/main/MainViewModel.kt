@@ -34,6 +34,9 @@ import com.example.projectnailsschedule.domain.usecase.calendarUC.GetOldUpdatedC
 import com.example.projectnailsschedule.domain.usecase.calendarUC.InsertCalendarDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.SelectCalendarDateByDateUseCase
 import com.example.projectnailsschedule.domain.usecase.calendarUC.UpdateCalendarDateUseCase
+import com.example.projectnailsschedule.domain.usecase.premium.SetPremiumStatusUseCase
+import com.example.projectnailsschedule.domain.usecase.rustore.CheckRuStoreLoginStatus
+import com.example.projectnailsschedule.domain.usecase.rustore.GetPurchasesUseCase
 import com.example.projectnailsschedule.domain.usecase.settingsUC.GetUserThemeUseCase
 import com.example.projectnailsschedule.domain.usecase.sharedPref.GetAppointmentLastUpdateUseCase
 import com.example.projectnailsschedule.domain.usecase.sharedPref.GetCalendarDateLastUpdateUseCase
@@ -96,7 +99,14 @@ class MainViewModel @Inject constructor(
     private var getAppointmentLastUpdateUseCase: GetAppointmentLastUpdateUseCase,
     private var setAppointmentLastUpdateUseCase: SetAppointmentLastUpdateUseCase,
     private var getCalendarDateLastUpdateUseCase: GetCalendarDateLastUpdateUseCase,
-    private var setCalendarLastUpdateUseCase: SetCalendarLastUpdateUseCase
+    private var setCalendarLastUpdateUseCase: SetCalendarLastUpdateUseCase,
+
+    // Billing SDK
+    private val getPurchasesUseCase: GetPurchasesUseCase,
+    private val checkRuStoreLoginStatus: CheckRuStoreLoginStatus,
+
+    // Premium API
+    private val setPremiumStatusUseCase: SetPremiumStatusUseCase
 ) : ViewModel() {
     val syncStatus = MutableLiveData(false)
     val menuStatus = MutableLiveData(false)
@@ -456,25 +466,41 @@ class MainViewModel @Inject constructor(
         }
     }
 
-
     // Common
-    private fun checkSyncConditions(user: UserInfoDto?, jwt: String?): Boolean {
-        if (user == null) {
-            // Если пользователь не залогинился
-            // устанавливаем статус false и выходим
+    private suspend fun checkSyncConditions(user: UserInfoDto?, jwt: String?): Boolean {
+        // Если пользователь не залогинен или не вошел в RuStore — не продолжаем
+        if (user == null || jwt == null || !checkRuStoreLoginStatus.execute().await().authorized) {
             syncStatus.postValue(false)
             return false
         }
 
+        // --- всегда проверяем подписку и отправляем статус на сервер ---
+        val hasPremium = getPurchasesUseCase.execute().fold(
+            onSuccess = { purchases ->
+                val result = purchases.isNotEmpty()
+                setPremiumStatusUseCase.invoke(jwt, result)
+                Log.i("checkSyncConditions", "Подписка: ${if (result) "куплена" else "не куплена"}")
+                result
+            },
+            onFailure = {
+                setPremiumStatusUseCase.invoke(jwt, false)
+                Log.i("checkSyncConditions", "Не удалось получить данные о подписке: ${it.message}")
+                false
+            }
+        )
+
+        // --- теперь проверяем условия для синхронизации ---
         if (user.syncEnabled == false) {
-            // Если у пользователя установлен syncEnabled == false
-            // устанавливаем статус false и выходим
             syncStatus.postValue(false)
             return false
         }
 
-        if (jwt == null) {
-            // Если у пользователя нет токена - выходим
+        if (user.betaTester == true) {
+            syncStatus.postValue(true)
+            return true
+        }
+
+        if (!hasPremium) {
             syncStatus.postValue(false)
             return false
         }

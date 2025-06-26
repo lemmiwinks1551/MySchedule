@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -28,6 +29,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class DateFragment : Fragment() {
@@ -41,6 +43,9 @@ class DateFragment : Fragment() {
     private var appointmentsRv: RecyclerView? = null
 
     private var snackbar: Snackbar? = null
+
+    @Inject
+    lateinit var ruStoreAd: RuStoreAd
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -115,7 +120,7 @@ class DateFragment : Fragment() {
 
         Util().hideKeyboard(requireActivity())
 
-        RuStoreAd().banner(requireContext(), binding.root)
+        ruStoreAd.banner(requireContext(), binding.root, lifecycleScope)
     }
 
     private fun swipeToDelete() {
