@@ -3,13 +3,17 @@ package com.example.projectnailsschedule.util.rustore
 import android.content.Context
 import android.util.Log
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.example.projectnailsschedule.BuildConfig
 import com.example.projectnailsschedule.domain.usecase.rustore.GetPurchasesUseCase
 import com.my.target.ads.InterstitialAd
 import com.my.target.ads.MyTargetView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.suspendCancellableCoroutine
+import ru.rustore.sdk.billingclient.BuildConfig
+import ru.rustore.sdk.billingclient.RuStoreBillingClient
+import ru.rustore.sdk.billingclient.model.purchase.PurchaseAvailabilityResult
+import ru.rustore.sdk.billingclient.utils.pub.checkPurchasesAvailability
 import javax.inject.Inject
 
 class RuStoreAd @Inject constructor(
@@ -146,6 +150,11 @@ class RuStoreAd @Inject constructor(
     private suspend fun isSubscribed(): Boolean {
         // Проверяем, куплена ли подписка у пользователя
         delay(5000) // Чтобы слишком часто не запрашивал статус, потом убрать
+
+        if (!canSafelyCheckPurchases()) {
+            return false
+        }
+
         return getPurchasesUseCase.execute().fold(
             onSuccess = {
                 it.isNotEmpty()
@@ -154,5 +163,18 @@ class RuStoreAd @Inject constructor(
                 false
             }
         )
+    }
+
+    private suspend fun canSafelyCheckPurchases(): Boolean {
+        return suspendCancellableCoroutine { cont ->
+            RuStoreBillingClient.checkPurchasesAvailability()
+                .addOnSuccessListener { result ->
+                    val isAvailable = result is PurchaseAvailabilityResult.Available
+                    cont.resume(isAvailable) {}
+                }
+                .addOnFailureListener {
+                    cont.resume(false) {}
+                }
+        }
     }
 }

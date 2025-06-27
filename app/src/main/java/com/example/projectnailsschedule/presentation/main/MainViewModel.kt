@@ -44,6 +44,10 @@ import com.example.projectnailsschedule.domain.usecase.sharedPref.SetAppointment
 import com.example.projectnailsschedule.domain.usecase.sharedPref.SetCalendarLastUpdateUseCase
 import com.example.projectnailsschedule.util.Util
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.suspendCancellableCoroutine
+import ru.rustore.sdk.billingclient.RuStoreBillingClient
+import ru.rustore.sdk.billingclient.model.purchase.PurchaseAvailabilityResult
+import ru.rustore.sdk.billingclient.utils.pub.checkPurchasesAvailability
 import java.util.Date
 import javax.inject.Inject
 
@@ -466,10 +470,24 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    // Common
     private suspend fun checkSyncConditions(user: UserInfoDto?, jwt: String?): Boolean {
-        // Если пользователь не залогинен или не вошел в RuStore — не продолжаем
+        // --- если пользователь — бета-тестер, сразу разрешаем синхронизацию ---
+        if (user?.betaTester == true) {
+            Log.i("checkSyncConditions", "Пользователь — бета-тестер, синхронизация разрешена")
+            syncStatus.postValue(true)
+            return true
+        }
+
+        // --- сначала проверяем, можно ли вообще безопасно запрашивать покупки ---
+        if (!canSafelyCheckPurchases()) {
+            Log.i("checkSyncConditions", "Проверка подписки невозможна — RuStore недоступен")
+            syncStatus.postValue(false)
+            return false
+        }
+
+        // --- проверка входа в аккаунт и авторизации в RuStore ---
         if (user == null || jwt == null || !checkRuStoreLoginStatus.execute().await().authorized) {
+            Log.i("checkSyncConditions", "Не выполнен вход в аккаунт или RuStore")
             syncStatus.postValue(false)
             return false
         }
@@ -489,15 +507,10 @@ class MainViewModel @Inject constructor(
             }
         )
 
-        // --- теперь проверяем условия для синхронизации ---
+        // --- теперь проверяем условия для включения синхронизации ---
         if (user.syncEnabled == false) {
             syncStatus.postValue(false)
             return false
-        }
-
-        if (user.betaTester == true) {
-            syncStatus.postValue(true)
-            return true
         }
 
         if (!hasPremium) {
@@ -574,6 +587,19 @@ class MainViewModel @Inject constructor(
             calendarDate.syncTimestamp = null
             calendarDate.syncStatus = null
             updateCalendarDateUseCase.execute(calendarDate)
+        }
+    }
+
+    private suspend fun canSafelyCheckPurchases(): Boolean {
+        return suspendCancellableCoroutine { cont ->
+            RuStoreBillingClient.checkPurchasesAvailability()
+                .addOnSuccessListener { result ->
+                    val isAvailable = result is PurchaseAvailabilityResult.Available
+                    cont.resume(isAvailable) {}
+                }
+                .addOnFailureListener {
+                    cont.resume(false) {}
+                }
         }
     }
 }
