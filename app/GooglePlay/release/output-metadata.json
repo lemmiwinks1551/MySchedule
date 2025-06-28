@@ -11,8 +11,8 @@
       "type": "SINGLE",
       "filters": [],
       "attributes": [],
-      "versionCode": 54,
-      "versionName": "7.54",
+      "versionCode": 61,
+      "versionName": "7.61",
       "outputFile": "app-GooglePlay-release.apk"
     }
   ],
