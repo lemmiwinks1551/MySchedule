@@ -2,7 +2,6 @@ package com.example.projectnailsschedule.presentation.main
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -16,10 +15,13 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.example.projectnailsschedule.R
+import com.example.projectnailsschedule.data.worker.SyncWorker
 import com.example.projectnailsschedule.databinding.ActivityMainBinding
 import com.example.projectnailsschedule.domain.models.UserDataManager
-import com.example.projectnailsschedule.domain.usecase.rustore.GetPurchasesUseCase
 import com.example.projectnailsschedule.util.rustore.RuStoreAd
 import com.google.android.material.navigation.NavigationView
 import com.google.android.play.core.appupdate.AppUpdateManager
@@ -33,21 +35,14 @@ import com.google.android.play.core.ktx.isFlexibleUpdateAllowed
 import com.google.android.play.core.ktx.isImmediateUpdateAllowed
 import com.my.target.ads.MyTargetView
 import dagger.hilt.android.AndroidEntryPoint
-import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.disposables.Disposable
-import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.rustore.sdk.billingclient.RuStoreBillingClient
-import java.util.Date
 import java.util.concurrent.TimeUnit
-import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
-import kotlin.time.DurationUnit
-import kotlin.time.toDuration
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -61,12 +56,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
 
-    private lateinit var connectedIcon: MenuItem
-    private lateinit var disconnectedIcon: MenuItem
-    private var disposable: Disposable? = null
-
     @Inject
     lateinit var uncaughtExceptionHandler: Thread.UncaughtExceptionHandler
+
     private var drawerLayout: DrawerLayout? = null
     private var navView: NavigationView? = null
 
@@ -87,54 +79,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private val isSyncing = AtomicBoolean(false)
-    private val updatePeriodSec = 5L
-
     @Inject
     lateinit var billingClient: RuStoreBillingClient
-
-    override fun onStart() {
-        super.onStart()
-
-        lifecycleScope.launch(Dispatchers.IO) {
-            mainViewModel.deleteOldDtData()
-        }
-
-        disposable = Observable.interval(0, updatePeriodSec, TimeUnit.SECONDS)
-            .subscribeOn(Schedulers.io())
-            .subscribe({
-                if (isSyncing.compareAndSet(false, true)) {
-                    val threadName = Thread.currentThread().name
-                    val startTime = System.currentTimeMillis()
-                    val starTime = Date()
-                    Log.i("SyncTimer", "Синхронизация началась на потоке: $threadName в $startTime")
-
-                    lifecycleScope.launch(Dispatchers.IO) {
-                        try {
-                            // Выполняем синхронизацию
-                            mainViewModel.synchronizationAppointments()
-                            mainViewModel.synchronizationCalendarDate()
-                        } catch (e: Exception) {
-                            Log.e("Sync", "Ошибка во время синхронизации: ${e.message}")
-                        } finally {
-                            // Освобождаем флаг
-                            val endTime = Date()
-                            val duration =
-                                (endTime.time - starTime.time).toDuration(DurationUnit.MILLISECONDS)
-                            Log.i(
-                                "Timer",
-                                "Синхронизация выполнена. Затрачено времени $duration"
-                            )
-                            isSyncing.set(false)
-                        }
-                    }
-                } else {
-                    Log.i("Sync", "Синхронизация уже выполняется, новая задача не запускается.")
-                }
-            }, { error ->
-                Log.e("SyncTimer", "Ошибка в Observable: ${error.message}")
-            })
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -211,6 +157,17 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+
+        // Start work manager
+        val syncWorkRequest = PeriodicWorkRequestBuilder<SyncWorker>(
+            15, TimeUnit.MINUTES
+        ).build()
+
+        WorkManager.getInstance(applicationContext).enqueueUniquePeriodicWork(
+            "SyncWorkerUnique",
+            ExistingPeriodicWorkPolicy.KEEP,
+            syncWorkRequest
+        )
     }
 
     private fun initWidgets() {
@@ -222,11 +179,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)
-        connectedIcon = menu.findItem(R.id.cloud_connected)!!
-        disconnectedIcon = menu.findItem(R.id.cloud_disconnected)!!
-        mainViewModel.menuStatus.postValue(true)
-
-        // syncByClick()
         return true
     }
 
@@ -278,51 +230,6 @@ class MainActivity : AppCompatActivity() {
             CoroutineScope(Dispatchers.IO).launch {
                 mainViewModel.sendUserData()
             }
-        }
-
-        mainViewModel.syncStatus.observe(this) {
-            if (mainViewModel.menuStatus.value == true) {
-                if (it) {
-                    // показываем облачку ОК
-                    connectedIcon.setVisible(true)
-                    disconnectedIcon.setVisible(false)
-                } else {
-                    // показываем облачку офф
-                    connectedIcon.setVisible(false)
-                    disconnectedIcon.setVisible(true)
-                }
-            }
-        }
-    }
-
-    override fun onStop() {
-        super.onStop()
-        disposable?.dispose()
-    }
-
-    private fun syncByClick() {
-        disconnectedIcon.setOnMenuItemClickListener {
-            lifecycleScope.launch(Dispatchers.IO) {
-                try {
-                    mainViewModel.synchronizationAppointments()
-                    mainViewModel.synchronizationCalendarDate()
-                } catch (e: Exception) {
-                    Log.e("Sync", e.message.toString())
-                }
-            }
-            true
-        }
-
-        connectedIcon.setOnMenuItemClickListener {
-            lifecycleScope.launch(Dispatchers.IO) {
-                try {
-                    //mainViewModel.synchronizationCheck()
-                    mainViewModel.synchronizationCalendarDate()
-                } catch (e: Exception) {
-                    Log.e("Sync", e.message.toString())
-                }
-            }
-            true
         }
     }
 }
