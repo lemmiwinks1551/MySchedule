@@ -73,24 +73,14 @@ class StartPurchasesViewModel @Inject constructor(
         }
     }
 
-    private fun requireUserLoginOrEmitError(): Boolean {
-        // если пользователь не зашел в аакаунт - не даем ниче покупать, т.к. нужен аккаунт и логин для работы с сервером
-        return if (UserInfoDtoManager.getUserDto() == null) {
-            _event.tryEmit(StartPurchasesEvent.Error(Throwable("Необходимо зарегистрироваться и войти в аккаунт")))
-            _state.update { it.copy(isLoading = false) }
-
-            false
-        } else true
-    }
-
     private fun checkRuStoreLoginStatus() {
         _state.setLoading(true)
-
-        if (checkRuStoreLoginStatus.execute().await().authorized) {
-            _state.update { it.copy(isRuStoreLoggedIn = true) }
-        } else {
-            _state.update { it.copy(isRuStoreLoggedIn = false) }
-        }
+        _state.update { it.copy(isRuStoreLoggedIn = true) }
+//        if (checkRuStoreLoginStatus.execute().await().authorized) {
+//            _state.update { it.copy(isRuStoreLoggedIn = true) }
+//        } else {
+//            _state.update { it.copy(isRuStoreLoggedIn = false) }
+//        }
 
         _state.setLoading(false)
     }

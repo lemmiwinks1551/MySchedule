@@ -127,38 +127,38 @@
                     app:srcCompat="@drawable/baseline_check_circle_outline_24" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <!-- Вход в RuStore -->
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/rustore_login_cl"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/server_login_cl">
+<!--            &lt;!&ndash; Вход в RuStore &ndash;&gt;-->
+<!--            <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--                android:id="@+id/rustore_login_cl"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="12dp"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@id/server_login_cl">-->
 
-                <TextView
-                    android:id="@+id/rustore_login_tv"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="Зайти в свой аккаунт в магазине приложении RuStore"
-                    android:textSize="16sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/rustore_login_status"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+<!--                <TextView-->
+<!--                    android:id="@+id/rustore_login_tv"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Зайти в свой аккаунт в магазине приложении RuStore"-->
+<!--                    android:textSize="16sp"-->
+<!--                    app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                    app:layout_constraintEnd_toStartOf="@id/rustore_login_status"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintTop_toTopOf="parent" />-->
 
-                <ImageView
-                    android:id="@+id/rustore_login_status"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:contentDescription="Статус входа RuStore"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/baseline_check_circle_outline_24" />
+<!--                <ImageView-->
+<!--                    android:id="@+id/rustore_login_status"-->
+<!--                    android:layout_width="24dp"-->
+<!--                    android:layout_height="24dp"-->
+<!--                    android:contentDescription="Статус входа RuStore"-->
+<!--                    app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintTop_toTopOf="parent"-->
+<!--                    app:srcCompat="@drawable/baseline_check_circle_outline_24" />-->
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+<!--            </androidx.constraintlayout.widget.ConstraintLayout>-->
 
             <!-- Кнопки подписки -->
             <Button
@@ -169,8 +169,7 @@
                 android:text="@string/billing_start_purchases"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/rustore_login_cl" />
+                app:layout_constraintStart_toStartOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
